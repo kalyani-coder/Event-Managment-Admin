@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const app = express();
 const port = 5000;
 
@@ -9,6 +11,7 @@ const POST = require("./routes/POST");
 const DELETE = require("./routes/DELETE");
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use("/api", GET);
 app.use("/api", POST);

@@ -43,7 +43,7 @@ function App() {
           <Route path="/manager/:_id" element={<ManagerDetailPage />} />
           <Route path="/accountant/:_id" element={<AccountantDetailPage />} />
           <Route path="/quotation" element={<ViewEnquiry />} />
-          <Route path="/edit-quotation" element={<MakeQuotation />} />
+          <Route path="//quotation/:id" element={<MakeQuotation />} />
           <Route path="/advancepayment" element={<AdvancePaymentForm />} />
           <Route path="/orderform" element={<OrderForm />} />
           <Route path="/addsalary" element={<AddSalary />} />

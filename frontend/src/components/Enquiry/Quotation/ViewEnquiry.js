@@ -26,12 +26,6 @@ function ViewEnquiry() {
   );
   const navigate = useNavigate();
 
-  const handlemake = () => {
-    navigate("/edit-quotation", {
-      state: enquiries,
-    });
-  };
-
   return (
     <div className="container mt-5">
       <h2>Enquiries List</h2>
@@ -46,7 +40,7 @@ function ViewEnquiry() {
       </div>
       <div className="row">
         {filteredEnquiries.map((enquiry) => (
-          <div className="col-md-4 mb-4" key={enquiry.id}>
+          <div className="col-md-4 mb-4" key={enquiry._id}>
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{enquiry.title}</h5>
@@ -70,9 +64,15 @@ function ViewEnquiry() {
                   Customer Address: {enquiry.customerAddress}
                 </p>
                 {console.log(enquiry)}
-                <Button className="btn btn-info" onClick={handlemake}>
-                  make quotation
-                </Button>
+                <Link
+                  to={{
+                    pathname: `/quotation/${enquiry._id}`,
+                  }}
+                  state={enquiry}
+                  className="btn btn-info"
+                >
+                  Quotation
+                </Link>
               </div>
             </div>
           </div>
