@@ -275,6 +275,7 @@ function QuotationForm() {
               className="form-control"
               id={`amount${index}`}
               name="amount"
+              disabled
               value={section.amount}
               onChange={(e) => handleChange(e, index)}
             />
