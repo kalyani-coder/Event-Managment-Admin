@@ -24,7 +24,7 @@ const Executives = require("../models/executive");
 const Vendors = require("../models/vendor");
 
 const Managers = require("../models/manager");
-const Events = require("../models/event");
+// const Events = require("../models/event");
 
 const FindTable = ({ table }) => {
   if (table.toLowerCase() === "accountants") {
@@ -36,9 +36,7 @@ const FindTable = ({ table }) => {
   } else if (table.toLowerCase() === "vendors") {
     return Vendors;
   } else if (table.toLowerCase() === "managers") {
-    return Managers;
-  } else if (table.toLowerCase() === "events") {
-    return Events; //<---------------------------------------------------------- new models begin after this else if block
+    return Managers; //<---------------------------------------------------------- new models begin after this else if block
   } else if (table.toLowerCase() === "enquiry") {
     return Enquiry;
   } else if (table.toLowerCase() === "quotation") {
