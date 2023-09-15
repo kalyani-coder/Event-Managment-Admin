@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function AddEvent() {
   const [eventName, setEventName] = useState("");
@@ -16,7 +17,7 @@ function AddEvent() {
   const [currentTime, setCurrentTime] = useState("");
 
   const navigate = useNavigate();
-  const handleSave = () => {
+  const handleSave = async () => {
     const eventData = {
       eventName,
       fullName,
@@ -32,7 +33,26 @@ function AddEvent() {
       currentTime,
     };
 
-    console.log(eventData);
+    try {
+      // Make a POST request to your API endpoint
+      const response = await axios.post(
+        "http://localhost:5000/api/event",
+        eventData
+      );
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        console.log("Event data posted successfully!");
+        // If you want to navigate to another page after posting data, you can do it here.
+        // For example:
+        navigate("/advancepayment", { state: eventData });
+      } else {
+        console.error("Failed to post event data.");
+      }
+    } catch (error) {
+      console.error("Error posting event data:", error);
+    }
+
     navigate("/advancepayment", { state: eventData });
   };
 
