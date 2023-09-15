@@ -1,38 +1,58 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function AddEvent() {
   const [eventName, setEventName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [eventType, setEventType] = useState("Family Function");
-  const [selectedVenue, setSelectedVenue] = useState("");
-  const [subVenue, setSubVenue] = useState("");
-  const [numOfGuests, setNumOfGuests] = useState("");
-  const [budget, setBudget] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
+  const [fname, setfname] = useState("");
+  const [company_name, setcompany_name] = useState("");
+  const [email, setemail] = useState("");
+  const [contact, setcontact] = useState("");
+  const [event_type, setevent_type] = useState("Family Function");
+  const [venue, setvenue] = useState("");
+  const [subvenue, setsubvenue] = useState("");
+  const [guest_number, setguest_number] = useState("");
+  const [budget, setbudget] = useState("");
+  const [event_date, setevent_date] = useState("");
   const [currentTime, setCurrentTime] = useState("");
 
   const navigate = useNavigate();
-  const handleSave = () => {
+  const handleSave = async () => {
     const eventData = {
       eventName,
-      fullName,
-      companyName,
+      fname,
+      company_name,
       email,
-      contactNumber,
-      eventType,
-      selectedVenue,
-      subVenue,
-      numOfGuests,
+      contact,
+      event_type,
+      venue,
+      subvenue,
+      guest_number,
       budget,
-      currentDate,
+      event_date,
       currentTime,
     };
 
-    console.log(eventData);
+    try {
+      // Make a POST request to your API endpoint
+      const response = await axios.post(
+        "http://localhost:5000/api/event",
+        eventData
+      );
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        console.log("Event data posted successfully!");
+        // If you want to navigate to another page after posting data, you can do it here.
+        // For example:
+        navigate("/advancepayment", { state: eventData });
+      } else {
+        console.error("Failed to post event data.");
+      }
+    } catch (error) {
+      console.error("Error posting event data:", error);
+    }
+
     navigate("/advancepayment", { state: eventData });
   };
 
@@ -55,8 +75,8 @@ function AddEvent() {
                 type="text"
                 className="form-control text-center"
                 placeholder="Enter Full Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                value={fname}
+                onChange={(e) => setfname(e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -64,17 +84,17 @@ function AddEvent() {
                 type="text"
                 className="form-control text-center"
                 placeholder="Enter Company Name"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
+                value={company_name}
+                onChange={(e) => setcompany_name(e.target.value)}
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
                 className="form-control text-center"
-                placeholder="Enter Email"
+                placeholder="Enter email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setemail(e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -82,14 +102,14 @@ function AddEvent() {
                 type="number"
                 className="form-control text-center"
                 placeholder="Enter Contact Number"
-                value={contactNumber}
-                onChange={(e) => setContactNumber(e.target.value)}
+                value={contact}
+                onChange={(e) => setcontact(e.target.value)}
               />
             </div>
             <div className="form-group">
               <select
-                value={eventType}
-                onChange={(e) => setEventType(e.target.value)}
+                value={event_type}
+                onChange={(e) => setevent_type(e.target.value)}
                 className="form-control"
               >
                 <option value="Family Function">Family Function</option>
@@ -101,8 +121,8 @@ function AddEvent() {
             <div className="form-group">
               <input
                 type="text"
-                value={selectedVenue}
-                onChange={(e) => setSelectedVenue(e.target.value)}
+                value={venue}
+                onChange={(e) => setvenue(e.target.value)}
                 className="form-control"
                 placeholder="Venue"
               />
@@ -110,8 +130,8 @@ function AddEvent() {
             <div className="form-group">
               <input
                 type="text"
-                value={subVenue}
-                onChange={(e) => setSubVenue(e.target.value)}
+                value={subvenue}
+                onChange={(e) => setsubvenue(e.target.value)}
                 className="form-control"
                 placeholder="Sub Venue"
               />
@@ -119,8 +139,8 @@ function AddEvent() {
             <div className="form-group">
               <input
                 type="number"
-                value={numOfGuests}
-                onChange={(e) => setNumOfGuests(e.target.value)}
+                value={guest_number}
+                onChange={(e) => setguest_number(e.target.value)}
                 className="form-control"
                 placeholder="Number of Guests"
               />
@@ -129,16 +149,16 @@ function AddEvent() {
               <input
                 type="number"
                 value={budget}
-                onChange={(e) => setBudget(e.target.value)}
+                onChange={(e) => setbudget(e.target.value)}
                 className="form-control"
-                placeholder="Budget (optional)"
+                placeholder="budget (optional)"
               />
             </div>
             <div className="form-group">
               <input
                 type="Date"
-                value={currentDate}
-                onChange={(e) => setCurrentDate(e.target.value)}
+                value={event_date}
+                onChange={(e) => setevent_date(e.target.value)}
                 className="form-control"
                 placeholder="date"
               />

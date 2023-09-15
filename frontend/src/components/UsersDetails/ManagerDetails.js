@@ -11,7 +11,7 @@ const ManagerDetails = () => {
   useEffect(() => {
     // Fetch manager data from the API
     axios
-      .get("http://localhost:5000/api/managers")
+      .get("http://localhost:5000/api/manager")
       .then((response) => {
         setManagerData(response.data);
       })
@@ -43,7 +43,6 @@ const ManagerDetails = () => {
           />
         </div>
       </div>
-
       {filteredManagerData.length > 0 ? (
         filteredManagerData.map((manager) => (
           <Card

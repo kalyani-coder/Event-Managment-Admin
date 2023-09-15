@@ -144,7 +144,7 @@ export default function Sidebar() {
                       <Link to={"/addevent"}> Create Event</Link>
                     </li>
                     <li>
-                      <a>View event </a>
+                        <Link to={"/viewevent"}> View Event</Link>
                     </li>
                   </ul>
                 </li>

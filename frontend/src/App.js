@@ -21,6 +21,8 @@ import ExecutiveDetails from "./components/UsersDetails/executive/ExecutiveDetai
 import ExecutiveDetailPage from "./components/UsersDetails/executive/ExecutiveDetailPage";
 import VendorDetails from "./components/UsersDetails/Vendor/VendorDetails";
 import VendorDetailPage from "./components/UsersDetails/Vendor/VendorDetailsPage";
+import EventDetails from "./components/Event/ViewEvent";
+import EventMoreDetails from "./components/Event/ViewMoreDetails";
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
           <Route path="/addsalary" element={<AddSalary />} />
           <Route path="/vendordetails" element={<VendorDetails />} />
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
+          <Route path="/viewevent" element={<EventDetails />} />
+          <Route path="/event-more-details" element={<EventMoreDetails />} />
         </Routes>
       </Router>
     </>
