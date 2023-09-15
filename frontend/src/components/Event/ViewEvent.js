@@ -1,69 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const EventDetails = () => {
   const [eventData, setEventData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredEventData, setFilteredEventData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/events")
+      .get("http://localhost:5000/api/event")
       .then((response) => {
         setEventData(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching event data:", error);
       });
   }, []);
 
-  useEffect(() => {
-    const filteredData = eventData.filter(
-      (event) =>
-        event.eventName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.fullName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredEventData(filteredData);
-  }, [searchQuery, eventData]);
-
+  const handleViewMore = (event) => {
+    navigate("/event-more-details", { state: event });
+  };
+ 
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
-      <div className="mb-4">
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by event name or full name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {filteredEventData.length > 0 ? (
-        filteredEventData.map((event) => (
-          <Card
-            key={event.id}
-            style={{ width: "100%", marginBottom: "20px" }}
-          >
+      {eventData.length > 0 ? (
+        eventData.map((event) => (
+          <Card key={event.event_id} style={{ width: "100%", marginBottom: "20px" }}>
             <Card.Body>
-              <Card.Title>{event.eventName}</Card.Title>
+              <Card.Title>{event.fname}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
-                Organizer: {event.fullName}
+                Company: {event.company_name}
               </Card.Subtitle>
-              <Card.Text>Event Type: {event.eventType}</Card.Text>
-              <Link
-                to={{
-                  pathname: `/event/${event._id}`,
-                }}
-                className="btn btn-info"
-                state={event}
-              >
+              <Card.Text>Venue: {event.venue}</Card.Text>
+              <Card.Text>Subvenue: {event.subvenue}</Card.Text>
+              <Card.Text>Event Date: {event.event_date}</Card.Text>
+              <Card.Text>Guest Number: {event.guest_number}</Card.Text>
+              <Card.Text>Budget: ${event.budget}</Card.Text>
+              <button className="btn btn-info" onClick={() => handleViewMore(event)}>
                 View More
-              </Link>
+              </button>
+              
             </Card.Body>
           </Card>
         ))
