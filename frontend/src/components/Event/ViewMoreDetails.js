@@ -18,7 +18,7 @@ const EventMoreDetails = () => {
     }
 
     const handleExpences = (event) => {
-        navigate("/add-expences", { state: event });
+        navigate("/add-expence", { state: event });
     };
     const handleAdvancePayment = (event) => {
         navigate("/advance-payment", { state: event });

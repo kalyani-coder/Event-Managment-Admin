@@ -22,7 +22,7 @@ const EventDetails = () => {
   const handleViewMore = (event) => {
     navigate("/event-more-details", { state: event });
   };
- 
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
@@ -42,7 +42,7 @@ const EventDetails = () => {
               <button className="btn btn-info" onClick={() => handleViewMore(event)}>
                 View More
               </button>
-              
+
             </Card.Body>
           </Card>
         ))
