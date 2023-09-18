@@ -35,4 +35,20 @@ router.get("/:table/:id", async (req, res) => {
   }
 });
 
+router.get("/:table/:field/:value", async (req, res) => {
+  const { table, field, value } = req.params;
+  const Table = FindTable({ table });
+  if (Table) {
+    try {
+      result = await Table.find({ [field]: value });
+      res.status(200).json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(400).send("Unable to fetch table");
+    }
+  } else {
+    res.status(400).send("Bad Request");
+  }
+});
+
 module.exports = router;
