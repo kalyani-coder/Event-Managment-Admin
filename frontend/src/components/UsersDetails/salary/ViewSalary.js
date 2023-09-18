@@ -2,26 +2,49 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const ViewSalary = () => {
-    // Define state variables to store salary data
     const [salaryData, setSalaryData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredSalaryData, setFilteredSalaryData] = useState([]);
 
     useEffect(() => {
-        // Fetch salary data from your API endpoint
         axios
             .get("http://localhost:5000/api/staffsalary")
             .then((response) => {
-                // Set the fetched data to the state variable
                 setSalaryData(response.data);
-                console.log(response.data)
             })
             .catch((error) => {
                 console.error("Error fetching salary data:", error);
             });
     }, []);
 
+    useEffect(() => {
+        // Filter salaryData based on search query
+        const filteredData = salaryData.filter((item) => {
+            const fullName = `${item.fname} ${item.lname}`.toLowerCase();
+            return fullName.includes(searchQuery.toLowerCase());
+        });
+
+        setFilteredSalaryData(filteredData);
+    }, [searchQuery, salaryData]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
     return (
         <div className="container mt-5">
             <h5 className="mb-3">View Salary</h5>
+
+            <div className="form-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search by name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+            </div>
+
             <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -38,7 +61,7 @@ const ViewSalary = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {salaryData.map((item) => (
+                    {filteredSalaryData.map((item) => (
                         <tr key={item.staff_id}>
                             <td className="text-center">{item.staff_id}</td>
                             <td className="text-center">{item.fname}</td>
@@ -55,8 +78,6 @@ const ViewSalary = () => {
                 </tbody>
             </table>
         </div>
-
-
     );
 };
 

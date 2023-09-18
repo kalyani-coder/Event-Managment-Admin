@@ -56,8 +56,8 @@ function App() {
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
           <Route path="/viewevent" element={<EventDetails />} />
           <Route path="/event-more-details" element={<EventMoreDetails />} />
-          <Route path="/add-expense" element={<AddExpense />} />
-          <Route path="/expenses-list" element={<ExpenseList />} />
+          <Route path="/add-expense/:eventId" element={<AddExpense />} />
+          <Route path="/expenses/:eventId" element={<ExpenseList />} />
           <Route path="/viewsalary" element={<ViewSalary />} />
         </Routes>
 

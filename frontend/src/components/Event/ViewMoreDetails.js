@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -41,9 +41,12 @@ const EventMoreDetails = () => {
                     {/* Add more fields as needed */}
 
 
-                    <button className="btn btn-info" onClick={() => handleExpences(event)}>
-                        Add Expences
-                    </button>
+
+                    <Link to={`/add-expense/${event.id}`}>
+                        <button className="btn btn-info" onClick={() => handleExpences(event)}>
+                            Add Expences
+                        </button></Link>
+
                     <button className="btn btn-info mx-3" onClick={() => handleAdvancePayment(event)}>
                         Advance Payment
                     </button>

@@ -1,27 +1,27 @@
-// ExpenseList.js
-
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ExpenseList = () => {
+    const { eventId } = useParams(); // Access the event ID from route parameters
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
-        // Fetch expenses from the API
+        // Fetch expenses filtered by event ID from the API
         axios
-            .get("http://localhost:5000/api/eventexpense")
+            .get(`http://localhost:5000/api/eventexpense?eventId=${eventId}`)
             .then((response) => {
                 setExpenses(response.data);
-                console.log(response.data)
+                console.log(response.data);
             })
             .catch((error) => {
                 console.error("Error fetching expenses:", error);
             });
-    }, []);
+    }, [eventId]); // Add eventId to the dependency array to re-fetch expenses when it changes
 
     return (
         <div className="container mt-5">
-            <h5>Expense List</h5>
+            <h5>Expense List for Event ID {eventId}</h5>
             <table className="table">
                 <thead>
                     <tr>
