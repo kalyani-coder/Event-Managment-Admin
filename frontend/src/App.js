@@ -23,6 +23,8 @@ import VendorDetails from "./components/UsersDetails/Vendor/VendorDetails";
 import VendorDetailPage from "./components/UsersDetails/Vendor/VendorDetailsPage";
 import EventDetails from "./components/Event/ViewEvent";
 import EventMoreDetails from "./components/Event/ViewMoreDetails";
+import AddExpense from "./components/Event/AddExpense";
+import ExpenseList from "./components/Event/ExpenseList";
 
 function App() {
   return (
@@ -53,7 +55,10 @@ function App() {
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
           <Route path="/viewevent" element={<EventDetails />} />
           <Route path="/event-more-details" element={<EventMoreDetails />} />
+          <Route path="/add-expense" element={<AddExpense />} />
+          <Route path="/expenses-list" component={<ExpenseList />} />
         </Routes>
+
       </Router>
     </>
   );

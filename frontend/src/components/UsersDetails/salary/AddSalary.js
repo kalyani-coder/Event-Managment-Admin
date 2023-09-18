@@ -9,7 +9,7 @@ const AddSalary = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/mockManagerData")
+      .get("http://localhost:5000/api/staffsalary")
       .then((response) => {
         console.log(response);
       })
