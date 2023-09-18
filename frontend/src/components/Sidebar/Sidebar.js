@@ -159,7 +159,9 @@ export default function Sidebar() {
                   </a>
                   <ul className="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                      <a href="#">Add Vendor Payment</a>
+                      <Link to={"/vendorpayment"}>
+                        Add Vendor Payment
+                      </Link>
                     </li>
                     <li>
                       <a href="#">View Vendor Payment Details</a>

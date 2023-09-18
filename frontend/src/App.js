@@ -26,6 +26,7 @@ import EventMoreDetails from "./components/Event/ViewMoreDetails";
 import AddExpense from "./components/Event/AddExpense";
 import ExpenseList from "./components/Event/ExpenseList";
 import ViewSalary from "./components/UsersDetails/salary/ViewSalary";
+import VendorPayment from "./components/VendorPayment/VendorPayment";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path="/add-expense/:eventId" element={<AddExpense />} />
           <Route path="/expenses/:eventId" element={<ExpenseList />} />
           <Route path="/viewsalary" element={<ViewSalary />} />
+          <Route path="/vendorpayment" element={<VendorPayment />} />
         </Routes>
 
       </Router>
