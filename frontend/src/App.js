@@ -25,6 +25,7 @@ import EventDetails from "./components/Event/ViewEvent";
 import EventMoreDetails from "./components/Event/ViewMoreDetails";
 import AddExpense from "./components/Event/AddExpense";
 import ExpenseList from "./components/Event/ExpenseList";
+import ViewSalary from "./components/UsersDetails/salary/ViewSalary";
 
 function App() {
   return (
@@ -56,7 +57,8 @@ function App() {
           <Route path="/viewevent" element={<EventDetails />} />
           <Route path="/event-more-details" element={<EventMoreDetails />} />
           <Route path="/add-expense" element={<AddExpense />} />
-          <Route path="/expenses-list" component={<ExpenseList />} />
+          <Route path="/expenses-list" element={<ExpenseList />} />
+          <Route path="/viewsalary" element={<ViewSalary />} />
         </Routes>
 
       </Router>

@@ -54,9 +54,8 @@ export default function Sidebar() {
         {/* Sidebar */}
         <nav
           id="sidebarMenu"
-          className={`collapse d-lg-block sidebar collapse bg-white ${
-            isSidebarOpen ? "show" : "" // Show the sidebar if isSidebarOpen is true
-          }`}
+          className={`collapse d-lg-block sidebar collapse bg-white ${isSidebarOpen ? "show" : "" // Show the sidebar if isSidebarOpen is true
+            }`}
         >
           {/* Close button for mobile */}
 
@@ -144,7 +143,7 @@ export default function Sidebar() {
                       <Link to={"/addevent"}> Create Event</Link>
                     </li>
                     <li>
-                        <Link to={"/viewevent"}> View Event</Link>
+                      <Link to={"/viewevent"}> View Event</Link>
                     </li>
                   </ul>
                 </li>
@@ -181,8 +180,8 @@ export default function Sidebar() {
                       <Link to={"/addsalary"}>Add Salary</Link>
                     </li>
                     <li>
-                      <a href="#">View Salary</a>
-                    </li>
+                      <Link to={"/viewsalary"}>View Salary</Link></li>
+
                   </ul>
                 </li>
                 <li>

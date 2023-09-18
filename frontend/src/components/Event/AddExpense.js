@@ -21,7 +21,7 @@ const AddExpense = () => {
     useEffect(() => {
         // Make an Axios GET request to fetch the event ID
         axios
-            .get(`http://localhost:5000/api/event/${event_name}`)
+            .get(`http://localhost:5000/api/eventexpense`)
             .then((response) => {
                 // Handle success
                 const fetchedEventId = response.data;
@@ -75,6 +75,7 @@ const AddExpense = () => {
             .catch((error) => {
                 // Handle error (e.g., show an error message)
                 console.error("Error adding expense:", error);
+                setErrorMessage("Error adding expense. Please try again.");
             });
     };
 
@@ -91,73 +92,83 @@ const AddExpense = () => {
                             {errorMessage && (
                                 <div className="alert alert-danger">{errorMessage}</div>
                             )}
-                            <div className="form-group">
-                                <label className="fw-bold">New Purchase</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={new_purchase}
-                                    onChange={(e) => setnew_purchase(e.target.value)}
-                                    required
-                                />
-                            </div>
+                            <form>
+                                <div className="form-group">
+                                    <label className="fw-bold">New Purchase</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={new_purchase}
+                                        onChange={(e) => setnew_purchase(e.target.value)}
+                                        required
+                                    />
+                                </div>
 
-                            <div className="form-group">
-                                <label className="fw-bold">Date</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
-                                    required
-                                />
-                            </div>
+                                <div className="form-group">
+                                    <label className="fw-bold">Date</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
 
-                            <div className="form-group">
-                                <label className="fw-bold">Vendor</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={to_vendor}
-                                    onChange={(e) => setto_vendor(e.target.value)}
-                                    placeholder="Vendor Name"
-                                    required
-                                />
-                            </div>
+                                <div className="form-group">
+                                    <label className="fw-bold">Vendor</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={to_vendor}
+                                        onChange={(e) => setto_vendor(e.target.value)}
+                                        placeholder="Vendor Name"
+                                        required
+                                    />
+                                </div>
 
-                            <div className="form-group">
-                                <label className="fw-bold">Event</label>
-                                <select
-                                    value={event_name}
-                                    onChange={(e) => setevent_name(e.target.value)}
-                                    className="form-control"
-                                    required
+                                <div className="form-group">
+                                    <label className="fw-bold">Event</label>
+                                    <select
+                                        value={event_name}
+                                        onChange={(e) => setevent_name(e.target.value)}
+                                        className="form-control"
+                                        required
+                                    >
+                                        <option value="">Select an Event</option>
+                                        <option value="Family Function">Family Function</option>
+                                        <option value="Birthday Party">Birthday Party</option>
+                                        <option value="Wedding">Wedding</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="fw-bold">Amount</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={amount}
+                                        onChange={(e) => setamount(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-info"
+                                    onClick={handleAdd}
                                 >
-                                    <option value="">Select an Event</option>
-                                    <option value="Family Function">Family Function</option>
-                                    <option value="Birthday Party">Birthday Party</option>
-                                    <option value="Wedding">Wedding</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="fw-bold">Amount</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={amount}
-                                    onChange={(e) => setamount(e.target.value)}
-                                    required
-                                />
-                            </div>
-
-                            <button className="btn btn-info" onClick={handleAdd}>
-                                Submit
-                            </button>
-                            <button className="btn btn-info mx-3" onClick={handleShow}>
-                                Show
-                            </button>
+                                    Submit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-info mx-3"
+                                    onClick={handleShow}
+                                >
+                                    Show
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

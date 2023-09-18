@@ -7,48 +7,50 @@ const AddSalary = () => {
   const id = location.state;
   console.log(id);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/staffsalary")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => {
-        console.error("Error", e);
-      });
-  }, []);
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [salaryAmount, setSalaryAmount] = useState("");
-  const [advanceAmount, setAdvanceAmount] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [month, setMonth] = useState("");
-  const [salaryTaken, setSalaryTaken] = useState("");
-  const [advanceTaken, setAdvanceTaken] = useState("");
-  const [incentiveAmount, setIncentiveAmount] = useState("");
-  const [deductAmount, setDeductAmount] = useState("");
-  const [balanceAmount, setBalanceAmount] = useState("");
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const salaryData = {
-      firstName,
-      lastName,
-      salaryAmount,
-      advanceAmount,
+      fname,
+      lname,
+      salary,
+      adv_payment,
       date,
       time,
       month,
       salaryTaken,
       advanceTaken,
-      incentiveAmount,
-      deductAmount,
+      incentive,
+      deduct_amount,
       balanceAmount,
     };
+
+    axios
+      .post("http://localhost:5000/api/staffsalary", salaryData)
+      .then((response) => {
+        // Handle success, you can redirect or show a success message here
+        console.log("Salary added successfully:", response.data);
+      })
+      .catch((error) => {
+        // Handle error (e.g., show an error message)
+        console.error("Error adding salary:", error);
+      });
   };
+
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [salary, setsalary] = useState("");
+  const [adv_payment, setadv_payment] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [month, setMonth] = useState("");
+  const [salaryTaken, setSalaryTaken] = useState("");
+  const [advanceTaken, setAdvanceTaken] = useState("");
+  const [incentive, setincentive] = useState("");
+  const [deduct_amount, setdeduct_amount] = useState("");
+  const [balanceAmount, setBalanceAmount] = useState("");
+
+
 
   return (
     <div className="container mt-5">
@@ -63,8 +65,8 @@ const AddSalary = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    value={fname}
+                    onChange={(e) => setfname(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -72,8 +74,8 @@ const AddSalary = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    value={lname}
+                    onChange={(e) => setlname(e.target.value)}
                   />
                 </div>
                 {/* Add the Date and Time fields here */}
@@ -110,8 +112,8 @@ const AddSalary = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={salaryAmount}
-                    onChange={(e) => setSalaryAmount(e.target.value)}
+                    value={salary}
+                    onChange={(e) => setsalary(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -119,8 +121,8 @@ const AddSalary = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={advanceAmount}
-                    onChange={(e) => setAdvanceAmount(e.target.value)}
+                    value={adv_payment}
+                    onChange={(e) => setadv_payment(e.target.value)}
                   />
                 </div>
                 {/* More input fields for salary, advance, month */}
@@ -158,8 +160,8 @@ const AddSalary = () => {
                 <input
                   type="text"
                   className="form-control"
-                  value={incentiveAmount}
-                  onChange={(e) => setIncentiveAmount(e.target.value)}
+                  value={incentive}
+                  onChange={(e) => setincentive(e.target.value)}
                 />
               </div>
               <div className="form-group">
@@ -167,8 +169,8 @@ const AddSalary = () => {
                 <input
                   type="text"
                   className="form-control"
-                  value={deductAmount}
-                  onChange={(e) => setDeductAmount(e.target.value)}
+                  value={deduct_amount}
+                  onChange={(e) => setdeduct_amount(e.target.value)}
                 />
               </div>
               <div className="form-group">
