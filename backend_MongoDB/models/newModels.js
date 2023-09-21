@@ -184,18 +184,18 @@ const VendorPaymentHistorySchema = new Schema({
   total_amount: Number,
 });
 
-const InventoryStock = new Schema({
-  AC: Integer,
-  fan: Integer,
-  flower_pot: Integer,
-  chair: Integer,
-  mic: Integer,
-  display: Integer,
-  carpet: Integer,
-  curtains: Integer,
-  lighting: Integer,
-  cooler: Integer,
-  table: Integer,
+const InventoryStockSchema = new Schema({
+  AC: Number,
+  fan: Number,
+  flower_pot: Number,
+  chair: Number,
+  mic: Number,
+  display: Number,
+  carpet: Number,
+  curtains: Number,
+  lighting: Number,
+  cooler: Number,
+  table: Number,
 });
 
 module.exports = {
