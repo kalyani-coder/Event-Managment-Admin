@@ -184,6 +184,20 @@ const VendorPaymentHistorySchema = new Schema({
   total_amount: Number,
 });
 
+const InventoryStock = new Schema({
+  AC: Integer,
+  fan: Integer,
+  flower_pot: Integer,
+  chair: Integer,
+  mic: Integer,
+  display: Integer,
+  carpet: Integer,
+  curtains: Integer,
+  lighting: Integer,
+  cooler: Integer,
+  table: Integer,
+});
+
 module.exports = {
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
@@ -206,4 +220,5 @@ module.exports = {
     "VendorPaymentHistory",
     VendorPaymentHistorySchema
   ),
+  InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
 };
