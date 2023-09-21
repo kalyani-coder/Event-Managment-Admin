@@ -14,6 +14,7 @@ const {
   StaffSalaryDetails,
   VendorPayment,
   VendorPaymentHistory,
+  InventoryStock,
 } = require("../models/newModels");
 
 // const Accountants = require("../models/accountant");
@@ -57,6 +58,8 @@ const FindTable = ({ table }) => {
     return VendorPayment;
   } else if (table.toLowerCase() === "vendorpaymenthistory") {
     return VendorPaymentHistory;
+  } else if (table.toLowerCase() == "inventorystock") {
+    return InventoryStock;
   } else {
     return null;
   }
@@ -400,6 +403,33 @@ const FilterBodyByTable = ({ req, table }) => {
         event_name,
         date,
         total_amount,
+      };
+    } else if (table == "inventorystock") {
+      const {
+        AC,
+        fan,
+        flower_pot,
+        chair,
+        mic,
+        display,
+        carpet,
+        curtains,
+        lighting,
+        cooler,
+        table,
+      } = req.body;
+      return {
+        AC,
+        fan,
+        flower_pot,
+        chair,
+        mic,
+        display,
+        carpet,
+        curtains,
+        lighting,
+        cooler,
+        table,
       };
     } else {
       return null;
