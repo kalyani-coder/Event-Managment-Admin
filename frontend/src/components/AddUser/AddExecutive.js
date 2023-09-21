@@ -120,9 +120,10 @@ const AddExecutive = () => {
     <div className="container mt-5">
       <h2>Add Executive</h2>
       <Form onSubmit={handleSubmit}>
-        {/* Similar form fields to AddAccountant, but adjust the labels and placeholders */}
         <Form.Group controlId="firstName">
-          <Form.Label>First Name</Form.Label>
+          <Form.Label>
+            First Name <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={firstName}
@@ -133,7 +134,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="lastName">
-          <Form.Label>Last Name</Form.Label>
+          <Form.Label>
+            Last Name <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={lastName}
@@ -144,7 +147,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="executiveEmail">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>
+            Email <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="email"
             value={executiveEmail}
@@ -155,7 +160,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="executivePhone">
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>
+            Phone <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="tel"
             value={executivePhone}
@@ -166,7 +173,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="executiveAddress">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>
+            Address <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={executiveAddress}
@@ -177,7 +186,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="executiveCity">
-          <Form.Label>City</Form.Label>
+          <Form.Label>
+            City <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={executiveCity}
@@ -188,7 +199,9 @@ const AddExecutive = () => {
         </Form.Group>
 
         <Form.Group controlId="executiveState">
-          <Form.Label>State</Form.Label>
+          <Form.Label>
+            State <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             as="select"
             value={executiveState}
@@ -207,7 +220,9 @@ const AddExecutive = () => {
           <br />
           <h3>Bank Details:</h3>
           <Form.Group controlId="accountHolderName">
-            <Form.Label>Account Holder Name</Form.Label>
+            <Form.Label>
+              Account Holder Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={accountHolderName}
@@ -217,7 +232,9 @@ const AddExecutive = () => {
             />
           </Form.Group>
           <Form.Group controlId="accountNumber">
-            <Form.Label>Account Number</Form.Label>
+            <Form.Label>
+              Account Number <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={accountNumber}
@@ -228,7 +245,9 @@ const AddExecutive = () => {
           </Form.Group>
 
           <Form.Group controlId="ifscCode">
-            <Form.Label>IFSC Code</Form.Label>
+            <Form.Label>
+              IFSC Code <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={ifscCode}
@@ -239,7 +258,9 @@ const AddExecutive = () => {
           </Form.Group>
 
           <Form.Group controlId="bankName">
-            <Form.Label>Bank Name</Form.Label>
+            <Form.Label>
+              Bank Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={bankName}
@@ -250,7 +271,9 @@ const AddExecutive = () => {
           </Form.Group>
 
           <Form.Group controlId="branchName">
-            <Form.Label>Branch Name</Form.Label>
+            <Form.Label>
+              Branch Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={branchName}
