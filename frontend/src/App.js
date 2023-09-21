@@ -27,6 +27,8 @@ import AddExpense from "./components/Event/AddExpense";
 import ExpenseList from "./components/Event/ExpenseList";
 import ViewSalary from "./components/UsersDetails/salary/ViewSalary";
 import VendorPayment from "./components/VendorPayment/VendorPayment";
+import AddInventory from "./components/Inventory/AddInventory";
+import ViewInventory from "./components/Inventory/ViewInventory";
 
 function App() {
   return (
@@ -61,6 +63,8 @@ function App() {
           <Route path="/expenses/:eventId" element={<ExpenseList />} />
           <Route path="/viewsalary" element={<ViewSalary />} />
           <Route path="/vendorpayment" element={<VendorPayment />} />
+          <Route path="/addinventory" element={<AddInventory />} />
+          <Route path="/viewinventory" element={<ViewInventory />} />
         </Routes>
 
       </Router>

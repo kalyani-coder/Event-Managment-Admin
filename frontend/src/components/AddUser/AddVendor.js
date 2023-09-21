@@ -55,7 +55,7 @@ const AddVendor = () => {
       );
 
       if (response.status === 200) {
-        alert("data has been submmited ");
+        alert("data has been submitted ");
         handleDiscard();
       } else {
         alert("something went wrong");
@@ -122,7 +122,9 @@ const AddVendor = () => {
       <h2>Add Vendor</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="vendorCompanyName">
-          <Form.Label>Company Name</Form.Label>
+          <Form.Label>
+            Company Name <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={vendorCompanyName}
@@ -141,8 +143,11 @@ const AddVendor = () => {
             placeholder="Enter contact person name"
           />
         </Form.Group>
+
         <Form.Group controlId="vendorCategory">
-          <Form.Label>Vendor Category</Form.Label>
+          <Form.Label>
+            Vendor Category <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={vendorCategory}
@@ -163,7 +168,9 @@ const AddVendor = () => {
         </Form.Group>
 
         <Form.Group controlId="vendorPhone">
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>
+            Phone <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="tel"
             value={vendorPhone}
@@ -175,7 +182,9 @@ const AddVendor = () => {
         </Form.Group>
 
         <Form.Group controlId="vendorAddress">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>
+            Address <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={vendorAddress}
@@ -186,7 +195,9 @@ const AddVendor = () => {
         </Form.Group>
 
         <Form.Group controlId="vendorCity">
-          <Form.Label>City</Form.Label>
+          <Form.Label>
+            City <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={vendorCity}
@@ -197,7 +208,9 @@ const AddVendor = () => {
         </Form.Group>
 
         <Form.Group controlId="vendorState">
-          <Form.Label>State</Form.Label>
+          <Form.Label>
+            State <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             as="select"
             value={vendorState}

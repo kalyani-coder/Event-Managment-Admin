@@ -12,6 +12,7 @@ function QuotationForm() {
   const data = location.state;
   console.log(_id);
 
+  // Removed the second declaration of sections
   const [sections, setSections] = useState([
     {
       srNumber: 1,
@@ -25,6 +26,7 @@ function QuotationForm() {
       amount: "",
     },
   ]);
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     let newValue = value;
@@ -180,11 +182,9 @@ function QuotationForm() {
       {sections.map((section, index) => (
         <div key={index} className="mb-4">
           <div className="form-group">
-            <label htmlFor={`title${index}`}>SR Number:</label>
-            <span>{section.srNumber}</span>
-          </div>
-          <div className="form-group">
-            <label htmlFor={`title${index}`}>Title:</label>
+            <label htmlFor={`title${index}`}>
+              Title:<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="text"
               className="form-control"
@@ -192,10 +192,13 @@ function QuotationForm() {
               name="title"
               value={section.title}
               onChange={(e) => handleChange(e, index)}
+              required
             />
           </div>
           <div className="form-group">
-            <label htmlFor={`particular${index}`}>Particular:</label>
+            <label htmlFor={`particular${index}`}>
+              Particular:<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="text"
               className="form-control"
@@ -203,10 +206,13 @@ function QuotationForm() {
               name="particular"
               value={section.particular}
               onChange={(e) => handleChange(e, index)}
+              required
             />
           </div>
           <div className="form-group">
-            <label htmlFor={`description${index}`}>Description:</label>
+            <label htmlFor={`description${index}`}>
+              Description:<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="text"
               className="form-control"
@@ -214,62 +220,96 @@ function QuotationForm() {
               name="description"
               value={section.description}
               onChange={(e) => handleChange(e, index)}
+              required
             />
           </div>
-          <div className="form-row">
-            <div className="form-group col-md-3">
-              <label htmlFor={`per${index}`}>Per:</label>
-              <input
-                type="number"
-                className="form-control"
-                id={`per${index}`}
-                name="per"
-                value={section.per}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-            <div className="form-group col-md-3">
-              <label htmlFor={`unit${index}`}>Unit:</label>
-              <select
-                className="form-control"
-                id={`unit${index}`} // Ensure this ID is unique for each section
-                name="unit" // Ensure the name is "unit"
-                value={section.unit} // Make sure you're binding the correct state value
-                onChange={(e) => handleChange(e, index)}
-              >
-                {unitOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="entity" style={{ display: "flex" }}>
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <div className="form-group ">
+                  <label htmlFor={`entity${index}`}>
+                    Entity:<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <select
+                    className="form-control"
+                    id={`entity${index}`}
+                    name="entity"
+                    value={section.entity}
+                    onChange={(e) => handleChange(e, index)}
+                    required
+                  >
+                    <option value="">Select Entity</option>
+                    <option value="stage">Stage</option>
+                    <option value="ac">AC</option>
+                    <option value="fan">Fan</option>
+                    <option value="chair">Chair</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group col-md-3">
+                <label htmlFor={`unit${index}`}>
+                  Unit:<span style={{ color: "red" }}></span>
+                </label>
+                <input
+                  className="form-control"
+                  id={`unit${index}`} // Ensure this ID is unique for each section
+                  name="unit" // Ensure the name is "unit"
+                  // Make sure you're binding the correct state value
+                  value={"sqft"}
+                  required
+                />
 
-            <div className="form-group col-md-3">
-              <label htmlFor={`rate${index}`}>Rate:</label>
-              <input
-                type="number"
-                className="form-control"
-                id={`rate${index}`}
-                name="rate"
-                value={section.rate}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-            <div className="form-group col-md-3">
-              <label htmlFor={`days${index}`}>Days:</label>
-              <input
-                type="number"
-                className="form-control"
-                id={`days${index}`}
-                name="days"
-                value={section.days}
-                onChange={(e) => handleChange(e, index)}
-              />
+
+              </div>
+              <div className="form-group col-md-3">
+                <label htmlFor={`rate${index}`}>
+                  Quantity:<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+
+                  name="rate"
+
+
+                  required
+                />
+              </div>
+              <div className="form-group col-md-3">
+                <label htmlFor={`rate${index}`}>
+                  Rate:<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id={`rate${index}`}
+                  name="rate"
+                  value={section.rate}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              </div>
+              <div className="form-group col-md-3">
+                <label htmlFor={`days${index}`}>
+                  Days:<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id={`days${index}`}
+                  name="days"
+                  value={section.days}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              </div>
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor={`amount${index}`}>Amount:</label>
+            <label htmlFor={`amount${index}`}>
+              Amount:<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="text"
               className="form-control"
@@ -278,6 +318,7 @@ function QuotationForm() {
               disabled
               value={section.amount}
               onChange={(e) => handleChange(e, index)}
+              required
             />
           </div>
         </div>

@@ -16,7 +16,10 @@ function AdvancePaymentForm() {
   const [utrNumber, setUtrNumber] = useState("");
   const [transactionDate, setTransactionDate] = useState("");
   const [transactionTime, setTransactionTime] = useState("");
-  console.log(eventData);
+  const [paymentMethod, setPaymentMethod] = useState("upi"); // Default to UPI
+  const [cashRecipientName, setCashRecipientName] = useState("");
+  const [receiptFile, setReceiptFile] = useState(null); // To store the uploaded receipt file
+
   useEffect(() => {
     setRemainingAmount(totalAmount - advancePayment);
   }, [totalAmount, advancePayment]);
@@ -32,6 +35,9 @@ function AdvancePaymentForm() {
       utrNumber,
       transactionDate,
       transactionTime,
+      paymentMethod,
+      cashRecipientName,
+      receiptFile,
     };
 
     navigate("/orderform");
@@ -39,17 +45,97 @@ function AdvancePaymentForm() {
     console.log("Order Details:", orderDetails);
   };
 
+  // Function to handle file input change and store the selected file
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setReceiptFile(file);
+  };
+
+  // Function to render payment method-specific input fields
+  const renderPaymentMethodFields = () => {
+    if (paymentMethod === "upi") {
+      return (
+        <>
+          <div className="mb-3">
+            <label className="form-label">UPI ID:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+            />
+          </div>
+        </>
+      );
+    } else if (paymentMethod === "cheque") {
+      return (
+        <>
+          <div className="mb-3">
+            <label className="form-label">Cheque Number:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">UTR Number / RTGS ID:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={utrNumber}
+              onChange={(e) => setUtrNumber(e.target.value)}
+            />
+          </div>
+        </>
+      );
+    } else if (paymentMethod === "cash") {
+      return (
+        <>
+          <div className="mb-3">
+            <label className="form-label">Name to Whom Submitted Cash:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={cashRecipientName}
+              onChange={(e) => setCashRecipientName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Upload Receipt:</label>
+            <input
+              type="file"
+              className="form-control"
+              onChange={handleFileChange}
+            />
+          </div>
+        </>
+      );
+    } else {
+      // Default case: netbanking
+      return (
+        <>
+          <div className="mb-3">
+            <label className="form-label">Transaction ID:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+            />
+          </div>
+        </>
+      );
+    }
+  };
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Advance Payment Form</h2>
       <div className="mb-3">
         <label className="form-label">Event Name:</label>
-        <input
-          type="text"
-          className="form-control"
-          value={eventName}
-          disabled
-        />
+        <input type="text" className="form-control" value={eventName} disabled />
       </div>
       <div className="mb-3">
         <label className="form-label">Customer Name:</label>
@@ -80,34 +166,25 @@ function AdvancePaymentForm() {
       </div>
       <div className="mb-3">
         <label className="form-label">Remaining Amount:</label>
-        <input
-          type="number"
-          className="form-control"
-          value={remainingAmount}
-          readOnly
-        />
+        <input type="number" className="form-control" value={remainingAmount} readOnly />
       </div>
+      <div className="mb-3">
+        <label className="form-label">Payment Method:</label>
+        <select
+          className="form-control"
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
+          <option value="upi">UPI</option>
+          <option value="cheque">Cheque</option>
+          <option value="cash">Cash</option>
+          <option value="netbanking">Net Banking</option>
+        </select>
+      </div>
+      {renderPaymentMethodFields()}
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">Transaction Details</h5>
-          <div className="mb-3">
-            <label className="form-label">Transaction ID:</label>
-            <input
-              type="text"
-              className="form-control"
-              value={transactionId}
-              onChange={(e) => setTransactionId(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">UTR Number / RTGS ID:</label>
-            <input
-              type="text"
-              className="form-control"
-              value={utrNumber}
-              onChange={(e) => setUtrNumber(e.target.value)}
-            />
-          </div>
           <div className="mb-3">
             <label className="form-label">Date of Transaction:</label>
             <input
@@ -129,7 +206,7 @@ function AdvancePaymentForm() {
         </div>
       </div>
       <button className="btn btn-info my-5" onClick={handleCreateOrder}>
-        Create Order for manager
+        Create Order for Manager
       </button>
     </div>
   );

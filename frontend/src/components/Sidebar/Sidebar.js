@@ -137,6 +137,9 @@ export default function Sidebar() {
                       <Link to={"/addenquiry"}>Add Enquiry</Link>
                     </li>
                     <li>
+                      <Link to={"/quotation"}>View Enquiry</Link>
+                    </li>
+                    <li>
                       <Link to={"/quotation"}>Make Quotation</Link>
                     </li>
                     <li>
@@ -186,6 +189,25 @@ export default function Sidebar() {
 
                   </ul>
                 </li>
+                <li className="active">
+                  <a
+                    href="#InventorySubMenu"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
+                  >
+                    Inventory Stock
+                  </a>
+                  <ul className="collapse list-unstyled" id="InventorySubMenu">
+                    <li>
+                      <Link to={"/addinventory"}>Add Inventory</Link>
+                    </li>
+                    <li>
+                      <Link to={"/viewinventory"}>View Inventory</Link></li>
+
+                  </ul>
+                </li>
+
                 <li>
                   <a href="#">Download Report</a>
                 </li>

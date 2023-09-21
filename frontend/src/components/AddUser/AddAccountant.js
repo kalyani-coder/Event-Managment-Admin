@@ -17,6 +17,7 @@ const AddAccountant = () => {
   const [branchName, setBranchName] = useState("");
   const [ifscCode, setIfscCode] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+
   const isValidForm = () => {
     if (
       !firstName ||
@@ -37,6 +38,7 @@ const AddAccountant = () => {
     }
     return true;
   };
+
   const handleDiscard = () => {
     setFirstName("");
     setLastName("");
@@ -58,7 +60,6 @@ const AddAccountant = () => {
       return;
     }
 
-    // Convert form data to JSON object
     const formData = {
       firstName,
       lastName,
@@ -74,7 +75,6 @@ const AddAccountant = () => {
       branchName,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
-    console.log(formData);
 
     try {
       const response = await axios.post(
@@ -84,7 +84,6 @@ const AddAccountant = () => {
 
       if (response.status === 200) {
         console.log("Data successfully submitted:", response.data);
-        // You can also clear the form fields here if needed
         handleDiscard();
       } else {
         console.log("Error submitting data.");
@@ -93,7 +92,6 @@ const AddAccountant = () => {
       console.error("Error:", error);
     }
 
-    // Clear form fields after submission
     setFirstName("");
     setLastName("");
     setAccountantEmail("");
@@ -106,7 +104,6 @@ const AddAccountant = () => {
     setIfscCode("");
     setBankName("");
     setBranchName("");
-
     setProfilePicture(null);
   };
 
@@ -118,6 +115,7 @@ const AddAccountant = () => {
   const handleRemoveProfilePicture = () => {
     setProfilePicture(null);
   };
+
   const indianStates = [
     "",
     "Andaman and Nicobar Islands",
@@ -161,7 +159,9 @@ const AddAccountant = () => {
       <h2>Add Accountant</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="firstName">
-          <Form.Label>First Name</Form.Label>
+          <Form.Label>
+            First Name <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={firstName}
@@ -172,7 +172,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="lastName">
-          <Form.Label>Last Name</Form.Label>
+          <Form.Label>
+            Last Name <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={lastName}
@@ -183,7 +185,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="accountantEmail">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>
+            Email <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="email"
             value={accountantEmail}
@@ -194,7 +198,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="accountantPhone">
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>
+            Phone <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="tel"
             value={accountantPhone}
@@ -205,7 +211,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="accountantAddress">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>
+            Address <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={accountantAddress}
@@ -216,7 +224,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="accountantCity">
-          <Form.Label>City</Form.Label>
+          <Form.Label>
+            City <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             type="text"
             value={accountantCity}
@@ -227,7 +237,9 @@ const AddAccountant = () => {
         </Form.Group>
 
         <Form.Group controlId="accountantState">
-          <Form.Label>State</Form.Label>
+          <Form.Label>
+            State <span style={{ color: "red" }}>*</span>
+          </Form.Label>
           <Form.Control
             as="select"
             value={accountantState}
@@ -246,7 +258,9 @@ const AddAccountant = () => {
           <br />
           <h3>Bank Details:</h3>
           <Form.Group controlId="accountHolderName">
-            <Form.Label>Account Holder Name</Form.Label>
+            <Form.Label>
+              Account Holder Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={accountHolderName}
@@ -256,7 +270,9 @@ const AddAccountant = () => {
             />
           </Form.Group>
           <Form.Group controlId="accountNumber">
-            <Form.Label>Account Number</Form.Label>
+            <Form.Label>
+              Account Number <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={accountNumber}
@@ -267,7 +283,9 @@ const AddAccountant = () => {
           </Form.Group>
 
           <Form.Group controlId="ifscCode">
-            <Form.Label>IFSC Code</Form.Label>
+            <Form.Label>
+              IFSC Code <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={ifscCode}
@@ -278,7 +296,9 @@ const AddAccountant = () => {
           </Form.Group>
 
           <Form.Group controlId="bankName">
-            <Form.Label>Bank Name</Form.Label>
+            <Form.Label>
+              Bank Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={bankName}
@@ -289,7 +309,9 @@ const AddAccountant = () => {
           </Form.Group>
 
           <Form.Group controlId="branchName">
-            <Form.Label>Branch Name</Form.Label>
+            <Form.Label>
+              Branch Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               value={branchName}
@@ -330,7 +352,7 @@ const AddAccountant = () => {
           Submit
         </Button>
         <Button variant="info" className="mx-5" onClick={handleDiscard}>
-          Discart
+          Discard
         </Button>
       </Form>
     </div>

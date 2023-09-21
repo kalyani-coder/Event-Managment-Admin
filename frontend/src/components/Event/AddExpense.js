@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 const AddExpense = () => {
-  const [event_id, setEventId] = useState(""); // State to store the event ID
+  const [event_id, setEventId] = useState("");
   const [new_purchase, setNewPurchase] = useState("");
   const [to_vendor, setToVendor] = useState("");
   const [event_name, setEventName] = useState("");
@@ -12,24 +11,19 @@ const AddExpense = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleShow = () => {
-    // Validate event_id and navigate to the Expense List page
     if (event_id) {
-      // Use template literals to create the link with the event ID
       window.location.href = `/expenses-list/${event_id}`;
     } else {
-      // Handle invalid event selection, e.g., show an error message
       setErrorMessage("Please select an event before showing expenses.");
     }
   };
 
   const handleAdd = () => {
-    // Check if any of the required fields are empty
     if (!new_purchase || !to_vendor || !event_name || !amount || !date) {
       setErrorMessage("All fields are required");
       return;
     }
 
-    // Create an object with the form data
     const expenseData = {
       event_id,
       new_purchase,
@@ -41,14 +35,8 @@ const AddExpense = () => {
 
     console.log("Data to be posted:", expenseData);
 
-    // Send the expenseData to your API using Axios or any other method you prefer
-    // Implement your API call here to add expenses
-    // On success, you can set a success message
-
-    // For demonstration purposes, we're setting a success message here
     setSuccessMessage("Expense added successfully");
 
-    // Clear the form fields and error message
     setNewPurchase("");
     setToVendor("");
     setEventName("");
@@ -72,7 +60,7 @@ const AddExpense = () => {
               )}
               <form>
                 <div className="form-group">
-                  <label className="fw-bold">New Purchase</label>
+                  <label className="fw-bold" htmlFor="new_purchase">New Purchase<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="text"
                     className="form-control"
@@ -83,7 +71,7 @@ const AddExpense = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="fw-bold">Date</label>
+                  <label className="fw-bold" htmlFor="date">Date<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="date"
                     className="form-control"
@@ -94,7 +82,7 @@ const AddExpense = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="fw-bold">Vendor</label>
+                  <label className="fw-bold" htmlFor="to_vendor">Vendor<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="text"
                     className="form-control"
@@ -106,7 +94,7 @@ const AddExpense = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="fw-bold">Event</label>
+                  <label className="fw-bold" htmlFor="event_name">Event<span style={{ color: "red" }}>*</span></label>
                   <select
                     value={event_name}
                     onChange={(e) => setEventName(e.target.value)}
@@ -122,7 +110,7 @@ const AddExpense = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="fw-bold">Amount</label>
+                  <label className="fw-bold" htmlFor="amount">Amount<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="text"
                     className="form-control"
@@ -145,7 +133,7 @@ const AddExpense = () => {
                   className="btn btn-info mx-3"
                   onClick={handleShow}
                 >
-                  Show Expenses
+                  View Expenses
                 </button>
               </form>
             </div>
