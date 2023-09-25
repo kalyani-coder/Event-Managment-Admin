@@ -185,17 +185,8 @@ const VendorPaymentHistorySchema = new Schema({
 });
 
 const InventoryStockSchema = new Schema({
-  AC: Number,
-  fan: Number,
-  flower_pot: Number,
-  chair: Number,
-  mic: Number,
-  display: Number,
-  carpet: Number,
-  curtains: Number,
-  lighting: Number,
-  cooler: Number,
-  table: Number,
+  addstocks: String,
+  quantity: Number,
 });
 
 module.exports = {

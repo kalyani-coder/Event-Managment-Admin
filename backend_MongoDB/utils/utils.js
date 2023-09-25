@@ -405,31 +405,10 @@ const FilterBodyByTable = ({ req, table }) => {
         total_amount,
       };
     } else if (table == "inventorystock") {
-      const {
-        AC,
-        fan,
-        flower_pot,
-        chair,
-        mic,
-        display,
-        carpet,
-        curtains,
-        lighting,
-        cooler,
-        table,
-      } = req.body;
+      const { addstocks, quantity } = req.body;
       return {
-        AC,
-        fan,
-        flower_pot,
-        chair,
-        mic,
-        display,
-        carpet,
-        curtains,
-        lighting,
-        cooler,
-        table,
+        addstocks,
+        quantity,
       };
     } else {
       return null;
@@ -438,5 +417,7 @@ const FilterBodyByTable = ({ req, table }) => {
     return null;
   }
 };
+
+
 
 module.exports = { FindTable, FilterBodyByTable };

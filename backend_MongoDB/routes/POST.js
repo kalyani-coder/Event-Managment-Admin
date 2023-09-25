@@ -4,6 +4,46 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
 
+const { InventoryStock } = require("../models/newModels");
+router.post("/inventorystock/:item/:quantity", async (req, res) => {
+  const { item, quantity } = req.params;
+
+  if (item && quantity) {
+    let updateQuantity = parseInt(quantity);
+    if (isNaN(updateQuantity)) {
+      res.status(400).send("Bad Request: Quantity must be a number");
+      return;
+    }
+
+    try {
+      let inventoryItem = await InventoryStock.findOne({ addstocks: item });
+
+      if (inventoryItem) {
+        if (quantity.startsWith("+")) {
+          inventoryItem.quantity += updateQuantity;
+        } else if (quantity.startsWith("-")) {
+          inventoryItem.quantity += updateQuantity;
+        } else {
+          inventoryItem.quantity = updateQuantity;
+        }
+      } else {
+        inventoryItem = new InventoryStock({
+          addstocks: item,
+          quantity: updateQuantity,
+        });
+      }
+
+      await inventoryItem.save();
+      res.status(200).send(inventoryItem);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("Failed to update inventory");
+    }
+  } else {
+    res.status(400).send("Bad Request");
+  }
+});
+
 router.post("/:table", async (req, res) => {
   const { table } = req.params;
   const Table = FindTable({ table });
@@ -30,6 +70,10 @@ router.post("/:table", async (req, res) => {
 
 router.post("/:table/:id", async (req, res) => {
   const { table, id } = req.params;
+  if (table === "inventorystock") {
+    res.status(400).send("Bad Request");
+    return;
+  }
   const Table = FindTable({ table });
   const reqBody = FilterBodyByTable({ req, table });
   if (Table && reqBody) {
