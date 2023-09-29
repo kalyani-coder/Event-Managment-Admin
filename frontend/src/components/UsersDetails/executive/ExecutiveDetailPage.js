@@ -20,12 +20,12 @@ const ExecutiveDetailPage = () => {
 
   const handleDelete = () => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${executive.firstName} data?`
+      `Are you sure you want to delete ${executive.fname} data?`
     );
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/executives/${_id}`)
+        .delete(`http://localhost:5000/api/executive/${_id}`)
         .then(() => {
           console.log("Executive data deleted successfully");
           navigate("/executivedetails");
@@ -43,18 +43,18 @@ const ExecutiveDetailPage = () => {
   return (
     <div className="container mt-5">
       <h2>
-        {executive.firstName} {executive.lastName} Details
+        {executive.fname} {executive.lname} Details
       </h2>
       <Card style={{ width: "100%" }}>
         <Card.Body>
-          <Card.Title>{`${executive.firstName} ${executive.lastName}`}</Card.Title>
+          <Card.Title>{`${executive.fname} ${executive.lname}`}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
-            Contact Number: {executive.executivePhone}
+            Contact Number: {executive.contact}
           </Card.Subtitle>
-          <Card.Text>Address: {executive.executiveAddress}</Card.Text>
-          <Card.Text>Email: {executive.executiveEmail}</Card.Text>
-          <Card.Text>City: {executive.executiveCity}</Card.Text>
-          <Card.Text>State: {executive.executiveState}</Card.Text>
+          <Card.Text>Address: {executive.address}</Card.Text>
+          <Card.Text>Email: {executive.email}</Card.Text>
+          <Card.Text>City: {executive.city}</Card.Text>
+          <Card.Text>State: {executive.state}</Card.Text>
           <div className="my-3">
             <hr />
             <h6 className="mb-3">Bank details : </h6>
