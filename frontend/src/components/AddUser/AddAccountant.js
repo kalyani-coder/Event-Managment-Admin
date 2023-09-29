@@ -11,11 +11,11 @@ const AddAccountant = () => {
   const [address, setaddress] = useState("");
   const [city, setcity] = useState("");
   const [state, setstate] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [branchName, setBranchName] = useState("");
-  const [ifscCode, setIfscCode] = useState("");
+  const [account_number, setaccount_number] = useState("");
+  const [holder_name, setholder_name] = useState("");
+  const [bank_name, setbank_name] = useState("");
+  const [branch_name, setbranch_name] = useState("");
+  const [IFSC_code, setIFSC_code] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
   const isValidForm = () => {
@@ -27,11 +27,11 @@ const AddAccountant = () => {
       !address ||
       !city ||
       state === "" ||
-      !accountHolderName ||
-      !accountNumber ||
-      !ifscCode ||
-      !bankName ||
-      !branchName
+      !holder_name ||
+      !account_number ||
+      !IFSC_code ||
+      !bank_name ||
+      !branch_name
     ) {
       alert("Please fill out all fields.");
       return false;
@@ -47,11 +47,11 @@ const AddAccountant = () => {
     setaddress("");
     setcity("");
     setstate("");
-    setAccountNumber("");
-    setAccountHolderName("");
-    setBankName("");
-    setBranchName("");
-    setIfscCode("");
+    setaccount_number("");
+    setholder_name("");
+    setbank_name("");
+    setbranch_name("");
+    setIFSC_code("");
   };
 
   const handleSubmit = async (event) => {
@@ -68,11 +68,11 @@ const AddAccountant = () => {
       address,
       city,
       state,
-      accountHolderName,
-      accountNumber,
-      ifscCode,
-      bankName,
-      branchName,
+      holder_name,
+      account_number,
+      IFSC_code,
+      bank_name,
+      branch_name,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
 
@@ -99,11 +99,11 @@ const AddAccountant = () => {
     setaddress("");
     setcity("");
     setstate("");
-    setAccountHolderName("");
-    setAccountNumber("");
-    setIfscCode("");
-    setBankName("");
-    setBranchName("");
+    setholder_name("");
+    setaccount_number("");
+    setIFSC_code("");
+    setbank_name("");
+    setbranch_name("");
     setProfilePicture(null);
   };
 
@@ -257,65 +257,65 @@ const AddAccountant = () => {
           <hr />
           <br />
           <h3>Bank Details:</h3>
-          <Form.Group controlId="accountHolderName">
+          <Form.Group controlId="holder_name">
             <Form.Label>
               Account Holder Name <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={accountHolderName}
-              onChange={(e) => setAccountHolderName(e.target.value)}
+              value={holder_name}
+              onChange={(e) => setholder_name(e.target.value)}
               placeholder="Enter account holder name"
               required
             />
           </Form.Group>
-          <Form.Group controlId="accountNumber">
+          <Form.Group controlId="account_number">
             <Form.Label>
               Account Number <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
+              value={account_number}
+              onChange={(e) => setaccount_number(e.target.value)}
               placeholder="Enter account number"
               required
             />
           </Form.Group>
 
-          <Form.Group controlId="ifscCode">
+          <Form.Group controlId="IFSC_code">
             <Form.Label>
               IFSC Code <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={ifscCode}
-              onChange={(e) => setIfscCode(e.target.value)}
+              value={IFSC_code}
+              onChange={(e) => setIFSC_code(e.target.value)}
               placeholder="Enter IFSC code"
               required
             />
           </Form.Group>
 
-          <Form.Group controlId="bankName">
+          <Form.Group controlId="bank_name">
             <Form.Label>
               Bank Name <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={bankName}
-              onChange={(e) => setBankName(e.target.value)}
+              value={bank_name}
+              onChange={(e) => setbank_name(e.target.value)}
               placeholder="Enter bank name"
               required
             />
           </Form.Group>
 
-          <Form.Group controlId="branchName">
+          <Form.Group controlId="branch_name">
             <Form.Label>
               Branch Name <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={branchName}
-              onChange={(e) => setBranchName(e.target.value)}
+              value={branch_name}
+              onChange={(e) => setbranch_name(e.target.value)}
               placeholder="Enter branch name"
               required
             />

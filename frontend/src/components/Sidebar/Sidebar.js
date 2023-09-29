@@ -167,7 +167,9 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
-                      <a href="#">View Vendor Payment Details</a>
+                      <Link to={"/viewvendorpayment"}>
+                        View Vendor Payment Details
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -214,8 +216,8 @@ export default function Sidebar() {
               </ul>
             </div>
           </div>
-        </nav>
-      </header>
-    </div>
+        </nav >
+      </header >
+    </div >
   );
 }

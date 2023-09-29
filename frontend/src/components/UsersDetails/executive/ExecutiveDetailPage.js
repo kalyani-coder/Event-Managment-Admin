@@ -59,12 +59,12 @@ const ExecutiveDetailPage = () => {
             <hr />
             <h6 className="mb-3">Bank details : </h6>
             <Card.Text>
-              Account Holder Name: {executive.accountHolderName}
+              Account Holder Name: {executive.holder_name}
             </Card.Text>
-            <Card.Text>Account Number: {executive.accountNumber}</Card.Text>
-            <Card.Text>IFSC Code: {executive.ifscCode}</Card.Text>
-            <Card.Text>Bank Name: {executive.bankName}</Card.Text>
-            <Card.Text>Branch Name: {executive.branchName}</Card.Text>
+            <Card.Text>Account Number: {executive.account_number}</Card.Text>
+            <Card.Text>IFSC Code: {executive.IFSC_code}</Card.Text>
+            <Card.Text>Bank Name: {executive.bank_name}</Card.Text>
+            <Card.Text>Branch Name: {executive.branch_name}</Card.Text>
             <hr />
           </div>
           <div className="my-3">
