@@ -138,6 +138,11 @@ const ExecutiveDetailsSchema = new Schema({
   address: String,
   city: String,
   state: String,
+  holder_name: String,
+  account_number: Number,
+  IFSC_code: String,
+  bank_name: String,
+  branch_name: String,
 });
 
 const StaffSalarySchema = new Schema({
@@ -199,6 +204,11 @@ const AccountantDetailsSchema = new Schema({
   address: String,
   city: String,
   state: String,
+  holder_name: String,
+  account_number: Number,
+  IFSC_code: String,
+  bank_name: String,
+  branch_name: String,
 });
 
 module.exports = {
