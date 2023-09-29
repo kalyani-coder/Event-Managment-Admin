@@ -254,6 +254,11 @@ const FilterBodyByTable = ({ req, table }) => {
         state,
         address,
         blood_group,
+        holder_name,
+        account_number,
+        IFSC_code,
+        bank_name,
+        branch_name,
       } = req.body;
       return {
         executive_id,
@@ -267,6 +272,11 @@ const FilterBodyByTable = ({ req, table }) => {
         state,
         address,
         blood_group,
+        holder_name,
+        account_number,
+        IFSC_code,
+        bank_name,
+        branch_name,
       };
     } else if (table == "vendor") {
       const {
@@ -424,6 +434,11 @@ const FilterBodyByTable = ({ req, table }) => {
         address,
         city,
         state,
+        holder_name,
+        account_number,
+        IFSC_code,
+        bank_name,
+        branch_name,
       } = req.body;
       return {
         accountant_id,
@@ -435,6 +450,11 @@ const FilterBodyByTable = ({ req, table }) => {
         address,
         city,
         state,
+        holder_name,
+        account_number,
+        IFSC_code,
+        bank_name,
+        branch_name,
       };
     } else {
       return null;
