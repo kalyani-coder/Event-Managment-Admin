@@ -189,6 +189,18 @@ const InventoryStockSchema = new Schema({
   quantity: Number,
 });
 
+const AccountantDetailsSchema = new Schema({
+  Accountant_id: { type: Number, ref: "Executive" },
+  fname: String,
+  lname: String,
+  email: String,
+  contact: Number,
+  profile_image: String,
+  address: String,
+  city: String,
+  state: String,
+});
+
 module.exports = {
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
@@ -212,4 +224,5 @@ module.exports = {
     VendorPaymentHistorySchema
   ),
   InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
+  Accountant: mongoose.model("Accountant", AccountantDetailsSchema),
 };
