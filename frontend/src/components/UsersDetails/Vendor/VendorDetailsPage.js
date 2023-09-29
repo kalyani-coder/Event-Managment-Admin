@@ -17,7 +17,7 @@ const VendorDetailPage = () => {
 
   const handleDelete = () => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${vendor.vendorCompanyName} data?`
+      `Are you sure you want to delete ${vendor.company_name} data?`
     );
 
     if (confirmDelete) {
@@ -39,24 +39,24 @@ const VendorDetailPage = () => {
 
   return (
     <div className="container mt-5">
-      <h2>{vendor.vendorCompanyName} Details</h2>
+      <h2>{vendor.company_name} Details</h2>
       <Card style={{ width: "100%" }}>
         <Card.Body>
-          <Card.Title>{vendor.vendorCompanyName}</Card.Title>
+          <Card.Title>{vendor.company_name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
-            Contact Person: {vendor.vendorContactPerson}
+            Contact Person: {vendor.contact_person_name}
           </Card.Subtitle>
           <Card.Text>Category: {vendor.vendorCategory}</Card.Text>
-          <Card.Text>Email: {vendor.vendorEmail}</Card.Text>
-          <Card.Text>Contact Number: {vendor.vendorPhone}</Card.Text>
-          <Card.Text>Address: {vendor.vendorAddress}</Card.Text>
-          <Card.Text>City: {vendor.vendorCity}</Card.Text>
-          <Card.Text>State: {vendor.vendorState}</Card.Text>
+          <Card.Text>Email: {vendor.gmail}</Card.Text>
+          <Card.Text>Contact Number: {vendor.contact}</Card.Text>
+          <Card.Text>Address: {vendor.address}</Card.Text>
+          {/* <Card.Text>City: {vendor.vendorCity}</Card.Text> */}
+          {/* <Card.Text>State: {vendor.vendorState}</Card.Text> */}
           <div className="my-3">
             <hr />
             <h6 className="mb-3">Financial details : </h6>
-            <Card.Text>GST Number: {vendor.gstNumber}</Card.Text>
-            <Card.Text>PAN Number: {vendor.panNumber}</Card.Text>
+            <Card.Text>GST Number: {vendor.gst_no}</Card.Text>
+            <Card.Text>PAN Number: {vendor.pan_no}</Card.Text>
             <hr />
           </div>
           <div className="my-3">

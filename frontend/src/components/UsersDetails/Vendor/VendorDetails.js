@@ -59,7 +59,7 @@ const VendorDetails = () => {
               <Card.Subtitle className="mb-2 text-muted">
                 Contact Person Name: {vendor.contact_person_name}
               </Card.Subtitle>
-              <Card.Text>Category: {vendor.vendorCategory}</Card.Text>
+              <Card.Text>Contact: {vendor.contact}</Card.Text>
               <Card.Text>Email: {vendor.gmail}</Card.Text>
               <Link
                 to={{

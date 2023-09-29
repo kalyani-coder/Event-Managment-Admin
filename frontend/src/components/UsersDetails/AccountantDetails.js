@@ -10,7 +10,7 @@ const AccountantDetails = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/accountants")
+      .get("http://localhost:5000/api/accountant")
       .then((response) => {
         setAccountantData(response.data);
       })
@@ -20,13 +20,20 @@ const AccountantDetails = () => {
   }, []);
 
   useEffect(() => {
-    const filteredData = accountantData.filter(
-      (accountant) =>
-        accountant.firstName
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        accountant.lastName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredData = accountantData.filter((accountant) => {
+      const fname = accountant.fname || "";
+      const lname = accountant.lname || "";
+      const contact = accountant.contact || "";
+      const address = accountant.address || "";
+
+      return (
+        fname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        address.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+
     setFilteredAccountantData(filteredData);
   }, [searchQuery, accountantData]);
 
@@ -38,7 +45,7 @@ const AccountantDetails = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by first name or last name"
+            placeholder="Search by first name, last name, phone, or address"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -52,11 +59,11 @@ const AccountantDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${accountant.firstName} ${accountant.lastName}`}</Card.Title>
+              <Card.Title>{`${accountant.fname || ''} ${accountant.lname || ''}`}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {accountant.accountantPhone}
+                Contact Number: {accountant.contact || ''}
               </Card.Subtitle>
-              <Card.Text>Address: {accountant.accountantAddress}</Card.Text>
+              <Card.Text>Address: {accountant.address || ''}</Card.Text>
               <Link
                 to={{
                   pathname: `/accountant/${accountant._id}`,
