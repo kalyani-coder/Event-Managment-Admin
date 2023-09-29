@@ -4,13 +4,13 @@ import "./AddExecutive.css";
 import axios from "axios";
 
 const AddExecutive = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [executiveEmail, setExecutiveEmail] = useState("");
-  const [executivePhone, setExecutivePhone] = useState("");
-  const [executiveAddress, setExecutiveAddress] = useState("");
-  const [executiveCity, setExecutiveCity] = useState("");
-  const [executiveState, setExecutiveState] = useState("");
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [email, setemail] = useState("");
+  const [contact, setcontact] = useState("");
+  const [address, setaddress] = useState("");
+  const [city, setcity] = useState("");
+  const [state, setstate] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [accountHolderName, setAccountHolderName] = useState("");
   const [bankName, setBankName] = useState("");
@@ -19,13 +19,13 @@ const AddExecutive = () => {
   const [profilePicture, setProfilePicture] = useState(null);
 
   const handleDiscard = () => {
-    setFirstName("");
-    setLastName("");
-    setExecutiveEmail("");
-    setExecutivePhone("");
-    setExecutiveAddress("");
-    setExecutiveCity("");
-    setExecutiveState("");
+    setfname("");
+    setlname("");
+    setemail("");
+    setcontact("");
+    setaddress("");
+    setcity("");
+    setstate("");
     setAccountHolderName("");
     setAccountNumber("");
     setIfscCode("");
@@ -37,13 +37,13 @@ const AddExecutive = () => {
     event.preventDefault();
 
     const formData = {
-      firstName,
-      lastName,
-      executiveEmail,
-      executivePhone,
-      executiveAddress,
-      executiveCity,
-      executiveState,
+      fname,
+      lname,
+      email,
+      contact,
+      address,
+      city,
+      state,
       accountHolderName,
       accountNumber,
       ifscCode,
@@ -55,7 +55,7 @@ const AddExecutive = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/executives",
+        "http://localhost:5000/api/executive",
         formData
       );
       console.log(response);
@@ -120,92 +120,92 @@ const AddExecutive = () => {
     <div className="container mt-5">
       <h2>Add Executive</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="firstName">
+        <Form.Group controlId="fname">
           <Form.Label>
             First Name <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={fname}
+            onChange={(e) => setfname(e.target.value)}
             placeholder="Enter first name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="lastName">
+        <Form.Group controlId="lname">
           <Form.Label>
             Last Name <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={lname}
+            onChange={(e) => setlname(e.target.value)}
             placeholder="Enter last name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="executiveEmail">
+        <Form.Group controlId="email">
           <Form.Label>
             Email <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="email"
-            value={executiveEmail}
-            onChange={(e) => setExecutiveEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
             placeholder="Enter email"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="executivePhone">
+        <Form.Group controlId="contact">
           <Form.Label>
             Phone <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="tel"
-            value={executivePhone}
-            onChange={(e) => setExecutivePhone(e.target.value)}
+            value={contact}
+            onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter phone"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="executiveAddress">
+        <Form.Group controlId="address">
           <Form.Label>
             Address <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={executiveAddress}
-            onChange={(e) => setExecutiveAddress(e.target.value)}
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter address"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="executiveCity">
+        <Form.Group controlId="city">
           <Form.Label>
             City <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={executiveCity}
-            onChange={(e) => setExecutiveCity(e.target.value)}
+            value={city}
+            onChange={(e) => setcity(e.target.value)}
             placeholder="Enter city"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="executiveState">
+        <Form.Group controlId="state">
           <Form.Label>
             State <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             as="select"
-            value={executiveState}
-            onChange={(e) => setExecutiveState(e.target.value)}
+            value={state}
+            onChange={(e) => setstate(e.target.value)}
             required
           >
             {indianStates.map((state) => (

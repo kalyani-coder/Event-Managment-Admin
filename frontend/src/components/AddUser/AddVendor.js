@@ -5,28 +5,28 @@ import axios from "axios";
 
 const AddVendor = () => {
   const [vendorCategory, setVendorCategory] = useState("");
-  const [vendorCompanyName, setVendorCompanyName] = useState("");
-  const [vendorContactPerson, setVendorContactPerson] = useState("");
-  const [vendorEmail, setVendorEmail] = useState("");
-  const [vendorPhone, setVendorPhone] = useState("");
-  const [vendorAddress, setVendorAddress] = useState("");
+  const [company_name, setcompany_name] = useState("");
+  const [contact_person_name, setcontact_person_name] = useState("");
+  const [gmail, setgmail] = useState("");
+  const [contact, setcontact] = useState("");
+  const [address, setaddress] = useState("");
   const [vendorCity, setVendorCity] = useState("");
   const [vendorState, setVendorState] = useState("");
-  const [gstNumber, setGstNumber] = useState("");
-  const [panNumber, setPanNumber] = useState("");
+  const [gst_no, setgst_no] = useState("");
+  const [pan_no, setpan_no] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
   const handleDiscard = () => {
     setVendorCategory("");
-    setVendorCompanyName("");
-    setVendorContactPerson("");
-    setVendorEmail("");
-    setVendorPhone("");
-    setVendorAddress("");
+    setcompany_name("");
+    setcontact_person_name("");
+    setgmail("");
+    setcontact("");
+    setaddress("");
     setVendorCity("");
     setVendorState("");
-    setGstNumber("");
-    setPanNumber("");
+    setgst_no("");
+    setpan_no("");
     setProfilePicture(null);
   };
 
@@ -36,21 +36,21 @@ const AddVendor = () => {
     // Convert form data to JSON object
     const formData = {
       vendorCategory,
-      vendorCompanyName,
-      vendorContactPerson,
-      vendorEmail,
-      vendorPhone,
-      vendorAddress,
+      company_name,
+      contact_person_name,
+      gmail,
+      contact,
+      address,
       vendorCity,
       vendorState,
-      gstNumber,
-      panNumber,
+      gst_no,
+      pan_no,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendors",
+        "http://localhost:5000/api/vendor",
         formData
       );
 
@@ -121,25 +121,25 @@ const AddVendor = () => {
     <div className="container mt-5">
       <h2>Add Vendor</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="vendorCompanyName">
+        <Form.Group controlId="company_name">
           <Form.Label>
-            Company Name <span style={{ color: "red" }}>*</span>
+            Company Name
           </Form.Label>
           <Form.Control
             type="text"
-            value={vendorCompanyName}
-            onChange={(e) => setVendorCompanyName(e.target.value)}
+            value={company_name}
+            onChange={(e) => setcompany_name(e.target.value)}
             placeholder="Enter company name"
-            required
+
           />
         </Form.Group>
 
-        <Form.Group controlId="vendorContactPerson">
+        <Form.Group controlId="contact_person_name">
           <Form.Label>Contact Person Name</Form.Label>
           <Form.Control
             type="text"
-            value={vendorContactPerson}
-            onChange={(e) => setVendorContactPerson(e.target.value)}
+            value={contact_person_name}
+            onChange={(e) => setcontact_person_name(e.target.value)}
             placeholder="Enter contact person name"
           />
         </Form.Group>
@@ -157,38 +157,38 @@ const AddVendor = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="vendorEmail">
+        <Form.Group controlId="gmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
-            value={vendorEmail}
-            onChange={(e) => setVendorEmail(e.target.value)}
+            value={gmail}
+            onChange={(e) => setgmail(e.target.value)}
             placeholder="Enter vendor email"
           />
         </Form.Group>
 
-        <Form.Group controlId="vendorPhone">
+        <Form.Group controlId="contact">
           <Form.Label>
             Phone <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="tel"
-            value={vendorPhone}
-            onChange={(e) => setVendorPhone(e.target.value)}
+            value={contact}
+            onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter vendor phone"
             maxLength={10}
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="vendorAddress">
+        <Form.Group controlId="address">
           <Form.Label>
             Address <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={vendorAddress}
-            onChange={(e) => setVendorAddress(e.target.value)}
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter vendor address"
             required
           />
@@ -225,22 +225,22 @@ const AddVendor = () => {
           </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId="gstNumber">
+        <Form.Group controlId="gst_no">
           <Form.Label>GST Number</Form.Label>
           <Form.Control
             type="text"
-            value={gstNumber}
-            onChange={(e) => setGstNumber(e.target.value)}
+            value={gst_no}
+            onChange={(e) => setgst_no(e.target.value)}
             placeholder="Enter GST number"
           />
         </Form.Group>
 
-        <Form.Group controlId="panNumber">
+        <Form.Group controlId="pan_no">
           <Form.Label>PAN Number</Form.Label>
           <Form.Control
             type="text"
-            value={panNumber}
-            onChange={(e) => setPanNumber(e.target.value)}
+            value={pan_no}
+            onChange={(e) => setpan_no(e.target.value)}
             placeholder="Enter PAN number"
           />
         </Form.Group>

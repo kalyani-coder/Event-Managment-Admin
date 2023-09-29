@@ -11,7 +11,7 @@ const VendorDetails = () => {
   useEffect(() => {
     // Fetch vendor data from the API
     axios
-      .get("http://localhost:5000/api/vendors")
+      .get("http://localhost:5000/api/vendor")
       .then((response) => {
         setVendorData(response.data);
       })
@@ -22,11 +22,14 @@ const VendorDetails = () => {
 
   useEffect(() => {
     // Filter vendorData based on searchQuery
-    const filteredData = vendorData.filter(
-      (vendor) =>
-        vendor.vendorCompanyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vendor.vendorContactPerson.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredData = vendorData.filter((vendor) => {
+      const company_name = vendor.company_name || "";
+      const contact_person_name = vendor.contact || "";
+      return (
+        company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        contact_person_name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
     setFilteredVendorData(filteredData);
   }, [searchQuery, vendorData]);
 
@@ -52,12 +55,12 @@ const VendorDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{vendor.vendorCompanyName}</Card.Title>
+              <Card.Title>{vendor.company_name}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
-                Contact Person: {vendor.vendorContactPerson}
+                Contact Person Name: {vendor.contact_person_name}
               </Card.Subtitle>
               <Card.Text>Category: {vendor.vendorCategory}</Card.Text>
-              <Card.Text>Email: {vendor.vendorEmail}</Card.Text>
+              <Card.Text>Email: {vendor.gmail}</Card.Text>
               <Link
                 to={{
                   pathname: `/vendor/${vendor._id}`,

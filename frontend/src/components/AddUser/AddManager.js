@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import "./AddManager.css";
 import axios from "axios";
 
 const AddManager = () => {
@@ -149,13 +148,18 @@ const AddManager = () => {
     "West Bengal",
   ];
 
+  // Inline CSS for the required asterisks
+  const requiredAsteriskStyle = {
+    color: "red",
+  };
+
   return (
     <div className="container mt-5">
       <h2>Add Manager</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="firstName">
           <Form.Label>
-            First Name <span className="required">*</span>
+            First Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -168,7 +172,7 @@ const AddManager = () => {
 
         <Form.Group controlId="lastName">
           <Form.Label>
-            Last Name <span className="required">*</span>
+            Last Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -181,7 +185,7 @@ const AddManager = () => {
 
         <Form.Group controlId="managerEmail">
           <Form.Label>
-            Email <span className="required">*</span>
+            Email <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="email"
@@ -194,7 +198,7 @@ const AddManager = () => {
 
         <Form.Group controlId="managerPhone">
           <Form.Label>
-            Phone <span className="required">*</span>
+            Phone <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="tel"
@@ -207,7 +211,7 @@ const AddManager = () => {
 
         <Form.Group controlId="managerAddress">
           <Form.Label>
-            Address <span className="required">*</span>
+            Address <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -220,7 +224,7 @@ const AddManager = () => {
 
         <Form.Group controlId="managerCity">
           <Form.Label>
-            City <span className="required">*</span>
+            City <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -233,12 +237,11 @@ const AddManager = () => {
 
         <Form.Group controlId="managerState">
           <Form.Label>
-            State <span className="required">*</span>
+            State <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             as="select"
             value={managerState}
-            
             onChange={(e) => setManagerState(e.target.value)}
             required
           >
@@ -250,7 +253,7 @@ const AddManager = () => {
           </Form.Control>
         </Form.Group>
 
-        {/* ... (other form fields) */}
+        {/* ... (rest of the form fields) */}
 
         <Button className="my-4" variant="info" type="submit">
           Submit

@@ -1,40 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AddInventory = () => {
-    const [itemName, setItemName] = useState("");
+    const [addstocks, setAddStock] = useState("");
     const [quantity, setQuantity] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [inventoryData, setInventoryData] = useState([]);
+
+    useEffect(() => {
+        // Fetch inventory data from your API and update the inventoryData state
+        // Example API call:
+        fetch("http://localhost:5000/api/inventorystock")
+            .then((response) => response.json())
+            .then((data) => setInventoryData(data))
+            .catch((error) => console.error("Error fetching inventory data:", error));
+    }, []);
+
+    const isItemNameExists = () => {
+        return inventoryData.some((item) => item.addstocks === addstocks);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Create an object with the item data
-        const newItem = { name: itemName, quantity: parseInt(quantity) };
+        // Check if the item already exists in inventory
+        if (isItemNameExists()) {
+            // If the item exists, show a confirmation dialog
+            const confirmUpdate = window.confirm(
+                `Stock item with name "${addstocks}" already exists. Do you want to update the quantity?`
+            );
 
-        try {
-            // Send a POST request to your API endpoint
-            const response = await fetch("your-api-endpoint-for-inventory", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newItem),
-            });
+            if (confirmUpdate) {
+                // Update the quantity
+                const existingItem = inventoryData.find((item) => item.addstocks === addstocks);
+                const updatedQuantity = existingItem.quantity + parseInt(quantity);
 
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+                try {
+                    // Send a PUT request to update the existing item
+                    const response = await fetch(
+                        `http://localhost:5000/api/inventorystock/${existingItem._id}`,
+                        {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ quantity: updatedQuantity }),
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+
+                    // Clear the form fields and show a success message after successful update
+                    setAddStock("");
+                    setQuantity("");
+                    setSuccessMessage("Item updated successfully");
+                    setErrorMessage("");
+                } catch (error) {
+                    console.error("Error updating inventory item:", error);
+                    setSuccessMessage("");
+                    setErrorMessage("Error updating item. Please try again.");
+                }
             }
+        } else {
+            // If the item does not exist, create a new entry
+            const values = {
+                addstocks: addstocks,
+                quantity: parseInt(quantity),
+            };
 
-            // Clear the form fields and show a success message after successful submission
-            setItemName("");
-            setQuantity("");
-            setSuccessMessage("Item added successfully");
-            setErrorMessage("");
-        } catch (error) {
-            console.error("Error adding inventory item:", error);
-            setSuccessMessage("");
-            setErrorMessage("Error adding item. Please try again.");
+            try {
+                // Send a POST request to create a new entry
+                const response = await fetch("http://localhost:5000/api/inventorystock", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(values),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                // Clear the form fields and show a success message after successful creation
+                setAddStock("");
+                setQuantity("");
+                setSuccessMessage("Item added successfully");
+                setErrorMessage("");
+            } catch (error) {
+                console.error("Error adding inventory item:", error);
+                setSuccessMessage("");
+                setErrorMessage("Error adding item. Please try again.");
+            }
         }
     };
 
@@ -60,8 +119,8 @@ const AddInventory = () => {
                                         type="text"
                                         id="itemName"
                                         className="form-control"
-                                        value={itemName}
-                                        onChange={(e) => setItemName(e.target.value)}
+                                        value={addstocks}
+                                        onChange={(e) => setAddStock(e.target.value)}
                                         required
                                     />
                                 </div>

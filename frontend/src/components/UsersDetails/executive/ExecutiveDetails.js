@@ -11,7 +11,7 @@ const ExecutiveDetails = () => {
   useEffect(() => {
     // Fetch executive data from the API
     axios
-      .get("http://localhost:5000/api/executives")
+      .get("http://localhost:5000/api/executive")
       .then((response) => {
         setExecutiveData(response.data);
       })
@@ -24,8 +24,8 @@ const ExecutiveDetails = () => {
     // Filter executiveData based on searchQuery
     const filteredData = executiveData.filter(
       (executive) =>
-        executive.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        executive.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+        (executive.fname && executive.fname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (executive.lname && executive.lname.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredExecutiveData(filteredData);
   }, [searchQuery, executiveData]);
@@ -52,11 +52,11 @@ const ExecutiveDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${executive.firstName} ${executive.lastName}`}</Card.Title>
+              <Card.Title>{`${executive.fname} ${executive.lname}`}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {executive.executivePhone}
+                Contact Number: {executive.contact}
               </Card.Subtitle>
-              <Card.Text>Address: {executive.executiveAddress}</Card.Text>
+              <Card.Text>Address: {executive.address}</Card.Text>
               <Link
                 to={{
                   pathname: `/executive/${executive._id}`,
