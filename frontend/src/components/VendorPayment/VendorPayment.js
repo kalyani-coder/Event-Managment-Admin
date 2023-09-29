@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const VendorPayment = () => {
     const initialFormData = {
-        firstname: '',
-        lastname: '',
-        eventname: '',
+        fname: '',
+        lname: '',
+        event_name: '',
         date: '',
         time: '',
         bankaccount: '',
         entersalary: '',
-        paidamount: '',
-        remainingamount: '',
-        note: '',
+        paid_amt: '',
+        rem_amt: '',
+        description: '',
     };
 
     const [formData, setFormData] = useState(initialFormData);
+    const [showPopup, setShowPopup] = useState(false);
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevData) => ({
@@ -23,29 +26,45 @@ const VendorPayment = () => {
         }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Form data:', formData);
+
+        try {
+            // Make a POST request to your API endpoint
+            const response = await axios.post('http://localhost:5000/api/vendor-payment', formData);
+
+            // If the request is successful, show a popup and clear the form
+            if (response.status === 200) {
+                setShowPopup(true);
+                setFormData(initialFormData);
+            }
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
     };
 
     const handleDiscard = () => {
         setFormData(initialFormData); // Reset the form data to initial values
     };
 
+    const handlePopupClose = () => {
+        setShowPopup(false);
+    };
+
     return (
         <div className="container">
             <form className="order p-4 border rounded" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="firstname">First Name:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="firstname" placeholder="First Name" onChange={handleChange} value={formData.firstname} required />
+                    <label htmlFor="fname">First Name:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="fname" placeholder="First Name" onChange={handleChange} value={formData.fname} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="lastname">Last Name:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="lastname" placeholder="Last Name" onChange={handleChange} value={formData.lastname} required />
+                    <label htmlFor="lname">Last Name:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="lname" placeholder="Last Name" onChange={handleChange} value={formData.lname} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="eventname">Event Name:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="eventname" placeholder="Event Name" onChange={handleChange} value={formData.eventname} required />
+                    <label htmlFor="event_name">Event Name:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="event_name" placeholder="Event Name" onChange={handleChange} value={formData.event_name} required />
                 </div>
                 <div className="row mb-2">
                     <div className="col">
@@ -62,20 +81,24 @@ const VendorPayment = () => {
                     </div>
                 </div>
                 <div className="form-group">
+                    <label htmlFor="bankaccount">Bank Account:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="bankaccount" placeholder="Bank Account" onChange={handleChange} value={formData.bankaccount} required />
+                </div>
+                <div className="form-group">
                     <label htmlFor="entersalary">Enter Salary:<span style={{ color: "red" }}>*</span></label>
                     <input className="form-control mb-2" type="text" name="entersalary" placeholder="Enter Salary" onChange={handleChange} value={formData.entersalary} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="paidamount">Paid Amount:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="paidamount" placeholder="Paid Amount" onChange={handleChange} value={formData.paidamount} required />
+                    <label htmlFor="paid_amt">Paid Amount:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="paid_amt" placeholder="Paid Amount" onChange={handleChange} value={formData.paid_amt} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="remainingamount">Remaining Amount:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="remainingamount" placeholder="Remaining Amount" onChange={handleChange} value={formData.remainingamount} required />
+                    <label htmlFor="rem_amt">Remaining Amount:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="rem_amt" placeholder="Remaining Amount" onChange={handleChange} value={formData.rem_amt} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="note">Note:</label>
-                    <input className="form-control mb-2" type="text" name="note" placeholder="Note" onChange={handleChange} value={formData.note} />
+                    <label htmlFor="description">Description:</label>
+                    <input className="form-control mb-2" type="text" name="description" placeholder="Description" onChange={handleChange} value={formData.description} />
                 </div>
                 <button className="btn btn-secondary mr-2 action1-btn" type="button" onClick={handleDiscard}>
                     Discard
@@ -84,6 +107,15 @@ const VendorPayment = () => {
                     Save
                 </button>
             </form>
+
+            {showPopup && (
+                <div className="alert alert-success mt-3">
+                    Data saved successfully!
+                    <button type="button" className="close" onClick={handlePopupClose}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

@@ -67,7 +67,7 @@ function AddEvent() {
               </label>
               <input
                 type="text"
-                className="form-control text-center"
+                className="form-control "
                 placeholder="Enter event name"
                 value={eventName}
                 onChange={(e) => setEventName(e.target.value)}
@@ -81,7 +81,7 @@ function AddEvent() {
               </label>
               <input
                 type="text"
-                className="form-control text-center"
+                className="form-control"
                 placeholder="Enter Full Name"
                 value={fname}
                 onChange={(e) => setfname(e.target.value)}
@@ -93,7 +93,7 @@ function AddEvent() {
               <label htmlFor="company_name">Company Name:</label>
               <input
                 type="text"
-                className="form-control text-center"
+                className="form-control "
                 placeholder="Enter Company Name"
                 value={company_name}
                 onChange={(e) => setcompany_name(e.target.value)}
@@ -106,7 +106,7 @@ function AddEvent() {
               </label>
               <input
                 type="text"
-                className="form-control text-center"
+                className="form-control "
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setemail(e.target.value)}
@@ -120,7 +120,7 @@ function AddEvent() {
               </label>
               <input
                 type="number"
-                className="form-control text-center"
+                className="form-control "
                 placeholder="Enter Contact Number"
                 value={contact}
                 onChange={(e) => setcontact(e.target.value)}
