@@ -15,6 +15,7 @@ const {
   VendorPayment,
   VendorPaymentHistory,
   InventoryStock,
+  Accountant,
 } = require("../models/newModels");
 
 // const Accountants = require("../models/accountant");
@@ -60,6 +61,8 @@ const FindTable = ({ table }) => {
     return VendorPaymentHistory;
   } else if (table.toLowerCase() == "inventorystock") {
     return InventoryStock;
+  } else if (table.toLowerCase() == "accountant") {
+    return Accountant;
   } else {
     return null;
   }
@@ -410,6 +413,29 @@ const FilterBodyByTable = ({ req, table }) => {
         addstocks,
         quantity,
       };
+    } else if (table == "accountant") {
+      const {
+        accountant_id,
+        fname,
+        lname,
+        email,
+        contact,
+        profile_image,
+        address,
+        city,
+        state,
+      } = req.body;
+      return {
+        accountant_id,
+        fname,
+        lname,
+        email,
+        contact,
+        profile_image,
+        address,
+        city,
+        state,
+      };
     } else {
       return null;
     }
@@ -417,7 +443,5 @@ const FilterBodyByTable = ({ req, table }) => {
     return null;
   }
 };
-
-
 
 module.exports = { FindTable, FilterBodyByTable };
