@@ -394,6 +394,7 @@ const FilterBodyByTable = ({ req, table }) => {
         paid_amt,
         rem_amt,
         date,
+        salary,
         description,
       } = req.body;
       return {
@@ -406,6 +407,7 @@ const FilterBodyByTable = ({ req, table }) => {
         paid_amt,
         rem_amt,
         date,
+        salary,
         description,
       };
     } else if (table == "vendorpaymenthistory") {

@@ -9,7 +9,7 @@ const VendorPayment = () => {
         date: '',
         time: '',
         bankaccount: '',
-        entersalary: '',
+        salary: '',
         paid_amt: '',
         rem_amt: '',
         description: '',
@@ -85,8 +85,8 @@ const VendorPayment = () => {
                     <input className="form-control mb-2" type="text" name="bankaccount" placeholder="Bank Account" onChange={handleChange} value={formData.bankaccount} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="entersalary">Enter Salary:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="entersalary" placeholder="Enter Salary" onChange={handleChange} value={formData.entersalary} required />
+                    <label htmlFor="salary">Enter Salary:<span style={{ color: "red" }}>*</span></label>
+                    <input className="form-control mb-2" type="text" name="salary" placeholder="Enter Salary" onChange={handleChange} value={formData.salary} required />
                 </div>
                 <div className="form-group">
                     <label htmlFor="paid_amt">Paid Amount:<span style={{ color: "red" }}>*</span></label>
