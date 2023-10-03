@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const VendorPaymentView = () => {
@@ -35,6 +36,9 @@ const VendorPaymentView = () => {
                             <Card.Text>
                                 <strong>Remaining Amount:</strong> {payment.rem_amt}
                             </Card.Text>
+                            <Link to={`/view-more/${payment._id}`} key={payment._id}>
+                                <Button variant="primary">View More</Button>
+                            </Link>
                         </Card.Body>
                     </Card>
                 ))
