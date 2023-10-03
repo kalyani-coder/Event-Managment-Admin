@@ -55,14 +55,14 @@ function App() {
           <Route path="//quotation/:id" element={<MakeQuotation />} />
           <Route path="/advancepayment" element={<AdvancePaymentForm />} />
           <Route path="/orderform" element={<OrderForm />} />
-          <Route path="/addsalary" element={<AddSalary />} />
+          <Route path="/addsalary/" element={<AddSalary />} />
           <Route path="/vendordetails" element={<VendorDetails />} />
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
           <Route path="/viewevent" element={<EventDetails />} />
           <Route path="/event-more-details" element={<EventMoreDetails />} />
           <Route path="/add-expense/:eventId" element={<AddExpense />} />
           <Route path="/expenses/:eventId" element={<ExpenseList />} />
-          <Route path="/viewsalary" element={<ViewSalary />} />
+          <Route path="/viewsalary/" element={<ViewSalary />} />
           <Route path="/vendorpayment" element={<VendorPayment />} />
           <Route path="/viewvendorpayment" element={<VendorPaymentView />} />
 

@@ -54,6 +54,7 @@ const VendorPayment = () => {
     return (
         <div className="container">
             <form className="order p-4 border rounded" onSubmit={handleSubmit}>
+                <h2>Vendor Payment</h2><br />
                 <div className="form-group">
                     <label htmlFor="fname">First Name:<span style={{ color: "red" }}>*</span></label>
                     <input className="form-control mb-2" type="text" name="fname" placeholder="First Name" onChange={handleChange} value={formData.fname} required />

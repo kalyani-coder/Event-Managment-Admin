@@ -251,14 +251,21 @@ function QuotationForm() {
                 <label htmlFor={`unit${index}`}>
                   Unit:<span style={{ color: "red" }}></span>
                 </label>
-                <input
-                  className="form-control"
-                  id={`unit${index}`} // Ensure this ID is unique for each section
-                  name="unit" // Ensure the name is "unit"
-                  // Make sure you're binding the correct state value
-                  value={"sqft"}
-                  required
-                />
+                <div style={{ position: 'relative' }}>
+                  <input
+                    className="form-control"
+                    id={`unit${index}`}
+                    name="unit"
+                    type="number" // Set the input type to "number" to allow only numeric input
+                    placeholder="Enter value"
+                    required
+                    style={{ paddingRight: '50px' }} // Add some padding to the right to make space for "sqft"
+                  />
+                  <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                    sqft
+                  </span>
+                </div>
+
 
 
               </div>

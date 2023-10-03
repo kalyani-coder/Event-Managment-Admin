@@ -45,7 +45,7 @@ const ViewSalary = () => {
                 />
             </div>
 
-            <table className="table table-striped table-bordered">
+            <table className="table table-striped table-bordered" style={{ borderColor: "black" }}>
                 <thead>
                     <tr>
                         <th className="text-center">Staff ID</th>

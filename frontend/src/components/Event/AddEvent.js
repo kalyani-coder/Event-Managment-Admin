@@ -61,6 +61,7 @@ function AddEvent() {
       <div className="row justify-content-center">
         <div className="col-md-10">
           <div className="card-body mt-5">
+            <h2 className="mb-3">Create Event</h2>
             <div className="form-group">
               <label htmlFor="eventName">
                 Event Name:<span style={{ color: "red" }}>*</span>

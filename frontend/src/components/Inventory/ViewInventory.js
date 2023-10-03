@@ -30,23 +30,80 @@ const ViewInventory = () => {
             return;
         }
 
-        // Send a PUT request to update the quantity for the specific item
+        const updatedQuantityValue = updatedItem.quantity + parseInt(newQuantity, 10);
+
         fetch(`http://localhost:5000/api/inventorystock/${itemId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ quantity: newQuantity }),
+            body: JSON.stringify({ quantity: updatedQuantityValue }),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
-                // Update the item's quantity in the state
                 setInventoryItems((prevState) =>
                     prevState.map((item) =>
                         item._id === itemId ? { ...item, quantity: data.quantity } : item
                     )
                 );
-                setUpdatedQuantity({}); // Clear the updated quantity
+                // Do not clear the entire updatedQuantity state
+                setUpdatedQuantity((prevUpdatedQuantity) => {
+                    const updated = { ...prevUpdatedQuantity };
+                    delete updated[itemId];
+                    return updated;
+                });
+                setSuccessMessage("Quantity updated successfully.");
+                setErrorMessage("");
+            })
+            .catch((error) => {
+                console.error("Error updating quantity:", error);
+                setSuccessMessage("");
+                setErrorMessage("Error updating quantity. Please try again.");
+            });
+    };
+
+    const handleDeleteItem = (itemId) => {
+        const updatedItem = inventoryItems.find((item) => item._id === itemId);
+        const newQuantity = updatedQuantity[itemId];
+
+        if (!newQuantity || isNaN(newQuantity) || newQuantity > updatedItem.quantity) {
+            setErrorMessage("Invalid quantity to delete.");
+            return;
+        }
+
+        const updatedQuantityValue = updatedItem.quantity - parseInt(newQuantity, 10);
+        const finalQuantity = Math.max(updatedQuantityValue, 0);
+
+        fetch(`http://localhost:5000/api/inventorystock/${itemId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ quantity: finalQuantity }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setInventoryItems((prevState) =>
+                    prevState.map((item) =>
+                        item._id === itemId ? { ...item, quantity: data.quantity } : item
+                    )
+                );
+                // Do not clear the entire updatedQuantity state
+                setUpdatedQuantity((prevUpdatedQuantity) => {
+                    const updated = { ...prevUpdatedQuantity };
+                    delete updated[itemId];
+                    return updated;
+                });
                 setSuccessMessage("Quantity updated successfully.");
                 setErrorMessage("");
             })
@@ -72,6 +129,9 @@ const ViewInventory = () => {
                         <tr>
                             <th>Item Name</th>
                             <th>Quantity in Stock</th>
+                            <th>Update Stock</th>
+                            <th> </th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,17 +139,27 @@ const ViewInventory = () => {
                             <tr key={item._id}>
                                 <td>{item.addstocks}</td>
                                 <td>{item.quantity}</td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        placeholder="Enter Quantity"
+                                        value={updatedQuantity[item._id] || ""}
+                                        onChange={(e) => handleInputChange(item._id, e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <button onClick={() => handleUpdateQuantity(item._id)}>Update</button>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDeleteItem(item._id)}>Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             )}
-            {successMessage && (
-                <div className="alert alert-success">{successMessage}</div>
-            )}
-            {errorMessage && (
-                <div className="alert alert-danger">{errorMessage}</div>
-            )}
+            {successMessage && <div className="alert alert-success">{successMessage}</div>}
+            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
         </div>
     );
 };
