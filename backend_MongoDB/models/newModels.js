@@ -126,6 +126,11 @@ const ManagerDetailsSchema = new Schema({
   address: String,
   city: String,
   state: String,
+  holder_name: String,
+  account_number: Number,
+  IFSC_code: String,
+  bank_name: String,
+  branch_name: String,
 });
 
 const ExecutiveDetailsSchema = new Schema({

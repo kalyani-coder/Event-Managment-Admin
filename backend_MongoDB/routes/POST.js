@@ -5,6 +5,7 @@ const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
 
 const { InventoryStock } = require("../models/newModels");
+
 router.post("/inventorystock/:item/:quantity", async (req, res) => {
   const { item, quantity } = req.params;
 
@@ -51,9 +52,9 @@ router.post("/:table", async (req, res) => {
   if (Table && reqBody) {
     try {
       newEntry = new Table(reqBody);
-      newEntry.save();
+      const savedEntry = await newEntry.save();
       res.status(200).json({
-        newEntry: { ...reqBody },
+        newEntry: { ...reqBody, _id: savedEntry._id },
         message: "Entry saved successfully",
       });
     } catch (err) {
@@ -78,9 +79,9 @@ router.post("/:table/:id", async (req, res) => {
   const reqBody = FilterBodyByTable({ req, table });
   if (Table && reqBody) {
     try {
-      await Table.findByIdAndUpdate(id, reqBody);
+      const updatedEntry = await Table.findByIdAndUpdate(id, reqBody, { new: true });
       res.status(200).json({
-        newEntry: { ...reqBody },
+        newEntry: { ...reqBody, _id: updatedEntry._id },
         message: "Entry saved successfully",
       });
     } catch (err) {
@@ -94,5 +95,6 @@ router.post("/:table/:id", async (req, res) => {
     res.status(400).send("Bad Request");
   }
 });
+
 
 module.exports = router;
