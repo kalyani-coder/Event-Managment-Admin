@@ -20,13 +20,17 @@ const ManagerDetails = () => {
       });
   }, []);
   useEffect(() => {
-    // Filter managerData based on searchQuery
-    const filteredData = managerData.filter(
-      (manager) =>
-        manager.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        manager.lastName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredManagerData(filteredData);
+    if (managerData.length > 0) {
+      const filteredData = managerData.filter(
+        (manager) => {
+          if (manager.firstName && manager.lastName) {
+            if (manager.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              manager.lastName.toLowerCase().includes(searchQuery.toLowerCase())) { return manager }
+          }
+        }
+      );
+      setFilteredManagerData(filteredData);
+    }
   }, [searchQuery, managerData]);
 
   return (
@@ -59,7 +63,7 @@ const ManagerDetails = () => {
                 to={{
                   pathname: `/manager/${manager._id}`,
                 }}
-                state={manager} 
+                state={manager}
                 className="btn btn-info"
               >
                 View more{" "}

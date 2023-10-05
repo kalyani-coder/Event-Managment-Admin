@@ -253,6 +253,71 @@ const AddManager = () => {
           </Form.Control>
         </Form.Group>
 
+        <Form.Group controlId="accountHolderName">
+          <Form.Label>
+            Account Holder Name <span style={requiredAsteriskStyle}>*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            value={accountHolderName}
+            onChange={(e) => setAccountHolderName(e.target.value)}
+            placeholder="Enter account holder name"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="accountNumber">
+          <Form.Label>
+            Account Number <span style={requiredAsteriskStyle}>*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value)}
+            placeholder="Enter account number"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="bankName">
+          <Form.Label>
+            Bank Name <span style={requiredAsteriskStyle}>*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            value={bankName}
+            onChange={(e) => setBankName(e.target.value)}
+            placeholder="Enter bank name"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="branchName">
+          <Form.Label>
+            Branch Name <span style={requiredAsteriskStyle}>*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            value={branchName}
+            onChange={(e) => setBranchName(e.target.value)}
+            placeholder="Enter branch name"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="ifscCode">
+          <Form.Label>
+            IFSC Code <span style={requiredAsteriskStyle}>*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            value={ifscCode}
+            onChange={(e) => setIfscCode(e.target.value)}
+            placeholder="Enter IFSC code"
+            required
+          />
+        </Form.Group>
+
         {/* ... (rest of the form fields) */}
 
         <Button className="my-4" variant="info" type="submit">

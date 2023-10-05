@@ -21,8 +21,8 @@ const ViewInventory = () => {
             });
     }, []);
 
-    const handleUpdateQuantity = (itemId) => {
-        const updatedItem = inventoryItems.find((item) => item._id === itemId);
+    const handleUpdateQuantity = (itemId, changeType) => {
+        const updatedItem = inventoryItems.find((item) => item.addstocks === itemId);
         const newQuantity = updatedQuantity[itemId];
 
         if (!newQuantity || isNaN(newQuantity)) {
@@ -30,10 +30,13 @@ const ViewInventory = () => {
             return;
         }
 
-        const updatedQuantityValue = updatedItem.quantity + parseInt(newQuantity, 10);
+        const updatedQuantityValue =
+            changeType === "increase"
+                ? updatedItem.quantity + parseInt(newQuantity)
+                : updatedItem.quantity - parseInt(newQuantity);
 
-        fetch(`http://localhost:5000/api/inventorystock/${itemId}`, {
-            method: "PATCH",
+        fetch(`http://localhost:5000/api/inventorystock/${itemId}/${newQuantity}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -48,57 +51,9 @@ const ViewInventory = () => {
             .then((data) => {
                 setInventoryItems((prevState) =>
                     prevState.map((item) =>
-                        item._id === itemId ? { ...item, quantity: data.quantity } : item
+                        item.addstocks === itemId ? { ...item, quantity: data.quantity } : item
                     )
                 );
-                // Do not clear the entire updatedQuantity state
-                setUpdatedQuantity((prevUpdatedQuantity) => {
-                    const updated = { ...prevUpdatedQuantity };
-                    delete updated[itemId];
-                    return updated;
-                });
-                setSuccessMessage("Quantity updated successfully.");
-                setErrorMessage("");
-            })
-            .catch((error) => {
-                console.error("Error updating quantity:", error);
-                setSuccessMessage("");
-                setErrorMessage("Error updating quantity. Please try again.");
-            });
-    };
-
-    const handleDeleteItem = (itemId) => {
-        const updatedItem = inventoryItems.find((item) => item._id === itemId);
-        const newQuantity = updatedQuantity[itemId];
-
-        if (!newQuantity || isNaN(newQuantity) || newQuantity > updatedItem.quantity) {
-            setErrorMessage("Invalid quantity to delete.");
-            return;
-        }
-
-        const updatedQuantityValue = updatedItem.quantity - parseInt(newQuantity, 10);
-        const finalQuantity = Math.max(updatedQuantityValue, 0);
-
-        fetch(`http://localhost:5000/api/inventorystock/${itemId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ quantity: finalQuantity }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setInventoryItems((prevState) =>
-                    prevState.map((item) =>
-                        item._id === itemId ? { ...item, quantity: data.quantity } : item
-                    )
-                );
-                // Do not clear the entire updatedQuantity state
                 setUpdatedQuantity((prevUpdatedQuantity) => {
                     const updated = { ...prevUpdatedQuantity };
                     delete updated[itemId];
@@ -124,34 +79,38 @@ const ViewInventory = () => {
             {loading ? (
                 <p>Loading inventory data...</p>
             ) : (
-                <table className="table table-hover table-sm  border border-secondary ">
+                <table className="table table-hover table-sm border border-secondary">
                     <thead className="thead-light">
                         <tr>
                             <th>Item Name</th>
                             <th>Quantity in Stock</th>
                             <th>Update Stock</th>
-                            <th> </th>
-                            <th> </th>
+                            <th>Increase</th>
+                            <th>Decrease</th>
                         </tr>
                     </thead>
                     <tbody>
                         {inventoryItems.map((item) => (
-                            <tr key={item._id}>
+                            <tr key={item.addstocks}>
                                 <td>{item.addstocks}</td>
                                 <td>{item.quantity}</td>
                                 <td>
                                     <input
                                         type="number"
                                         placeholder="Enter Quantity"
-                                        value={updatedQuantity[item._id] || ""}
-                                        onChange={(e) => handleInputChange(item._id, e.target.value)}
+                                        value={updatedQuantity[item.addstocks] || ""}
+                                        onChange={(e) => handleInputChange(item.addstocks, e.target.value)}
                                     />
                                 </td>
                                 <td>
-                                    <button onClick={() => handleUpdateQuantity(item._id)}>Update</button>
+                                    <button onClick={() => handleUpdateQuantity(item.addstocks, "increase")}>
+                                        Increase
+                                    </button>
                                 </td>
                                 <td>
-                                    <button onClick={() => handleDeleteItem(item._id)}>Delete</button>
+                                    <button onClick={() => handleUpdateQuantity(item.addstocks, "decrease")}>
+                                        Decrease
+                                    </button>
                                 </td>
                             </tr>
                         ))}

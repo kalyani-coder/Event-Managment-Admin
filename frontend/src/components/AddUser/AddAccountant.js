@@ -26,7 +26,7 @@ const AddAccountant = () => {
       !contact ||
       !address ||
       !city ||
-      state === "" ||
+      state === "" || // Check against empty string
       !holder_name ||
       !account_number ||
       !IFSC_code ||
@@ -253,6 +253,7 @@ const AddAccountant = () => {
             ))}
           </Form.Control>
         </Form.Group>
+
         <div>
           <hr />
           <br />
