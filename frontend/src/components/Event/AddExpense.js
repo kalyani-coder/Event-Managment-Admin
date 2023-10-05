@@ -11,18 +11,18 @@ const AddExpense = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleShow = () => {
-    if (event_id) {
-      window.location.href = `/expenses-list/${event_id}`;
+    if (event._id) {
+      window.location.href = `/expenses-list/${event._id}`;
     } else {
       setErrorMessage("Please select an event before showing expenses.");
     }
   };
 
   const handleAdd = () => {
-    if (!new_purchase || !to_vendor || !event_name || !amount || !date) {
-      setErrorMessage("All fields are required");
-      return;
-    }
+    // if (!new_purchase || !to_vendor || !event_name || !amount || !date) {
+    //   setErrorMessage("All fields are required");
+    //   return;
+    // }
 
     const expenseData = {
       event_id,

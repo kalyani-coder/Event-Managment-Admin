@@ -4,15 +4,15 @@ import React, { useState } from "react";
 export default function Enquiry() {
   const [formData, setFormData] = useState({
     title: "",
-    eventName: "",
+    event_name: "",
     customerName: "",
     customerEmail: "",
     contactNumber: "",
     customerAddress: "",
     eventDate: "",
-    numberOfGuests: "",
-    eventVenue: "",
-    eventRequirement: "",
+    guest_quantity: "",
+    event_venue: "",
+    event_requirement: "",
   });
 
   const handleInputChange = (event) => {
@@ -54,16 +54,16 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="eventName">
+                <label htmlFor="event_name">
                   Event Name <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  name="eventName"
-                  id="eventName"
+                  name="event_name"
+                  id="event_name"
                   placeholder="Event name"
-                  value={formData.eventName}
+                  value={formData.event_name}
                   onChange={handleInputChange}
                   required
                 />
@@ -150,48 +150,48 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="numberOfGuests">
+                <label htmlFor="guest_quantity">
                   Estimated Number of Guests <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  name="numberOfGuests"
-                  id="numberOfGuests"
+                  name="guest_quantity"
+                  id="guest_quantity"
                   placeholder=" Estimated Number of  Guests"
-                  value={formData.numberOfGuests}
+                  value={formData.guest_quantity}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="eventVenue">
+                <label htmlFor="event_venue">
                   Event Venue <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  name="eventVenue"
-                  id="eventVenue"
+                  name="event_venue"
+                  id="event_venue"
                   placeholder="Event Venue"
-                  value={formData.eventVenue}
+                  value={formData.event_venue}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="eventRequirement">
+                <label htmlFor="event_requirement">
                   Event Management Requirement{" "}
                   <span style={{ color: "red" }}>*</span>
                 </label>
                 <textarea
                   className="form-control"
-                  name="eventRequirement"
-                  id="eventRequirement"
+                  name="event_requirement"
+                  id="event_requirement"
                   placeholder="Event management requirement"
-                  value={formData.eventRequirement}
+                  value={formData.event_requirement}
                   onChange={handleInputChange}
                   required
                 />

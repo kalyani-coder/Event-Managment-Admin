@@ -42,7 +42,7 @@ const EventMoreDetails = () => {
 
 
 
-                    <Link to={`/add-expense/${event.id}`}>
+                    <Link to={`/add-expense/${event._id}`}>
                         <button className="btn btn-info" onClick={() => handleExpences(event)}>
                             Add Expences
                         </button></Link>
