@@ -78,6 +78,10 @@ const FilterBodyByTable = ({ req, table }) => {
         guest_quantity,
         event_venue,
         event_requirement,
+        customer_name,
+        email,
+        contact,
+        address,
       } = req.body;
       return {
         enquiry_id,
@@ -86,6 +90,10 @@ const FilterBodyByTable = ({ req, table }) => {
         guest_quantity,
         event_venue,
         event_requirement,
+        customer_name,
+        email,
+        contact,
+        address,
       };
     } else if (table == "quotation") {
       const {
