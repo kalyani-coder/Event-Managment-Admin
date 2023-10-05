@@ -1,9 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import MakeQuotation from "./MakeQuotation";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 
 function ViewEnquiry() {
@@ -14,7 +10,6 @@ function ViewEnquiry() {
     try {
       axios.get("http://localhost:5000/api/enquiry").then((res) => {
         setEnquiries(res.data);
-        console.log(enquiries);
       });
     } catch (e) {
       console.log("error", e);
@@ -22,8 +17,9 @@ function ViewEnquiry() {
   }, []);
 
   const filteredEnquiries = enquiries.filter((enquiry) =>
-    enquiry.eventName.toLowerCase().includes(searchTerm.toLowerCase())
+    (enquiry.event_name || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const navigate = useNavigate();
 
   return (
@@ -45,25 +41,24 @@ function ViewEnquiry() {
               <div className="card-body">
                 <h5 className="card-title">{enquiry.title}</h5>
                 <p className="card-text">
-                  Event Name: {enquiry.eventName}
+                  Event Name: {enquiry.event_name || ""}
                   <br />
-                  Event Date: {enquiry.eventDate}
+                  Event Date: {enquiry.event_date}
                   <br />
-                  Number of Guests: {enquiry.numberOfGuests}
+                  Number of Estimated Guests: {enquiry.guest_quantity}
                   <br />
-                  Event Venue: {enquiry.eventVenue}
+                  Event Venue: {enquiry.event_venue}
                   <br />
-                  Event Requirement: {enquiry.eventRequirement}
+                  Event Requirement: {enquiry.event_requirement}
                   <br />
-                  Customer Name: {enquiry.customerName}
+                  Customer Name: {enquiry.customer_name}
                   <br />
-                  Customer Email: {enquiry.customerEmail}
+                  Customer Email: {enquiry.email}
                   <br />
-                  Contact Number: {enquiry.contactNumber}
+                  Contact Number: {enquiry.contact}
                   <br />
-                  Customer Address: {enquiry.customerAddress}
+                  Customer Address: {enquiry.address}
                 </p>
-                {console.log(enquiry)}
                 <Link
                   to={{
                     pathname: `/quotation/${enquiry._id}`,
