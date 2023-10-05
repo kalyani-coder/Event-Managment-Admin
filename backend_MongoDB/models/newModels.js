@@ -8,6 +8,10 @@ const EnquirySchema = new Schema({
   guest_quantity: Number,
   event_venue: String,
   event_requirement: String,
+  customer_name: String,
+  email: String,
+  contact: Number,
+  address: String,
 });
 
 const QuotationSchema = new Schema({
