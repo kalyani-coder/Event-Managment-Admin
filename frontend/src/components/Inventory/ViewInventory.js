@@ -35,7 +35,12 @@ const ViewInventory = () => {
                 ? updatedItem.quantity + parseInt(newQuantity)
                 : updatedItem.quantity - parseInt(newQuantity);
 
-        fetch(`http://localhost:5000/api/inventorystock/${itemId}/${newQuantity}`, {
+        // if(changeType === "decrease"){
+        //     if(newQuantity > )
+        // }
+
+
+        fetch(`http://localhost:5000/api/inventorystock/${itemId}/${changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""}${newQuantity}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -72,6 +77,8 @@ const ViewInventory = () => {
     const handleInputChange = (itemId, value) => {
         setUpdatedQuantity({ ...updatedQuantity, [itemId]: value });
     };
+
+    // if()
 
     return (
         <div className="container mt-5">

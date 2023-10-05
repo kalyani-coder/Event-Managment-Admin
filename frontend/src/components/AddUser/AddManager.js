@@ -3,34 +3,34 @@ import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 const AddManager = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [managerEmail, setManagerEmail] = useState("");
-  const [managerPhone, setManagerPhone] = useState("");
-  const [managerAddress, setManagerAddress] = useState("");
-  const [managerCity, setManagerCity] = useState("");
-  const [managerState, setManagerState] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [branchName, setBranchName] = useState("");
-  const [ifscCode, setIfscCode] = useState("");
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [email, setemail] = useState("");
+  const [contact, setcontact] = useState("");
+  const [address, setaddress] = useState("");
+  const [city, setcity] = useState("");
+  const [state, setstate] = useState("");
+  const [account_number, setaccount_number] = useState("");
+  const [holder_name, setholder_name] = useState("");
+  const [bank_name, setbank_name] = useState("");
+  const [branch_name, setbranch_name] = useState("");
+  const [IFSC_code, setIFSC_code] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
   const isValidForm = () => {
     if (
-      !firstName ||
-      !lastName ||
-      !managerEmail ||
-      !managerPhone ||
-      !managerAddress ||
-      !managerCity ||
-      managerState === "" ||
-      !accountHolderName ||
-      !accountNumber ||
-      !ifscCode ||
-      !bankName ||
-      !branchName
+      !fname ||
+      !lname ||
+      !email ||
+      !contact ||
+      !address ||
+      !city ||
+      state === "" ||
+      !holder_name ||
+      !account_number ||
+      !IFSC_code ||
+      !bank_name ||
+      !branch_name
     ) {
       alert("Please fill out all fields.");
       return false;
@@ -39,18 +39,18 @@ const AddManager = () => {
   };
 
   const handleDiscard = () => {
-    setFirstName("");
-    setLastName("");
-    setManagerEmail("");
-    setManagerPhone("");
-    setManagerAddress("");
-    setManagerCity("");
-    setManagerState("");
-    setAccountNumber("");
-    setAccountHolderName("");
-    setBankName("");
-    setBranchName("");
-    setIfscCode("");
+    setfname("");
+    setlname("");
+    setemail("");
+    setcontact("");
+    setaddress("");
+    setcity("");
+    setstate("");
+    setaccount_number("");
+    setholder_name("");
+    setbank_name("");
+    setbranch_name("");
+    setIFSC_code("");
   };
 
   const handleSubmit = async (event) => {
@@ -61,24 +61,24 @@ const AddManager = () => {
     }
 
     const formData = {
-      firstName,
-      lastName,
-      managerEmail,
-      managerPhone,
-      managerAddress,
-      managerCity,
-      managerState,
-      accountHolderName,
-      accountNumber,
-      ifscCode,
-      bankName,
-      branchName,
+      fname,
+      lname,
+      email,
+      contact,
+      address,
+      city,
+      state,
+      holder_name,
+      account_number,
+      IFSC_code,
+      bank_name,
+      branch_name,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/managers",
+        "http://localhost:5000/api/managerdetails",
         formData
       );
       console.log("Data posted:", response.data);
@@ -86,18 +86,18 @@ const AddManager = () => {
       console.error("Error posting data:", error);
     }
 
-    setFirstName("");
-    setLastName("");
-    setManagerEmail("");
-    setManagerPhone("");
-    setManagerAddress("");
-    setManagerCity("");
-    setManagerState("");
-    setAccountNumber("");
-    setAccountHolderName("");
-    setBankName("");
-    setBranchName("");
-    setIfscCode("");
+    setfname("");
+    setlname("");
+    setemail("");
+    setcontact("");
+    setaddress("");
+    setcity("");
+    setstate("");
+    setaccount_number("");
+    setholder_name("");
+    setbank_name("");
+    setbranch_name("");
+    setIFSC_code("");
     setProfilePicture(null);
   };
 
@@ -157,92 +157,92 @@ const AddManager = () => {
     <div className="container mt-5">
       <h2>Add Manager</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="firstName">
+        <Form.Group controlId="fname">
           <Form.Label>
             First Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={fname}
+            onChange={(e) => setfname(e.target.value)}
             placeholder="Enter first name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="lastName">
+        <Form.Group controlId="lname">
           <Form.Label>
             Last Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={lname}
+            onChange={(e) => setlname(e.target.value)}
             placeholder="Enter last name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="managerEmail">
+        <Form.Group controlId="email">
           <Form.Label>
             Email <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="email"
-            value={managerEmail}
-            onChange={(e) => setManagerEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
             placeholder="Enter email"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="managerPhone">
+        <Form.Group controlId="contact">
           <Form.Label>
             Phone <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="tel"
-            value={managerPhone}
-            onChange={(e) => setManagerPhone(e.target.value)}
+            value={contact}
+            onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter phone"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="managerAddress">
+        <Form.Group controlId="address">
           <Form.Label>
             Address <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={managerAddress}
-            onChange={(e) => setManagerAddress(e.target.value)}
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter address"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="managerCity">
+        <Form.Group controlId="city">
           <Form.Label>
             City <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={managerCity}
-            onChange={(e) => setManagerCity(e.target.value)}
+            value={city}
+            onChange={(e) => setcity(e.target.value)}
             placeholder="Enter city"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="managerState">
+        <Form.Group controlId="state">
           <Form.Label>
             State <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             as="select"
-            value={managerState}
-            onChange={(e) => setManagerState(e.target.value)}
+            value={state}
+            onChange={(e) => setstate(e.target.value)}
             required
           >
             {indianStates.map((state) => (
@@ -253,66 +253,66 @@ const AddManager = () => {
           </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId="accountHolderName">
+        <Form.Group controlId="holder_name">
           <Form.Label>
             Account Holder Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={accountHolderName}
-            onChange={(e) => setAccountHolderName(e.target.value)}
+            value={holder_name}
+            onChange={(e) => setholder_name(e.target.value)}
             placeholder="Enter account holder name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="accountNumber">
+        <Form.Group controlId="account_number">
           <Form.Label>
             Account Number <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
+            value={account_number}
+            onChange={(e) => setaccount_number(e.target.value)}
             placeholder="Enter account number"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="bankName">
+        <Form.Group controlId="bank_name">
           <Form.Label>
             Bank Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
+            value={bank_name}
+            onChange={(e) => setbank_name(e.target.value)}
             placeholder="Enter bank name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="branchName">
+        <Form.Group controlId="branch_name">
           <Form.Label>
             Branch Name <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={branchName}
-            onChange={(e) => setBranchName(e.target.value)}
+            value={branch_name}
+            onChange={(e) => setbranch_name(e.target.value)}
             placeholder="Enter branch name"
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="ifscCode">
+        <Form.Group controlId="IFSC_code">
           <Form.Label>
             IFSC Code <span style={requiredAsteriskStyle}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
-            value={ifscCode}
-            onChange={(e) => setIfscCode(e.target.value)}
+            value={IFSC_code}
+            onChange={(e) => setIFSC_code(e.target.value)}
             placeholder="Enter IFSC code"
             required
           />

@@ -32,7 +32,7 @@ const ManagerDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/manager/${_id}`)
+        .delete(`http://localhost:5000/api/managerdetails/${_id}`)
         .then(() => {
           console.log("Manager data deleted successfully");
           navigate("/managerdetails");
@@ -61,7 +61,7 @@ const ManagerDetailPage = () => {
           <Card.Text>Address: {manager.address}</Card.Text>
           <Card.Text>Email: {manager.email}</Card.Text>
           <Card.Text>City: {manager.city}</Card.Text>
-          <Card.Text>State: {manager?.managerState}</Card.Text>
+          <Card.Text>State: {manager?.state}</Card.Text>
           <div className="my-3">
             <hr />
             <h6 className="mb-3">Bank details:</h6>

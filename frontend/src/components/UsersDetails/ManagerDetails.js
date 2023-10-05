@@ -11,7 +11,7 @@ const ManagerDetails = () => {
   useEffect(() => {
     // Fetch manager data from the API
     axios
-      .get("http://localhost:5000/api/manager")
+      .get("http://localhost:5000/api/managerdetails")
       .then((response) => {
         setManagerData(response.data);
       })
@@ -23,9 +23,9 @@ const ManagerDetails = () => {
     if (managerData.length > 0) {
       const filteredData = managerData.filter(
         (manager) => {
-          if (manager.firstName && manager.lastName) {
-            if (manager.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              manager.lastName.toLowerCase().includes(searchQuery.toLowerCase())) { return manager }
+          if (manager.fname && manager.lname) {
+            if (manager.fname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              manager.lname.toLowerCase().includes(searchQuery.toLowerCase())) { return manager }
           }
         }
       );
@@ -54,11 +54,11 @@ const ManagerDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${manager.firstName} ${manager.lastName}`}</Card.Title>
+              <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {manager.managerPhone}
+                Contact Number: {manager.contact}
               </Card.Subtitle>
-              <Card.Text>Address: {manager.managerAddress}</Card.Text>
+              <Card.Text>Address: {manager.address}</Card.Text>
               <Link
                 to={{
                   pathname: `/manager/${manager._id}`,
