@@ -1,15 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 
+
 export default function Enquiry() {
   const [formData, setFormData] = useState({
     title: "",
     event_name: "",
-    customerName: "",
-    customerEmail: "",
-    contactNumber: "",
-    customerAddress: "",
-    eventDate: "",
+    customer_name: "",
+    email: "",
+    contact: "",
+    address: "",
+    event_date: "",
     guest_quantity: "",
     event_venue: "",
     event_requirement: "",
@@ -70,48 +71,48 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="customerName">
+                <label htmlFor="customer_name">
                   Customer Name <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  name="customerName"
-                  id="customerName"
+                  name="customer_name"
+                  id="customer_name"
                   placeholder="Customer Name"
-                  value={formData.customerName}
+                  value={formData.customer_name}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="customerEmail">
+                <label htmlFor="email">
                   Customer Email <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="email"
                   className="form-control"
-                  name="customerEmail"
-                  id="customerEmail"
+                  name="email"
+                  id="email"
                   placeholder="Customer Email"
-                  value={formData.customerEmail}
+                  value={formData.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="contactNumber">
+                <label htmlFor="contact">
                   Contact Number <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="tel"
                   className="form-control"
-                  name="contactNumber"
-                  id="contactNumber"
+                  name="contact"
+                  id="contact"
                   placeholder="Contact Number"
-                  value={formData.contactNumber}
+                  value={formData.contact}
                   onChange={handleInputChange}
                   required
                   maxLength="10"
@@ -119,31 +120,31 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="customerAddress">
+                <label htmlFor="address">
                   Customer Address <span style={{ color: "red" }}>*</span>
                 </label>
                 <textarea
                   className="form-control"
-                  name="customerAddress"
-                  id="customerAddress"
+                  name="address"
+                  id="address"
                   placeholder="Customer Address"
-                  value={formData.customerAddress}
+                  value={formData.address}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="eventDate">
+                <label htmlFor="event_date">
                   Event Date <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="date"
                   className="form-control"
-                  name="eventDate"
-                  id="eventDate"
+                  name="event_date"
+                  id="event_date"
                   placeholder="Event date"
-                  value={formData.eventDate}
+                  value={formData.event_date}
                   onChange={handleInputChange}
                   required
                 />
