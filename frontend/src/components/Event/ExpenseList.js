@@ -7,10 +7,10 @@ const ExpenseList = () => {
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
-        
+
         // Fetch expenses filtered by event ID from the API
         axios
-            .get(`http://localhost:5000/api/eventexpense/${eventId}`)
+            .get(`https://eventmanagement-admin-hocm.onrender.com/api/eventexpense/${eventId}`)
             .then((response) => {
                 setExpenses(response.data);
                 console.log(response.data);

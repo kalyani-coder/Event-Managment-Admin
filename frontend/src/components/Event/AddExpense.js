@@ -38,7 +38,7 @@ const AddExpense = () => {
         };
 
         // Send data to the API using Axios
-        axios.post(`http://localhost:5000/api/eventexpense/${event_id}`, expenseData, {
+        axios.post(`https://eventmanagement-admin-hocm.onrender.com/api/eventexpense/${event_id}`, expenseData, {
             headers: {
                 'Content-Type': 'application/json',
             },

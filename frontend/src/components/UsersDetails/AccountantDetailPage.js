@@ -25,7 +25,7 @@ const AccountantDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/accountant/${_id}`)
+        .delete(`https://eventmanagement-admin-hocm.onrender.com/api/accountant/${_id}`)
         .then(() => {
           console.log("Accountant data deleted successfully");
           navigate("/accountantdetails");
@@ -57,7 +57,7 @@ const AccountantDetailPage = () => {
           <Card.Text>State: {accountant.state}</Card.Text>
           <div className="my-3">
             <hr />
-            <h6 className="mb-3">Bank details : </h6>
+            <h6 className="mb-3">Bank details:</h6>
             <Card.Text>
               Account Holder Name: {accountant.holder_name}
             </Card.Text>

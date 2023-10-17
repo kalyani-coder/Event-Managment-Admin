@@ -13,7 +13,7 @@
     left: 0;
     padding: 58px 0 0; /* Height of navbar */
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-    width: 240px;
+    width: 260px;
     z-index: 600;
     overflow-y: auto;
   }
@@ -70,12 +70,13 @@ li {
 }
 
 .list-unstyled.components li ul li a {
-  background-color: #D6D2C4; /* Sub-menu item background color */
+  background-color: #796D9D; /* Sub-menu item background color */
   border-radius: 3px;
+  color:white
 }
 
 .list-unstyled.components li ul li a:hover {
-  background-color: #FEFF86; /* Highlight sub-menu items on hover */
+  background-color: #00AEF7; /* Highlight sub-menu items on hover */
 }
 
 body{

@@ -51,7 +51,7 @@ const AddExecutive = () => {
       branch_name,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
-    console.log(formData);
+    console.log("hello" , formData);
 
     try {
       const response = await axios.post(

@@ -50,7 +50,7 @@ function ViewEnquiry() {
 
   useEffect(() => {
     try {
-      axios.get("http://localhost:5000/api/enquiry").then((res) => {
+      axios.get("https://eventmanagement-admin-hocm.onrender.com/api/enquiry").then((res) => {
         setEnquiries(res.data);
         console.log('response', res)
       });

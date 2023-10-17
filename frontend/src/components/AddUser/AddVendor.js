@@ -50,7 +50,7 @@ const AddVendor = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendor",
+        "https://eventmanagement-admin-hocm.onrender.com/api/vendor",
         formData
       );
 

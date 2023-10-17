@@ -11,7 +11,7 @@ const ManagerDetails = () => {
   useEffect(() => {
     // Fetch manager data from the API
     axios
-      .get("http://localhost:5000/api/managerdetails")
+      .get("https://eventmanagement-admin-hocm.onrender.com/api/managerdetails")
       .then((response) => {
         setManagerData(response.data);
       })

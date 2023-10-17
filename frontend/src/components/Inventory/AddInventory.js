@@ -10,7 +10,7 @@ const AddInventory = () => {
     useEffect(() => {
         // Fetch inventory data from your API and update the inventoryData state
         // Example API call:
-        fetch("http://localhost:5000/api/inventorystock")
+        fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventorystock")
             .then((response) => response.json())
             .then((data) => setInventoryData(data))
             .catch((error) => console.error("Error fetching inventory data:", error));
@@ -38,7 +38,7 @@ const AddInventory = () => {
                 try {
                     // Send a PUT request to update the existing item
                     const response = await fetch(
-                        `http://localhost:5000/api/inventorystock/${existingItem._id}`,
+                        `https://eventmanagement-admin-hocm.onrender.com/api/inventorystock/${existingItem._id}`,
                         {
                             method: "PATCH",
                             headers: {
@@ -72,7 +72,7 @@ const AddInventory = () => {
 
             try {
                 // Send a POST request to create a new entry
-                const response = await fetch("http://localhost:5000/api/inventorystock", {
+                const response = await fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventorystock", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

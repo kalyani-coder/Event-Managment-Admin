@@ -25,7 +25,7 @@ const ExecutiveDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/executive/${_id}`)
+        .delete(`https://eventmanagement-admin-hocm.onrender.com/api/executive/${_id}`)
         .then(() => {
           console.log("Executive data deleted successfully");
           navigate("/executivedetails");
@@ -57,7 +57,7 @@ const ExecutiveDetailPage = () => {
           <Card.Text>State: {executive.state}</Card.Text>
           <div className="my-3">
             <hr />
-            <h6 className="mb-3">Bank details : </h6>
+            <h6 className="mb-3">Bank details:</h6>
             <Card.Text>
               Account Holder Name: {executive.holder_name}
             </Card.Text>

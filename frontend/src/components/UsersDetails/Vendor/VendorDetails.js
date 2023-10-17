@@ -11,7 +11,7 @@ const VendorDetails = () => {
   useEffect(() => {
     // Fetch vendor data from the API
     axios
-      .get("http://localhost:5000/api/vendor")
+      .get("https://eventmanagement-admin-hocm.onrender.com/api/vendor")
       .then((response) => {
         setVendorData(response.data);
       })

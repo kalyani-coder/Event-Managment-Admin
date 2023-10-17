@@ -9,7 +9,7 @@ const VendorPaymentView = () => {
     useEffect(() => {
         // Fetch vendor payment data from the API
         axios
-            .get("http://localhost:5000/api/vendorpayment")
+            .get("https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment")
             .then((response) => {
                 setVendorPayments(response.data);
             })
