@@ -5,6 +5,7 @@ import axios from "axios";
 
 const EventDetails = () => {
   const [eventData, setEventData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,8 +27,19 @@ const EventDetails = () => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
-      {eventData.length > 0 ? (
-        eventData.map((event) => (
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      {eventData
+        .filter((event) =>
+          event.fname?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .map((event) => (
           <Card key={event.event_id} style={{ width: "100%", marginBottom: "20px" }}>
             <Card.Body>
               <Card.Title>{event.fname}</Card.Title>
@@ -42,11 +54,10 @@ const EventDetails = () => {
               <button className="btn btn-info" onClick={() => handleViewMore(event)}>
                 View More
               </button>
-
             </Card.Body>
           </Card>
-        ))
-      ) : (
+        ))}
+      {eventData.length === 0 && (
         <p className="text-center">No event details found.</p>
       )}
     </div>
