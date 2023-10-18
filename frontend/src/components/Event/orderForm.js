@@ -2,21 +2,61 @@ import React, { useState } from "react";
 
 const OrderForm = () => {
   const [eventName, setEventName] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [email, setEmail] = useState("");
+  const [customer_name, setcustomer_name] = useState("");
+  const [contact, setcontact] = useState("");
+  const [email, setemail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
-  const [advancePayment, setAdvancePayment] = useState(0);
-  const [paymentRemaining, setPaymentRemaining] = useState(0);
+  const [adv_payment, setadv_payment] = useState(0);
+  const [rem_payment, setrem_payment] = useState(0);
 
-  const handleAssignToManager = () => {
-    console.log("Assigned to manager");
+  const resetForm = () => {
+    setEventName("");
+    setcustomer_name("");
+    setcontact("");
+    setemail("");
+    setDate("");
+    setTime("");
+    setVenue("");
+    setadv_payment(0);
+    setrem_payment(0);
   };
+
+  const handleAssignToManager = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventName,
+          customer_name,
+          contact,
+          email,
+          date,
+          time,
+          venue,
+          adv_payment,
+          rem_payment,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Order assigned to manager successfully");
+        resetForm(); // Reset the form after successful assignment
+      } else {
+        console.error("Failed to assign order to manager");
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
   return (
     <div className="container mt-5">
-      <h1>Create Order For Manager </h1>
+      <h1>Create Order For Manager</h1>
       <form>
         <div className="mb-3">
           <label className="form-label">Event Name</label>
@@ -34,8 +74,8 @@ const OrderForm = () => {
           <input
             type="text"
             className="form-control"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+            value={customer_name}
+            onChange={(e) => setcustomer_name(e.target.value)}
             required
           />
         </div>
@@ -45,19 +85,19 @@ const OrderForm = () => {
           <input
             type="tel"
             className="form-control"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
+            value={contact}
+            onChange={(e) => setcontact(e.target.value)}
             required
           />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Email</label>
+          <label className="form-label">email</label>
           <input
             type="email"
             className="form-control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setemail(e.target.value)}
             required
           />
         </div>
@@ -73,7 +113,7 @@ const OrderForm = () => {
           />
         </div>
 
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <label className="form-label">Time</label>
           <input
             type="time"
@@ -82,7 +122,7 @@ const OrderForm = () => {
             onChange={(e) => setTime(e.target.value)}
             required
           />
-        </div>
+        </div> */}
 
         <div className="mb-3">
           <label className="form-label">Venue</label>
@@ -100,8 +140,8 @@ const OrderForm = () => {
           <input
             type="number"
             className="form-control"
-            value={advancePayment}
-            onChange={(e) => setAdvancePayment(parseFloat(e.target.value))}
+            value={adv_payment}
+            onChange={(e) => setadv_payment(parseFloat(e.target.value))}
             required
           />
         </div>
@@ -111,8 +151,8 @@ const OrderForm = () => {
           <input
             type="number"
             className="form-control"
-            value={paymentRemaining}
-            onChange={(e) => setPaymentRemaining(parseFloat(e.target.value))}
+            value={rem_payment}
+            onChange={(e) => setrem_payment(parseFloat(e.target.value))}
             required
           />
         </div>
