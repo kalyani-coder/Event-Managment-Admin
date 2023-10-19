@@ -12,7 +12,7 @@ router.post("/signup", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const managerDetails = new ManagerDetails({
+  const managerDetails = new Managerdetails({
     manager_id,
     email,
   });
@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).send("Invalid password");
   }
 
-  const token = jwt.sign({ id: managerLogin.manager_id }, "your-secret-key", {
+  const token = jwt.sign({ id: managerLogin.manager_id }, "V1R7U3BY73", {
     expiresIn: "1h",
   });
 
