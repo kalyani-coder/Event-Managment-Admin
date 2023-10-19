@@ -67,6 +67,18 @@ const OrderSchema = new Schema({
   rem_payment: Number,
   total_amt: String,
   status: String,
+  completed: Boolean,
+});
+
+const Attendance = new Schema({
+  day: String,
+  employees: [
+    {
+      name: String,
+      id: String,
+      present: Boolean,
+    },
+  ],
 });
 
 const EventExpenseSchema = new Schema({
@@ -135,6 +147,12 @@ const ManagerDetailsSchema = new Schema({
   IFSC_code: String,
   bank_name: String,
   branch_name: String,
+});
+
+const ManagerLoginSchema = new Schema({
+  manager_id: String,
+  email: String,
+  password: String,
 });
 
 const ExecutiveDetailsSchema = new Schema({
@@ -242,6 +260,8 @@ module.exports = {
     "VendorPaymentHistory",
     VendorPaymentHistorySchema
   ),
+  Attendance: mongoose.model("Attendance", Attendance),
   InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
   Accountant: mongoose.model("Accountant", AccountantDetailsSchema),
+  ManagerLogin: mongoose.model("ManagerLogin", ManagerLoginSchema),
 };

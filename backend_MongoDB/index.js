@@ -9,6 +9,7 @@ const port = process.env.PORT || 5000;
 const GET = require("./routes/GET");
 const POST = require("./routes/POST");
 const DELETE = require("./routes/DELETE");
+const Login = require("./routes/LoginRoute");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -16,6 +17,7 @@ app.use(cors());
 app.use("/api", GET);
 app.use("/api", POST);
 app.use("/api", DELETE);
+app.use("/api", Login);
 
 mongoose
   .connect(
