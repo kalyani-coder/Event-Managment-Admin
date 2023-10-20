@@ -41,21 +41,21 @@ router.get("/attendance", async (req, res) => {
 });
 
 
-router.get("/executivetask" , async (req , res) => {
-    try{
-      const Task = await ExecutiveTask.find()
-      res.status(200).json(Task);
-    }
-    catch(error){
-     res.status(400).json("Unable to fetch table");
+// router.get("/executivetask" , async (req , res) => {
+//     try{
+//       const Task = await ExecutiveTask.find()
+//       res.status(200).json(Task);
+//     }
+//     catch(error){
+//      res.status(400).json("Unable to fetch table");
 
-    }
-
-
+//     }
 
 
 
-})
+
+
+// })
 
 
 

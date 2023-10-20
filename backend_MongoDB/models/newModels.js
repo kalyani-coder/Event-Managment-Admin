@@ -56,8 +56,7 @@ const EventSchema = new Schema({
 });
 
 const OrderSchema = new Schema({
-  
-  event_id: { type: String , ref: "Event" },
+  event_id: { type: String, ref: "Event" },
   customer_name: String,
   contact: Number,
   email: String,
@@ -68,7 +67,7 @@ const OrderSchema = new Schema({
   total_amt: Number,
   status: String,
   completed: Boolean,
-}); 
+});
 
 const Attendance = new Schema({
   day: String,
@@ -82,18 +81,16 @@ const Attendance = new Schema({
 });
 
 const ExecutiveTask = new Schema({
-  Task : String , 
-  exe_id: String , 
-  Date : String , 
-  Time : String ,
-  Status : String , 
-  EventId : String , 
-
-})
+  Task: String,
+  exe_id: String,
+  Date: String,
+  Time: String,
+  Status: String,
+  EventId: String,
+});
 
 const EventExpenseSchema = new Schema({
-  
-  event_id: { type: String , ref: "Event" },
+  event_id: { type: String, ref: "Event" },
   new_purchase: String,
   to_vendor: String,
   event_name: String,
@@ -249,7 +246,7 @@ const AccountantDetailsSchema = new Schema({
 });
 
 module.exports = {
-  ExecutiveTask : mongoose.model("ExecutiveTask" , ExecutiveTask) ,
+  ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
   AdvPayment: mongoose.model("AdvPayment", AdvPaymentSchema),
@@ -275,4 +272,5 @@ module.exports = {
   InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
   Accountant: mongoose.model("Accountant", AccountantDetailsSchema),
   ManagerLogin: mongoose.model("ManagerLogin", ManagerLoginSchema),
+  // ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
 };

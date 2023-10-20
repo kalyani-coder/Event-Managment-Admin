@@ -16,6 +16,7 @@ const {
   VendorPaymentHistory,
   InventoryStock,
   Accountant,
+  ExecutiveTask,
 } = require("../models/newModels");
 
 // const Accountants = require("../models/accountant");
@@ -63,6 +64,8 @@ const FindTable = ({ table }) => {
     return InventoryStock;
   } else if (table.toLowerCase() == "accountant") {
     return Accountant;
+  } else if (table.toLowerCase() == "executivetask") {
+    return ExecutiveTask;
   } else {
     return null;
   }
@@ -94,6 +97,16 @@ const FilterBodyByTable = ({ req, table }) => {
         email,
         contact,
         address,
+      };
+    } else if (table === "executivetask") {
+      const { Task, exe_id, Date, Time, Status, EventId } = req.body;
+      return {
+        Task,
+        exe_id,
+        Date,
+        Time,
+        Status,
+        EventId,
       };
     } else if (table == "quotation") {
       const {
