@@ -82,8 +82,8 @@ const Attendance = new Schema({
 });
 
 const EventExpenseSchema = new Schema({
-  expense_id: Number,
-  event_id: { type: Number, ref: "Event" },
+  
+  event_id: { type: String , ref: "Event" },
   new_purchase: String,
   to_vendor: String,
   event_name: String,
