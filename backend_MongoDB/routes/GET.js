@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Attendance } = require("../models/newModels");
+const {ExecutiveTask} = require("../models/newModels");
 
 const { FindTable } = require("../utils/utils");
 
@@ -38,6 +39,25 @@ router.get("/attendance", async (req, res) => {
     res.status(400).send("Bad Request");
   }
 });
+
+
+router.get("/executivetask" , async (req , res) => {
+    try{
+      const Task = await ExecutiveTask.find()
+      res.status(200).json(Task);
+    }
+    catch(error){
+     res.status(400).json("Unable to fetch table");
+
+    }
+
+
+
+
+
+})
+
+
 
 router.get("/:table", async (req, res) => {
   const { table } = req.params;

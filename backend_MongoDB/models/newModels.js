@@ -81,6 +81,16 @@ const Attendance = new Schema({
   ],
 });
 
+const ExecutiveTask = new Schema({
+  Task : String , 
+  exe_id: String , 
+  Date : String , 
+  Time : String ,
+  Status : String , 
+  EventId : String , 
+
+})
+
 const EventExpenseSchema = new Schema({
   
   event_id: { type: String , ref: "Event" },
@@ -239,6 +249,7 @@ const AccountantDetailsSchema = new Schema({
 });
 
 module.exports = {
+  ExecutiveTask : mongoose.model("ExecutiveTask" , ExecutiveTask) ,
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
   AdvPayment: mongoose.model("AdvPayment", AdvPaymentSchema),
