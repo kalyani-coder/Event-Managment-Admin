@@ -56,8 +56,8 @@ const EventSchema = new Schema({
 });
 
 const OrderSchema = new Schema({
-  order_id: Number,
-  event_id: { type: Number, ref: "Event" },
+  
+  event_id: { type: String , ref: "Event" },
   customer_name: String,
   contact: Number,
   email: String,
@@ -65,10 +65,10 @@ const OrderSchema = new Schema({
   venue: String,
   adv_payment: Number,
   rem_payment: Number,
-  total_amt: String,
+  total_amt: Number,
   status: String,
   completed: Boolean,
-});
+}); 
 
 const Attendance = new Schema({
   day: String,
