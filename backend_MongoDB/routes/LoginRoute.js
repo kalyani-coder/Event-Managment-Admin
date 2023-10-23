@@ -69,12 +69,18 @@ router.post("/login", async (req, res) => {
 
   const managerLogin = await ManagerLogin.findOne({ email });
   if (!managerLogin) {
-    return res.status(400).send("Invalid email");
+    return res.json({
+      message: "Incorrect credentials",
+      validity: false,
+    });
   }
 
   const validPassword = await bcrypt.compare(password, managerLogin.password);
   if (!validPassword) {
-    return res.status(400).send("Invalid password");
+    return res.json({
+      message: "Incorrect credentials",
+      validity: false,
+    });
   }
 
   // const token = jwt.sign({ id: managerLogin.manager_id }, "V1R7U3BY73", {
