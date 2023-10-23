@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const EventDetails = () => {
+const EventDetails = ({routes}) => {
   const [eventData, setEventData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -21,8 +21,9 @@ const EventDetails = () => {
   }, []);
 
   const handleViewMore = (event) => {
-    navigate("/event-more-details", { state: event });
+    navigate(`/event-more-details/${event._id}`);
   };
+
 
   return (
     <div className="container mt-5">

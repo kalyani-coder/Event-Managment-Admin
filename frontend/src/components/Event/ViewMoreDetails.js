@@ -1,59 +1,39 @@
-import React from "react";
-import { Card } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+// ViewMoreDetails.js
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
+const ViewMoreDetails = () => {
+  const { eventId } = useParams();
+  const [eventDetails, setEventDetails] = useState(null);
 
+  useEffect(() => {
+    // Fetch event details based on the eventId
+    axios
+      .get(`https://eventmanagement-admin-hocm.onrender.com/api/event/${eventId}`)
+      .then((response) => {
+        setEventDetails(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching event details:', error);
+      });
+  }, [eventId]);
 
+  if (!eventDetails) {
+    // Loading state or handle the case where details are not available
+    return <p>Loading...</p>;
+  }
 
-const EventMoreDetails = () => {
-    const location = useLocation();
-    const event = location.state;
-    const navigate = useNavigate();
-    console.log(event);
-
-
-    if (!event) {
-        // Handle the case where there's no event data
-        return <p>No event details found.</p>;
-    }
-
-    const handleExpences = (event) => {
-        navigate("/add-expence", { state: event });
-    };
-    const handleAdvancePayment = (event) => {
-        navigate("/advance-payment", { state: event });
-    };
-    return (
-        <div className="container mt-5">
-            <h2 className="mb-4">Event Details</h2>
-
-            <Card className="p-3">
-                <Card.Body>
-                    <Card.Title className="py-3" >{event.fname}</Card.Title>
-                    <Card.Subtitle className="mb-3">
-                        Company: {event.company_name}
-                    </Card.Subtitle>
-                    <Card.Text>Venue: {event.venue}</Card.Text>
-                    <Card.Text>Subvenue: {event.subvenue}</Card.Text>
-                    <Card.Text>Event Date: {event.event_date}</Card.Text>
-                    <Card.Text>Guest Number: {event.guest_number}</Card.Text>
-                    <Card.Text>Budget: ${event.budget}</Card.Text>
-                    {/* Add more fields as needed */}
-
-
-
-                    <Link to={`/add-expense/${event._id}`}>
-                        <button className="btn btn-info" onClick={() => handleExpences(event)}>
-                            Add Expences
-                        </button></Link>
-
-                    <button className="btn btn-info mx-3" onClick={() => handleAdvancePayment(event)}>
-                        Advance Payment
-                    </button>
-                </Card.Body>
-            </Card>
-        </div>
-    );
+  return (
+    <div className="container mt-5">
+      <h2>Event More Details</h2>
+      <p>Event ID: {eventId}</p>
+      {/* Render the details of the event based on the fetched data */}
+      <p>Event Name: {eventDetails.fname}</p>
+      <p>Company: {eventDetails.company_name}</p>
+      {/* Add more details as needed */}
+    </div>
+  );
 };
 
-export default EventMoreDetails;
+export default ViewMoreDetails;

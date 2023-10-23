@@ -1,24 +1,18 @@
+// ExpenseList.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 const ExpenseList = () => {
-    const { eventId } = useParams(); // Access the event ID from route parameters
+    const { eventId } = useParams();
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
-
-        // Fetch expenses filtered by event ID from the API
-        axios
-            .get(`https://eventmanagement-admin-hocm.onrender.com/api/eventexpense/${eventId}`)
-            .then((response) => {
-                setExpenses(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching expenses:", error);
-            });
-    }, [eventId]); // Add eventId to the dependency array to re-fetch expenses when it changes
+        // Fetch data from the API
+        fetch("https://eventmanagement-admin-hocm.onrender.com/api/eventexpense")
+            .then(response => response.json())
+            .then(data => setExpenses(data))
+            .catch(error => console.error("Error fetching data:", error));
+    }, []);
 
     return (
         <div className="container mt-5">
@@ -34,7 +28,7 @@ const ExpenseList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {expenses.map((expense) => (
+                    {expenses.map(expense => (
                         <tr key={expense.id}>
                             <td>{expense.new_purchase}</td>
                             <td>{expense.date}</td>
