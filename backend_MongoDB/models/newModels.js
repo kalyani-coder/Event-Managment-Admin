@@ -56,8 +56,7 @@ const EventSchema = new Schema({
 });
 
 const OrderSchema = new Schema({
-  order_id: Number,
-  event_id: { type: Number, ref: "Event" },
+  event_id: { type: String, ref: "Event" },
   customer_name: String,
   contact: Number,
   email: String,
@@ -65,13 +64,33 @@ const OrderSchema = new Schema({
   venue: String,
   adv_payment: Number,
   rem_payment: Number,
-  total_amt: String,
+  total_amt: Number,
   status: String,
+  completed: Boolean,
+});
+
+const Attendance = new Schema({
+  day: String,
+  employees: [
+    {
+      name: String,
+      id: String,
+      present: Boolean,
+    },
+  ],
+});
+
+const ExecutiveTask = new Schema({
+  Task: String,
+  exe_id: String,
+  Date: String,
+  Time: String,
+  Status: String,
+  EventId: String,
 });
 
 const EventExpenseSchema = new Schema({
-  expense_id: Number,
-  event_id: { type: Number, ref: "Event" },
+  event_id: { type: String, ref: "Event" },
   new_purchase: String,
   to_vendor: String,
   event_name: String,
@@ -135,6 +154,12 @@ const ManagerDetailsSchema = new Schema({
   IFSC_code: String,
   bank_name: String,
   branch_name: String,
+});
+
+const ManagerLoginSchema = new Schema({
+  manager_id: String,
+  email: String,
+  password: String,
 });
 
 const ExecutiveDetailsSchema = new Schema({
@@ -221,6 +246,7 @@ const AccountantDetailsSchema = new Schema({
 });
 
 module.exports = {
+  ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
   AdvPayment: mongoose.model("AdvPayment", AdvPaymentSchema),
@@ -242,6 +268,9 @@ module.exports = {
     "VendorPaymentHistory",
     VendorPaymentHistorySchema
   ),
+  Attendance: mongoose.model("Attendance", Attendance),
   InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
   Accountant: mongoose.model("Accountant", AccountantDetailsSchema),
+  ManagerLogin: mongoose.model("ManagerLogin", ManagerLoginSchema),
+  // ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
 };

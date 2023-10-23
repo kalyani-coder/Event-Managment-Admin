@@ -5,6 +5,7 @@ const { FindTable } = require("../utils/utils");
 
 router.delete("/:table/:id", async (req, res) => {
   const { table, id } = req.params;
+  // const ids =
   const Table = FindTable({ table });
   if (Table) {
     try {
