@@ -6,13 +6,10 @@ import myImage from "./logo.png";
 
 function QuotationForm() {
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
-  const _id = useParams();
   const location = useLocation();
-
   const data = location.state;
-  console.log(_id);
+  const customerName = data?.enquiry?.customer_name || "";
 
-  // Removed the second declaration of sections
   const [sections, setSections] = useState([
     {
       srNumber: 1,
@@ -31,8 +28,8 @@ function QuotationForm() {
     const { name, value } = e.target;
     let newValue = value;
 
-    // Validate input to allow only numeric values for "Per," "Rate," and "Days"
-    if (["per", "rate", "days"].includes(name)) {
+    // Validate input to allow only numeric values for "Quantity," "Rate," and "Days"
+    if (["quantity", "rate", "days"].includes(name)) {
       if (!isNaN(value) || value === "") {
         const list = [...sections];
         list[index][name] = value;
@@ -40,12 +37,12 @@ function QuotationForm() {
 
         // Calculate the amount if all three fields have valid numeric values
         if (
-          !isNaN(list[index].per) &&
+          !isNaN(list[index].quantity) &&
           !isNaN(list[index].rate) &&
           !isNaN(list[index].days)
         ) {
           newValue = (
-            list[index].per *
+            list[index].quantity *
             list[index].rate *
             list[index].days
           ).toString();
@@ -91,14 +88,14 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    doc.text(`Quotation Form of ${data.eventName}`, 10, 10);
+    doc.text(`Quotation Form of ${data.enquiry.event_name}`, 10, 10);
 
     // Add customer information table
     const customerData = [
-      ["Customer Name", data.customerName],
-      ["Customer Address", data.customerAddress],
-      ["Event Date", data.eventDate],
-      ["Event Venue", data.eventVenue],
+      ["Customer Name", data.enquiry.customer_name],
+      ["Customer Address", data.enquiry.address],
+      ["Event Date", data.enquiry.event_date],
+      ["Event Venue", data.enquiry.event_venue],
     ];
 
     // Add company information table
@@ -147,7 +144,6 @@ function QuotationForm() {
       section.title,
       section.particular,
       section.description,
-      section.per,
       section.unit,
       section.rate,
       section.days,
@@ -161,7 +157,6 @@ function QuotationForm() {
           "Title of Section",
           "Particular",
           "Description",
-          "Per",
           "Unit",
           "Rate",
           "Days",
@@ -172,13 +167,13 @@ function QuotationForm() {
       startY: 110,
     });
 
-    doc.save(`${data.customerName}-Quotation.pdf`);
+    doc.save(`${data.enquiry.customer_name}-Quotation.pdf`);
     alert("PDF file generated");
   };
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Quotation Form of {data.customerName}</h1>
+      <h1 className="mb-4">Quotation Form of {customerName}</h1>
       {sections.map((section, index) => (
         <div key={index} className="mb-4">
           <div className="form-group">
@@ -256,18 +251,12 @@ function QuotationForm() {
                     className="form-control"
                     id={`unit${index}`}
                     name="unit"
-                    type="number" // Set the input type to "number" to allow only numeric input
+                    type="text" // Set the input type to "number" to allow only numeric input
                     placeholder="Enter value"
                     required
                     style={{ paddingRight: '50px' }} // Add some padding to the right to make space for "sqft"
                   />
-                  <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
-                    sqft
-                  </span>
                 </div>
-
-
-
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor={`rate${index}`}>
@@ -276,10 +265,9 @@ function QuotationForm() {
                 <input
                   type="number"
                   className="form-control"
-
-                  name="rate"
-
-
+                  name="quantity"
+                  value={section.quantity}
+                  onChange={(e) => handleChange(e, index)}
                   required
                 />
               </div>
@@ -322,7 +310,6 @@ function QuotationForm() {
               className="form-control"
               id={`amount${index}`}
               name="amount"
-              // disabled
               value={section.amount}
               onChange={(e) => handleChange(e, index)}
               required

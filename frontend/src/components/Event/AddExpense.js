@@ -14,9 +14,19 @@ const AddExpense = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    // const handleShow = () => {
+    //     if (event_id) {
+    //         window.location.href = `/expenses/:eventId/${event_id}`;
+    //     } else {
+    //         setErrorMessage("Please select an event before showing expenses.");
+    //     }
+    
+
+
     const handleShow = () => {
+        // Redirect to the expenses page for the selected event
         if (event_id) {
-            window.location.href = `/expenses/:eventId/${event_id}`;
+            window.location.href = `/expenses/${event_id}`;
         } else {
             setErrorMessage("Please select an event before showing expenses.");
         }
@@ -59,6 +69,9 @@ const AddExpense = () => {
                 setAmount("");
                 setDate("");
             });
+
+          
+
     };
 
     return (
@@ -145,7 +158,7 @@ const AddExpense = () => {
                                 </button>
 
 
-                                <Link to={`/expenses/${EventId}`}>
+                                {/* <Link to={`/expenses/${EventId}`}>
                                     <button
                                         type="button"
                                         className="btn btn-info mx-3"
@@ -153,7 +166,18 @@ const AddExpense = () => {
                                     >
                                         View Expenses
                                     </button>
-                                </Link>
+                                </Link> */}
+
+                                <Link to={`/expenses/${EventId}`}>
+                    <button
+                        type="button"
+                        className="btn btn-info mx-3"
+                        onClick={handleShow}
+                    >
+                        View Expenses
+                    </button>
+                </Link>
+
                             </form>
                         </div>
                     </div>
