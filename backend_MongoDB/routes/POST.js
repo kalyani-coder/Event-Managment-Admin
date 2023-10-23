@@ -109,7 +109,7 @@ router.post("/inventorystock/:item/:quantity", async (req, res) => {
 
 router.post("/:table", async (req, res) => {
   const { table } = req.params;
-  if (table === "attendance") {
+  if (table === "attendance" ) {
     res.status(400).send("Bad Request");
     return;
   }
@@ -149,7 +149,11 @@ router.post("/:table", async (req, res) => {
 
 router.post("/:table/:id", async (req, res) => {
   const { table, id } = req.params;
-  if (table === "inventorystock" || table === "attendance") {
+  if (
+    table === "inventorystock" ||
+    table === "attendance" ||
+    // table === "manager"
+  ) {
     res.status(400).send("Bad Request");
     return;
   }
