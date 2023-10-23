@@ -145,7 +145,7 @@ const ManagerDetailsSchema = new Schema({
   lname: String,
   email: String,
   contact: Number,
-  profile_image: String,
+  // profile_image: String,
   address: String,
   city: String,
   state: String,
