@@ -151,9 +151,10 @@ router.post("/:table/:id", async (req, res) => {
   const { table, id } = req.params;
   if (
     table === "inventorystock" ||
-    table === "attendance" ||
+    table === "attendance" 
     // table === "manager"
-  ) {
+  ) 
+  {
     res.status(400).send("Bad Request");
     return;
   }
