@@ -203,7 +203,7 @@ const FilterBodyByTable = ({ req, table }) => {
         rem_payment,
         total_amt,
         status,
-        completed,
+        completed = false,
       } = req.body;
       return {
         order_id,
@@ -216,7 +216,7 @@ const FilterBodyByTable = ({ req, table }) => {
         adv_payment,
         rem_payment,
         total_amt,
-        status: status.toLowerCase() === "true" ? true : false,
+        status,
         completed: completed.toLowerCase() === "true" ? true : false,
       };
     } else if (table == "eventexpense") {
