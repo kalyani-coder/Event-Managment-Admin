@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // const ManagerDetails = require("../models/newModels");
-const { Managerdetails } = require("../models/newModels");
+const { ManagerDetails } = require("../models/newModels");
 const { ManagerLogin } = require("../models/newModels");
 
 const saltRounds = 10;
@@ -28,8 +28,18 @@ router.post("/register", async (req, res) => {
     password,
   } = req.body;
 
+  // Check if a user with the given email already exists
+  const existingUser = await ManagerLogin.findOne({ email: email });
+
+  if (existingUser) {
+    return res.status(200).send({
+      message: "User already exists",
+      validity: false,
+    });
+  }
+
   // Store all the data in the Managerdetails table, all the fields except the password.
-  const managerDetails = new Managerdetails({
+  const managerDetails = new ManagerDetails({
     manager_id,
     fname,
     lname,
@@ -59,8 +69,9 @@ router.post("/register", async (req, res) => {
   const savedManagerLogin = await managerLogin.save();
 
   res.send({
+    message: "Registered successfully",
+    validity: true,
     managerDetails: savedManagerDetails,
-    managerLogin: savedManagerLogin,
   });
 });
 

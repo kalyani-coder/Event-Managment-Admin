@@ -17,6 +17,7 @@ const {
   InventoryStock,
   Accountant,
   ExecutiveTask,
+  ManagerLogin,
 } = require("../models/newModels");
 
 // const Accountants = require("../models/accountant");
@@ -66,6 +67,8 @@ const FindTable = ({ table }) => {
     return Accountant;
   } else if (table.toLowerCase() == "executivetask") {
     return ExecutiveTask;
+  } else if (table.toLowerCase() == "managerlogin") {
+    return ManagerLogin;
   } else {
     return null;
   }

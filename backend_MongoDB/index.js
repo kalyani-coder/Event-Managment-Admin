@@ -17,7 +17,7 @@ app.use(cors());
 app.use("/api", GET);
 app.use("/api", POST);
 app.use("/api", DELETE);
-app.use("/api", Login);
+app.use("/auth", Login);
 
 mongoose
   .connect(
