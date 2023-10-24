@@ -65,7 +65,7 @@ const OrderSchema = new Schema({
   adv_payment: Number,
   rem_payment: Number,
   total_amt: Number,
-  status: String,
+  status: Boolean,
   completed: Boolean,
 });
 
