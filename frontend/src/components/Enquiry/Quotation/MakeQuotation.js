@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import myImage from "./logo.png";
 
 function QuotationForm() {
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
+  const navigate = useNavigate();
   const location = useLocation();
-  const data = location.state;
-  const customerName = data?.enquiry?.customer_name || "";
+  const data = location.state || {};
+  const enquiry = data.enquiry || {};
+
+  const eventName = enquiry.eventName || "";
 
   const [sections, setSections] = useState([
     {
@@ -28,14 +32,12 @@ function QuotationForm() {
     const { name, value } = e.target;
     let newValue = value;
 
-    // Validate input to allow only numeric values for "Quantity," "Rate," and "Days"
     if (["quantity", "rate", "days"].includes(name)) {
       if (!isNaN(value) || value === "") {
         const list = [...sections];
         list[index][name] = value;
         newValue = value;
 
-        // Calculate the amount if all three fields have valid numeric values
         if (
           !isNaN(list[index].quantity) &&
           !isNaN(list[index].rate) &&
@@ -63,7 +65,6 @@ function QuotationForm() {
       setSections(list);
     }
 
-    // Update the input value
     e.target.value = newValue;
   };
 
@@ -85,20 +86,33 @@ function QuotationForm() {
     ]);
   };
 
+  const handleSave = async () => {
+    try {
+      // Send a POST request to the API endpoint with the sections data
+      await axios.post("http://localhost:5000/api/quotation", {
+        // customer_name,
+        sections,
+      });
+
+      alert("Quotation saved successfully!");
+    } catch (error) {
+      console.error("Error saving quotation:", error);
+      alert("Error saving quotation. Please try again.");
+    }
+  };
+
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    doc.text(`Quotation Form of ${data.enquiry.event_name}`, 10, 10);
+    doc.text(`Quotation Form of ${enquiry.enquiry.event_name}`, 10, 10);
 
-    // Add customer information table
     const customerData = [
-      ["Customer Name", data.enquiry.customer_name],
-      ["Customer Address", data.enquiry.address],
-      ["Event Date", data.enquiry.event_date],
-      ["Event Venue", data.enquiry.event_venue],
+      ["Customer Name", enquiry.customer_name],
+      ["Customer Address", enquiry.address],
+      ["Event Date", enquiry.event_date],
+      ["Event Venue", enquiry.event_venue],
     ];
 
-    // Add company information table
     const companyData = [
       ["Company Name", "Tutons Events LLP"],
       [
@@ -112,20 +126,19 @@ function QuotationForm() {
     const customerTableX = 30;
     const customerTableY = 40;
 
-    // Set the position for the company information table
-    const companyTableX = 105; // Half of the page width
+    const companyTableX = 105;
     const companyTableY = 40;
 
-    // Calculate the width of the customer information table (half of the page width)
     const pageWidth = doc.internal.pageSize.width;
-    // Calculate the width of the customer information table (less than half of the page width)
-    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10; // Adjust the width as needed
+    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
+
     doc.autoTable({
       body: customerData,
       startY: customerTableY,
       theme: "grid",
       margin: { right: companyData },
     });
+
     const imageWidth = 40;
     const imageHeight = 30;
     const imageX = 120;
@@ -167,13 +180,13 @@ function QuotationForm() {
       startY: 110,
     });
 
-    doc.save(`${data.enquiry.customer_name}-Quotation.pdf`);
+    doc.save(`${enquiry.customer_name}-Quotation.pdf`);
     alert("PDF file generated");
   };
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Quotation Form of {customerName}</h1>
+      <h1 className="mb-4">Quotation Form of {eventName}</h1>
       {sections.map((section, index) => (
         <div key={index} className="mb-4">
           <div className="form-group">
@@ -251,10 +264,10 @@ function QuotationForm() {
                     className="form-control"
                     id={`unit${index}`}
                     name="unit"
-                    type="text" // Set the input type to "number" to allow only numeric input
+                    type="text"
                     placeholder="Enter value"
                     required
-                    style={{ paddingRight: '50px' }} // Add some padding to the right to make space for "sqft"
+                    style={{ paddingRight: '50px' }}
                   />
                 </div>
               </div>
@@ -320,7 +333,10 @@ function QuotationForm() {
       <button className="btn btn-primary" onClick={handleAddSection}>
         Add Section
       </button>
-      <button className="btn btn-success mx-5" onClick={handlePrint}>
+      <button className="btn btn-success mx-2" onClick={handleSave}>
+        Save
+      </button>
+      <button className="btn btn-success mx-2" onClick={handlePrint}>
         Print
       </button>
     </div>

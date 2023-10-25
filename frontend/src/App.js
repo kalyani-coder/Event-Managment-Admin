@@ -52,7 +52,7 @@ function App() {
           <Route path="/manager/:_id" element={<ManagerDetailPage />} />
           <Route path="/accountant/:_id" element={<AccountantDetailPage />} />
           <Route path="/quotation" element={<ViewEnquiry />} />
-          <Route path="//quotation/:id" element={<MakeQuotation />} />
+          <Route path="//quotation/:_id" element={<MakeQuotation />} />
           <Route path="/advancepayment" element={<AdvancePaymentForm />} />
           <Route path="/orderform" element={<OrderForm />} />
           <Route path="/addsalary/" element={<AddSalary />} />
@@ -60,7 +60,7 @@ function App() {
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
           <Route path="/viewevent" element={<EventDetails />} />
           {/* <Route path="/event-more-details" element={<EventMoreDetails />} /> */}
-          <Route path="/event-more-details/:_id" element={<EventMoreDetails />} />
+          <Route path="/event-more-details/:eventId" element={<EventMoreDetails />} />
           <Route path="/add-expense/:eventId" element={<AddExpense />} />
           <Route path="/expenses/:eventId" element={<ExpenseList />} />
           <Route path="/viewsalary/" element={<ViewSalary />} />

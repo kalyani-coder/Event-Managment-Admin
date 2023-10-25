@@ -32,7 +32,10 @@ const Card = (enquiry) => {
           <Link
             to={{
               pathname: `/quotation/${enquiry._id}`,
-              state: { customerName: enquiry.enquiry.customer_name, ...enquiry },
+              state: {
+                customerName: enquiry.enquiry.customer_name,
+                eventName: enquiry.enquiry.event_name, ...enquiry,
+              },
             }}
             className="btn btn-info"
           >
