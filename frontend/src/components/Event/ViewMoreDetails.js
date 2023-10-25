@@ -1,7 +1,8 @@
 // ViewMoreDetails.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Card } from "react-bootstrap";
+import { useParams, Link } from 'react-router-dom';
+// import { Card } from "react-bootstrap";
+import { Card, Button } from 'react-bootstrap';
 
 import axios from 'axios';
 
@@ -55,6 +56,18 @@ const ViewMoreDetails = () => {
           <Card.Text>Date: {eventDetails.event_date}</Card.Text>
           <Card.Text>Time: {eventDetails.currentTime}</Card.Text>
         </Card.Body>
+
+        <Link to={`/add-expense/${eventId}`}>
+          <Button variant="primary" className="mr-2">
+            Add Expense
+          </Button>
+        </Link>
+
+        <Link to={`/expenses/${eventId}`}>
+          <Button variant="success">
+            View Expenses
+          </Button>
+        </Link>
       </card>
     </div>
   );
