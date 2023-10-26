@@ -30,6 +30,7 @@ import VendorPayment from "./components/VendorPayment/VendorPayment";
 import AddInventory from "./components/Inventory/AddInventory";
 import ViewInventory from "./components/Inventory/ViewInventory";
 import VendorPaymentView from "./components/VendorPayment/ViewVendorPayment";
+import ViewVendorPayment from "./components/VendorPayment/VendorPaymentDetails";
 
 function App() {
   return (
@@ -58,6 +59,8 @@ function App() {
           <Route path="/addsalary/" element={<AddSalary />} />
           <Route path="/vendordetails" element={<VendorDetails />} />
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
+          <Route path="/view-more/:_id" element={<ViewVendorPayment />} />
+
           <Route path="/viewevent" element={<EventDetails />} />
           {/* <Route path="/event-more-details" element={<EventMoreDetails />} /> */}
           <Route path="/event-more-details/:eventId" element={<EventMoreDetails />} />

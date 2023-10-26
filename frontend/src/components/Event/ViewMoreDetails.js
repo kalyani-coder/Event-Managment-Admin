@@ -1,9 +1,6 @@
-// ViewMoreDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-// import { Card } from "react-bootstrap";
 import { Card, Button } from 'react-bootstrap';
-
 import axios from 'axios';
 
 const ViewMoreDetails = () => {
@@ -30,18 +27,8 @@ const ViewMoreDetails = () => {
   return (
     <div className="container mt-5">
       <h2>Event More Details</h2>
-      {/* <p>Event ID: {eventId}</p> */}
-      {/* Render the details of the event based on the fetched data */}
-      {/* <p>Event Name: {eventDetails.fname}</p>
-      <p>Company: {eventDetails.lname}</p>
-      <p>Event Name: {eventDetails.fname}</p>
-      <p>Company: {eventDetails.company_name}</p><p>Event Name: {eventDetails.fname}</p>
-      <p>Company: {eventDetails.company_name}</p><p>Event Name: {eventDetails.fname}</p>
-      <p>Company: {eventDetails.company_name}</p><p>Event Name: {eventDetails.fname}</p>
-      <p>Company: {eventDetails.company_name}</p>
-      Add more details as needed */}
 
-      <card>
+      <Card bg="light" className="mt-3">
         <Card.Body>
           <Card.Title>{eventDetails.fname}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
@@ -55,20 +42,20 @@ const ViewMoreDetails = () => {
           <Card.Text>Budget: ${eventDetails.budget}</Card.Text>
           <Card.Text>Date: {eventDetails.event_date}</Card.Text>
           <Card.Text>Time: {eventDetails.currentTime}</Card.Text>
+
+          <Link to={`/add-expense/${eventId}`}>
+            <Button variant="primary" className="mr-2">
+              Add Expense
+            </Button>
+          </Link>
+
+          <Link to={`/expenses/${eventId}`}>
+            <Button variant="success">
+              View Expenses
+            </Button>
+          </Link>
         </Card.Body>
-
-        <Link to={`/add-expense/${eventId}`}>
-          <Button variant="primary" className="mr-2">
-            Add Expense
-          </Button>
-        </Link>
-
-        <Link to={`/expenses/${eventId}`}>
-          <Button variant="success">
-            View Expenses
-          </Button>
-        </Link>
-      </card>
+      </Card>
     </div>
   );
 };

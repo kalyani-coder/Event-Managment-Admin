@@ -12,7 +12,7 @@ function QuotationForm() {
   const data = location.state || {};
   const enquiry = data.enquiry || {};
 
-  const eventName = enquiry.eventName || "";
+  const eventName = enquiry?.enquiry?.event_name || "";
 
   const [sections, setSections] = useState([
     {
@@ -104,13 +104,13 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    doc.text(`Quotation Form of ${enquiry.enquiry.event_name}`, 10, 10);
+    doc.text(`Quotation Form of ${enquiry?.enquiry?.event_name || ""}`, 10, 10);
 
     const customerData = [
-      ["Customer Name", enquiry.customer_name],
-      ["Customer Address", enquiry.address],
-      ["Event Date", enquiry.event_date],
-      ["Event Venue", enquiry.event_venue],
+      ["Customer Name", enquiry?.enquiry?.customer_name],
+      ["Customer Address", enquiry?.enquiry?.address],
+      ["Event Date", enquiry?.enquiry?.event_date],
+      ["Event Venue", enquiry?.enquiry?.event_venue],
     ];
 
     const companyData = [
@@ -180,7 +180,7 @@ function QuotationForm() {
       startY: 110,
     });
 
-    doc.save(`${enquiry.customer_name}-Quotation.pdf`);
+    doc.save(`${enquiry?.enquiry?.customer_name}-Quotation.pdf`);
     alert("PDF file generated");
   };
 

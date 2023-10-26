@@ -16,7 +16,7 @@ const ExpenseList = () => {
 
     return (
         <div className="container mt-5">
-            <h5>Expense List for Event ID {eventId}</h5>
+            <h5>Expense List </h5>
             <table className="table">
                 <thead>
                     <tr>
