@@ -253,6 +253,76 @@ export default function Sidebar() {
                   </ul>
                 </li>
 
+
+                <li className="active">
+                  <a
+                    href="#attendance"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
+                  >
+                    <FontAwesomeIcon icon={faMoneyCheck}
+                      style={{ marginRight: "10px", color: "#9b59b6" }} // Change color
+                      size="lg"
+                    />
+                    Attendance
+                  </a>
+                  <ul className="collapse list-unstyled" id="attendance">
+                    <li>
+                      <Link to={"/attendance"}>
+                        <FontAwesomeIcon icon={faMoneyCheck}
+                          style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Mark Attendance
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/viewsalary"}>
+                        <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        View Attendance
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
+
+
+                <li className="active">
+                  <a
+                    href="#updatetask"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
+                  >
+                    <FontAwesomeIcon icon={faMoneyCheck}
+                      style={{ marginRight: "10px", color: "#9b59b6" }} // Change color
+                      size="lg"
+                    />
+                    Update Task
+                  </a>
+                  <ul className="collapse list-unstyled" id="updatetask">
+                    <li>
+                      <Link to={"/updatetask"}>
+                        <FontAwesomeIcon icon={faMoneyCheck}
+                          style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Task
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/viewsalary"}>
+                        <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        View Task
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
+
+
+
                 <li className="active">
                   <a
                     href="#SalarySubMenu"

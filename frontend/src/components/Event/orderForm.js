@@ -6,7 +6,7 @@ const OrderForm = () => {
   const [contact, setcontact] = useState("");
   const [email, setemail] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(""); 
   const [venue, setVenue] = useState("");
   const [adv_payment, setadv_payment] = useState(0);
   const [rem_payment, setrem_payment] = useState(0);
@@ -36,7 +36,7 @@ const OrderForm = () => {
           contact,
           email,
           date,
-          time,
+          time, 
           venue,
           adv_payment,
           rem_payment,
@@ -92,7 +92,7 @@ const OrderForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">email</label>
+          <label className="form-label">Email</label>
           <input
             type="email"
             className="form-control"
@@ -113,6 +113,7 @@ const OrderForm = () => {
           />
         </div>
 
+        {/* Uncomment the code below if you want to include the time input */}
         {/* <div className="mb-3">
           <label className="form-label">Time</label>
           <input
@@ -167,6 +168,5 @@ const OrderForm = () => {
     </div>
   );
 };
-
 
 export default OrderForm;
