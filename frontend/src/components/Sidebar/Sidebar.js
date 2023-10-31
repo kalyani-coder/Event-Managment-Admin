@@ -38,6 +38,10 @@ export default function Sidebar() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  const handleLogout = () => {
+    window.location.href = 'https://eventmanagement-qaii.onrender.com';
+
+  }
 
   const showToggleButton = windowWidth < 988;
 
@@ -277,7 +281,7 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"/viewsalary"}>
+                      <Link to={"/viewattendance"}>
                         <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         View Attendance
@@ -390,6 +394,11 @@ export default function Sidebar() {
                       size="lg" />
                     Download Report
                   </a>
+                </li>
+                <li>
+                  <button className="btn btn-danger mt-5 ml-5"
+                    onClick={handleLogout}
+                  >Logout</button>
                 </li>
                 {/* Add similar customization for other menu items */}
               </ul>
