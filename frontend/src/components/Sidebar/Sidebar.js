@@ -315,7 +315,7 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"/viewsalary"}>
+                      <Link to={"/updatetask"}>
                         <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         View Task
