@@ -32,8 +32,8 @@ import ViewInventory from "./components/Inventory/ViewInventory";
 import VendorPaymentView from "./components/VendorPayment/ViewVendorPayment";
 import ViewVendorPayment from "./components/VendorPayment/VendorPaymentDetails";
 import Attendance from "./components/Attendance/Attendance";
-import UpdateTaskPage from "./components/UsersDetails/UpdateTask";
 import ViewAttendance from "./components/Attendance/ViewAttendence";
+import UpdateTaskPage from './components/UpdateTask/UpdateTask';
 
 function App() {
   return (
