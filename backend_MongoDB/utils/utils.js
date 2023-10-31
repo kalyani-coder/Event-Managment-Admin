@@ -163,6 +163,7 @@ const FilterBodyByTable = ({ req, table }) => {
       };
     } else if (table == "event") {
       const {
+        eventName,
         event_id,
         quotation_id,
         fname,
@@ -177,6 +178,7 @@ const FilterBodyByTable = ({ req, table }) => {
         budget,
       } = req.body;
       return {
+        eventName,
         event_id,
         quotation_id,
         fname,

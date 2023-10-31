@@ -41,6 +41,7 @@ const AdvPaymentSchema = new Schema({
 });
 
 const EventSchema = new Schema({
+  eventName : String,
   event_id: Number,
   quotation_id: { type: Number, ref: "Quotation" },
   fname: String,

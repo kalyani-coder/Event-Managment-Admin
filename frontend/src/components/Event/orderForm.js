@@ -1,27 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const OrderForm = () => {
   const [eventName, setEventName] = useState("");
-  const [customer_name, setcustomer_name] = useState("");
-  const [contact, setcontact] = useState("");
-  const [email, setemail] = useState("");
+  const [customer_name, setCustomerName] = useState("");
+  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState(""); 
+  const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
-  const [adv_payment, setadv_payment] = useState(0);
-  const [rem_payment, setrem_payment] = useState(0);
+  const [adv_payment, setAdvPayment] = useState(0);
+  const [rem_payment, setRemPayment] = useState(0);
+  const [eventList, setEventList] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const resetForm = () => {
     setEventName("");
-    setcustomer_name("");
-    setcontact("");
-    setemail("");
+    setCustomerName("");
+    setContact("");
+    setEmail("");
     setDate("");
     setTime("");
     setVenue("");
-    setadv_payment(0);
-    setrem_payment(0);
+    setAdvPayment(0);
+    setRemPayment(0);
   };
+
+  const fetchEvent = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/event');
+      if (response.ok) {
+        const data = await response.json();
+        setEventList(data);
+      } else {
+        console.error('Failed to fetch events');
+      }
+    } catch (error) {
+      console.error('API request error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvent();
+  }, []);
 
   const handleAssignToManager = async () => {
     try {
@@ -31,12 +51,12 @@ const OrderForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          eventName,
+          eventName: selectedEvent ? selectedEvent.eventName : "",
           customer_name,
           contact,
           email,
           date,
-          time, 
+          time,
           venue,
           adv_payment,
           rem_payment,
@@ -47,7 +67,8 @@ const OrderForm = () => {
         alert("Order assigned to manager successfully");
         resetForm(); // Reset the form after successful assignment
       } else {
-        console.error("Failed to assign order to manager");
+        const errorData = await response.json();
+        console.error("Failed to assign order to manager:", errorData);
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -58,15 +79,29 @@ const OrderForm = () => {
     <div className="container mt-5">
       <h1>Create Order For Manager</h1>
       <form>
-        <div className="mb-3">
-          <label className="form-label">Event Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
-            required
-          />
+        <div className="form-group">
+          <label htmlFor="eventname" className="form-label">
+            Event Name:
+          </label>
+          <select
+            className="form-control-cust-inq-input"
+            id="eventname"
+            name="eventname"
+            onChange={(e) => {
+              const selectedEvent = eventList.find(
+                (event) => event.eventName === e.target.value
+              );
+              setSelectedEvent(selectedEvent);
+            }}
+            value={selectedEvent ? selectedEvent.eventName : ''}
+          >
+            <option value="">Select Event</option>
+            {eventList.map((event) => (
+              <option key={event.id} value={event.eventName}>
+                {event.eventName}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="mb-3">
@@ -75,7 +110,7 @@ const OrderForm = () => {
             type="text"
             className="form-control"
             value={customer_name}
-            onChange={(e) => setcustomer_name(e.target.value)}
+            onChange={(e) => setCustomerName(e.target.value)}
             required
           />
         </div>
@@ -86,7 +121,7 @@ const OrderForm = () => {
             type="tel"
             className="form-control"
             value={contact}
-            onChange={(e) => setcontact(e.target.value)}
+            onChange={(e) => setContact(e.target.value)}
             required
           />
         </div>
@@ -97,7 +132,7 @@ const OrderForm = () => {
             type="email"
             className="form-control"
             value={email}
-            onChange={(e) => setemail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -113,8 +148,7 @@ const OrderForm = () => {
           />
         </div>
 
-        {/* Uncomment the code below if you want to include the time input */}
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <label className="form-label">Time</label>
           <input
             type="time"
@@ -123,7 +157,7 @@ const OrderForm = () => {
             onChange={(e) => setTime(e.target.value)}
             required
           />
-        </div> */}
+        </div>
 
         <div className="mb-3">
           <label className="form-label">Venue</label>
@@ -142,7 +176,7 @@ const OrderForm = () => {
             type="number"
             className="form-control"
             value={adv_payment}
-            onChange={(e) => setadv_payment(parseFloat(e.target.value))}
+            onChange={(e) => setAdvPayment(parseFloat(e.target.value))}
             required
           />
         </div>
@@ -153,7 +187,7 @@ const OrderForm = () => {
             type="number"
             className="form-control"
             value={rem_payment}
-            onChange={(e) => setrem_payment(parseFloat(e.target.value))}
+            onChange={(e) => setRemPayment(parseFloat(e.target.value))}
             required
           />
         </div>
