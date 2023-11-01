@@ -34,6 +34,7 @@ import ViewVendorPayment from "./components/VendorPayment/VendorPaymentDetails";
 import Attendance from "./components/Attendance/Attendance";
 import ViewAttendance from "./components/Attendance/ViewAttendence";
 import UpdateTaskPage from './components/UpdateTask/UpdateTask';
+import ViewTaskPage from "./components/UpdateTask/ViewTask";
 
 function App() {
   return (
@@ -63,23 +64,19 @@ function App() {
           <Route path="/vendordetails" element={<VendorDetails />} />
           <Route path="/vendor/:_id" element={<VendorDetailPage />} />
           <Route path="/view-more/:_id" element={<ViewVendorPayment />} />
-
           <Route path="/viewevent" element={<EventDetails />} />
-          {/* <Route path="/event-more-details" element={<EventMoreDetails />} /> */}
           <Route path="/event-more-details/:eventId" element={<EventMoreDetails />} />
           <Route path="/add-expense/:eventId" element={<AddExpense />} />
           <Route path="/expenses/:eventId" element={<ExpenseList />} />
           <Route path="/viewsalary/" element={<ViewSalary />} />
           <Route path="/vendorpayment" element={<VendorPayment />} />
           <Route path="/viewvendorpayment" element={<VendorPaymentView />} />
-
           <Route path="/addinventory" element={<AddInventory />} />
           <Route path="/viewinventory" element={<ViewInventory />} />
           <Route path="/attendance" element={<Attendance />} />
-          <Route path="/viewattendance" element={
-            <ViewAttendance />
-          } />
+          <Route path="/viewattendance" element={<ViewAttendance />} />
           <Route path="/updatetask" element={<UpdateTaskPage />} />
+          <Route path="/viewtask" element={<ViewTaskPage />} />
         </Routes>
 
       </Router>
