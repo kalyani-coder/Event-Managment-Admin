@@ -24,16 +24,16 @@ const AttendancePage = () => {
         fetchExecutiveData();
     }, []);
 
-    const handleCheckboxChange = (id, present) => {
-        // Update the attendanceData state based on checkbox changes
-        const updatedAttendanceData = attendanceData.map(item =>
-            item.id === id ? { ...item, present } : item
+    const handleStatusChange = (id, status) => {
+        // Update the attendanceData array based on dropdown selection
+        setAttendanceData((prevAttendanceData) =>
+            prevAttendanceData.map((item) =>
+                item.id === id ? { ...item, present: status } : item
+            )
         );
-
-        console.log('Updated Attendance Data:', updatedAttendanceData);
-
-        setAttendanceData(updatedAttendanceData);
     };
+
+    console.log('Updated Attendance Data:', attendanceData);
 
     const handleSubmit = async () => {
         try {
@@ -41,21 +41,28 @@ const AttendancePage = () => {
             const formData = new FormData();
 
             // Append data to FormData
-            attendanceData.forEach(({ name, id, present }) => {
+            attendanceData.forEach(({ date, name, id, present }) => {
                 formData.append('name', name);
+                formData.append('date', date);
                 formData.append('id', id);
-                formData.append('present', "");
+                formData.append('present', present);
             });
-
+            console.log("all data" , formData)
+            
+            
+            
+            
             // Append additional fields if needed
             formData.append('date', 'your_date_value'); // Example: You can replace 'your_date_value' with the actual date value
-
             // Make a POST request to the API endpoint
-            const response = await fetch('http://localhost:5000/api/attendance', {
+            const response = await fetch('http://localhost:5000/api/attendance/:date/:id/:true', {
                 method: 'POST',
                 body: formData,
             });
-
+            console.log('Response:', response);
+           
+            // const responseData = await response.json();
+            // console.log('Response Data:', responseData);
             if (response.ok) {
                 console.log('Attendance data successfully submitted.');
                 // You can perform additional actions here if needed
@@ -72,38 +79,32 @@ const AttendancePage = () => {
             <div className='d-flex justify-content-between'>
                 <h1>Attendance Page</h1>
                 <div></div>
-                <div><input type='date' placeholder='Date'></input></div>
+                <div>
+                    <input type='date' placeholder='Date'></input>
+                </div>
             </div>
             <form>
                 <table className="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Present</th>
-                            <th>Absent</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {executives.map(executive => (
+                        {executives.map((executive) => (
                             <tr key={executive.id}>
                                 <td>{executive.fname} {executive.lname}</td>
                                 <td>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            style={{ width: "50px", height: "30px" }}
-                                            onChange={() => handleCheckboxChange(executive.id, 'present')}
-                                        />
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            style={{ width: "50px", height: "30px" }}
-                                            onChange={() => handleCheckboxChange(executive.id, 'absent')}
-                                        />
-                                    </label>
+                                    <select
+                                        className="form-select"
+                                        onChange={(e) => handleStatusChange(executive.id, e.target.value)}
+                                        value={attendanceData.find(item => item.id === executive.id)?.present || ""}
+                                    >
+                                        <option value="" disabled>Select status</option>
+                                        <option value="present">Present</option>
+                                        <option value="absent">Absent</option>
+                                    </select>
                                 </td>
                             </tr>
                         ))}
