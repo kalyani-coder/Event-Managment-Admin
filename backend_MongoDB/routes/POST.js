@@ -5,16 +5,16 @@ const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
 
 const { InventoryStock } = require("../models/newModels");
-const { Attendance } = require("../models/newModels");
-const { Managerdetails } = require("../models/newModels");
-const { Executivedetails } = require("../models/newModels");
 const { ExecutiveTask } = require("../models/newModels");
+const { Attendance } = require("../models/newModels");
+const { ManagerDetails } = require("../models/newModels");
+const { ExecutiveDetails } = require("../models/newModels");
 
 router.post("/attendance/:day/:id/:presence", async (req, res) => {
-  const { day, id, presence } = req.params;
+  var { day, id, presence } = req.params;
 
   if (day === "today") {
-    const today = new Date();
+    var today = new Date();
     day = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
   } else if (!/^\d{2}-\d{2}-\d{4}$/.test(day)) {
     return res
@@ -64,6 +64,61 @@ router.post("/attendance/:day/:id/:presence", async (req, res) => {
     day,
     name: employee.name,
     presence: employee.present,
+    presentCount,
+  });
+});
+
+router.post("/bulkattendance/:day", async (req, res) => {
+  var { day } = req.params;
+  var attendanceUpdates = req.body;
+
+  if (!/^\d{2}-\d{2}-\d{4}$/.test(day)) {
+    return res
+      .status(400)
+      .send(
+        "The day should be in the format of ddmmyyyy like 12-10-2023 for October 12th day."
+      );
+  }
+
+  let attendance = await Attendance.findOne({ day });
+
+  if (!attendance) {
+    // const managers = await ManagerDetails.find(
+    //   {},
+    //   { _id: 1, fname: 1, lname: 1 }
+    // );
+    const executives = await ExecutiveDetails.find(
+      {},
+      { _id: 1, fname: 1, lname: 1 }
+    );
+    const employees = [...executives].map((emp) => ({
+      name: `${emp.fname} ${emp.lname}`,
+      id: emp._id,
+      present: false,
+    }));
+
+    attendance = new Attendance({ day, employees });
+    for (let update of attendanceUpdates) {
+      const employee = attendance.employees.find((emp) => emp.id === update.id);
+      if (employee) {
+        employee.present = update.present;
+      }
+    }
+  } else {
+    for (let update of attendanceUpdates) {
+      const employee = attendance.employees.find((emp) => emp.id === update.id);
+      if (employee) {
+        employee.present = update.present;
+      }
+    }
+  }
+
+  await attendance.save();
+
+  const presentCount = attendance.employees.filter((emp) => emp.present).length;
+
+  res.json({
+    day,
     presentCount,
   });
 });

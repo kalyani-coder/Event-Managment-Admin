@@ -1,121 +1,218 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+const AttendanceBox = ({ attendanceData, whichbox, marker }) => {
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    setFilteredData(attendanceData.filter((item) => item.present == whichbox));
+  }, [attendanceData, whichbox]);
+
+  return (
+    <div className="shadow-md rounded-md border">
+      {filteredData.map((item, index) => (
+        <label
+          key={index}
+          className="d-flex justify-content-space-between align-items-center m-0 p-1 px-3 "
+          style={
+            item.present === item.real
+              ? {
+                  background: index % 2 ? "#e6e6e6" : "#f0f5f1",
+                  cursor: "pointer",
+                }
+              : {
+                  cursor: "pointer",
+                  background: item.present
+                    ? index % 2
+                      ? "#e3f6ff"
+                      : "#c9eeff"
+                    : index % 2
+                    ? "#ffe3ed"
+                    : "#ffc9cd",
+                }
+          }
+        >
+          <p
+            style={{
+              margin: "0px",
+              fontWeight: "500",
+              fontSize: "15px",
+            }}
+          >
+            {item.name}
+          </p>
+          <input
+            className="d-none"
+            type="button"
+            onClick={() => marker({ index: item.id, val: !whichbox })}
+          ></input>
+        </label>
+      ))}
+    </div>
+  );
+};
 
 const AttendancePage = () => {
-    const [executives, setExecutives] = useState([]);
-    const [attendanceData, setAttendanceData] = useState([]);
+  const [date, setDate] = useState();
+  const [attendanceData, setAttendanceData] = useState([]);
 
-    useEffect(() => {
-        // Fetch executive data when the component mounts
-        const fetchExecutiveData = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/api/executive');
-                const data = await response.json();
+  const handleDateChange = (e) => {
+    setDate(e);
+    setAttendanceData([]);
+    axios
+      .get(`http://localhost:5000/api/attendance/${e}`)
+      .then((res) => {
+        res.data.map((item) => {
+          setAttendanceData((prev) => {
+            return [
+              ...prev,
+              {
+                ...item,
+                real: item.present,
+              },
+            ];
+          });
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
-                // Initialize attendanceData with default values
-                const initialAttendanceData = data.map(item => ({ name: `${item.fname} ${item.lname}`, id: item.id, present: '' }));
-                setAttendanceData(initialAttendanceData);
-
-                setExecutives(data);
-            } catch (error) {
-                console.error('Error fetching executive data:', error);
-            }
-        };
-
-        fetchExecutiveData();
-    }, []);
-
-    const handleStatusChange = (id, status) => {
-        // Update the attendanceData array based on dropdown selection
-        setAttendanceData((prevAttendanceData) =>
-            prevAttendanceData.map((item) =>
-                item.id === id ? { ...item, present: status } : item
-            )
-        );
-    };
-
-    console.log('Updated Attendance Data:', attendanceData);
-
-    const handleSubmit = async () => {
-        try {
-            // Create a new FormData instance
-            const formData = new FormData();
-
-            // Append data to FormData
-            attendanceData.forEach(({ date, name, id, present }) => {
-                formData.append('name', name);
-                formData.append('date', date);
-                formData.append('id', id);
-                formData.append('present', present);
-            });
-            console.log("all data" , formData)
-            
-            
-            
-            
-            // Append additional fields if needed
-            formData.append('date', 'your_date_value'); // Example: You can replace 'your_date_value' with the actual date value
-            // Make a POST request to the API endpoint
-            const response = await fetch('http://localhost:5000/api/attendance/:date/:id/:true', {
-                method: 'POST',
-                body: formData,
-            });
-            console.log('Response:', response);
-           
-            // const responseData = await response.json();
-            // console.log('Response Data:', responseData);
-            if (response.ok) {
-                console.log('Attendance data successfully submitted.');
-                // You can perform additional actions here if needed
-            } else {
-                console.error('Failed to submit attendance data.');
-            }
-        } catch (error) {
-            console.error('Error submitting attendance data:', error);
-        }
-    };
-
-    return (
-        <div className='container mt-5'>
-            <div className='d-flex justify-content-between'>
-                <h1>Attendance Page</h1>
-                <div></div>
-                <div>
-                    <input type='date' placeholder='Date'></input>
-                </div>
-            </div>
-            <form>
-                <table className="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {executives.map((executive) => (
-                            <tr key={executive.id}>
-                                <td>{executive.fname} {executive.lname}</td>
-                                <td>
-                                    <select
-                                        className="form-select"
-                                        onChange={(e) => handleStatusChange(executive.id, e.target.value)}
-                                        value={attendanceData.find(item => item.id === executive.id)?.present || ""}
-                                    >
-                                        <option value="" disabled>Select status</option>
-                                        <option value="present">Present</option>
-                                        <option value="absent">Absent</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <button type="button" onClick={handleSubmit}>
-                    Submit
-                </button>
-            </form>
-        </div>
+  const marker = ({ index, val }) => {
+    setAttendanceData((prevData) =>
+      prevData.map((item, i) =>
+        item.id === index ? { ...item, present: val } : item
+      )
     );
+    console.log(index, val, attendanceData);
+  };
+
+  const submit = () => {
+    axios
+      .post(
+        `http://localhost:5000/api/bulkattendance/${date}`,
+        attendanceData
+      )
+      .then((res) => {
+        // console.log(res);
+        handleDateChange(date)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  return (
+    <div
+      className="container mt-5 d-flex justify-content-center flex-column"
+      style={{ fontFamily: "arial" }}
+    >
+      <div className="d-flex justify-content-between">
+        <h1>Attendance Sheet</h1>
+      </div>
+      <div
+        className="mt-3"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "1rem",
+          background: "white",
+          borderRadius: "4px",
+          width: "100%",
+        }}
+      >
+        <input
+          type="date"
+          placeholder={date}
+          onChange={(e) => {
+            e.preventDefault();
+            const [year, month, day] = e.target.value.split("-");
+            handleDateChange(`${day}-${month}-${year}`);
+          }}
+          style={{
+            outline: "none",
+            border: "none",
+            background: "black",
+            color: "white",
+          }}
+          className="p-2 mx-0 mb-2 rounded-lg"
+        ></input>
+        <div className="row p-0 m-0">
+          <div className="col-sm-12 col-md-6 my-2 p-0 pt-3 p-1">
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "20px",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              Absent
+            </p>
+            <AttendanceBox
+              attendanceData={attendanceData}
+              whichbox={false}
+              marker={marker}
+            />
+          </div>
+          <div className="col-sm-12 col-md-6 my-2 pt-3 p-1">
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "20px",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              Present
+            </p>
+            <AttendanceBox
+              attendanceData={attendanceData}
+              whichbox={true}
+              marker={marker}
+            />
+            {/* {attendanceData.map((item, index) => {
+              if (item.presence)
+                return (
+                  <label
+                    className="d-flex justify-content-space-between align-items-center p-1 px-3 rounded-lg"
+                    key={index}
+                    style={{
+                      background: item.presence ? "#d1cbf7" : "#f8cccc",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: "0px",
+                        fontWeight: "700",
+                        fontSize: "15px",
+                      }}
+                    >
+                      {item.name}
+                    </p>
+                    <input
+                      className="d-none"
+                      type="checkbox"
+                      checked={item.presence}
+                      onChange={() => marker({ index, val: !item.presence })}
+                    ></input>
+                  </label>
+                );
+            })} */}
+          </div>
+        </div>
+      </div>
+
+      <input
+        type="button"
+        className="rounded-lg outline-none border-0 p-2"
+        value={"Apply Changes"}
+        onClick={submit}
+        style={{ width: "fit-content", marginTop: "1rem", background: "white" }}
+      ></input>
+    </div>
+  );
 };
 
 export default AttendancePage;

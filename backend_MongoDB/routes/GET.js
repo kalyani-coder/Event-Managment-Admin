@@ -1,32 +1,47 @@
 const express = require("express");
 const router = express.Router();
 const { Attendance } = require("../models/newModels");
-const { ExecutiveTask } = require("../models/newModels");
+// const { ExecutiveTask } = require("../models/newModels");
+const { ExecutiveDetails } = require("../models/newModels");
 
 const { FindTable } = require("../utils/utils");
 
-router.get("/attendance/:day", (req, res) => {
+router.get("/attendance/:day", async (req, res) => {
   const { day } = req.params;
   if (day === "today") {
     res.status(400).send("Bad Request");
     return;
   }
-  const Table = Attendance;
-  if (Table) {
-    try {
-      result = Table.find({ day });
-      res.status(200).json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(400).send("Unable to fetch table");
+
+  try {
+    let attendance = await Attendance.findOne({ day });
+    if (!attendance) {
+      const executives = await ExecutiveDetails.find(
+        {},
+        { _id: 1, fname: 1, lname: 1 }
+      );
+      const employees = [...executives].map((emp) => ({
+        name: `${emp.fname} ${emp.lname}`,
+        id: emp._id,
+        present: false,
+      }));
+
+      attendance = new Attendance({ day, employees });
+      await attendance.save();
+      res.status(200).json(employees);
+      return;
     }
-  } else {
-    res.status(400).send("Bad Request");
+
+    res.status(200).json(attendance.employees);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("Unable to fetch table");
   }
 });
 
 router.get("/attendance", async (req, res) => {
   const Table = Attendance;
+
   if (Table) {
     try {
       result = await Table.find();
