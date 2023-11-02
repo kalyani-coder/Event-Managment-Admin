@@ -3,14 +3,15 @@ import React, { useState, useEffect } from "react";
 const OrderForm = () => {
   // State variables for form input fields
   const [eventName, setEventName] = useState("");
-  const [customer_name, setCustomerName] = useState("");
+  const [customer_name, setcustomer_name] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
-  const [adv_payment, setAdvPayment] = useState(0);
-  const [rem_payment, setRemPayment] = useState(0);
+  const [adv_payment, setadv_payment] = useState(0);
+  const [rem_payment, setrem_payment] = useState(0);
+  const [total_amt, setTotalAmt] = useState(0); // New state for total_amt
 
   // State variables for event list and selected event
   const [eventList, setEventList] = useState([]);
@@ -19,18 +20,19 @@ const OrderForm = () => {
   // Function to reset the form
   const resetForm = () => {
     setEventName("");
-    setCustomerName("");
+    setcustomer_name("");
     setContact("");
     setEmail("");
     setDate("");
     setTime("");
     setVenue("");
-    setAdvPayment(0);
-    setRemPayment(0);
+    setadv_payment(0);
+    setrem_payment(0);
+    setTotalAmt(0); // Reset total_amt
   };
 
   // Function to fetch events from the API
-  const fetchEvent = async () => {
+  const fetchEvents = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/event');
       if (response.ok) {
@@ -46,7 +48,7 @@ const OrderForm = () => {
 
   // UseEffect hook to fetch events when the component mounts
   useEffect(() => {
-    fetchEvent();
+    fetchEvents();
   }, []);
 
   // Function to handle the selection of an event
@@ -56,15 +58,17 @@ const OrderForm = () => {
     );
 
     if (selectedEvent) {
-      setCustomerName(selectedEvent.fname);
+      setcustomer_name(selectedEvent.fname);
       setContact(selectedEvent.contact);
       setEmail(selectedEvent.email);
       setVenue(selectedEvent.venue);
+      setTotalAmt(selectedEvent.budget || 0);
     } else {
-      setCustomerName("");
+      setcustomer_name("");
       setContact("");
       setEmail("");
       setVenue("");
+      setTotalAmt(0);
     }
 
     setSelectedEvent(selectedEvent);
@@ -88,6 +92,7 @@ const OrderForm = () => {
           venue,
           adv_payment,
           rem_payment,
+          total_amt, // Include total_amt in the request body
         }),
       });
 
@@ -133,7 +138,7 @@ const OrderForm = () => {
             type="text"
             className="form-control"
             value={customer_name}
-            onChange={(e) => setCustomerName(e.target.value)}
+            onChange={(e) => setcustomer_name(e.target.value)}
             required
           />
         </div>
@@ -199,7 +204,7 @@ const OrderForm = () => {
             type="number"
             className="form-control"
             value={adv_payment}
-            onChange={(e) => setAdvPayment(parseFloat(e.target.value))}
+            onChange={(e) => setadv_payment(parseFloat(e.target.value))}
             required
           />
         </div>
@@ -210,7 +215,18 @@ const OrderForm = () => {
             type="number"
             className="form-control"
             value={rem_payment}
-            onChange={(e) => setRemPayment(parseFloat(e.target.value))}
+            onChange={(e) => setrem_payment(parseFloat(e.target.value))}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Total Amount</label>
+          <input
+            type="number"
+            className="form-control"
+            value={total_amt}
+            onChange={(e) => setTotalAmt(parseFloat(e.target.value))}
             required
           />
         </div>
