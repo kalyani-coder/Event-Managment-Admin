@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const OrderForm = () => {
+  // State variables for form input fields
   const [eventName, setEventName] = useState("");
   const [customer_name, setCustomerName] = useState("");
   const [contact, setContact] = useState("");
@@ -10,9 +11,12 @@ const OrderForm = () => {
   const [venue, setVenue] = useState("");
   const [adv_payment, setAdvPayment] = useState(0);
   const [rem_payment, setRemPayment] = useState(0);
+
+  // State variables for event list and selected event
   const [eventList, setEventList] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // Function to reset the form
   const resetForm = () => {
     setEventName("");
     setCustomerName("");
@@ -25,6 +29,7 @@ const OrderForm = () => {
     setRemPayment(0);
   };
 
+  // Function to fetch events from the API
   const fetchEvent = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/event');
@@ -39,10 +44,33 @@ const OrderForm = () => {
     }
   };
 
+  // UseEffect hook to fetch events when the component mounts
   useEffect(() => {
     fetchEvent();
   }, []);
 
+  // Function to handle the selection of an event
+  const handleEventSelection = (selectedEventName) => {
+    const selectedEvent = eventList.find(
+      (event) => event.eventName === selectedEventName
+    );
+
+    if (selectedEvent) {
+      setCustomerName(selectedEvent.fname);
+      setContact(selectedEvent.contact);
+      setEmail(selectedEvent.email);
+      setVenue(selectedEvent.venue);
+    } else {
+      setCustomerName("");
+      setContact("");
+      setEmail("");
+      setVenue("");
+    }
+
+    setSelectedEvent(selectedEvent);
+  };
+
+  // Function to handle assigning the order to a manager
   const handleAssignToManager = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/order", {
@@ -65,7 +93,7 @@ const OrderForm = () => {
 
       if (response.ok) {
         alert("Order assigned to manager successfully");
-        resetForm(); // Reset the form after successful assignment
+        resetForm();
       } else {
         const errorData = await response.json();
         console.error("Failed to assign order to manager:", errorData);
@@ -87,13 +115,8 @@ const OrderForm = () => {
             className="form-control-cust-inq-input"
             id="eventname"
             name="eventname"
-            onChange={(e) => {
-              const selectedEvent = eventList.find(
-                (event) => event.eventName === e.target.value
-              );
-              setSelectedEvent(selectedEvent);
-            }}
-            value={selectedEvent ? selectedEvent.eventName : ''}
+            onChange={(e) => handleEventSelection(e.target.value)}
+            value={selectedEvent ? selectedEvent.eventName : ""}
           >
             <option value="">Select Event</option>
             {eventList.map((event) => (
