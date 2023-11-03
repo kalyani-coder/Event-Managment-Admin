@@ -17,19 +17,19 @@ const AttendanceBox = ({ attendanceData, whichbox, marker }) => {
           style={
             item.present === item.real
               ? {
-                  background: index % 2 ? "#e6e6e6" : "#f0f5f1",
-                  cursor: "pointer",
-                }
+                background: index % 2 ? "#e6e6e6" : "#f0f5f1",
+                cursor: "pointer",
+              }
               : {
-                  cursor: "pointer",
-                  background: item.present
-                    ? index % 2
-                      ? "#e3f6ff"
-                      : "#c9eeff"
-                    : index % 2
+                cursor: "pointer",
+                background: item.present
+                  ? index % 2
+                    ? "#e3f6ff"
+                    : "#c9eeff"
+                  : index % 2
                     ? "#ffe3ed"
                     : "#ffc9cd",
-                }
+              }
           }
         >
           <p
@@ -133,8 +133,8 @@ const AttendancePage = () => {
           style={{
             outline: "none",
             border: "none",
-            background: "black",
-            color: "white",
+            background: "white",
+            color: "black",
           }}
           className="p-2 mx-0 mb-2 rounded-lg"
         ></input>

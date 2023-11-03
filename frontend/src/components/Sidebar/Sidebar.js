@@ -280,13 +280,13 @@ export default function Sidebar() {
                         Mark Attendance
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link to={"/viewattendance"}>
                         <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         View Attendance
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
 
