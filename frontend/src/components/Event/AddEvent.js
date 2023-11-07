@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AddEvent() {
+  // State variables for form fields
   const [eventName, setEventName] = useState("");
   const [fname, setfname] = useState("");
   const [company_name, setcompany_name] = useState("");
@@ -16,8 +17,67 @@ function AddEvent() {
   const [event_date, setevent_date] = useState("");
   const [currentTime, setCurrentTime] = useState("");
 
+  // State for the search functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  // State for the selected customer
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // Navigation hook
   const navigate = useNavigate();
+
+  // Fetch customer names when the component mounts or when the search query changes
+  useEffect(() => {
+    const fetchCustomerNames = async () => {
+      try {
+        const response = await axios.get(
+          `https://eventmanagement-admin-hocm.onrender.com/api/enquiry?customer_name=${searchQuery}`
+        );
+
+        // Extract customer details from the response
+        const customers = response.data;
+        setSearchResults(customers);
+      } catch (error) {
+        console.error("Error fetching customer names:", error);
+      }
+    };
+
+    // Fetch only if there is a search query
+    if (searchQuery.trim() !== "") {
+      fetchCustomerNames();
+    }
+  }, [searchQuery]);
+
+  // Function to handle customer selection
+  // Function to handle customer selection
+  const handleCustomerSelect = (event) => {
+    // Get the selected customer from the event
+    const selectedCustomerId = event.target.value;
+    const selectedCustomer = searchResults.find(
+      (customer) => customer._id === selectedCustomerId
+    );
+
+    // Set the selected customer
+    setSelectedCustomer(selectedCustomer);
+
+    // Automatically fill in the form fields with the customer details
+    setEventName(selectedCustomer?.event_name || "");
+    setfname(selectedCustomer?.customer_name || "");
+    // setcompany_name(selectedCustomer?.company_name || "");
+    setemail(selectedCustomer?.email || "");
+    setcontact(selectedCustomer?.contact || "");
+    setevent_type(selectedCustomer?.event_type || "Family Function");
+    setvenue(selectedCustomer?.event_venue || "");
+    setsubvenue(selectedCustomer?.subvenue || "");
+    setguest_number(selectedCustomer?.guest_quantity || "");
+    // setbudget(selectedCustomer?.budget || "");
+    setevent_date(selectedCustomer?.event_date || "");
+    // setCurrentTime(selectedCustomer?.currentTime || "");
+  };
+  // Function to handle saving the event data
   const handleSave = async () => {
+    // Form data to be sent to the API
     const eventData = {
       eventName,
       fname,
@@ -34,7 +94,7 @@ function AddEvent() {
     };
 
     try {
-      // Make a POST request to your API endpoint
+      // Make a POST request to the API endpoint
       const response = await axios.post(
         "http://localhost:5000/api/event",
         eventData
@@ -43,6 +103,7 @@ function AddEvent() {
       // Check if the request was successful
       if (response.status === 200) {
         console.log("Event data posted successfully!");
+
         // If you want to navigate to another page after posting data, you can do it here.
         // For example:
         navigate("/advancepayment", { state: eventData });
@@ -53,22 +114,27 @@ function AddEvent() {
       console.error("Error posting event data:", error);
     }
 
+    // If a customer is selected, you can use the selectedCustomer data as needed
+    if (selectedCustomer) {
+      console.log("Selected Customer:", selectedCustomer);
+    }
+
     navigate("/advancepayment", { state: eventData });
   };
 
+  // JSX for the component
   return (
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-md-10">
           <div className="card-body mt-5">
             <h2 className="mb-3">Create Event</h2>
+            {/* Form fields */}
             <div className="form-group">
-              <label htmlFor="eventName">
-                Event Name:<span style={{ color: "red" }}>*</span>
-              </label>
+              <label htmlFor="eventName">Event Name:<span style={{ color: "red" }}>*</span></label>
               <input
                 type="text"
-                className="form-control "
+                className="form-control"
                 placeholder="Enter event name"
                 value={eventName}
                 onChange={(e) => setEventName(e.target.value)}
@@ -77,9 +143,7 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="fname">
-                Full Name:<span style={{ color: "red" }}>*</span>
-              </label>
+              <label htmlFor="fname">Full Name:<span style={{ color: "red" }}>*</span></label>
               <input
                 type="text"
                 className="form-control"
@@ -125,7 +189,7 @@ function AddEvent() {
                 placeholder="Enter Contact Number"
                 value={contact}
                 onChange={(e) => setcontact(e.target.value)}
-required
+                required
                 id="contact"
               />
             </div>
@@ -223,6 +287,38 @@ required
                 id="currentTime"
               />
             </div>
+            {/* Search box for customer names */}
+            <div className="form-group">
+              <label htmlFor="customerNameSearch">Search Customer Name:</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter customer name"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                id="customerNameSearch"
+              />
+            </div>
+
+            {/* Dropdown for matching customer names */}
+            <div className="form-group">
+              <label htmlFor="customerNameSelect">Select Customer:</label>
+              <select
+                className="form-control"
+                id="customerNameSelect"
+                value={selectedCustomer?.id || ""}
+                onChange={handleCustomerSelect}
+              >
+                <option value="" disabled>Select a customer</option>
+                {searchResults.map((customer) => (
+                  <option key={customer.id} value={customer._id}>
+                    {customer.customer_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Buttons for saving and navigating */}
             <div className="d-flex justify-content-start">
               <button id="btn" className="btn btn-info" onClick={handleSave}>
                 Save

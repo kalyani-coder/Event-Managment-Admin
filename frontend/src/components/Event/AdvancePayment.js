@@ -7,8 +7,8 @@ function AdvancePaymentForm() {
 
   const eventData = location.state;
   const [eventName, setEventName] = useState(eventData.eventName);
-  const [customerName, setCustomerName] = useState(eventData.fullName);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [customerName, setCustomerName] = useState(eventData.fname);
+  const [totalAmount, setTotalAmount] = useState(eventData.budget);
   const [advancePayment, setAdvancePayment] = useState(0);
   const [remainingAmount, setRemainingAmount] = useState(0);
 

@@ -349,14 +349,14 @@ export default function Sidebar() {
                     Salary
                   </a>
                   <ul className="collapse list-unstyled" id="SalarySubMenu">
-                    <li>
+                    {/* <li>
                       <Link to={"/addsalary"}>
                         <FontAwesomeIcon icon={faMoneyCheck}
                           style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Add Salary
                       </Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link to={"/viewsalary"}>
                         <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color
