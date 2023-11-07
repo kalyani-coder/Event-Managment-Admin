@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import myImage from "./logo.png";
 
 function QuotationForm() {
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
-  const navigate = useNavigate();
   const location = useLocation();
   const data = location.state || {};
   const enquiry = data.enquiry || {};
 
-  const eventName = enquiry?.enquiry?.event_name || "";
+  const eventName = enquiry?.event_name || "";
 
   const [sections, setSections] = useState([
     {
@@ -107,7 +106,7 @@ function QuotationForm() {
     doc.text(`Quotation Form of ${enquiry?.enquiry?.event_name || ""}`, 10, 10);
 
     const customerData = [
-      ["Customer Name", enquiry?.enquiry?.customer_name],
+      ["Customer Name", enquiry?.customer_name],
       ["Customer Address", enquiry?.enquiry?.address],
       ["Event Date", enquiry?.enquiry?.event_date],
       ["Event Venue", enquiry?.enquiry?.event_venue],
@@ -200,7 +199,6 @@ function QuotationForm() {
               name="title"
               value={section.title}
               onChange={(e) => handleChange(e, index)}
-             
             />
           </div>
           <div className="form-group">
@@ -214,7 +212,6 @@ function QuotationForm() {
               name="particular"
               value={section.particular}
               onChange={(e) => handleChange(e, index)}
-             
             />
           </div>
           <div className="form-group">
@@ -228,7 +225,6 @@ function QuotationForm() {
               name="description"
               value={section.description}
               onChange={(e) => handleChange(e, index)}
-             
             />
           </div>
           <div className="entity" style={{ display: "flex" }}>
@@ -244,7 +240,6 @@ function QuotationForm() {
                     name="entity"
                     value={section.entity}
                     onChange={(e) => handleChange(e, index)}
-                   
                   >
                     <option value="">Select Entity</option>
                     <option value="stage">Stage</option>
@@ -266,7 +261,6 @@ function QuotationForm() {
                     name="unit"
                     type="text"
                     placeholder="Enter value"
-                   
                     style={{ paddingRight: '50px' }}
                   />
                 </div>
@@ -281,7 +275,6 @@ function QuotationForm() {
                   name="quantity"
                   value={section.quantity}
                   onChange={(e) => handleChange(e, index)}
-                 
                 />
               </div>
               <div className="form-group col-md-3">
@@ -295,7 +288,6 @@ function QuotationForm() {
                   name="rate"
                   value={section.rate}
                   onChange={(e) => handleChange(e, index)}
-                 
                 />
               </div>
               <div className="form-group col-md-3">
@@ -309,7 +301,6 @@ function QuotationForm() {
                   name="days"
                   value={section.days}
                   onChange={(e) => handleChange(e, index)}
-                 
                 />
               </div>
             </div>
@@ -325,7 +316,6 @@ function QuotationForm() {
               name="amount"
               value={section.amount}
               onChange={(e) => handleChange(e, index)}
-             
             />
           </div>
         </div>

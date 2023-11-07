@@ -1,92 +1,220 @@
+// ViewInquiryPage.js
+
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
-
-const Card = (enquiry) => {
-  console.log(enquiry)
-  return (
-    <div className="col-md-4 mb-4" key={enquiry.enquiry._id} >
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">{enquiry.title}</h5>
-          <p className="card-text">
-            Event Name: {enquiry.enquiry.event_name || ""}
-            <br />
-            Event Date: {enquiry.enquiry.event_date}
-            <br />
-            Number of Estimated Guests: {enquiry.enquiry.guest_quantity}
-            <br />
-            Event Venue: {enquiry.enquiry.event_venue}
-            <br />
-            Event Requirement: {enquiry.enquiry.event_requirement}
-            <br />
-            Customer Name: {enquiry.enquiry.customer_name}
-            <br />
-            Customer Email: {enquiry.enquiry.email}
-            <br />
-            Contact Number: {enquiry.enquiry.contact}
-            <br />
-            Customer Address: {enquiry.enquiry.address}
-          </p>
-          <Link
-            to={{
-              pathname: `/quotation/${enquiry._id}`,
-              state: {
-                customerName: enquiry.enquiry.customer_name,
-                eventName: enquiry.enquiry.event_name, ...enquiry,
-              },
-            }}
-            className="btn btn-info"
-          >
-            Quotation
-          </Link>
-
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function ViewEnquiry() {
-  const [enquiries, setEnquiries] = useState([]);
+const ViewInquiryPage = () => {
+  const [inquiries, setInquiries] = useState([]);
+  const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
   useEffect(() => {
-    try {
-      axios.get("https://eventmanagement-admin-hocm.onrender.com/api/enquiry").then((res) => {
-        setEnquiries(res.data);
-        console.log('response', res)
-      });
-    } catch (e) {
-      console.log("error", e);
-    }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+        );
+        const data = await response.json();
+
+        // Sort inquiries based on event date in ascending order
+        const sortedInquiries = data.sort((a, b) =>
+          new Date(a.event_date) - new Date(b.event_date)
+        );
+
+        setInquiries(sortedInquiries);
+        setFilteredInquiries(sortedInquiries);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const filteredEnquiries = enquiries.filter((enquiry) =>
-    (enquiry.event_name || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearch = () => {
+    const filtered = inquiries.filter((enquiry) => {
+      const eventName = enquiry.event_name ? enquiry.event_name.toLowerCase() : "";
+      const companyName = enquiry.company_name ? enquiry.company_name.toLowerCase() : "";
+      const customerName = enquiry.customer_name ? enquiry.customer_name.toLowerCase() : "";
 
-  const navigate = useNavigate();
+      return (
+        eventName.includes(searchTerm.toLowerCase()) ||
+        companyName.includes(searchTerm.toLowerCase()) ||
+        customerName.includes(searchTerm.toLowerCase())
+      );
+    });
+
+    setFilteredInquiries(filtered);
+  };
+
+  const handleDateRangeFilter = () => {
+    const filtered = inquiries.filter((enquiry) => {
+      const eventDate = new Date(enquiry.event_date);
+      const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
+      const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
+
+      return (
+        (!startDate || eventDate >= startDate) &&
+        (!endDate || eventDate <= endDate)
+      );
+    });
+
+    setFilteredInquiries(filtered);
+  };
+
+  const clearFilters = () => {
+    setFilteredInquiries(inquiries);
+    setSearchTerm("");
+    setDateRange({ startDate: "", endDate: "" });
+  };
 
   return (
     <div className="container mt-5">
-      <h2>Enquiries List</h2>
-      <div className="mb-3 my-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by Event Name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      <div className="row">
-        {filteredEnquiries.map((enquiry) => <Card enquiry={enquiry}></Card>
-        )}
-      </div>
-    </div >
-  );
-}
+      <div className="d-flex flex-wrap">
+        <div>
+          <input
+            type="text"
+            placeholder="Search by Event, Company, or Customer Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '10px',
+              marginRight: '10px',
+              borderRadius: '5px',
+              border: '1px solid #ddd',
+              fontSize: '16px',
+              width: '300px',
+            }}
+          />
+          <button
+            onClick={handleSearch}
+            style={{
+              padding: '10px',
+              borderRadius: '5px',
+              border: '1px solid #007BFF',
+              backgroundColor: '#007BFF',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            Search
+          </button>
+        </div>
+        <div style={{ marginBottom: '20px', marginLeft: '10px' }}>
+          <label style={{ marginRight: '10px' }}>Start Date:</label>
+          <input
+            type="date"
+            value={dateRange.startDate}
+            onChange={(e) =>
+              setDateRange({ ...dateRange, startDate: e.target.value })
 
-export default ViewEnquiry;
+            }
+            style={{
+              padding: '10px',
+              marginRight: '10px',
+              borderRadius: '5px',
+              border: '1px solid #ddd',
+              fontSize: '16px',
+            }}
+          />
+          <label style={{ marginRight: '10px' }}>End Date:</label>
+          <input
+            type="date"
+            value={dateRange.endDate}
+            onChange={(e) =>
+              setDateRange({ ...dateRange, endDate: e.target.value })
+
+            }
+            style={{
+              padding: '10px',
+              marginRight: '10px',
+              borderRadius: '5px',
+              border: '1px solid #ddd',
+              fontSize: '16px',
+            }}
+          />
+          <button
+            onClick={handleDateRangeFilter}
+            style={{
+              padding: '10px',
+              borderRadius: '5px',
+              border: '1px solid #28A745',
+              backgroundColor: '#28A745',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            Filter by Date
+          </button>
+          <button
+            onClick={clearFilters}
+            style={{
+              padding: '10px',
+              borderRadius: '5px',
+              border: '1px solid #DC3545',
+              backgroundColor: '#DC3545',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            Clear Filters
+          </button>
+        </div>
+      </div>
+      <div className="d-flex flex-wrap justify-content-between">
+        {filteredInquiries.map((enquiry) => (
+          <div key={enquiry._id} className="card" style={{ width: '30%', marginBottom: '20px', padding: '15px', border: '1px solid #ddd' }}>
+            <div className="card-body">
+              <h5 className="card-title">{enquiry.title}</h5>
+              <p className="card-text">
+                Event Name: {enquiry.event_name || ""}
+                <br />
+                Event Date: {enquiry.event_date ? format(new Date(enquiry.event_date), 'dd/MM/yyyy') : ""}
+                <br />
+                Number of Estimated Guests: {enquiry.guest_quantity}
+                <br />
+                Event Venue: {enquiry.event_venue}
+                <br />
+                Event Requirement: {enquiry.event_requirement}
+                <br />
+                Customer Name: {enquiry.customer_name}
+                <br />
+                Customer Email: {enquiry.email}
+                <br />
+                Contact Number: {enquiry.contact}
+                <br />
+                Customer Address: {enquiry.address}
+              </p>
+              <Link
+                to={{
+                  pathname: `/quotation/${enquiry._id}`,
+                  state: {
+                    customerName: enquiry.customer_name,
+                    eventName: enquiry.event_name,
+                    eventDetails: {
+                      event_date: enquiry.event_date,
+                      event_venue: enquiry.event_venue,
+                      // Add other relevant details
+                    },
+                    // Add other data you want to pass
+                    ...enquiry,
+                  },
+                }}
+                className="btn btn-info"
+              >
+                Quotation
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ViewInquiryPage;
