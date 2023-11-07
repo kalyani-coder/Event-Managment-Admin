@@ -88,7 +88,7 @@ export default function Enquiry() {
 
               <div className="form-group">
                 <label htmlFor="email">
-                  Customer Email <span style={{ color: "red" }}>*</span>
+                  Customer Email
                 </label>
                 <input
                   type="email"
@@ -98,7 +98,7 @@ export default function Enquiry() {
                   placeholder="Customer Email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 
@@ -121,7 +121,7 @@ export default function Enquiry() {
 
               <div className="form-group">
                 <label htmlFor="address">
-                  Customer Address <span style={{ color: "red" }}>*</span>
+                  Customer Address
                 </label>
                 <textarea
                   className="form-control"
@@ -130,13 +130,13 @@ export default function Enquiry() {
                   placeholder="Customer Address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="event_date">
-                  Event Date <span style={{ color: "red" }}>*</span>
+                  Event Date
                 </label>
                 <input
                   type="date"
@@ -146,13 +146,13 @@ export default function Enquiry() {
                   placeholder="Event date"
                   value={formData.event_date}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="guest_quantity">
-                  Estimated Number of Guests <span style={{ color: "red" }}>*</span>
+                  Estimated Number of Guests
                 </label>
                 <input
                   type="text"
@@ -162,13 +162,13 @@ export default function Enquiry() {
                   placeholder=" Estimated Number of  Guests"
                   value={formData.guest_quantity}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="event_venue">
-                  Event Venue <span style={{ color: "red" }}>*</span>
+                  Event Venue
                 </label>
                 <input
                   type="text"
@@ -178,14 +178,14 @@ export default function Enquiry() {
                   placeholder="Event Venue"
                   value={formData.event_venue}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="event_requirement">
                   Event Management Requirement{" "}
-                  <span style={{ color: "red" }}>*</span>
+
                 </label>
                 <textarea
                   className="form-control"
@@ -194,7 +194,7 @@ export default function Enquiry() {
                   placeholder="Event management requirement"
                   value={formData.event_requirement}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 

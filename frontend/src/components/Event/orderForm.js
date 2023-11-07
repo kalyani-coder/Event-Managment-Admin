@@ -139,7 +139,7 @@ const OrderForm = () => {
             className="form-control"
             value={customer_name}
             onChange={(e) => setcustomer_name(e.target.value)}
-            required
+
           />
         </div>
 
@@ -150,7 +150,7 @@ const OrderForm = () => {
             className="form-control"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
-            required
+
           />
         </div>
 
@@ -161,7 +161,7 @@ const OrderForm = () => {
             className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+
           />
         </div>
 
@@ -172,7 +172,7 @@ const OrderForm = () => {
             className="form-control"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            required
+
           />
         </div>
 
@@ -183,7 +183,7 @@ const OrderForm = () => {
             className="form-control"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            required
+
           />
         </div>
 
@@ -194,7 +194,7 @@ const OrderForm = () => {
             className="form-control"
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
-            required
+
           />
         </div>
 
@@ -205,7 +205,7 @@ const OrderForm = () => {
             className="form-control"
             value={adv_payment}
             onChange={(e) => setadv_payment(parseFloat(e.target.value))}
-            required
+
           />
         </div>
 
@@ -216,7 +216,7 @@ const OrderForm = () => {
             className="form-control"
             value={rem_payment}
             onChange={(e) => setrem_payment(parseFloat(e.target.value))}
-            required
+
           />
         </div>
 
@@ -227,7 +227,7 @@ const OrderForm = () => {
             className="form-control"
             value={total_amt}
             onChange={(e) => setTotalAmt(parseFloat(e.target.value))}
-            required
+
           />
         </div>
 

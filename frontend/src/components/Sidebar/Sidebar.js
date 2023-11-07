@@ -46,6 +46,14 @@ export default function Sidebar() {
   const showToggleButton = windowWidth < 988;
 
   return (
+
+
+
+
+
+
+
+
     <div>
       {showToggleButton && (
         <button

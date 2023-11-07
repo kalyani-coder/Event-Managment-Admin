@@ -103,7 +103,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="email">
-                Email:<span style={{ color: "red" }}>*</span>
+                Email:
               </label>
               <input
                 type="text"
@@ -111,7 +111,7 @@ function AddEvent() {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setemail(e.target.value)}
-                required
+
                 id="email"
               />
             </div>
@@ -125,13 +125,13 @@ function AddEvent() {
                 placeholder="Enter Contact Number"
                 value={contact}
                 onChange={(e) => setcontact(e.target.value)}
-                required
+required
                 id="contact"
               />
             </div>
             <div className="form-group">
               <label htmlFor="event_type">
-                Event Type:<span style={{ color: "red" }}>*</span>
+                Event Type:
               </label>
               <select
                 value={event_type}
@@ -147,7 +147,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="venue">
-                Venue:<span style={{ color: "red" }}>*</span>
+                Venue:
               </label>
               <input
                 type="text"
@@ -155,7 +155,7 @@ function AddEvent() {
                 onChange={(e) => setvenue(e.target.value)}
                 className="form-control"
                 placeholder="Venue"
-                required
+
                 id="venue"
               />
             </div>
@@ -172,7 +172,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="guest_number">
-                Estimate Number of Guests:<span style={{ color: "red" }}>*</span>
+                Estimate Number of Guests:
               </label>
               <input
                 type="number"
@@ -180,7 +180,7 @@ function AddEvent() {
                 onChange={(e) => setguest_number(e.target.value)}
                 className="form-control"
                 placeholder="Estimate Number of Guests"
-                required
+
                 id="guest_number"
               />
             </div>
@@ -197,7 +197,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="event_date">
-                Event Date:<span style={{ color: "red" }}>*</span>
+                Event Date:
               </label>
               <input
                 type="Date"
@@ -205,13 +205,13 @@ function AddEvent() {
                 onChange={(e) => setevent_date(e.target.value)}
                 className="form-control"
                 placeholder="date"
-                required
+
                 id="event_date"
               />
             </div>
             <div className="form-group">
               <label htmlFor="currentTime">
-                Time:<span style={{ color: "red" }}>*</span>
+                Time:
               </label>
               <input
                 type="time"
@@ -219,7 +219,7 @@ function AddEvent() {
                 onChange={(e) => setCurrentTime(e.target.value)}
                 className="form-control"
                 placeholder="time"
-                required
+
                 id="currentTime"
               />
             </div>

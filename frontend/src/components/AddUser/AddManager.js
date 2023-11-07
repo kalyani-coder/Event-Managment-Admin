@@ -148,10 +148,8 @@ const AddManager = () => {
     "West Bengal",
   ];
 
-  // Inline CSS for the required asterisks
-  const requiredAsteriskStyle = {
-    color: "red",
-  };
+
+
 
   return (
     <div className="container mt-5">
@@ -159,7 +157,7 @@ const AddManager = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="fname">
           <Form.Label>
-            First Name <span style={requiredAsteriskStyle}>*</span>
+            First Name <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -172,7 +170,7 @@ const AddManager = () => {
 
         <Form.Group controlId="lname">
           <Form.Label>
-            Last Name <span style={requiredAsteriskStyle}>*</span>
+            Last Name <span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="text"
@@ -185,65 +183,65 @@ const AddManager = () => {
 
         <Form.Group controlId="email">
           <Form.Label>
-            Email <span style={requiredAsteriskStyle}>*</span>
+            Email
           </Form.Label>
           <Form.Control
             type="email"
             value={email}
             onChange={(e) => setemail(e.target.value)}
             placeholder="Enter email"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="contact">
           <Form.Label>
-            Phone <span style={requiredAsteriskStyle}>*</span>
+            Phone<span style={{ color: "red" }}>*</span>
           </Form.Label>
           <Form.Control
             type="tel"
             value={contact}
             onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter phone"
-            required
+required
           />
         </Form.Group>
 
         <Form.Group controlId="address">
           <Form.Label>
-            Address <span style={requiredAsteriskStyle}>*</span>
+            Address
           </Form.Label>
           <Form.Control
             type="text"
             value={address}
             onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter address"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="city">
           <Form.Label>
-            City <span style={requiredAsteriskStyle}>*</span>
+            City
           </Form.Label>
           <Form.Control
             type="text"
             value={city}
             onChange={(e) => setcity(e.target.value)}
             placeholder="Enter city"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="state">
           <Form.Label>
-            State <span style={requiredAsteriskStyle}>*</span>
+            State
           </Form.Label>
           <Form.Control
             as="select"
             value={state}
             onChange={(e) => setstate(e.target.value)}
-            required
+
           >
             {indianStates.map((state) => (
               <option key={state} value={state}>
@@ -255,66 +253,66 @@ const AddManager = () => {
 
         <Form.Group controlId="holder_name">
           <Form.Label>
-            Account Holder Name <span style={requiredAsteriskStyle}>*</span>
+            Account Holder Name
           </Form.Label>
           <Form.Control
             type="text"
             value={holder_name}
             onChange={(e) => setholder_name(e.target.value)}
             placeholder="Enter account holder name"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="account_number">
           <Form.Label>
-            Account Number <span style={requiredAsteriskStyle}>*</span>
+            Account Number
           </Form.Label>
           <Form.Control
             type="text"
             value={account_number}
             onChange={(e) => setaccount_number(e.target.value)}
             placeholder="Enter account number"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="bank_name">
           <Form.Label>
-            Bank Name <span style={requiredAsteriskStyle}>*</span>
+            Bank Name
           </Form.Label>
           <Form.Control
             type="text"
             value={bank_name}
             onChange={(e) => setbank_name(e.target.value)}
             placeholder="Enter bank name"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="branch_name">
           <Form.Label>
-            Branch Name <span style={requiredAsteriskStyle}>*</span>
+            Branch Name
           </Form.Label>
           <Form.Control
             type="text"
             value={branch_name}
             onChange={(e) => setbranch_name(e.target.value)}
             placeholder="Enter branch name"
-            required
+
           />
         </Form.Group>
 
         <Form.Group controlId="IFSC_code">
           <Form.Label>
-            IFSC Code <span style={requiredAsteriskStyle}>*</span>
+            IFSC Code
           </Form.Label>
           <Form.Control
             type="text"
             value={IFSC_code}
             onChange={(e) => setIFSC_code(e.target.value)}
             placeholder="Enter IFSC code"
-            required
+
           />
         </Form.Group>
 

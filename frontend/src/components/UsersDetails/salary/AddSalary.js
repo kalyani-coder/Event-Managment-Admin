@@ -77,54 +77,54 @@ const AddSalary = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="date">Date<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="date">Date</label>
                   <input
                     type="date"
                     className="form-control"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    required
+
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="time">Time<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="time">Time</label>
                   <input
                     type="time"
                     className="form-control"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    required
+
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="month">Salary of Month<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="month">Salary of Month</label>
                   <input
                     type="text"
                     className="form-control"
                     value={month}
                     onChange={(e) => setMonth(e.target.value)}
-                    required
+
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="salary">Salary Amount<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="salary">Salary Amount</label>
                   <input
                     type="text"
                     className="form-control"
                     value={salary}
                     onChange={(e) => setsalary(e.target.value)}
-                    required
+
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="adv_payment">Advance Payment<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="adv_payment">Advance Payment</label>
                   <input
                     type="text"
                     className="form-control"
                     value={adv_payment}
                     onChange={(e) => setadv_payment(e.target.value)}
-                    required
+
                   />
                 </div>
                 <button className="btn btn-info" type="submit">
@@ -139,53 +139,53 @@ const AddSalary = () => {
             <div className="card-body">
               <h5 className="card-title">Salary Details</h5>
               <div className="form-group">
-                <label htmlFor="salaryTaken">Salary Taken<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="salaryTaken">Salary Taken</label>
                 <input
                   type="text"
                   className="form-control"
                   value={salaryTaken}
                   onChange={(e) => setSalaryTaken(e.target.value)}
-                  required
+
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="advanceTaken">Advance Taken<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="advanceTaken">Advance Taken</label>
                 <input
                   type="text"
                   className="form-control"
                   value={advanceTaken}
                   onChange={(e) => setAdvanceTaken(e.target.value)}
-                  required
+
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="incentive">Incentive Amount<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="incentive">Incentive Amount</label>
                 <input
                   type="text"
                   className="form-control"
                   value={incentive}
                   onChange={(e) => setincentive(e.target.value)}
-                  required
+
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="deduct_amount">Deduct Amount<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="deduct_amount">Deduct Amount</label>
                 <input
                   type="text"
                   className="form-control"
                   value={deduct_amount}
                   onChange={(e) => setdeduct_amount(e.target.value)}
-                  required
+
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="balanceAmount">Balance Amount<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="balanceAmount">Balance Amount</label>
                 <input
                   type="text"
                   className="form-control"
                   value={balanceAmount}
                   onChange={(e) => setBalanceAmount(e.target.value)}
-                  required
+
                 />
               </div>
             </div>

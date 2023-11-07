@@ -191,7 +191,7 @@ function QuotationForm() {
         <div key={index} className="mb-4">
           <div className="form-group">
             <label htmlFor={`title${index}`}>
-              Title:<span style={{ color: "red" }}>*</span>
+              Title:
             </label>
             <input
               type="text"
@@ -200,12 +200,12 @@ function QuotationForm() {
               name="title"
               value={section.title}
               onChange={(e) => handleChange(e, index)}
-              required
+             
             />
           </div>
           <div className="form-group">
             <label htmlFor={`particular${index}`}>
-              Particular:<span style={{ color: "red" }}>*</span>
+              Particular:
             </label>
             <input
               type="text"
@@ -214,12 +214,12 @@ function QuotationForm() {
               name="particular"
               value={section.particular}
               onChange={(e) => handleChange(e, index)}
-              required
+             
             />
           </div>
           <div className="form-group">
             <label htmlFor={`description${index}`}>
-              Description:<span style={{ color: "red" }}>*</span>
+              Description:
             </label>
             <input
               type="text"
@@ -228,7 +228,7 @@ function QuotationForm() {
               name="description"
               value={section.description}
               onChange={(e) => handleChange(e, index)}
-              required
+             
             />
           </div>
           <div className="entity" style={{ display: "flex" }}>
@@ -236,7 +236,7 @@ function QuotationForm() {
               <div className="form-group col-md-3">
                 <div className="form-group ">
                   <label htmlFor={`entity${index}`}>
-                    Entity:<span style={{ color: "red" }}>*</span>
+                    Entity:
                   </label>
                   <select
                     className="form-control"
@@ -244,7 +244,7 @@ function QuotationForm() {
                     name="entity"
                     value={section.entity}
                     onChange={(e) => handleChange(e, index)}
-                    required
+                   
                   >
                     <option value="">Select Entity</option>
                     <option value="stage">Stage</option>
@@ -266,14 +266,14 @@ function QuotationForm() {
                     name="unit"
                     type="text"
                     placeholder="Enter value"
-                    required
+                   
                     style={{ paddingRight: '50px' }}
                   />
                 </div>
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor={`rate${index}`}>
-                  Quantity:<span style={{ color: "red" }}>*</span>
+                  Quantity:
                 </label>
                 <input
                   type="number"
@@ -281,12 +281,12 @@ function QuotationForm() {
                   name="quantity"
                   value={section.quantity}
                   onChange={(e) => handleChange(e, index)}
-                  required
+                 
                 />
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor={`rate${index}`}>
-                  Rate:<span style={{ color: "red" }}>*</span>
+                  Rate:
                 </label>
                 <input
                   type="text"
@@ -295,12 +295,12 @@ function QuotationForm() {
                   name="rate"
                   value={section.rate}
                   onChange={(e) => handleChange(e, index)}
-                  required
+                 
                 />
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor={`days${index}`}>
-                  Days:<span style={{ color: "red" }}>*</span>
+                  Days:
                 </label>
                 <input
                   type="text"
@@ -309,14 +309,14 @@ function QuotationForm() {
                   name="days"
                   value={section.days}
                   onChange={(e) => handleChange(e, index)}
-                  required
+                 
                 />
               </div>
             </div>
           </div>
           <div className="form-group">
             <label htmlFor={`amount${index}`}>
-              Amount:<span style={{ color: "red" }}>*</span>
+              Amount:
             </label>
             <input
               type="text"
@@ -325,7 +325,7 @@ function QuotationForm() {
               name="amount"
               value={section.amount}
               onChange={(e) => handleChange(e, index)}
-              required
+             
             />
           </div>
         </div>

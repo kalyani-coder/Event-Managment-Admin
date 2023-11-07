@@ -20,7 +20,7 @@ const AddExpense = () => {
     //     } else {
     //         setErrorMessage("Please select an event before showing expenses.");
     //     }
-    
+
 
 
     const handleShow = () => {
@@ -70,7 +70,7 @@ const AddExpense = () => {
                 setDate("");
             });
 
-          
+
 
     };
 
@@ -89,46 +89,46 @@ const AddExpense = () => {
                             )}
                             <form>
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="new_purchase">New Purchase<span style={{ color: "red" }}>*</span></label>
+                                    <label className="fw-bold" htmlFor="new_purchase">New Purchase</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         value={new_purchase}
                                         onChange={(e) => setNewPurchase(e.target.value)}
-                                        required
+
                                     />
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="date">Date<span style={{ color: "red" }}>*</span></label>
+                                    <label className="fw-bold" htmlFor="date">Date</label>
                                     <input
                                         type="date"
                                         className="form-control"
                                         value={date}
                                         onChange={(e) => setDate(e.target.value)}
-                                        required
+
                                     />
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="to_vendor">Vendor<span style={{ color: "red" }}>*</span></label>
+                                    <label className="fw-bold" htmlFor="to_vendor">Vendor</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         value={to_vendor}
                                         onChange={(e) => setToVendor(e.target.value)}
                                         placeholder="Vendor Name"
-                                        required
+
                                     />
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="event_name">Event<span style={{ color: "red" }}>*</span></label>
+                                    <label className="fw-bold" htmlFor="event_name">Event</label>
                                     <select
                                         value={event_name}
                                         onChange={(e) => setEventName(e.target.value)}
                                         className="form-control"
-                                        required
+
                                     >
                                         <option value="">Select an Event</option>
                                         <option value="Family Function">Family Function</option>
@@ -139,13 +139,13 @@ const AddExpense = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="amount">Amount<span style={{ color: "red" }}>*</span></label>
+                                    <label className="fw-bold" htmlFor="amount">Amount</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
-                                        required
+
                                     />
                                 </div>
 
@@ -169,14 +169,14 @@ const AddExpense = () => {
                                 </Link> */}
 
                                 <Link to={`/expenses/${EventId}`}>
-                    <button
-                        type="button"
-                        className="btn btn-info mx-3"
-                        onClick={handleShow}
-                    >
-                        View Expenses
-                    </button>
-                </Link>
+                                    <button
+                                        type="button"
+                                        className="btn btn-info mx-3"
+                                        onClick={handleShow}
+                                    >
+                                        View Expenses
+                                    </button>
+                                </Link>
 
                             </form>
                         </div>

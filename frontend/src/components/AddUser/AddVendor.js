@@ -146,14 +146,14 @@ const AddVendor = () => {
 
         <Form.Group controlId="vendorCategory">
           <Form.Label>
-            Vendor Category <span style={{ color: "red" }}>*</span>
+            Vendor Category 
           </Form.Label>
           <Form.Control
             type="text"
             value={vendorCategory}
             onChange={(e) => setVendorCategory(e.target.value)}
             placeholder="Enter vendor category"
-            required
+            
           />
         </Form.Group>
 
@@ -169,7 +169,7 @@ const AddVendor = () => {
 
         <Form.Group controlId="contact">
           <Form.Label>
-            Phone <span style={{ color: "red" }}>*</span>
+            Phone 
           </Form.Label>
           <Form.Control
             type="tel"
@@ -177,45 +177,45 @@ const AddVendor = () => {
             onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter vendor phone"
             maxLength={10}
-            required
+            
           />
         </Form.Group>
 
         <Form.Group controlId="address">
           <Form.Label>
-            Address <span style={{ color: "red" }}>*</span>
+            Address 
           </Form.Label>
           <Form.Control
             type="text"
             value={address}
             onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter vendor address"
-            required
+            
           />
         </Form.Group>
 
         <Form.Group controlId="vendorCity">
           <Form.Label>
-            City <span style={{ color: "red" }}>*</span>
+            City 
           </Form.Label>
           <Form.Control
             type="text"
             value={vendorCity}
             onChange={(e) => setVendorCity(e.target.value)}
             placeholder="Enter vendor city"
-            required
+            
           />
         </Form.Group>
 
         <Form.Group controlId="vendorState">
           <Form.Label>
-            State <span style={{ color: "red" }}>*</span>
+            State 
           </Form.Label>
           <Form.Control
             as="select"
             value={vendorState}
             onChange={(e) => setVendorState(e.target.value)}
-            required
+            
           >
             {indianStates.map((state) => (
               <option key={state} value={state}>

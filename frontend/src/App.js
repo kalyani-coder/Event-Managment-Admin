@@ -48,7 +48,6 @@ function App() {
           <Route path="/addvendor" element={<AddVendor />} />
           <Route path="/addexecutive" element={<AddExecutive />} />
           <Route path="/accountantdetails" element={<AccountantDetails />} />
-
           <Route path="/managerdetails" element={<ManagerDetails />} />
           <Route path="/executicedetails" element={<ExecutiveDetails />} />
           <Route path="/executive/:_id" element={<ExecutiveDetailPage />} />

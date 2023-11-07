@@ -56,49 +56,49 @@ const VendorPayment = () => {
             <form className="order p-4 border rounded" onSubmit={handleSubmit}>
                 <h2>Vendor Payment</h2><br />
                 <div className="form-group">
-                    <label htmlFor="fname">First Name:<span style={{ color: "red" }}>*</span></label>
+                    <label htmlFor="fname">First Name<span style={{ color: "red" }}>*</span></label>
                     <input className="form-control mb-2" type="text" name="fname" placeholder="First Name" onChange={handleChange} value={formData.fname} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="lname">Last Name:<span style={{ color: "red" }}>*</span></label>
+                    <label htmlFor="lname">Last Name<span style={{ color: "red" }}>*</span></label>
                     <input className="form-control mb-2" type="text" name="lname" placeholder="Last Name" onChange={handleChange} value={formData.lname} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="event_name">Event Name:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="event_name" placeholder="Event Name" onChange={handleChange} value={formData.event_name} required />
+                    <label htmlFor="event_name">Event Name</label>
+                    <input className="form-control mb-2" type="text" name="event_name" placeholder="Event Name" onChange={handleChange} value={formData.event_name} />
                 </div>
                 <div className="row mb-2">
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="date">Date:<span style={{ color: "red" }}>*</span></label>
-                            <input className="form-control" type="date" name="date" onChange={handleChange} value={formData.date} required />
+                            <label htmlFor="date">Date:</label>
+                            <input className="form-control" type="date" name="date" onChange={handleChange} value={formData.date} />
                         </div>
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="time">Time:<span style={{ color: "red" }}>*</span></label>
-                            <input className="form-control" type="time" name="time" onChange={handleChange} value={formData.time} required />
+                            <label htmlFor="time">Time</label>
+                            <input className="form-control" type="time" name="time" onChange={handleChange} value={formData.time} />
                         </div>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="bankaccount">Bank Account:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="bankaccount" placeholder="Bank Account" onChange={handleChange} value={formData.bankaccount} required />
+                    <label htmlFor="bankaccount">Bank Account</label>
+                    <input className="form-control mb-2" type="text" name="bankaccount" placeholder="Bank Account" onChange={handleChange} value={formData.bankaccount} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="salary">Enter Salary:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="salary" placeholder="Enter Salary" onChange={handleChange} value={formData.salary} required />
+                    <label htmlFor="salary">Enter Salary</label>
+                    <input className="form-control mb-2" type="text" name="salary" placeholder="Enter Salary" onChange={handleChange} value={formData.salary} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="paid_amt">Paid Amount:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="paid_amt" placeholder="Paid Amount" onChange={handleChange} value={formData.paid_amt} required />
+                    <label htmlFor="paid_amt">Paid Amount</label>
+                    <input className="form-control mb-2" type="text" name="paid_amt" placeholder="Paid Amount" onChange={handleChange} value={formData.paid_amt} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="rem_amt">Remaining Amount:<span style={{ color: "red" }}>*</span></label>
-                    <input className="form-control mb-2" type="text" name="rem_amt" placeholder="Remaining Amount" onChange={handleChange} value={formData.rem_amt} required />
+                    <label htmlFor="rem_amt">Remaining Amount</label>
+                    <input className="form-control mb-2" type="text" name="rem_amt" placeholder="Remaining Amount" onChange={handleChange} value={formData.rem_amt} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="description">Description:</label>
+                    <label htmlFor="description">Description</label>
                     <input className="form-control mb-2" type="text" name="description" placeholder="Description" onChange={handleChange} value={formData.description} />
                 </div>
                 <button className="btn btn-secondary mr-2 action1-btn" type="button" onClick={handleDiscard}>
