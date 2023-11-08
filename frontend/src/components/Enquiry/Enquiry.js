@@ -1,8 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-
 export default function Enquiry() {
+  const getCurrentDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  };
   const [formData, setFormData] = useState({
     title: "",
     event_name: "",
@@ -10,7 +16,7 @@ export default function Enquiry() {
     email: "",
     contact: "",
     address: "",
-    event_date: "",
+    event_date: getCurrentDate(),// Default to an empty string for initial value
     guest_quantity: "",
     event_venue: "",
     event_requirement: "",
@@ -27,7 +33,16 @@ export default function Enquiry() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+
+    // Get the current date and time
+    const currentDate = new Date();
+    const currentDateTime = currentDate.toISOString();
+
+    // Update the formData state with the current date and time
+    setFormData((prevData) => ({
+      ...prevData,
+      event_date: currentDateTime, // assuming you want to set the current date and time to the 'event_date' field
+    }));
 
     try {
       const res = await axios.post(

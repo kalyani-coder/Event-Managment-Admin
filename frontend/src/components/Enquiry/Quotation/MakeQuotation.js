@@ -9,9 +9,9 @@ function QuotationForm() {
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
   const location = useLocation();
   const data = location.state || {};
-  const enquiry = data.enquiry || {};
+  const enquiry = data || {};
 
-  const eventName = enquiry?.event_name || "";
+  const eventName = enquiry.event_name || "";
 
   const [sections, setSections] = useState([
     {
@@ -19,7 +19,7 @@ function QuotationForm() {
       title: "",
       particular: "",
       description: "",
-      per: "",
+      entity: "",
       unit: "",
       rate: "",
       days: "",
@@ -35,7 +35,6 @@ function QuotationForm() {
       if (!isNaN(value) || value === "") {
         const list = [...sections];
         list[index][name] = value;
-        newValue = value;
 
         if (
           !isNaN(list[index].quantity) &&
@@ -52,20 +51,19 @@ function QuotationForm() {
 
         setSections(list);
       }
-    } else if (name === "unit") {
-      const list = [...sections];
-      list[index][name] = value;
-      newValue = value;
-      setSections(list);
     } else {
       const list = [...sections];
       list[index][name] = value;
-      newValue = value;
-      setSections(list);
-    }
 
-    e.target.value = newValue;
+      // Special handling for 'unit' field to prevent clearing
+      if (name === 'unit' && value.trim() === '') {
+        // Do not update the state for an empty 'unit' field
+      } else {
+        setSections(list);
+      }
+    }
   };
+
 
   const handleAddSection = () => {
     const newSRNumber = sections.length + 1;
@@ -76,7 +74,7 @@ function QuotationForm() {
         title: "",
         particular: "",
         description: "",
-        per: "",
+        entity: "",
         unit: "",
         rate: "",
         days: "",
@@ -89,7 +87,6 @@ function QuotationForm() {
     try {
       // Send a POST request to the API endpoint with the sections data
       await axios.post("http://localhost:5000/api/quotation", {
-        // customer_name,
         sections,
       });
 
@@ -103,13 +100,14 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    doc.text(`Quotation Form of ${enquiry?.enquiry?.event_name || ""}`, 10, 10);
+    doc.text(`Quotation Form of ${enquiry.event_name || ""}`, 10, 10);
 
+    // Print Customer Data
     const customerData = [
-      ["Customer Name", enquiry?.customer_name],
-      ["Customer Address", enquiry?.enquiry?.address],
-      ["Event Date", enquiry?.enquiry?.event_date],
-      ["Event Venue", enquiry?.enquiry?.event_venue],
+      ["Customer Name", enquiry.customer_name || "-"],
+      ["Customer Address", enquiry.address || "-"],
+      ["Event Date", enquiry.event_date || "-"],
+      ["Event Venue", enquiry.event_venue || "-"],
     ];
 
     const companyData = [
@@ -151,11 +149,13 @@ function QuotationForm() {
       margin: { left: companyTableX },
     });
 
+    // Print Sections Data
     const tableData = sections.map((section, index) => [
       section.srNumber,
       section.title,
       section.particular,
       section.description,
+      section.entity,
       section.unit,
       section.rate,
       section.days,
@@ -169,6 +169,7 @@ function QuotationForm() {
           "Title of Section",
           "Particular",
           "Description",
+          "Entity",
           "Unit",
           "Rate",
           "Days",
@@ -179,13 +180,14 @@ function QuotationForm() {
       startY: 110,
     });
 
-    doc.save(`${enquiry?.enquiry?.customer_name}-Quotation.pdf`);
+    doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
     alert("PDF file generated");
   };
 
   return (
     <div className="container mt-5">
       <h1 className="mb-4">Quotation Form of {eventName}</h1>
+
       {sections.map((section, index) => (
         <div key={index} className="mb-4">
           <div className="form-group">
@@ -251,18 +253,29 @@ function QuotationForm() {
                 </div>
               </div>
               <div className="form-group col-md-3">
-                <label htmlFor={`unit${index}`}>
+                <label>
                   Unit:<span style={{ color: "red" }}></span>
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <input
+                  {/* <input
                     className="form-control"
-                    id={`unit${index}`}
+                    // id={`unit${index}`}
+                    value={section.unit}
                     name="unit"
                     type="text"
                     placeholder="Enter value"
                     style={{ paddingRight: '50px' }}
+                  /> */}
+                  <input
+                    className="form-control"
+                    value={section.unit || ''}
+                    name="unit"
+                    type="text"
+                    placeholder="Enter value"
+                    style={{ paddingRight: '50px' }}
+                    onChange={(e) => handleChange(e, index)}
                   />
+
                 </div>
               </div>
               <div className="form-group col-md-3">
@@ -320,6 +333,7 @@ function QuotationForm() {
           </div>
         </div>
       ))}
+
       <button className="btn btn-primary" onClick={handleAddSection}>
         Add Section
       </button>

@@ -24,21 +24,21 @@ const EventDetails = ({ routes }) => {
     navigate(`/event-more-details/${event._id}`);
   };
 
-
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
       <div className="mb-3">
         <input
           type="text"
-          placeholder="Search by name"
+          placeholder="Search by name or company"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       {eventData
         .filter((event) =>
-          event.fname?.toLowerCase().includes(searchTerm.toLowerCase())
+          event.fname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          event.company_name?.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .map((event) => (
           <Card key={event.event_id} style={{ width: "100%", marginBottom: "20px" }}>
