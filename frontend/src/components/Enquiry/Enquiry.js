@@ -56,7 +56,7 @@ export default function Enquiry() {
 
               <div className="form-group">
                 <label htmlFor="event_name">
-                  Event Name <span style={{ color: "red" }}>*</span>
+                  Event Name
                 </label>
                 <input
                   type="text"
@@ -66,7 +66,7 @@ export default function Enquiry() {
                   placeholder="Event name"
                   value={formData.event_name}
                   onChange={handleInputChange}
-                  required
+
                 />
               </div>
 

@@ -131,19 +131,19 @@ function AddEvent() {
             <h2 className="mb-3">Create Event</h2>
             {/* Form fields */}
             <div className="form-group">
-              <label htmlFor="eventName">Event Name:<span style={{ color: "red" }}>*</span></label>
+              <label htmlFor="eventName">Event Name</label>
               <input
                 type="text"
                 className="form-control"
                 placeholder="Enter event name"
                 value={eventName}
                 onChange={(e) => setEventName(e.target.value)}
-                required
+
                 id="eventName"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="fname">Full Name:<span style={{ color: "red" }}>*</span></label>
+              <label htmlFor="fname">Full Name<span style={{ color: "red" }}>*</span></label>
               <input
                 type="text"
                 className="form-control"
@@ -155,7 +155,7 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="company_name">Company Name:</label>
+              <label htmlFor="company_name">Company Name</label>
               <input
                 type="text"
                 className="form-control "
@@ -167,7 +167,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="email">
-                Email:
+                Email
               </label>
               <input
                 type="text"
@@ -181,7 +181,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="contact">
-                Contact Number:<span style={{ color: "red" }}>*</span>
+                Contact Number<span style={{ color: "red" }}>*</span>
               </label>
               <input
                 type="number"
@@ -195,7 +195,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="event_type">
-                Event Type:
+                Event Type
               </label>
               <select
                 value={event_type}
@@ -211,7 +211,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="venue">
-                Venue:
+                Venue
               </label>
               <input
                 type="text"
@@ -236,7 +236,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="guest_number">
-                Estimate Number of Guests:
+                Estimate Number of Guests
               </label>
               <input
                 type="number"
@@ -249,7 +249,7 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="budget">Budget:</label>
+              <label htmlFor="budget">Budget</label>
               <input
                 type="number"
                 value={budget}
@@ -261,7 +261,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="event_date">
-                Event Date:
+                Event Date
               </label>
               <input
                 type="Date"
@@ -275,7 +275,7 @@ function AddEvent() {
             </div>
             <div className="form-group">
               <label htmlFor="currentTime">
-                Time:
+                Time
               </label>
               <input
                 type="time"
@@ -289,7 +289,7 @@ function AddEvent() {
             </div>
             {/* Search box for customer names */}
             <div className="form-group">
-              <label htmlFor="customerNameSearch">Search Customer Name:</label>
+              <label htmlFor="customerNameSearch">Search Customer Name</label>
               <input
                 type="text"
                 className="form-control"
@@ -302,7 +302,7 @@ function AddEvent() {
 
             {/* Dropdown for matching customer names */}
             <div className="form-group">
-              <label htmlFor="customerNameSelect">Select Customer:</label>
+              <label htmlFor="customerNameSelect">Select Customer</label>
               <select
                 className="form-control"
                 id="customerNameSelect"

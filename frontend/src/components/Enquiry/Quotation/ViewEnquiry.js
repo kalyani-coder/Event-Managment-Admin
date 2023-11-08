@@ -1,5 +1,3 @@
-// ViewInquiryPage.js
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -9,6 +7,7 @@ const ViewInquiryPage = () => {
   const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,9 +34,15 @@ const ViewInquiryPage = () => {
 
   const handleSearch = () => {
     const filtered = inquiries.filter((enquiry) => {
-      const eventName = enquiry.event_name ? enquiry.event_name.toLowerCase() : "";
-      const companyName = enquiry.company_name ? enquiry.company_name.toLowerCase() : "";
-      const customerName = enquiry.customer_name ? enquiry.customer_name.toLowerCase() : "";
+      const eventName = enquiry.event_name
+        ? enquiry.event_name.toLowerCase()
+        : "";
+      const companyName = enquiry.company_name
+        ? enquiry.company_name.toLowerCase()
+        : "";
+      const customerName = enquiry.customer_name
+        ? enquiry.customer_name.toLowerCase()
+        : "";
 
       return (
         eventName.includes(searchTerm.toLowerCase()) ||
@@ -52,7 +57,9 @@ const ViewInquiryPage = () => {
   const handleDateRangeFilter = () => {
     const filtered = inquiries.filter((enquiry) => {
       const eventDate = new Date(enquiry.event_date);
-      const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
+      const startDate = dateRange.startDate
+        ? new Date(dateRange.startDate)
+        : null;
       const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
 
       return (
@@ -68,6 +75,14 @@ const ViewInquiryPage = () => {
     setFilteredInquiries(inquiries);
     setSearchTerm("");
     setDateRange({ startDate: "", endDate: "" });
+  };
+
+  const openPopup = (enquiry) => {
+    setSelectedInquiry(enquiry);
+  };
+
+  const closePopup = () => {
+    setSelectedInquiry(null);
   };
 
   return (
@@ -103,14 +118,13 @@ const ViewInquiryPage = () => {
             Search
           </button>
         </div>
-        <div style={{ marginBottom: '20px', marginLeft: '10px' }}>
+        <div style={{ marginBottom: '20px', marginLeft: '5px' }}>
           <label style={{ marginRight: '10px' }}>Start Date:</label>
           <input
             type="date"
             value={dateRange.startDate}
             onChange={(e) =>
               setDateRange({ ...dateRange, startDate: e.target.value })
-
             }
             style={{
               padding: '10px',
@@ -126,7 +140,6 @@ const ViewInquiryPage = () => {
             value={dateRange.endDate}
             onChange={(e) =>
               setDateRange({ ...dateRange, endDate: e.target.value })
-
             }
             style={{
               padding: '10px',
@@ -168,27 +181,29 @@ const ViewInquiryPage = () => {
       </div>
       <div className="d-flex flex-wrap justify-content-between">
         {filteredInquiries.map((enquiry) => (
-          <div key={enquiry._id} className="card" style={{ width: '30%', marginBottom: '20px', padding: '15px', border: '1px solid #ddd' }}>
+          <div
+            key={enquiry._id}
+            className="card"
+            style={{
+              width: "30%",
+              marginBottom: "20px",
+              padding: "15px",
+              border: "1px solid #ddd",
+            }}
+          >
             <div className="card-body">
               <h5 className="card-title">{enquiry.title}</h5>
               <p className="card-text">
                 Event Name: {enquiry.event_name || ""}
                 <br />
-                Event Date: {enquiry.event_date ? format(new Date(enquiry.event_date), 'dd/MM/yyyy') : ""}
-                <br />
-                Number of Estimated Guests: {enquiry.guest_quantity}
-                <br />
-                Event Venue: {enquiry.event_venue}
-                <br />
-                Event Requirement: {enquiry.event_requirement}
+                Event Date:{" "}
+                {enquiry.event_date
+                  ? format(new Date(enquiry.event_date), "dd/MM/yyyy")
+                  : ""}
                 <br />
                 Customer Name: {enquiry.customer_name}
                 <br />
-                Customer Email: {enquiry.email}
-                <br />
                 Contact Number: {enquiry.contact}
-                <br />
-                Customer Address: {enquiry.address}
               </p>
               <Link
                 to={{
@@ -199,9 +214,7 @@ const ViewInquiryPage = () => {
                     eventDetails: {
                       event_date: enquiry.event_date,
                       event_venue: enquiry.event_venue,
-                      // Add other relevant details
                     },
-                    // Add other data you want to pass
                     ...enquiry,
                   },
                 }}
@@ -209,10 +222,53 @@ const ViewInquiryPage = () => {
               >
                 Quotation
               </Link>
+              <button
+                className="btn btn-outline-primary ml-2"
+                onClick={() => openPopup(enquiry)}
+              >
+                View More
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {selectedInquiry && (
+        <div className="popup">
+          <div className="popup-content card">
+            <span className="close" onClick={closePopup}>
+              &times;
+            </span>
+            <div className="card-body">
+              <h2 className="card-title">{selectedInquiry.title}</h2>
+              <p className="card-text">
+                Event Name: {selectedInquiry.event_name || ""}
+                <br />
+                Event Date:{" "}
+                {selectedInquiry.event_date
+                  ? format(new Date(selectedInquiry.event_date), "dd/MM/yyyy")
+                  : ""}
+                <br />
+                Number of Estimated Guests: {selectedInquiry.guest_quantity}
+                <br />
+                Event Venue: {selectedInquiry.event_venue}
+                <br />
+                Event Requirement: {selectedInquiry.event_requirement}
+                <br />
+                Customer Name: {selectedInquiry.customer_name}
+                <br />
+                Customer Email: {selectedInquiry.email}
+                <br />
+                Contact Number: {selectedInquiry.contact}
+                <br />
+                Customer Address: {selectedInquiry.address}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 };
