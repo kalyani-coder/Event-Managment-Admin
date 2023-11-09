@@ -4,8 +4,45 @@ import { useLocation } from "react-router-dom";
 
 const AddSalary = () => {
   const location = useLocation();
+  const managerDetails = location.state;
   const id = location.state;
   console.log(id);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    return `${hh}:${mm}`;
+  };
+
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [salary, setsalary] = useState("");
+  const [adv_payment, setadv_payment] = useState("");
+  const [date, setDate] = useState(getCurrentDate()); // Set initial value to the current date
+  const [time, setTime] = useState(getCurrentTime()); // Set initial value to the current time
+  const [month, setMonth] = useState("");
+  const [salaryTaken, setSalaryTaken] = useState("");
+  const [advanceTaken, setAdvanceTaken] = useState("");
+  const [incentive, setincentive] = useState("");
+  const [deduct_amount, setdeduct_amount] = useState("");
+  const [balanceAmount, setBalanceAmount] = useState("");
+
+  useEffect(() => {
+    if (managerDetails) {
+      setfname(managerDetails.fname);
+      setlname(managerDetails.lname);
+      // ... (set other fields)
+    }
+  }, [managerDetails]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,20 +71,6 @@ const AddSalary = () => {
         console.error("Error adding salary:", error);
       });
   };
-
-  const [fname, setfname] = useState("");
-  const [lname, setlname] = useState("");
-  const [salary, setsalary] = useState("");
-  const [adv_payment, setadv_payment] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [month, setMonth] = useState("");
-  const [salaryTaken, setSalaryTaken] = useState("");
-  const [advanceTaken, setAdvanceTaken] = useState("");
-  const [incentive, setincentive] = useState("");
-  const [deduct_amount, setdeduct_amount] = useState("");
-  const [balanceAmount, setBalanceAmount] = useState("");
-
   return (
     <div className="container mt-5">
       <div className="row">
@@ -83,7 +106,6 @@ const AddSalary = () => {
                     className="form-control"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-
                   />
                 </div>
 
@@ -94,7 +116,6 @@ const AddSalary = () => {
                     className="form-control"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-
                   />
                 </div>
                 <div className="form-group">
@@ -194,6 +215,6 @@ const AddSalary = () => {
       </div>
     </div>
   );
-};
+}
 
 export default AddSalary;

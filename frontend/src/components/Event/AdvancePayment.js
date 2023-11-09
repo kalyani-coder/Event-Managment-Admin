@@ -14,10 +14,11 @@ function AdvancePaymentForm() {
 
   const [transactionId, setTransactionId] = useState("");
   const [utrNumber, setUtrNumber] = useState("");
-  const [transactionDate, setTransactionDate] = useState("");
-  const [transactionTime, setTransactionTime] = useState("");
+  const [transactionDate, setTransactionDate] = useState(getCurrentDate());
+  const [transactionTime, setTransactionTime] = useState(getCurrentTime());
   const [paymentMethod, setPaymentMethod] = useState("upi"); // Default to UPI
   const [cashRecipientName, setCashRecipientName] = useState("");
+  const [chequeRecipientName, setChequeRecipientName] = useState("");
   const [receiptFile, setReceiptFile] = useState(null); // To store the uploaded receipt file
 
   useEffect(() => {
@@ -80,6 +81,15 @@ function AdvancePaymentForm() {
             />
           </div>
           <div className="mb-3">
+            <label className="form-label">Name to Whom Submitted cheque:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={chequeRecipientName}
+              onChange={(e) => setChequeRecipientName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
             <label className="form-label">UTR Number / RTGS ID:</label>
             <input
               type="text"
@@ -129,6 +139,23 @@ function AdvancePaymentForm() {
       );
     }
   };
+
+  // Function to get the current date in "YYYY-MM-DD" format
+  function getCurrentDate() {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // Function to get the current time in "HH:MM" format
+  function getCurrentTime() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    return `${hh}:${mm}`;
+  }
 
   return (
     <div className="container mt-5">

@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UpdateTaskPage = () => {
+    const getCurrentDate = () => {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        const yyyy = today.getFullYear();
+        return `${yyyy}-${mm}-${dd}`;
+    };
+
+    const getCurrentTime = () => {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        return `${hh}:${mm}`;
+    };
+
     // Initial task data
     const initialTask = {
         Task: '',
-        Date: '',
-        Time: '',
+        Date: getCurrentDate(),
+        Time: getCurrentTime(),
         Status: 'Pending',
+        Manager: '', // New field for manager selection
     };
 
     // State to hold the task data
     const [task, setTask] = useState(initialTask);
     // State to manage the display of the success message
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    // State to hold the manager details
+    const [managers, setManagers] = useState([]);
+    // State to track if manager details are being fetched
+    const [loadingManagers, setLoadingManagers] = useState(true);
 
     // Function to handle input changes
     const handleInputChange = (e) => {
@@ -52,6 +72,23 @@ const UpdateTaskPage = () => {
             console.error('Error updating task:', error);
         }
     };
+
+    // Fetch manager details when the component mounts
+    useEffect(() => {
+        const fetchManagers = async () => {
+            try {
+                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/managerdetails');
+                const data = await response.json();
+                setManagers(data);
+                setLoadingManagers(false);
+            } catch (error) {
+                console.error('Error fetching manager details:', error);
+                setLoadingManagers(false);
+            }
+        };
+
+        fetchManagers();
+    }, []);
 
     return (
         <div className="container mt-5">
@@ -96,20 +133,28 @@ const UpdateTaskPage = () => {
                         onChange={handleInputChange}
                     />
                 </div>
+          
                 <div className="mb-3">
-                    <label htmlFor="status" className="form-label">
-                        Status
+                    <label htmlFor="manager" className="form-label">
+                        Manager
                     </label>
                     <select
                         className="form-select"
-                        id="status"
-                        name="Status"
-                        value={task.Status}
+                        id="manager"
+                        name="Manager"
+                        value={task.Manager}
                         onChange={handleInputChange}
                     >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
+                        <option value="" disabled>Select a manager</option>
+                        {loadingManagers ? (
+                            <option value="" disabled>Loading managers...</option>
+                        ) : (
+                            managers.map((manager) => (
+                                <option key={manager.id} value={manager.id}>
+                                    {manager.fname} {manager.lname}
+                                </option>
+                            ))
+                        )}
                     </select>
                 </div>
                 <button type="submit" className="btn btn-primary">

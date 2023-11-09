@@ -52,24 +52,34 @@ const VendorDetails = () => {
         filteredVendorData.map((vendor) => (
           <Card
             key={vendor._id}
-            style={{ width: "100%", marginBottom: "20px" }}
+            style={{ width: "100%", }}
           >
             <Card.Body>
-              <Card.Title>{vendor.company_name}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                Contact Person Name: {vendor.contact_person_name}
-              </Card.Subtitle>
-              <Card.Text>Contact: {vendor.contact}</Card.Text>
-              <Card.Text>Email: {vendor.gmail}</Card.Text>
-              <Link
-                to={{
-                  pathname: `/vendor/${vendor._id}`,
-                }}
-                state={vendor}
-                className="btn btn-info"
-              >
-                View more{" "}
-              </Link>
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="">
+                  <Card.Title>{vendor.company_name}</Card.Title>
+                  <Card.Subtitle className="text-muted">
+                    Contact Person Name: {vendor.contact_person_name}
+                  </Card.Subtitle>
+                  <Card.Text>Contact: {vendor.contact}</Card.Text>
+                  {/* <Card.Text>Email: {vendor.gmail}</Card.Text> */}
+                </div>
+                <div className="">
+                  <Link
+                    to={{
+                      pathname: `/vendor/${vendor._id}`,
+                    }}
+                    state={vendor}
+                    className="btn btn-info"
+                  >
+                    View more{" "}
+                  </Link>
+
+                </div>
+              </div>
+
+
+
             </Card.Body>
           </Card>
         ))

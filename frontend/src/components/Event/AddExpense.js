@@ -13,6 +13,7 @@ const AddExpense = () => {
     const [date, setDate] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [expenseType, setExpenseType] = useState("");
 
     // const handleShow = () => {
     //     if (event_id) {
@@ -20,7 +21,15 @@ const AddExpense = () => {
     //     } else {
     //         setErrorMessage("Please select an event before showing expenses.");
     //     }
-
+    const handleExpenseTypeChange = (e) => {
+        setExpenseType(e.target.value);
+    };
+    const expenseTypeOptions = [
+        "Food Expense",
+        "Travel Expense",
+        "Office Supplies",
+        "Other",
+    ];
 
 
     const handleShow = () => {
@@ -89,6 +98,23 @@ const AddExpense = () => {
                             )}
                             <form>
                                 <div className="form-group">
+                                    <label className="fw-bold" htmlFor="expenseType">
+                                        Expense Type
+                                    </label>
+                                    <select
+                                        value={expenseType}
+                                        onChange={handleExpenseTypeChange}
+                                        className="form-control"
+                                    >
+                                        <option value="">Select Expense Type</option>
+                                        {expenseTypeOptions.map((type, index) => (
+                                            <option key={index} value={type}>
+                                                {type}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {/* <div className="form-group">
                                     <label className="fw-bold" htmlFor="new_purchase">New Purchase</label>
                                     <input
                                         type="text"
@@ -97,7 +123,7 @@ const AddExpense = () => {
                                         onChange={(e) => setNewPurchase(e.target.value)}
 
                                     />
-                                </div>
+                                </div> */}
 
                                 <div className="form-group">
                                     <label className="fw-bold" htmlFor="date">Date</label>

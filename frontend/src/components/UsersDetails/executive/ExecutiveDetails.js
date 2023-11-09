@@ -52,20 +52,35 @@ const ExecutiveDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${executive.fname} ${executive.lname}`}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {executive.contact}
-              </Card.Subtitle>
-              <Card.Text>Address: {executive.address}</Card.Text>
-              <Link
-                to={{
-                  pathname: `/executive/${executive._id}`,
-                }}
-                className="btn btn-info"
-                state={executive}
-              >
-                Know more
-              </Link>
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="">
+                  <Card.Title>{`${executive.fname} ${executive.lname}`}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Contact Number: {executive.contact}
+                  </Card.Subtitle>
+                  {/* <Card.Text>Address: {executive.address}</Card.Text> */}
+
+                </div>
+
+
+                <div className="">
+                  <Link
+                    to={{
+                      pathname: `/executive/${executive._id}`,
+                    }}
+                    className="btn btn-info"
+                    state={executive}
+                  >
+                    Know more
+                  </Link>
+
+                </div>
+
+              </div>
+
+
+
+
             </Card.Body>
           </Card>
         ))

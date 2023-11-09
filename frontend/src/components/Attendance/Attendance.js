@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as XLSX from 'xlsx';
 
-const AttendanceBox = ({ attendanceData, whichbox, marker }) => {
+const AttendanceBox = ({ attendanceData, whichbox, marker, date }) => {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    setFilteredData(attendanceData.filter((item) => item.present == whichbox));
+    setFilteredData(attendanceData.filter((item) => item.present === whichbox));
   }, [attendanceData, whichbox]);
 
   return (
@@ -53,25 +54,24 @@ const AttendanceBox = ({ attendanceData, whichbox, marker }) => {
 };
 
 const AttendancePage = () => {
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [attendanceData, setAttendanceData] = useState([]);
 
-  const handleDateChange = (e) => {
-    setDate(e);
+  useEffect(() => {
+    handleDateChange(date);
+  }, []);
+
+  const handleDateChange = (selectedDate) => {
+    setDate(selectedDate);
     setAttendanceData([]);
     axios
-      .get(`http://localhost:5000/api/attendance/${e}`)
+      .get(`http://localhost:5000/api/attendance/${selectedDate}`)
       .then((res) => {
         res.data.map((item) => {
-          setAttendanceData((prev) => {
-            return [
-              ...prev,
-              {
-                ...item,
-                real: item.present,
-              },
-            ];
-          });
+          setAttendanceData((prev) => [
+            ...prev,
+            { ...item, real: item.present },
+          ]);
         });
       })
       .catch((e) => {
@@ -81,35 +81,40 @@ const AttendancePage = () => {
 
   const marker = ({ index, val }) => {
     setAttendanceData((prevData) =>
-      prevData.map((item, i) =>
+      prevData.map((item) =>
         item.id === index ? { ...item, present: val } : item
       )
     );
-    console.log(index, val, attendanceData);
   };
 
   const submit = () => {
     axios
-      .post(
-        `http://localhost:5000/api/bulkattendance/${date}`,
-        attendanceData
-      )
-      .then((res) => {
-        // console.log(res);
-        handleDateChange(date)
+      .post(`http://localhost:5000/api/bulkattendance/${date}`, attendanceData)
+      .then(() => {
+        handleDateChange(date);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
+  const exportToExcel = () => {
+    const sheetData = attendanceData.map(({ id, name, present }) => ({
+      Date: date,
+      Name: name,
+      Status: present ? 'Present' : 'Absent',
+    }));
+  
+    const ws = XLSX.utils.json_to_sheet(sheetData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'AttendanceSheet');
+    XLSX.writeFile(wb, `AttendanceSheet_${date}.xlsx`);
+  };
   return (
-    <div
-      className="container mt-5 d-flex justify-content-center flex-column"
-      style={{ fontFamily: "arial" }}
-    >
+    <div className="container mt-5 d-flex justify-content-center flex-column">
       <div className="d-flex justify-content-between">
         <h1>Attendance Sheet</h1>
+        <button onClick={exportToExcel}>Export to Excel</button>
       </div>
       <div
         className="mt-3"
@@ -154,6 +159,7 @@ const AttendancePage = () => {
               attendanceData={attendanceData}
               whichbox={false}
               marker={marker}
+              date={date}
             />
           </div>
           <div className="col-sm-12 col-md-6 my-2 pt-3 p-1">
@@ -171,39 +177,11 @@ const AttendancePage = () => {
               attendanceData={attendanceData}
               whichbox={true}
               marker={marker}
+              date={date}
             />
-            {/* {attendanceData.map((item, index) => {
-              if (item.presence)
-                return (
-                  <label
-                    className="d-flex justify-content-space-between align-items-center p-1 px-3 rounded-lg"
-                    key={index}
-                    style={{
-                      background: item.presence ? "#d1cbf7" : "#f8cccc",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: "0px",
-                        fontWeight: "700",
-                        fontSize: "15px",
-                      }}
-                    >
-                      {item.name}
-                    </p>
-                    <input
-                      className="d-none"
-                      type="checkbox"
-                      checked={item.presence}
-                      onChange={() => marker({ index, val: !item.presence })}
-                    ></input>
-                  </label>
-                );
-            })} */}
           </div>
         </div>
       </div>
-
       <input
         type="button"
         className="rounded-lg outline-none border-0 p-2"

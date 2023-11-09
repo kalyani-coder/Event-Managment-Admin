@@ -59,20 +59,26 @@ const AccountantDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${accountant.fname || ''} ${accountant.lname || ''}`}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {accountant.contact || ''}
-              </Card.Subtitle>
-              <Card.Text>Address: {accountant.address || ''}</Card.Text>
-              <Link
-                to={{
-                  pathname: `/accountant/${accountant._id}`,
-                }}
-                className="btn btn-info"
-                state={accountant}
-              >
-                View More
-              </Link>
+
+              <div className="d-flex align-items-center justify-content-between">
+                <div className=""><Card.Title>{`${accountant.fname || ''} ${accountant.lname || ''}`}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Contact Number: {accountant.contact || ''}
+                  </Card.Subtitle>
+                  {/* <Card.Text>Address: {accountant.address || ''}</Card.Text> */}
+                </div>
+                <div className=""> <Link
+                  to={{
+                    pathname: `/accountant/${accountant._id}`,
+                  }}
+                  className="btn btn-info"
+                  state={accountant}
+                >
+                  View More
+                </Link></div>
+              </div>
+
+
             </Card.Body>
           </Card>
         ))

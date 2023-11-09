@@ -47,6 +47,8 @@ const ManagerDetails = () => {
           />
         </div>
       </div>
+
+
       {filteredManagerData.length > 0 ? (
         filteredManagerData.map((manager) => (
           <Card
@@ -54,20 +56,24 @@ const ManagerDetails = () => {
             style={{ width: "100%", marginBottom: "20px" }}
           >
             <Card.Body>
-              <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                Contact Number: {manager.contact}
-              </Card.Subtitle>
-              <Card.Text>Address: {manager.address}</Card.Text>
-              <Link
-                to={{
-                  pathname: `/manager/${manager._id}`,
-                }}
-                state={manager}
-                className="btn btn-info"
-              >
-                View more{" "}
-              </Link>
+              <div className="d-flex align-items-center justify-content-between">
+                <div className=""><Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Contact Number: {manager.contact}
+                  </Card.Subtitle>
+                  {/* <Card.Text>Address: {manager.address}</Card.Text> */}</div>
+                <div className=""><Link
+                  to={{
+                    pathname: `/manager/${manager._id}`,
+                  }}
+                  state={manager}
+                  className="btn btn-info"
+                >
+                  View more{" "}
+                </Link></div>
+              </div>
+
+
             </Card.Body>
           </Card>
         ))

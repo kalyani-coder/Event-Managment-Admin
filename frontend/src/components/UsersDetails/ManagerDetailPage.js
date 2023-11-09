@@ -22,7 +22,7 @@ const ManagerDetailPage = () => {
   };
 
   const handleSalary = () => {
-    navigate("/addsalary");
+    navigate("/addsalary", { state: manager });
   };
 
   const handleDelete = () => {

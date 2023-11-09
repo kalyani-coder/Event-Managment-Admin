@@ -3,6 +3,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AddEvent() {
+  const getCurrentDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    return `${hh}:${mm}`;
+  };
+
   // State variables for form fields
   const [eventName, setEventName] = useState("");
   const [fname, setfname] = useState("");
@@ -16,6 +31,7 @@ function AddEvent() {
   const [budget, setbudget] = useState("");
   const [event_date, setevent_date] = useState("");
   const [currentTime, setCurrentTime] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState("");
 
   // State for the search functionality
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,13 +59,16 @@ function AddEvent() {
       }
     };
 
-    // Fetch only if there is a search query
     if (searchQuery.trim() !== "") {
       fetchCustomerNames();
     }
+
+    // Get the current date and time
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+    setCurrentDateTime(formattedDate);
   }, [searchQuery]);
 
-  // Function to handle customer selection
   // Function to handle customer selection
   const handleCustomerSelect = (event) => {
     // Get the selected customer from the event
@@ -73,8 +92,9 @@ function AddEvent() {
     setguest_number(selectedCustomer?.guest_quantity || "");
     // setbudget(selectedCustomer?.budget || "");
     setevent_date(selectedCustomer?.event_date || "");
-    // setCurrentTime(selectedCustomer?.currentTime || "");
+    setCurrentTime(selectedCustomer?.currentTime || "");
   };
+
   // Function to handle saving the event data
   const handleSave = async () => {
     // Form data to be sent to the API
@@ -89,8 +109,8 @@ function AddEvent() {
       subvenue,
       guest_number,
       budget,
-      event_date,
-      currentTime,
+      event_date: getCurrentDate(),
+      currentTime: getCurrentTime(),
     };
 
     try {
@@ -138,7 +158,6 @@ function AddEvent() {
                 placeholder="Enter event name"
                 value={eventName}
                 onChange={(e) => setEventName(e.target.value)}
-
                 id="eventName"
               />
             </div>
@@ -166,23 +185,18 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="email">
-                Email
-              </label>
+              <label htmlFor="email">Email</label>
               <input
                 type="text"
                 className="form-control "
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setemail(e.target.value)}
-
                 id="email"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="contact">
-                Contact Number<span style={{ color: "red" }}>*</span>
-              </label>
+              <label htmlFor="contact">Contact Number<span style={{ color: "red" }}>*</span></label>
               <input
                 type="number"
                 className="form-control "
@@ -194,9 +208,7 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="event_type">
-                Event Type
-              </label>
+              <label htmlFor="event_type">Event Type</label>
               <select
                 value={event_type}
                 onChange={(e) => setevent_type(e.target.value)}
@@ -210,21 +222,18 @@ function AddEvent() {
               </select>
             </div>
             <div className="form-group">
-              <label htmlFor="venue">
-                Venue
-              </label>
+              <label htmlFor="venue">Venue</label>
               <input
                 type="text"
                 value={venue}
                 onChange={(e) => setvenue(e.target.value)}
                 className="form-control"
                 placeholder="Venue"
-
                 id="venue"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="subvenue">Sub Venue:</label>
+              <label htmlFor="subvenue">Sub Venue</label>
               <input
                 type="text"
                 value={subvenue}
@@ -235,16 +244,13 @@ function AddEvent() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="guest_number">
-                Estimate Number of Guests
-              </label>
+              <label htmlFor="guest_number">Estimate Number of Guests</label>
               <input
                 type="number"
                 value={guest_number}
                 onChange={(e) => setguest_number(e.target.value)}
                 className="form-control"
                 placeholder="Estimate Number of Guests"
-
                 id="guest_number"
               />
             </div>
@@ -255,35 +261,29 @@ function AddEvent() {
                 value={budget}
                 onChange={(e) => setbudget(e.target.value)}
                 className="form-control"
-                placeholder="budget"
+                placeholder="Budget"
                 id="budget"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="event_date">
-                Event Date
-              </label>
+              <label htmlFor="event_date">Event Date</label>
               <input
-                type="Date"
+                type="date"
                 value={event_date}
                 onChange={(e) => setevent_date(e.target.value)}
                 className="form-control"
-                placeholder="date"
-
+                placeholder="Event Date"
                 id="event_date"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="currentTime">
-                Time
-              </label>
+              <label htmlFor="currentTime">Time</label>
               <input
                 type="time"
                 value={currentTime}
                 onChange={(e) => setCurrentTime(e.target.value)}
                 className="form-control"
-                placeholder="time"
-
+                placeholder="Time"
                 id="currentTime"
               />
             </div>
