@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import * as XLSX from 'xlsx';
 
 const EventDetails = ({ routes }) => {
   const [eventData, setEventData] = useState([]);
@@ -24,9 +25,33 @@ const EventDetails = ({ routes }) => {
     navigate(`/event-more-details/${event._id}`);
   };
 
+  const exportToExcel = () => {
+    const sheetData = eventData.map((event) => ({
+      Name: event.fname,
+      Company: event.company_name,
+      Event: event.eventName,
+      Venue: event.venue,
+      Subvenue: event.subvenue,
+      "Event Date": event.event_date,
+      "Guest Number": event.guest_number,
+      Budget: `$${event.budget}`,
+      Date: event.event_date,
+      Time: event.currentTime,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(sheetData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'EventDetailsSheet');
+    XLSX.writeFile(wb, 'EventDetails.xlsx');
+  };
+
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
+      <button className="btn btn-success mb-3" onClick={exportToExcel}>
+        Export to Excel
+      </button>
       <div className="mb-3">
         <input
           type="text"
