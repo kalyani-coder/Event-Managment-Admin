@@ -48,7 +48,7 @@ const ViewSalary = () => {
             <table className="table table-striped table-bordered" style={{ borderColor: "black" }}>
                 <thead>
                     <tr>
-                        <th className="text-center">Staff ID</th>
+                        {/* <th className="text-center">Staff ID</th> */}
                         <th className="text-center">First Name</th>
                         <th className="text-center">Last Name</th>
                         <th className="text-center">Salary</th>
@@ -63,7 +63,7 @@ const ViewSalary = () => {
                 <tbody>
                     {filteredSalaryData.map((item) => (
                         <tr key={item.staff_id}>
-                            <td className="text-center">{item.staff_id}</td>
+                            {/* <td className="text-center">{item.staff_id}</td> */}
                             <td className="text-center">{item.fname}</td>
                             <td className="text-center">{item.lname}</td>
                             <td className="text-center">{item.salary}</td>

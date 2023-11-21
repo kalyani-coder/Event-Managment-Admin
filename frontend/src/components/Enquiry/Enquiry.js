@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Enquiry() {
   const getCurrentDate = () => {
@@ -9,6 +9,7 @@ export default function Enquiry() {
     const yyyy = today.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   };
+
   const [formData, setFormData] = useState({
     title: "",
     event_name: "",
@@ -16,7 +17,7 @@ export default function Enquiry() {
     email: "",
     contact: "",
     address: "",
-    event_date: getCurrentDate(),// Default to an empty string for initial value
+    event_date: getCurrentDate(),
     guest_quantity: "",
     event_venue: "",
     event_requirement: "",
@@ -31,19 +32,7 @@ export default function Enquiry() {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Get the current date and time
-    const currentDate = new Date();
-    const currentDateTime = currentDate.toISOString();
-
-    // Update the formData state with the current date and time
-    setFormData((prevData) => ({
-      ...prevData,
-      event_date: currentDateTime, // assuming you want to set the current date and time to the 'event_date' field
-    }));
-
+  const submitForm = async () => {
     try {
       const res = await axios.post(
         "https://eventmanagement-admin-hocm.onrender.com/api/enquiry",
@@ -58,6 +47,32 @@ export default function Enquiry() {
       alert(`Error: ${e}`);
     }
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Check required fields
+    if (!formData.customer_name || !formData.contact) {
+      alert("Customer Name and Contact Number are required fields");
+      return;
+    }
+
+    // Get the current date and time
+    const currentDate = new Date();
+    const currentDateTime = currentDate.toISOString();
+
+    // Update the formData state with the current date and time
+    setFormData((prevData) => ({
+      ...prevData,
+      event_date: currentDateTime,
+    }));
+  };
+
+  // Use useEffect to perform the submission logic after state update
+  useEffect(() => {
+    submitForm();
+  }, [formData]);
+
 
   return (
     <div className="container">

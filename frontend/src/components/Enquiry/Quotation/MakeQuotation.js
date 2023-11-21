@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { useLocation } from "react-router-dom";
@@ -10,7 +10,9 @@ function QuotationForm() {
   const location = useLocation();
   const data = location.state || {};
   const enquiry = data || {};
-
+  useEffect(() => {
+    console.log("Enquiry data:", enquiry);
+  }, [enquiry]);
   const eventName = enquiry.event_name || "";
 
   const [sections, setSections] = useState([

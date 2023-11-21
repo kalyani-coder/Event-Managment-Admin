@@ -105,7 +105,7 @@ const VendorPayment = () => {
 
     return (
         <div className="container">
-            <form className="order p-4 border rounded" onSubmit={handleSubmit}>
+            <form className="order p-4 " onSubmit={handleSubmit}>
                 <h2>Vendor Payment</h2>
                 <div className="form-group">
                     <label htmlFor="selectedVendor">Select Vendor</label>
@@ -125,7 +125,7 @@ const VendorPayment = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="fname">First Name<span style={{ color: 'red' }}>*</span></label>
+                    <label htmlFor="fname">Name<span style={{ color: 'red' }}>*</span></label>
                     <input
                         className="form-control mb-2"
                         type="text"
