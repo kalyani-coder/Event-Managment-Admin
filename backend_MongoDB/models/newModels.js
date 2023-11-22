@@ -107,7 +107,7 @@ const EventExpenseSchema = new Schema({
   amount: Number,
   date: String,
   payment_details: String,
-  type: String,
+  expense_type: String,
   manager: String,
 });
 
