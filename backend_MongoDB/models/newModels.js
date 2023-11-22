@@ -38,10 +38,19 @@ const AdvPaymentSchema = new Schema({
   payment_date: String,
   rem_payment: Number,
   details: String,
+  payment_method: String,
+  cash_reciever: String,
+  check_reciever: String,
+  utr_no: String,
+  cheque_no: String,
+  date: String,
+  time: String,
+  UPI_id: String,
+  transaction_id: String,
 });
 
 const EventSchema = new Schema({
-  eventName : String,
+  eventName: String,
   event_id: Number,
   quotation_id: { type: Number, ref: "Quotation" },
   fname: String,
@@ -98,6 +107,8 @@ const EventExpenseSchema = new Schema({
   amount: Number,
   date: String,
   payment_details: String,
+  type: String,
+  manager: String,
 });
 
 const ManagerSchema = new Schema({
@@ -212,6 +223,7 @@ const VendorPaymentSchema = new Schema({
   rem_amt: Number,
   date: String,
   description: String,
+  salary: Number,
 });
 
 const VendorPaymentHistorySchema = new Schema({
