@@ -38,7 +38,7 @@ const VendorPaymentView = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container mt-5">
             <h2>Vendor Payment Details</h2>
             <table className="table table-bordered">
                 <thead>
