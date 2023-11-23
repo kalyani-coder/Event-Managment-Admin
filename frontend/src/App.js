@@ -35,6 +35,7 @@ import Attendance from "./components/Attendance/Attendance";
 import ViewAttendance from "./components/Attendance/ViewAttendence";
 import UpdateTaskPage from './components/UpdateTask/UpdateTask';
 import ViewTaskPage from "./components/UpdateTask/ViewTask";
+import GodownInventory from "./components/Inventory/Godown/Godown";
 
 function App() {
   return (
@@ -71,6 +72,8 @@ function App() {
           <Route path="/vendorpayment" element={<VendorPayment />} />
           <Route path="/viewvendorpayment" element={<VendorPaymentView />} />
           <Route path="/addinventory" element={<AddInventory />} />
+          <Route path="/godown" element={<GodownInventory />} />
+
           <Route path="/viewinventory" element={<ViewInventory />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/viewattendance" element={<ViewAttendance />} />

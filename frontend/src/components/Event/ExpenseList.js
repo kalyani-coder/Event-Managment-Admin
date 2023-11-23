@@ -1,46 +1,62 @@
-// ExpenseList.js
+// ViewExpense.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
-const ExpenseList = () => {
-    const { eventId } = useParams();
+const ViewExpense = () => {
     const [expenses, setExpenses] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Fetch data from the API
-        fetch("https://eventmanagement-admin-hocm.onrender.com/api/eventexpense")
-            .then(response => response.json())
-            .then(data => setExpenses(data))
-            .catch(error => console.error("Error fetching data:", error));
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/eventexpense");
+                const data = await response.json();
+                setExpenses(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="container mt-5">
-            <h5>Expense List </h5>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>New Purchase</th>
-                        <th>Date</th>
-                        <th>Vendor</th>
-                        <th>Event</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {expenses.map(expense => (
-                        <tr key={expense.id}>
-                            <td>{expense.new_purchase}</td>
-                            <td>{expense.date}</td>
-                            <td>{expense.to_vendor}</td>
-                            <td>{expense.event_name}</td>
-                            <td>{expense.amount}</td>
+            <h5>Expense List</h5>
+            {expenses.length === 0 ? (
+                <p>No expenses found.</p>
+            ) : (
+                <table className="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Expense Type</th>
+                            <th>Date</th>
+                            <th>Vendor</th>
+                            <th>Event</th>
+                            <th>Amount</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {expenses.map(expense => (
+                            <tr key={expense.id}>
+                                <td>{expense.expense_type}</td>
+                                <td>{expense.date}</td>
+                                <td>{expense.to_vendor}</td>
+                                <td>{expense.event_name}</td>
+                                <td>{expense.amount}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };
 
-export default ExpenseList;
+export default ViewExpense;

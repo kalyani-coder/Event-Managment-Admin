@@ -3,37 +3,26 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 const AddExpense = () => {
-    const EventId = useParams().event_id
+    const EventId = useParams().event_id;
     console.log(EventId);
-    const [event_id, setEventId] = useState("");  // Assume you set this when selecting an event
-    const [new_purchase, setNewPurchase] = useState("");
+    const [event_id, setEventId] = useState("");
     const [to_vendor, setToVendor] = useState("");
     const [event_name, setEventName] = useState("");
     const [amount, setAmount] = useState("");
     const [date, setDate] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [expenseType, setExpenseType] = useState("");
+    const [expense_type, setExpenseType] = useState("");
 
-    // const handleShow = () => {
-    //     if (event_id) {
-    //         window.location.href = `/expenses/:eventId/${event_id}`;
-    //     } else {
-    //         setErrorMessage("Please select an event before showing expenses.");
-    //     }
-    const handleExpenseTypeChange = (e) => {
-        setExpenseType(e.target.value);
-    };
-    const expenseTypeOptions = [
+
+    const expense_typeoptions = [
         "Food Expense",
         "Travel Expense",
         "Office Supplies",
         "Other",
     ];
 
-
     const handleShow = () => {
-        // Redirect to the expenses page for the selected event
         if (event_id) {
             window.location.href = `/expenses/${event_id}`;
         } else {
@@ -42,24 +31,25 @@ const AddExpense = () => {
     };
 
     const handleAdd = () => {
-        // Check if required fields are filled
-        if (!new_purchase || !to_vendor || !event_name || !amount || !date) {
+        if (!to_vendor || !event_name || !amount || !date || !expense_type) {
             setErrorMessage("All fields are required");
             return;
         }
 
         const expenseData = {
-            new_purchase,
+            expense_type,
             to_vendor,
             event_name,
-            amount,
+            amount: parseFloat(amount), // Ensure amount is a number
             date,
         };
 
-        // Send data to the API using Axios
+        console.log('Sending data:', expenseData);
+
         axios.post(`https://eventmanagement-admin-hocm.onrender.com/api/eventexpense/${event_id}`, expenseData, {
             headers: {
                 'Content-Type': 'application/json',
+
             },
         })
             .then(response => {
@@ -71,16 +61,12 @@ const AddExpense = () => {
                 setErrorMessage('Failed to add expense');
             })
             .finally(() => {
-                // Clear input fields
-                setNewPurchase("");
+                setExpenseType("");
                 setToVendor("");
                 setEventName("");
                 setAmount("");
                 setDate("");
             });
-
-
-
     };
 
     return (
@@ -98,32 +84,22 @@ const AddExpense = () => {
                             )}
                             <form>
                                 <div className="form-group">
-                                    <label className="fw-bold" htmlFor="expenseType">
+                                    <label className="fw-bold" htmlFor="type">
                                         Expense Type
                                     </label>
                                     <select
-                                        value={expenseType}
-                                        onChange={handleExpenseTypeChange}
+                                        value={expense_type}
+                                        onChange={(e) => setExpenseType(e.target.value)}
                                         className="form-control"
                                     >
                                         <option value="">Select Expense Type</option>
-                                        {expenseTypeOptions.map((type, index) => (
-                                            <option key={index} value={type}>
-                                                {type}
+                                        {expense_typeoptions.map((expense_type, index) => (
+                                            <option key={index} value={expense_type}>
+                                                {expense_type}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                                {/* <div className="form-group">
-                                    <label className="fw-bold" htmlFor="new_purchase">New Purchase</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={new_purchase}
-                                        onChange={(e) => setNewPurchase(e.target.value)}
-
-                                    />
-                                </div> */}
 
                                 <div className="form-group">
                                     <label className="fw-bold" htmlFor="date">Date</label>
@@ -132,7 +108,6 @@ const AddExpense = () => {
                                         className="form-control"
                                         value={date}
                                         onChange={(e) => setDate(e.target.value)}
-
                                     />
                                 </div>
 
@@ -144,7 +119,6 @@ const AddExpense = () => {
                                         value={to_vendor}
                                         onChange={(e) => setToVendor(e.target.value)}
                                         placeholder="Vendor Name"
-
                                     />
                                 </div>
 
@@ -154,7 +128,6 @@ const AddExpense = () => {
                                         value={event_name}
                                         onChange={(e) => setEventName(e.target.value)}
                                         className="form-control"
-
                                     >
                                         <option value="">Select an Event</option>
                                         <option value="Family Function">Family Function</option>
@@ -167,11 +140,10 @@ const AddExpense = () => {
                                 <div className="form-group">
                                     <label className="fw-bold" htmlFor="amount">Amount</label>
                                     <input
-                                        type="text"
+                                        type="number" // Use type="number" for amount
                                         className="form-control"
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
-
                                     />
                                 </div>
 
@@ -183,17 +155,6 @@ const AddExpense = () => {
                                     Submit
                                 </button>
 
-
-                                {/* <Link to={`/expenses/${EventId}`}>
-                                    <button
-                                        type="button"
-                                        className="btn btn-info mx-3"
-                                    // onClick={handleShow}
-                                    >
-                                        View Expenses
-                                    </button>
-                                </Link> */}
-
                                 <Link to={`/expenses/${EventId}`}>
                                     <button
                                         type="button"
@@ -203,7 +164,6 @@ const AddExpense = () => {
                                         View Expenses
                                     </button>
                                 </Link>
-
                             </form>
                         </div>
                     </div>

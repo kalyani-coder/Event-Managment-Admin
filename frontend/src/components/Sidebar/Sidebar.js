@@ -379,20 +379,37 @@ export default function Sidebar() {
                     Inventory Stock
                   </a>
                   <ul className="collapse list-unstyled" id="InventorySubMenu">
+
                     <li>
+                      <Link to={"/godown"}>
+                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Godowns
+                      </Link>
+                    </li>
+                    {/* <li>
                       <Link to={"/addinventory"}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Add Inventory
                       </Link>
-                    </li>
+                    </li> */}
+
                     <li>
+                      <Link to={"/addinventory"}>
+                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Add Catagory
+                      </Link>
+                    </li>
+
+                    {/* <li>
                       <Link to={"/viewinventory"}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         View Inventory
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
 
