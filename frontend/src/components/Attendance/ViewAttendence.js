@@ -7,7 +7,7 @@ const ViewAttendance = () => {
         // Fetch data from the API
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/attendance');
+                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/attendance');
                 const data = await response.json();
                 setAttendanceData(data);
             } catch (error) {

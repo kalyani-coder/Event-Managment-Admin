@@ -46,7 +46,7 @@ const UpdateTaskPage = () => {
 
         try {
             // Make a POST request to the API endpoint
-            const response = await fetch('http://localhost:5000/api/executivetask', {
+            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/executivetask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const UpdateTaskPage = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-          
+
                 <div className="mb-3">
                     <label htmlFor="manager" className="form-label">
                         Manager

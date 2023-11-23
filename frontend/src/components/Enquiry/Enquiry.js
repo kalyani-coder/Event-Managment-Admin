@@ -57,22 +57,20 @@ export default function Enquiry() {
       return;
     }
 
-    // Get the current date and time
-    const currentDate = new Date();
-    const currentDateTime = currentDate.toISOString();
-
-    // Update the formData state with the current date and time
-    setFormData((prevData) => ({
-      ...prevData,
-      event_date: currentDateTime,
-    }));
+    try {
+      const res = await axios.post(
+        "https://eventmanagement-admin-hocm.onrender.com/api/enquiry",
+        formData
+      );
+      if (res.status === 200) {
+        alert("Enquiry Submitted Successfully");
+      } else {
+        alert("Something went wrong");
+      }
+    } catch (e) {
+      alert(`Error: ${e}`);
+    }
   };
-
-  // Use useEffect to perform the submission logic after state update
-  useEffect(() => {
-    submitForm();
-  }, [formData]);
-
 
   return (
     <div className="container">

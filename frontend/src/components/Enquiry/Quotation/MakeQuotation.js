@@ -88,7 +88,7 @@ function QuotationForm() {
   const handleSave = async () => {
     try {
       // Send a POST request to the API endpoint with the sections data
-      await axios.post("http://localhost:5000/api/quotation", {
+      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quotation", {
         sections,
       });
 

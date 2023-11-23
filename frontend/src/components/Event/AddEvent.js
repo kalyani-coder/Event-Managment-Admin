@@ -116,7 +116,7 @@ function AddEvent() {
     try {
       // Make a POST request to the API endpoint
       const response = await axios.post(
-        "http://localhost:5000/api/event",
+        "https://eventmanagement-admin-hocm.onrender.com/api/event",
         eventData
       );
 

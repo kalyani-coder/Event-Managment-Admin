@@ -83,7 +83,7 @@ const VendorPayment = () => {
 
         try {
             // Make a POST request to your API endpoint
-            const response = await axios.post('http://localhost:5000/api/vendorpayment', formData);
+            const response = await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment', formData);
 
             // If the request is successful, show a popup and clear the form
             if (response.status === 200) {

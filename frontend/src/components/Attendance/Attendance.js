@@ -65,7 +65,7 @@ const AttendancePage = () => {
     setDate(selectedDate);
     setAttendanceData([]);
     axios
-      .get(`http://localhost:5000/api/attendance/${selectedDate}`)
+      .get(`https://eventmanagement-admin-hocm.onrender.com/api/attendance/${selectedDate}`)
       .then((res) => {
         res.data.map((item) => {
           setAttendanceData((prev) => [
@@ -89,7 +89,7 @@ const AttendancePage = () => {
 
   const submit = () => {
     axios
-      .post(`http://localhost:5000/api/bulkattendance/${date}`, attendanceData)
+      .post(`https://eventmanagement-admin-hocm.onrender.com/api/bulkattendance/${date}`, attendanceData)
       .then(() => {
         handleDateChange(date);
       })
@@ -104,7 +104,7 @@ const AttendancePage = () => {
       Name: name,
       Status: present ? 'Present' : 'Absent',
     }));
-  
+
     const ws = XLSX.utils.json_to_sheet(sheetData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'AttendanceSheet');

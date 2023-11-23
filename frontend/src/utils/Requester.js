@@ -2,7 +2,7 @@ import axios from "axios";
 
 const Requester = async ({
   method = "GET",
-  urlpre = "http://localhost:5000/api",
+  urlpre = "https://eventmanagement-admin-hocm.onrender.com/api",
   urlArgs = [],
 }) => {
   const url = urlpre + urlArgs.join("/");
