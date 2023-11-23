@@ -367,7 +367,7 @@ export default function Sidebar() {
                   </ul>
                 </li>
 
-                <li className="active">
+                {/* <li className="active">
                   <a
                     href="#InventorySubMenu"
                     data-toggle="collapse"
@@ -387,13 +387,7 @@ export default function Sidebar() {
                         Godowns
                       </Link>
                     </li>
-                    {/* <li>
-                      <Link to={"/addinventory"}>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
-                        />
-                        Add Inventory
-                      </Link>
-                    </li> */}
+                  
 
                     <li>
                       <Link to={"/addinventory"}>
@@ -403,15 +397,9 @@ export default function Sidebar() {
                       </Link>
                     </li>
 
-                    {/* <li>
-                      <Link to={"/viewinventory"}>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
-                        />
-                        View Inventory
-                      </Link>
-                    </li> */}
+                
                   </ul>
-                </li>
+                </li> */}
 
                 <li>
                   <a href="#">
