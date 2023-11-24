@@ -40,6 +40,19 @@ export default function Enquiry() {
       );
       if (res.status === 200) {
         alert("Enquiry Submitted Successfully");
+        // Reset the form after successful submission
+        setFormData({
+          title: "",
+          event_name: "",
+          customer_name: "",
+          email: "",
+          contact: "",
+          address: "",
+          event_date: getCurrentDate(),
+          guest_quantity: "",
+          event_venue: "",
+          event_requirement: "",
+        });
       } else {
         alert("Something went wrong");
       }
@@ -57,20 +70,26 @@ export default function Enquiry() {
       return;
     }
 
-    try {
-      const res = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/enquiry",
-        formData
-      );
-      if (res.status === 200) {
-        alert("Enquiry Submitted Successfully");
-      } else {
-        alert("Something went wrong");
-      }
-    } catch (e) {
-      alert(`Error: ${e}`);
-    }
+    submitForm();
   };
+
+  // Fetch and display recent inquiries
+  const [recentInquiries, setRecentInquiries] = useState([]);
+
+  useEffect(() => {
+    const fetchRecentInquiries = async () => {
+      try {
+        const res = await axios.get(
+          "https://eventmanagement-admin-hocm.onrender.com/api/recent-inquiries"
+        );
+        setRecentInquiries(res.data);
+      } catch (e) {
+        console.error(`Error fetching recent inquiries: ${e}`);
+      }
+    };
+
+    fetchRecentInquiries();
+  }, []); // Empty dependency array to fetch once when the component mounts
 
   return (
     <div className="container">
@@ -83,9 +102,7 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="event_name">
-                  Event Name
-                </label>
+                <label htmlFor="event_name">Event Name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -94,7 +111,6 @@ export default function Enquiry() {
                   placeholder="Event name"
                   value={formData.event_name}
                   onChange={handleInputChange}
-
                 />
               </div>
 
@@ -115,9 +131,7 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">
-                  Customer Email
-                </label>
+                <label htmlFor="email">Customer Email</label>
                 <input
                   type="email"
                   className="form-control"
@@ -126,7 +140,6 @@ export default function Enquiry() {
                   placeholder="Customer Email"
                   value={formData.email}
                   onChange={handleInputChange}
-
                 />
               </div>
 
@@ -148,9 +161,7 @@ export default function Enquiry() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">
-                  Customer Address
-                </label>
+                <label htmlFor="address">Customer Address</label>
                 <textarea
                   className="form-control"
                   name="address"
@@ -158,14 +169,11 @@ export default function Enquiry() {
                   placeholder="Customer Address"
                   value={formData.address}
                   onChange={handleInputChange}
-
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="event_date">
-                  Event Date
-                </label>
+                <label htmlFor="event_date">Event Date</label>
                 <input
                   type="date"
                   className="form-control"
@@ -174,7 +182,6 @@ export default function Enquiry() {
                   placeholder="Event date"
                   value={formData.event_date}
                   onChange={handleInputChange}
-
                 />
               </div>
 
@@ -187,17 +194,14 @@ export default function Enquiry() {
                   className="form-control"
                   name="guest_quantity"
                   id="guest_quantity"
-                  placeholder=" Estimated Number of  Guests"
+                  placeholder=" Estimated Number of Guests"
                   value={formData.guest_quantity}
                   onChange={handleInputChange}
-
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="event_venue">
-                  Event Venue
-                </label>
+                <label htmlFor="event_venue">Event Venue</label>
                 <input
                   type="text"
                   className="form-control"
@@ -206,14 +210,12 @@ export default function Enquiry() {
                   placeholder="Event Venue"
                   value={formData.event_venue}
                   onChange={handleInputChange}
-
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="event_requirement">
-                  Event Management Requirement{" "}
-
+                  Event Management Requirement
                 </label>
                 <textarea
                   className="form-control"
@@ -222,7 +224,6 @@ export default function Enquiry() {
                   placeholder="Event management requirement"
                   value={formData.event_requirement}
                   onChange={handleInputChange}
-
                 />
               </div>
 
@@ -238,6 +239,18 @@ export default function Enquiry() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Display recent inquiries */}
+      <div className="mt-5">
+
+        <ul>
+          {recentInquiries.map((inquiry, index) => (
+            <li key={index}>
+              {inquiry.customer_name} - {inquiry.event_name}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

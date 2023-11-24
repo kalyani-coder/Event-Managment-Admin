@@ -17,9 +17,9 @@ const ViewInquiryPage = () => {
         );
         const data = await response.json();
 
-        // Sort inquiries based on event date in ascending order
+        // Sort inquiries based on event date in descending order
         const sortedInquiries = data.sort((a, b) =>
-          new Date(a.event_date) - new Date(b.event_date)
+          new Date(b.event_date) - new Date(a.event_date)
         );
 
         setInquiries(sortedInquiries);
@@ -31,6 +31,7 @@ const ViewInquiryPage = () => {
 
     fetchData();
   }, []);
+
 
   const handleSearch = () => {
     const filtered = inquiries.filter((enquiry) => {
