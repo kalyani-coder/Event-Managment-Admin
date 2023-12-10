@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Dropdown, Table, Button } from 'react-bootstrap';
 
 const GodownInventory = () => {
@@ -14,6 +13,9 @@ const GodownInventory = () => {
     const [newStockName, setNewStockName] = useState('');
     const [newStockCategory, setNewStockCategory] = useState('');
     const [newStockQuantity, setNewStockQuantity] = useState('');
+    const [newStockPrice, setNewStockPrice] = useState('');
+    const [newStockVendor, setNewStockVendor] = useState('');
+    const [existingProducts, setExistingProducts] = useState([]);
 
     const handleGodownChange = (godown) => {
         setSelectedGodown(godown);
@@ -36,17 +38,36 @@ const GodownInventory = () => {
                 name: newStockName,
                 category: newStockCategory,
                 quantity: parseInt(newStockQuantity),
+                price: parseFloat(newStockPrice),
+                vendor: newStockVendor || selectedGodown.name, // Use vendor name or selected godown name
             };
 
-            const updatedGodowns = godowns.map((godown) =>
-                godown.id === selectedGodown.id
-                    ? { ...godown, stocks: [...godown.stocks, newStock] }
-                    : godown
+            // Check if the product already exists in the specific godown
+            const isDuplicate = selectedGodown.stocks.some(
+                (stock) =>
+                    stock.category.toLowerCase() === newStockCategory.toLowerCase() &&
+                    stock.name.toLowerCase() === newStockName.toLowerCase()
             );
-            setGodowns(updatedGodowns);
-            setNewStockName('');
-            setNewStockCategory('');
-            setNewStockQuantity('');
+
+            if (isDuplicate) {
+                // Show a popup message (you can replace this with your preferred way of displaying messages)
+                alert('Product already exists in this godown!');
+            } else {
+                // Update existing products
+                setExistingProducts([...existingProducts, { category: newStockCategory, name: newStockName }]);
+
+                // Add the new stock
+                const updatedGodowns = godowns.map((godown) =>
+                    godown.id === selectedGodown.id ? { ...godown, stocks: [...godown.stocks, newStock] } : godown
+                );
+
+                setGodowns(updatedGodowns);
+                setNewStockName('');
+                setNewStockCategory('');
+                setNewStockQuantity('');
+                setNewStockPrice('');
+                setNewStockVendor('');
+            }
         }
     };
 
@@ -89,12 +110,11 @@ const GodownInventory = () => {
             <h2>Godown Inventory</h2>
 
             <div className="d-flex justify-content-between">
-
                 <div className="mb-3">
-                    <label className="form-label">Select Godown:</label>
+                    <label className="form-label">Select Vendor:</label>
                     <Dropdown>
                         <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                            {selectedGodown ? selectedGodown.name : 'Select Godown'}
+                            {selectedGodown ? selectedGodown.name : 'Select Vendor'}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
@@ -107,14 +127,10 @@ const GodownInventory = () => {
                     </Dropdown>
                 </div>
 
-
-
                 <div>
-                    <h3>Add New Godown</h3>
-                    <div className='d-flex gap-3'>
-
+                    <h3>Add New Vendor</h3>
+                    <div className="d-flex gap-3">
                         <div>
-
                             <input
                                 type="text"
                                 className="form-control"
@@ -124,14 +140,12 @@ const GodownInventory = () => {
                         </div>
                         <div>
                             <button className="btn btn-success" onClick={handleAddGodown}>
-                                Add Godown
+                                Add Vendor
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
             <div className="mb-3">
                 <h4>Add Stock</h4>
@@ -154,7 +168,7 @@ const GodownInventory = () => {
                             onChange={(e) => setNewStockName(e.target.value)}
                         />
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-2">
                         <input
                             type="number"
                             className="form-control"
@@ -163,21 +177,41 @@ const GodownInventory = () => {
                             onChange={(e) => setNewStockQuantity(e.target.value)}
                         />
                     </div>
+                    <div className="col-md-2">
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Stock Price"
+                            value={newStockPrice}
+                            onChange={(e) => setNewStockPrice(e.target.value)}
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Vendor Name"
+                            value={newStockVendor || (selectedGodown ? selectedGodown.name : '')}
+                            readOnly
+                        />
+                    </div>
                 </div>
                 <button className="btn btn-primary mt-2" onClick={handleAddStock}>
                     Add Stock
                 </button>
             </div>
+
             {selectedGodown && (
                 <div>
                     <h3>{selectedGodown.name}</h3>
-
                     <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Category</th>
                                 <th>Item</th>
                                 <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Vendor</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -187,6 +221,8 @@ const GodownInventory = () => {
                                     <td>{stock.category}</td>
                                     <td>{stock.name}</td>
                                     <td>{stock.quantity}</td>
+                                    <td>{stock.price}</td>
+                                    <td>{stock.vendor}</td>
                                     <td>
                                         <Button variant="success" onClick={() => handleIncreaseStock(stock.id)}>
                                             +
@@ -199,11 +235,8 @@ const GodownInventory = () => {
                             ))}
                         </tbody>
                     </Table>
-
-
                 </div>
             )}
-
         </div>
     );
 };
