@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown, Table, Button } from 'react-bootstrap';
 
 const GodownInventory = () => {
@@ -16,19 +16,46 @@ const GodownInventory = () => {
     const [newStockPrice, setNewStockPrice] = useState('');
     const [newStockVendor, setNewStockVendor] = useState('');
     const [existingProducts, setExistingProducts] = useState([]);
+    const [vendors, setVendors] = useState([]);
+
+    useEffect(() => {
+        fetchVendors();
+    }, []);
+
+    const fetchVendors = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/vendors');
+            const data = await response.json();
+            setVendors(data);
+        } catch (error) {
+            console.error('Error fetching vendors:', error);
+        }
+    };
 
     const handleGodownChange = (godown) => {
         setSelectedGodown(godown);
     };
 
-    const handleAddGodown = () => {
-        const newGodown = {
-            id: godowns.length + 1,
-            name: newGodownName,
-            stocks: [],
-        };
-        setGodowns([...godowns, newGodown]);
-        setNewGodownName('');
+    const handleAddGodown = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/addvendor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: newGodownName }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setVendors([...vendors, data]);
+                setNewGodownName('');
+            } else {
+                console.error('Error adding vendor:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding vendor:', error);
+        }
     };
 
     const handleAddStock = () => {
@@ -39,10 +66,9 @@ const GodownInventory = () => {
                 category: newStockCategory,
                 quantity: parseInt(newStockQuantity),
                 price: parseFloat(newStockPrice),
-                vendor: newStockVendor || selectedGodown.name, // Use vendor name or selected godown name
+                vendor: newStockVendor || selectedGodown.name,
             };
 
-            // Check if the product already exists in the specific godown
             const isDuplicate = selectedGodown.stocks.some(
                 (stock) =>
                     stock.category.toLowerCase() === newStockCategory.toLowerCase() &&
@@ -50,13 +76,10 @@ const GodownInventory = () => {
             );
 
             if (isDuplicate) {
-                // Show a popup message (you can replace this with your preferred way of displaying messages)
                 alert('Product already exists in this godown!');
             } else {
-                // Update existing products
                 setExistingProducts([...existingProducts, { category: newStockCategory, name: newStockName }]);
 
-                // Add the new stock
                 const updatedGodowns = godowns.map((godown) =>
                     godown.id === selectedGodown.id ? { ...godown, stocks: [...godown.stocks, newStock] } : godown
                 );
