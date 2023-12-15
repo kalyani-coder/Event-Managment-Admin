@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, Table, Button } from 'react-bootstrap';
 
 const GodownInventory = () => {
-    const [godowns, setGodowns] = useState([
-        { id: 1, name: 'Godown 1', stocks: [] },
-        { id: 2, name: 'Godown 2', stocks: [] },
-        { id: 3, name: 'Godown 3', stocks: [] },
-    ]);
+
 
     const [selectedGodown, setSelectedGodown] = useState(null);
     const [newGodownName, setNewGodownName] = useState('');
@@ -15,116 +11,75 @@ const GodownInventory = () => {
     const [newStockQuantity, setNewStockQuantity] = useState('');
     const [newStockPrice, setNewStockPrice] = useState('');
     const [newStockVendor, setNewStockVendor] = useState('');
-    const [existingProducts, setExistingProducts] = useState([]);
+    const [vendors, setVendors] = useState([]);
+    console.log("vedant" , vendors)
 
-    const handleGodownChange = (godown) => {
-        setSelectedGodown(godown);
-    };
 
-    const handleAddGodown = () => {
-        const newGodown = {
-            id: godowns.length + 1,
-            name: newGodownName,
-            stocks: [],
-        };
-        setGodowns([...godowns, newGodown]);
-        setNewGodownName('');
-    };
 
-    const handleAddStock = () => {
-        if (selectedGodown) {
-            const newStock = {
-                id: Date.now(),
-                name: newStockName,
-                category: newStockCategory,
-                quantity: parseInt(newStockQuantity),
-                price: parseFloat(newStockPrice),
-                vendor: newStockVendor || selectedGodown.name, // Use vendor name or selected godown name
-            };
 
-            // Check if the product already exists in the specific godown
-            const isDuplicate = selectedGodown.stocks.some(
-                (stock) =>
-                    stock.category.toLowerCase() === newStockCategory.toLowerCase() &&
-                    stock.name.toLowerCase() === newStockName.toLowerCase()
-            );
 
-            if (isDuplicate) {
-                // Show a popup message (you can replace this with your preferred way of displaying messages)
-                alert('Product already exists in this godown!');
+
+    const handleAddVendor = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/addvendor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ Vendor_Name: newGodownName }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Vendor added successfully:', data);
+                // Handle any additional logic if needed
             } else {
-                // Update existing products
-                setExistingProducts([...existingProducts, { category: newStockCategory, name: newStockName }]);
-
-                // Add the new stock
-                const updatedGodowns = godowns.map((godown) =>
-                    godown.id === selectedGodown.id ? { ...godown, stocks: [...godown.stocks, newStock] } : godown
-                );
-
-                setGodowns(updatedGodowns);
-                setNewStockName('');
-                setNewStockCategory('');
-                setNewStockQuantity('');
-                setNewStockPrice('');
-                setNewStockVendor('');
+                console.error('Error adding vendor:', response.statusText);
+                // Handle error scenarios
             }
+        } catch (error) {
+            console.error('Error adding vendor:', error);
+            // Handle error scenarios
         }
     };
 
-    const handleIncreaseStock = (stockId) => {
-        if (selectedGodown) {
-            const updatedGodowns = godowns.map((godown) =>
-                godown.id === selectedGodown.id
-                    ? {
-                        ...godown,
-                        stocks: godown.stocks.map((stock) =>
-                            stock.id === stockId ? { ...stock, quantity: stock.quantity + 1 } : stock
-                        ),
-                    }
-                    : godown
-            );
-            setGodowns(updatedGodowns);
-        }
-    };
 
-    const handleDecreaseStock = (stockId) => {
-        if (selectedGodown) {
-            const updatedGodowns = godowns.map((godown) =>
-                godown.id === selectedGodown.id
-                    ? {
-                        ...godown,
-                        stocks: godown.stocks.map((stock) =>
-                            stock.id === stockId && stock.quantity > 0
-                                ? { ...stock, quantity: stock.quantity - 1 }
-                                : stock
-                        ),
-                    }
-                    : godown
-            );
-            setGodowns(updatedGodowns);
-        }
-    };
+    useEffect(() => {
+        const fetchVendors = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/addvendor');
+                if (response.ok) {
+                    const data = await response.json();
+                    setVendors(data);
+                } else {
+                    console.error('Error fetching vendors:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching vendors:', error);
+            }
+        };
+
+        fetchVendors();
+    }, []);
 
     return (
         <div className="container mt-5">
             <h2>Godown Inventory</h2>
 
             <div className="d-flex justify-content-between">
-                <div className="mb-3">
-                    <label className="form-label">Select Vendor:</label>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                            {selectedGodown ? selectedGodown.name : 'Select Vendor'}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            {godowns.map((godown) => (
-                                <Dropdown.Item key={godown.id} onClick={() => handleGodownChange(godown)}>
-                                    {godown.name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {vendors.map((vendor) => (
+                            <li key={vendor._id}>
+                                <a className="dropdown-item" href="#" onClick={() => setSelectedGodown(vendor)}>
+                                    {vendor.Vendor_Name}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
                 <div>
@@ -139,7 +94,7 @@ const GodownInventory = () => {
                             />
                         </div>
                         <div>
-                            <button className="btn btn-success" onClick={handleAddGodown}>
+                            <button className="btn btn-success" onClick={handleAddVendor}>
                                 Add Vendor
                             </button>
                         </div>
@@ -155,8 +110,7 @@ const GodownInventory = () => {
                             type="text"
                             className="form-control"
                             placeholder="Category"
-                            value={newStockCategory}
-                            onChange={(e) => setNewStockCategory(e.target.value)}
+                        // value={newStockCategory}
                         />
                     </div>
                     <div className="col-md-4">
@@ -164,8 +118,7 @@ const GodownInventory = () => {
                             type="text"
                             className="form-control"
                             placeholder="Stock Name"
-                            value={newStockName}
-                            onChange={(e) => setNewStockName(e.target.value)}
+                        // value={newStockName}
                         />
                     </div>
                     <div className="col-md-2">
@@ -173,8 +126,7 @@ const GodownInventory = () => {
                             type="number"
                             className="form-control"
                             placeholder="Stock Quantity"
-                            value={newStockQuantity}
-                            onChange={(e) => setNewStockQuantity(e.target.value)}
+                        // value={newStockQuantity}
                         />
                     </div>
                     <div className="col-md-2">
@@ -182,8 +134,7 @@ const GodownInventory = () => {
                             type="number"
                             className="form-control"
                             placeholder="Stock Price"
-                            value={newStockPrice}
-                            onChange={(e) => setNewStockPrice(e.target.value)}
+                        // value={newStockPrice}
                         />
                     </div>
                     <div className="col-md-2">
@@ -191,12 +142,11 @@ const GodownInventory = () => {
                             type="text"
                             className="form-control"
                             placeholder="Vendor Name"
-                            value={newStockVendor || (selectedGodown ? selectedGodown.name : '')}
-                            readOnly
+
                         />
                     </div>
                 </div>
-                <button className="btn btn-primary mt-2" onClick={handleAddStock}>
+                <button className="btn btn-primary mt-2" >
                     Add Stock
                 </button>
             </div>
@@ -224,10 +174,10 @@ const GodownInventory = () => {
                                     <td>{stock.price}</td>
                                     <td>{stock.vendor}</td>
                                     <td>
-                                        <Button variant="success" onClick={() => handleIncreaseStock(stock.id)}>
+                                        <Button variant="success">
                                             +
                                         </Button>{' '}
-                                        <Button variant="danger" onClick={() => handleDecreaseStock(stock.id)}>
+                                        <Button variant="danger">
                                             -
                                         </Button>
                                     </td>
