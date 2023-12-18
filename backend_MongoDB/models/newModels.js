@@ -247,9 +247,12 @@ const AddVendor = new Schema({
 
 const InventoryStocks = new Schema({
   Category : String,
+  Stock_Name : String,
   Stock_Quantity : Number,
   Price : Number,
   Vendor_Id : String,
+  Vendor_Name : String,
+
 })
 
 const AccountantDetailsSchema = new Schema({

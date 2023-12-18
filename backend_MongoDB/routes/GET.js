@@ -64,6 +64,26 @@ router.get('/inventory-stocks/:stockId', async (req, res) => {
   }
 });
 
+// get by vendor id 
+router.get('/inventory-stocks/vendor/:vendorId', async (req, res) => {
+  const vendorId = req.params.vendorId;
+
+  try {
+    // Assuming that you have a field called 'Vendor_Id' in your model
+    const stocks = await InventoryStocks.find({ Vendor_Id: vendorId });
+
+    if (!stocks || stocks.length === 0) {
+      return res.status(404).json({ message: 'No inventory stocks found for the specified vendor' });
+    }
+
+    res.status(200).json(stocks);
+  } catch (error) {
+    console.error('Error fetching inventory stocks by Vendor_Id:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 // Attendance table 
 router.get("/attendance/:day", async (req, res) => {

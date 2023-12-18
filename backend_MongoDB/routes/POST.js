@@ -30,15 +30,25 @@ router.post("/addvendor", async (req, res) => {
 
 // POST a new inventory stock
 router.post('/inventory-stocks', async (req, res) => {
-  const { Category, Stock_Quantity, Price, Vendor_Id } = req.body;
+  const { Category, Stock_Quantity, Price, Vendor_Id, Stock_Name, Vendor_Name } = req.body;
 
   try {
+    // Check if a stock with the same name and vendor already exists
+    const existingStock = await InventoryStocks.findOne({ Stock_Name, Vendor_Id });
+
+    if (existingStock) {
+      // If a stock with the same name and vendor exists, send a response indicating the conflict
+      return res.status(409).json({ message: 'Stock with the same name and vendor already exists' });
+    }
+ 
     // Create a new inventory stock instance
     const newStock = new InventoryStocks({
       Category,
       Stock_Quantity,
       Price,
       Vendor_Id,
+      Stock_Name,
+      Vendor_Name,
     });
 
     // Save the new stock to the database
@@ -50,6 +60,8 @@ router.post('/inventory-stocks', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
 
 
 
