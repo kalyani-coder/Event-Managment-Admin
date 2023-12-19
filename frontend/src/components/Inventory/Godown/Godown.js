@@ -192,6 +192,28 @@ const GodownInventory = () => {
         }
       };
 
+      const handleConfirmEditPrice = async () => {
+        try {
+          // Update the API with the new price
+          await fetch(`http://localhost:5000/api/inventory-stocks/${selectedStockId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              Price: editedPrice,
+            }),
+          });
+    
+          // After successfully updating the API, exit editing mode for price
+          setIsEditingPrice(false);
+        } catch (error) {
+          console.error('Error updating price:', error);
+          // Handle error updating price
+        }
+      };
+    
+
     return (
         <div className="container mt-5">
             <h2>Godown Inventory</h2>
@@ -304,7 +326,7 @@ const GodownInventory = () => {
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Vendor</th>
-                                <th>Actions</th>
+                                {/* <th>Actions</th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -331,7 +353,28 @@ const GodownInventory = () => {
                                         )}
                                     </td>
 
-                                    <td>{stock.Price}</td>
+                                    <td>
+        {isEditingPrice && selectedStockId === stock._id ? (
+          <>
+            <input
+              type="number"
+              value={editedPrice}
+              onChange={(e) => setEditedPrice(e.target.value)}
+            />
+            <FontAwesomeIcon className="edit-correct-icon" icon={faCheck} onClick={handleConfirmEditPrice} />
+            <FontAwesomeIcon className="edit-wrong-icon" icon={faTimes} onClick={() => setIsEditingPrice(false)} />
+          </>
+        ) : (
+          <>
+            {stock.Price}
+            <FontAwesomeIcon className="edit-icon" icon={faEdit} onClick={() => handleEditPrice(stock._id, stock.Price)} />
+          </>
+        )}
+      </td>
+
+
+
+
                                     <td>{stock.Vendor_Name}</td>
                                     {/* Add actions buttons as needed */}
                                 </tr>

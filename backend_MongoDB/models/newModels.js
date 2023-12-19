@@ -242,7 +242,10 @@ const InventoryStockSchema = new Schema({
 });
 
 const AddVendor = new Schema({
-  Vendor_Name : String
+  Vendor_Name : {
+      type : String,
+      required : true
+  }
 })
 
 const InventoryStocks = new Schema({
