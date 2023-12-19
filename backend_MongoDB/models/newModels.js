@@ -249,10 +249,23 @@ const AddVendor = new Schema({
 })
 
 const InventoryStocks = new Schema({
-  Category : String,
-  Stock_Name : String,
-  Stock_Quantity : Number,
-  Price : Number,
+  Category : {
+    type : String,
+    required : true
+  },
+  Stock_Name : {
+    type  : String,
+    required : true
+  },
+  Stock_Quantity :{
+    type : Number,
+    required : true
+
+  },
+  Price : {
+    type : Number,
+    required : true
+  },
   Vendor_Id : String,
   Vendor_Name : String,
 

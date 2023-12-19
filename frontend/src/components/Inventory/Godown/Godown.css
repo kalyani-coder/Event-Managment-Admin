@@ -29,3 +29,8 @@
     font-size: 30px;
     cursor: pointer;
   }
+  .godown-td td {
+    color: rgb(12, 12, 12);
+    font-weight: bold;
+    font-size: large;
+  }

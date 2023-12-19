@@ -38,7 +38,7 @@ router.post('/inventory-stocks', async (req, res) => {
 
     if (existingStock) {
       // If a stock with the same name and vendor exists, send a response indicating the conflict
-      return res.status(409).json({ message: 'Stock with the same name and vendor already exists' });
+      return res.status(409).json({ message: 'Stock with the same name and vendor already exists'});
     }
  
     // Create a new inventory stock instance
