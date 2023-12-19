@@ -61,7 +61,7 @@ const GodownInventory = () => {
                 return; // Exit the function if the stock already exists for the selected vendor
             }
 
-            const response = await fetch('http://localhost:5000/api/inventory-stocks', {
+            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
