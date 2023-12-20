@@ -38,6 +38,10 @@ import ViewTaskPage from "./components/UpdateTask/ViewTask";
 import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
 
+
+
+import QuotationForm from './components/Enquiry/Quotation/MakeQuotation';
+
 function App() {
   return (
     <>
@@ -58,7 +62,7 @@ function App() {
           <Route path="/manager/:_id" element={<ManagerDetailPage />} />
           <Route path="/accountant/:_id" element={<AccountantDetailPage />} />
           <Route path="/quotation" element={<ViewEnquiry />} />
-          <Route path="//quotation/:_id" element={<MakeQuotation />} />
+          <Route path="/quotationform/:_id" element={<MakeQuotation />} />
           <Route path="/advancepayment" element={<AdvancePaymentForm />} />
           <Route path="/orderform" element={<OrderForm />} />
           <Route path="/addsalary/" element={<AddSalary />} />
@@ -81,6 +85,8 @@ function App() {
           <Route path="/updatetask" element={<UpdateTaskPage />} />
           <Route path="/viewtask" element={<ViewTaskPage />} />
           <Route path="/vendorinventory" element={<VendorInventory />} />
+
+          <Route path="/quotationform" element={<QuotationForm />}/>
         </Routes>
 
       </Router>
