@@ -7,13 +7,20 @@ import myImage from "./logo.png";
 
 function QuotationForm() {
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
+  // const location = useLocation();
+  // const data = location.state || {};
+  // const enquiry = data || {};
   const location = useLocation();
-  const data = location.state || {};
-  const enquiry = data || {};
+
+  // const enquiry = data.enquiry || {}; 
+  const { enquiry } = location.state || {};
+
+
   useEffect(() => {
+    console.log("Location state:", location.state);
     console.log("Enquiry data:", enquiry);
-  }, [enquiry]);
-  const eventName = enquiry.event_name || "";
+  }, [location.state, enquiry]);
+  // const eventName = enquiry.event_name || "";
 
   const [sections, setSections] = useState([
     {
@@ -88,7 +95,7 @@ function QuotationForm() {
   const handleSave = async () => {
     try {
       // Send a POST request to the API endpoint with the sections data
-      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quotation", {
+      await axios.post("http://localhost:5000/api/quotation", {
         sections,
       });
 
@@ -102,7 +109,7 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    doc.text(`Quotation Form of ${enquiry.event_name || ""}`, 10, 10);
+    doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
 
     // Print Customer Data
     const customerData = [
@@ -185,10 +192,16 @@ function QuotationForm() {
     doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
     alert("PDF file generated");
   };
-
+ 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Quotation Form of {eventName}</h1>
+      {/* <h1 className="mb-4">Quotation Form of {eventName}</h1> */}
+      
+      {/* <h1 className="mb-4">Quotation Form Of {enquiry.customer_name}</h1> */}
+      <h1 className="mb-4">Quotation Form Of<span className="text-dark"> {enquiry.customer_name}</span></h1>
+   
+
+     
 
       {sections.map((section, index) => (
         <div key={index} className="mb-4">

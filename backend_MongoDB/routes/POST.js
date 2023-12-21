@@ -11,6 +11,7 @@ const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} = require('../models/newModels')
+const {QuatationInfo} = require('../models/newModels')
 
 // post in addvendor api 
 router.post("/addvendor", async (req, res) => {
@@ -66,6 +67,7 @@ router.post('/inventory-stocks', async (req, res) => {
 
 
 
+// attendence api 
 router.post("/attendance/:day/:id/:presence", async (req, res) => {
   var { day, id, presence } = req.params;
 

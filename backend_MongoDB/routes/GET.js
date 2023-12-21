@@ -5,6 +5,8 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
+const {QuatationInfo} = require('../models/newModels')
+
 
 const { FindTable } = require("../utils/utils");
 
@@ -83,8 +85,7 @@ router.get('/inventory-stocks/vendor/:vendorId', async (req, res) => {
   }
 });
 
-
-
+// get method for quatationinfo 
 // Attendance table 
 router.get("/attendance/:day", async (req, res) => {
   const { day } = req.params;

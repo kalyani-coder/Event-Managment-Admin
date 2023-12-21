@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { format } from "date-fns";
 
-const ViewInquiryPage = () => {
+const ViewInquiryPage = ({ enquiry }) => {
   const [inquiries, setInquiries] = useState([]);
   const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -206,23 +207,9 @@ const ViewInquiryPage = () => {
                 <br />
                 Contact Number: {enquiry.contact}
               </p>
-              <Link
-                to={{
-                  pathname: `/quotation/${enquiry._id}`,
-                  state: {
-                    customerName: enquiry.customer_name,
-                    eventName: enquiry.event_name,
-                    eventDetails: {
-                      event_date: enquiry.event_date,
-                      event_venue: enquiry.event_venue,
-                    },
-                    ...enquiry,
-                  },
-                }}
-                className="btn btn-info"
-              >
-                Quotation
-              </Link>
+              <button onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
+  Quotation
+</button>
               <button
                 className="btn btn-outline-primary ml-2"
                 onClick={() => openPopup(enquiry)}
