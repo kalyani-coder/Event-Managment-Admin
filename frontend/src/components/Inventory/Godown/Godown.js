@@ -263,7 +263,7 @@ const GodownInventory = () => {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Category"
+                            placeholder="Product Category"
                             value={newStockCategory}
                             onChange={(e) => setNewStockCategory(e.target.value)}
                         />
@@ -272,7 +272,7 @@ const GodownInventory = () => {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="newStockName"
+                            placeholder="Item Name"
                             value={newStockName}
                             onChange={(e) => setNewStockName(e.target.value)}
                         />
@@ -282,7 +282,7 @@ const GodownInventory = () => {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="newStockQuantity"
+                            placeholder="Quantity"
                             value={newStockQuantity}
                             onChange={(e) => setNewStockQuantity(e.target.value)}
                         />
@@ -292,7 +292,7 @@ const GodownInventory = () => {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="newStockPrice"
+                            placeholder="Price/quantity"
                             value={newStockPrice}
                             onChange={(e) => setNewStockPrice(e.target.value)}
                         />

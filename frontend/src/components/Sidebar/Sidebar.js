@@ -388,14 +388,14 @@ export default function Sidebar() {
                       </Link>
                     </li>
 
-
+                    {/* 
                     <li>
                       <Link to={"/addinventory"}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Add Catagory
                       </Link>
-                    </li>
+                    </li> */}
 
 
                   </ul>
