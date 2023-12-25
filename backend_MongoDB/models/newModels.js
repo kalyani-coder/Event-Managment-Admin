@@ -248,6 +248,19 @@ const AddVendor = new Schema({
   }
 })
 
+const QuatationInfo = new Schema({
+  title : String,
+  particular : String,
+  description :String,
+  vendor_Name : String,
+  vendor_Stock : String,
+  unit : String,
+  quantity : Number,
+  rateper_Days :Number,
+  days :Number,
+  amount : String,
+})
+
 const InventoryStocks = new Schema({
   Category : {
     type : String,
@@ -291,6 +304,7 @@ const AccountantDetailsSchema = new Schema({
 module.exports = {
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   AddVendor : mongoose.model("AddVendor" , AddVendor),
+  QuatationInfo  : mongoose.model("quatationinfo" , QuatationInfo),
   InventoryStocks : mongoose.model('inventory-stocks' , InventoryStocks),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),

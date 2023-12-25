@@ -207,7 +207,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                 <br />
                 Contact Number: {enquiry.contact}
               </p>
-              <button onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
+              <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
   Quotation
 </button>
               <button

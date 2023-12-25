@@ -153,7 +153,7 @@ const GodownInventory = () => {
     const handleConfirmEditQuantity = async () => {
         try {
             // Update the API with the new quantity
-            await fetch(`http://localhost:5000/api/inventory-stocks/${selectedStockId}`, {
+            await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${selectedStockId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ const GodownInventory = () => {
     const handleConfirmEditPrice = async () => {
         try {
             // Update the API with the new price
-            await fetch(`http://localhost:5000/api/inventory-stocks/${selectedStockId}`, {
+            await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${selectedStockId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const {QuatationInfo} = require('../models/newModels')
+const {QuatationInfo} = require("../models/newModels")
 
 
 const { FindTable } = require("../utils/utils");
@@ -85,6 +85,18 @@ router.get('/inventory-stocks/vendor/:vendorId', async (req, res) => {
   }
 });
 
+// get quatationonfo 
+router.get("/quatationinfo", async (req, res) => {
+  try {
+    const allQuatationInfo = await QuatationInfo.find();
+    res.status(200).json(allQuatationInfo);
+  } catch (err) {
+    console.error("Error fetching quatation info:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// old code 
 // get method for quatationinfo 
 // Attendance table 
 router.get("/attendance/:day", async (req, res) => {
