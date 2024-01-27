@@ -95,6 +95,40 @@ router.patch('/inventory-stocks/:stockId', async (req, res) => {
   }
 });
 
+// patch method for inventory stocks 
+router.patch('/inventory-stocks/vendor/:vendorId/stock/:stockName', async (req, res) => {
+  const vendorId = req.params.vendorId;
+  const stockName = req.params.stockName;
+  const { quantity } = req.body;
 
+  try {
+    // Find the stock
+    const stock = await InventoryStocks.findOne({ Vendor_Id: vendorId, Stock_Name: stockName });
+
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock not found' });
+    }
+
+    // Ensure the quantity to subtract is a valid number
+    const quantityToSubtract = parseFloat(quantity);
+    if (isNaN(quantityToSubtract)) {
+      return res.status(400).json({ message: 'Invalid quantity provided' });
+    }
+
+    // Ensure that the resulting quantity after subtraction is not negative
+    if (stock.Stock_Quantity - quantityToSubtract < 0) {
+      return res.status(400).json({ message: 'Invalid quantity, resulting quantity would be negative' });
+    }
+
+    // Update the Stock_Quantity and save
+    stock.Stock_Quantity -= quantityToSubtract;
+    await stock.save();
+
+    res.status(200).json(stock);
+  } catch (error) {
+    console.error('Error updating stock quantity:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 module.exports = router;

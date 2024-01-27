@@ -95,7 +95,37 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
     }
   }, [selectedVendor, selectedStock, stockList]);
 
-
+  const handleUpdateQuantity = async (index) => {
+    try {
+      // Ensure that both the vendor and stock are selected
+      if (!selectedVendor || !selectedStockInfo) {
+        alert('Please select a vendor and stock before updating quantity.');
+        return;
+      }
+  
+      // Get the vendor and stock IDs
+      const vendorId = selectedVendor;
+      const stockName = selectedStock;
+  
+      // Prepare the data for the PATCH request
+      const updatedQuantity = sections[index].quantity;
+  
+      // Send a PATCH request to update stock quantity
+      await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
+        quantity: updatedQuantity,
+      });
+  
+      // Optionally, you can fetch updated stock information and update the state
+      // For simplicity, you can re-fetch the entire stock list or update only the specific stock in the state
+  
+      // Display a success message or update the UI as needed
+      alert('Quantity updated successfully!');
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      alert('Error updating quantity. Please try again.');
+    }
+  };
+  
 
   // old code start here 
   useEffect(() => {
@@ -158,6 +188,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
 
   const handleSave = async () => {
     try {
+      
       // Prepare the data in the required format
       const quatationInfoData = sections.map((section) => ({
         title: section.title,
@@ -363,23 +394,33 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
                 </div>
               </div>
 
-
               <div className="form-group col-md-3">
-                <label htmlFor={`rate${index}`}>
-                  Quantity:
-                </label>
-                <input
-                  type="number"
-                  placeholder="Add Quantity"
-                  className="form-control"
-                  name="quantity"
-                  value={sections[index].quantity}
-                  onChange={(e) => handleChange(e, index)}
-                />
-                {selectedStockInfo && (
-                  <p>Remaining Quantity: {selectedStockInfo.Stock_Quantity - sections[index].quantity}</p>
-                )}
-              </div>
+  <label htmlFor={`rate${index}`}>
+    Quantity:
+  </label>
+  <div className="input-group">
+    <input
+      type="number"
+      placeholder="Add Quantity"
+      className="form-control"
+      name="quantity"
+      value={sections[index].quantity}
+      onChange={(e) => handleChange(e, index)}
+    />
+    <div className="input-group-append">
+      <button
+        className="btn btn-danger fw-bold"
+        type="button"
+        onClick={() => handleUpdateQuantity(index)}
+      >
+        Update
+      </button>
+    </div>
+  </div>
+  {selectedStockInfo && (
+    <p>Remaining Quantity: {selectedStockInfo.Stock_Quantity - sections[index].quantity}</p>
+  )}
+</div>
 
              
 

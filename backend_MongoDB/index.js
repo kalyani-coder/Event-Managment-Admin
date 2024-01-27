@@ -9,9 +9,9 @@ const port = process.env.PORT || 5000;
 const GET = require("./routes/GET");
 const POST = require("./routes/POST");
 const DELETE = require("./routes/DELETE");
-const PATCH = require('./routes/PATCH')
+const PATCH = require('./routes/PATCH');
 const Login = require("./routes/LoginRoute");
-const AddVendor = require('./routes/AddVendorRoute')
+const AddVendor = require('./routes/AddVendorRoute');
 // const AddVendor = require('./routes/AddVendorRoute')
 
 app.use(bodyParser.json());
