@@ -34,7 +34,7 @@ const OrderForm = () => {
   // Function to fetch events from the API
   const fetchEvents = async () => {
     try {
-      const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/event');
+      const response = await fetch('http://localhost:5000/api/event');
       if (response.ok) {
         const data = await response.json();
         setEventList(data);
@@ -77,7 +77,7 @@ const OrderForm = () => {
   // Function to handle assigning the order to a manager
   const handleAssignToManager = async () => {
     try {
-      const response = await fetch("https://eventmanagement-admin-hocm.onrender.com/api/order", {
+      const response = await fetch("http://localhost:5000/api/order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

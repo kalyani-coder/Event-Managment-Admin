@@ -33,8 +33,21 @@ const AddExecutive = () => {
     setbranch_name("");
   };
 
+  const isValidForm = () => {
+    if (!fname || !lname || !contact) {
+      alert("Please fill out all required fields.");
+      return false;
+    }
+    return true;
+  };
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!isValidForm()) {
+      return;
+    }
 
     const formData = {
       fname,
@@ -51,19 +64,18 @@ const AddExecutive = () => {
       branch_name,
       profilePicture: profilePicture ? profilePicture.name : null,
     };
-    console.log("hello", formData);
 
     try {
       const response = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/executive",
+        "http://localhost:5000/api/executive",
         formData
       );
-      console.log(response);
+
       if (response.status === 200) {
-        alert("data is submitted ");
+        alert("Data submitted successfully!");
         handleDiscard();
       } else {
-        alert("error while submitting ");
+        alert("Error while submitting data.");
       }
     } catch (error) {
       console.log("Error", error);
@@ -78,6 +90,7 @@ const AddExecutive = () => {
   const handleRemoveProfilePicture = () => {
     setProfilePicture(null);
   };
+
   const indianStates = [
     "",
     "Andaman and Nicobar Islands",
@@ -115,7 +128,6 @@ const AddExecutive = () => {
     "Uttarakhand",
     "West Bengal",
   ];
-
   return (
     <div className="container mt-5">
       <h2>Add Executive</h2>

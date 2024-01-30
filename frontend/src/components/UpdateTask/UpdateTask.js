@@ -46,7 +46,7 @@ const UpdateTaskPage = () => {
 
         try {
             // Make a POST request to the API endpoint
-            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/executivetask', {
+            const response = await fetch('http://localhost:5000/api/executivetask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const UpdateTaskPage = () => {
     useEffect(() => {
         const fetchManagers = async () => {
             try {
-                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/managerdetails');
+                const response = await fetch('http://localhost:5000/api/managerdetails');
                 const data = await response.json();
                 setManagers(data);
                 setLoadingManagers(false);

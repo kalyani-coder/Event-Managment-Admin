@@ -35,7 +35,7 @@ export default function Enquiry() {
   const submitForm = async () => {
     try {
       const res = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/enquiry",
+        "http://localhost:5000/api/enquiry",
         formData
       );
       if (res.status === 200) {
@@ -80,7 +80,7 @@ export default function Enquiry() {
     const fetchRecentInquiries = async () => {
       try {
         const res = await axios.get(
-          "https://eventmanagement-admin-hocm.onrender.com/api/recent-inquiries"
+          "http://localhost:5000/api/recent-inquiries"
         );
         setRecentInquiries(res.data);
       } catch (e) {

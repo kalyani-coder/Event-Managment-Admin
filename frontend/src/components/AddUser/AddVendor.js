@@ -50,7 +50,7 @@ const AddVendor = () => {
 
     try {
       const response = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/vendor",
+        "http://localhost:5000/api/vendor",
         formData
       );
 
@@ -146,14 +146,14 @@ const AddVendor = () => {
 
         <Form.Group controlId="vendorCategory">
           <Form.Label>
-            Vendor Category 
+            Vendor Category
           </Form.Label>
           <Form.Control
             type="text"
             value={vendorCategory}
             onChange={(e) => setVendorCategory(e.target.value)}
             placeholder="Enter vendor category"
-            
+
           />
         </Form.Group>
 
@@ -169,7 +169,7 @@ const AddVendor = () => {
 
         <Form.Group controlId="contact">
           <Form.Label>
-            Phone 
+            Phone
           </Form.Label>
           <Form.Control
             type="tel"
@@ -177,45 +177,45 @@ const AddVendor = () => {
             onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter vendor phone"
             maxLength={10}
-            
+
           />
         </Form.Group>
 
         <Form.Group controlId="address">
           <Form.Label>
-            Address 
+            Address
           </Form.Label>
           <Form.Control
             type="text"
             value={address}
             onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter vendor address"
-            
+
           />
         </Form.Group>
 
         <Form.Group controlId="vendorCity">
           <Form.Label>
-            City 
+            City
           </Form.Label>
           <Form.Control
             type="text"
             value={vendorCity}
             onChange={(e) => setVendorCity(e.target.value)}
             placeholder="Enter vendor city"
-            
+
           />
         </Form.Group>
 
         <Form.Group controlId="vendorState">
           <Form.Label>
-            State 
+            State
           </Form.Label>
           <Form.Control
             as="select"
             value={vendorState}
             onChange={(e) => setVendorState(e.target.value)}
-            
+
           >
             {indianStates.map((state) => (
               <option key={state} value={state}>

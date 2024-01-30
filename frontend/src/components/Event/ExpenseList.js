@@ -9,7 +9,7 @@ const ViewExpense = () => {
         // Fetch data from the API
         const fetchData = async () => {
             try {
-                const response = await fetch("https://eventmanagement-admin-hocm.onrender.com/api/eventexpense");
+                const response = await fetch("http://localhost:5000/api/eventexpense");
                 const data = await response.json();
                 setExpenses(data);
             } catch (error) {

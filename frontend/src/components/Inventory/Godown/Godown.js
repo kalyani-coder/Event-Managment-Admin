@@ -28,7 +28,7 @@ const GodownInventory = () => {
 
     const handleAddVendor = async () => {
         try {
-            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor', {
+            const response = await fetch('http://localhost:5000/api/addvendor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const GodownInventory = () => {
                 return; // Exit the function if the stock already exists for the selected vendor
             }
 
-            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks', {
+            const response = await fetch('http://localhost:5000/api/inventory-stocks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const GodownInventory = () => {
 
     const fetchVendorStocks = async (vendorId) => {
         try {
-            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}`);
+            const response = await fetch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`);
             if (response.ok) {
                 const data = await response.json();
                 setSelectedVendorStocks(data);
@@ -113,7 +113,7 @@ const GodownInventory = () => {
         // Fetch vendors when the component mounts
         const fetchVendors = async () => {
             try {
-                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor');
+                const response = await fetch('http://localhost:5000/api/addvendor');
                 if (response.ok) {
                     const data = await response.json();
                     setVendors(data);
@@ -153,7 +153,7 @@ const GodownInventory = () => {
     const handleConfirmEditQuantity = async () => {
         try {
             // Update the API with the new quantity
-            await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${selectedStockId}`, {
+            await fetch(`http://localhost:5000/api/inventory-stocks/${selectedStockId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ const GodownInventory = () => {
     const handleConfirmEditPrice = async () => {
         try {
             // Update the API with the new price
-            await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${selectedStockId}`, {
+            await fetch(`http://localhost:5000/api/inventory-stocks/${selectedStockId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ const GodownInventory = () => {
             <div className="d-flex justify-content-between">
                 <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown button
+                        Vendors
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         {vendors.map((vendor) => (

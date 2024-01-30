@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 
 const AddManager = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -18,25 +20,18 @@ const AddManager = () => {
   const [profilePicture, setProfilePicture] = useState(null);
 
   const isValidForm = () => {
-    if (
-      !fname ||
-      !lname ||
-      !email ||
-      !contact ||
-      !address ||
-      !city ||
-      state === "" ||
-      !holder_name ||
-      !account_number ||
-      !IFSC_code ||
-      !bank_name ||
-      !branch_name
-    ) {
+    // Assuming fname, lname, and contact are the values of input fields
+    const fname = document.getElementById('fname').value;
+    const lname = document.getElementById('lname').value;
+    const contact = document.getElementById('contact').value;
+
+    if (!fname || !lname || !contact) {
       alert("Please fill out all fields.");
       return false;
     }
     return true;
   };
+
 
   const handleDiscard = () => {
     setfname("");
@@ -78,27 +73,21 @@ const AddManager = () => {
 
     try {
       const response = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/managerdetails",
+        "http://localhost:5000/api/managerdetails",
         formData
       );
       console.log("Data posted:", response.data);
+
+      // Show success message
+      setSuccessMessage("Data submitted successfully!");
+      setShowSuccessAlert(true);
+
+      // Clear the form
+      handleDiscard();
     } catch (error) {
       console.error("Error posting data:", error);
+      // Handle error if needed
     }
-
-    setfname("");
-    setlname("");
-    setemail("");
-    setcontact("");
-    setaddress("");
-    setcity("");
-    setstate("");
-    setaccount_number("");
-    setholder_name("");
-    setbank_name("");
-    setbranch_name("");
-    setIFSC_code("");
-    setProfilePicture(null);
   };
 
   const handleFileChange = (event) => {
@@ -149,11 +138,15 @@ const AddManager = () => {
   ];
 
 
-
-
   return (
     <div className="container mt-5">
       <h2>Add Manager</h2>
+      {showSuccessAlert && (
+        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
+
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="fname">
           <Form.Label>
@@ -203,7 +196,7 @@ const AddManager = () => {
             value={contact}
             onChange={(e) => setcontact(e.target.value)}
             placeholder="Enter phone"
-required
+            required
           />
         </Form.Group>
 

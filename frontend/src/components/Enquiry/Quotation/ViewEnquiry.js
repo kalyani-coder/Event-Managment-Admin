@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 const ViewInquiryPage = ({ enquiry }) => {
@@ -14,7 +14,7 @@ const ViewInquiryPage = ({ enquiry }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+          "http://localhost:5000/api/enquiry"
         );
         const data = await response.json();
 
@@ -208,8 +208,8 @@ const ViewInquiryPage = ({ enquiry }) => {
                 Contact Number: {enquiry.contact}
               </p>
               <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
-  Quotation
-</button>
+                Quotation
+              </button>
               <button
                 className="btn btn-outline-primary ml-2"
                 onClick={() => openPopup(enquiry)}

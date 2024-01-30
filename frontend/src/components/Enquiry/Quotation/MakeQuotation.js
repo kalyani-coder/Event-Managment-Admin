@@ -12,7 +12,7 @@ function QuotationForm() {
   const [selectedStockPrice, setSelectedStockPrice] = useState(null);
   const [selectedStock, setSelectedStock] = useState('');
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
-const [selectedVendorName, setSelectedVendorName] = useState('');
+  const [selectedVendorName, setSelectedVendorName] = useState('');
 
 
 
@@ -35,7 +35,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
 
   useEffect(() => {
     // Fetch the list of vendors from the first API
-    fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor')
+    fetch('http://localhost:5000/api/addvendor')
       .then((response) => response.json())
       .then((data) => setVendorList(data))
       .catch((error) => console.error('Error fetching vendors:', error));
@@ -44,7 +44,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
   useEffect(() => {
     // Fetch the stock list based on the selected vendor
     if (selectedVendor) {
-      fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${selectedVendor}`)
+      fetch(`http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`)
         .then((response) => response.json())
         .then((data) => setStockList(data))
         .catch((error) => console.error('Error fetching stock list:', error));
@@ -62,15 +62,15 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
   const handleVendorChange = (e) => {
     const selectedVendorId = e.target.value;
     const selectedVendor = vendorList.find(vendor => vendor._id === selectedVendorId);
-    
+
     setSelectedVendor(selectedVendorId);
     setSelectedVendorName(selectedVendor ? selectedVendor.Vendor_Name : '');
-    
+
     // Reset selected stock and price when the vendor changes
     setSelectedStock('');
     setSelectedStockPrice(null);
   };
-  
+
 
   const handleStockChange = (e) => {
     const selectedStock = e.target.value;
@@ -102,22 +102,22 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
         alert('Please select a vendor and stock before updating quantity.');
         return;
       }
-  
+
       // Get the vendor and stock IDs
       const vendorId = selectedVendor;
       const stockName = selectedStock;
-  
+
       // Prepare the data for the PATCH request
       const updatedQuantity = sections[index].quantity;
-  
+
       // Send a PATCH request to update stock quantity
       await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
         quantity: updatedQuantity,
       });
-  
+
       // Optionally, you can fetch updated stock information and update the state
       // For simplicity, you can re-fetch the entire stock list or update only the specific stock in the state
-  
+
       // Display a success message or update the UI as needed
       alert('Quantity updated successfully!');
     } catch (error) {
@@ -125,7 +125,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
       alert('Error updating quantity. Please try again.');
     }
   };
-  
+
 
   // old code start here 
   useEffect(() => {
@@ -156,17 +156,17 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
         ...updatedSections[index],
         [name]: value,
       };
-  
+
       // Calculate total amount
       const quantity = parseFloat(updatedSections[index].quantity) || 0;
       const ratePerDay = selectedStockInfo ? parseFloat(selectedStockInfo.Price) || 0 : 0;
       const totalDays = parseFloat(updatedSections[index].days) || 0;
       updatedSections[index].amount = (quantity * ratePerDay * totalDays).toFixed(2);
-  
+
       return updatedSections;
     });
   };
-  
+
 
   const handleAddSection = () => {
     const newSRNumber = sections.length + 1;
@@ -188,7 +188,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
 
   const handleSave = async () => {
     try {
-      
+
       // Prepare the data in the required format
       const quatationInfoData = sections.map((section) => ({
         title: section.title,
@@ -204,7 +204,7 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
       }));
 
       // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quatationinfo", {
+      await axios.post("http://localhost:5000/api/quatationinfo", {
         quatationInfoData,
       });
 
@@ -317,33 +317,33 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
         <div key={index} className="mb-4">
 
           <div className="form-row">
-          <div className="entity" style={{ display: "flex" }}>
+            <div className="entity" style={{ display: "flex" }}>
 
-            {/* select vendors droupdown  */}
-            <div className="form-group col-md-3">
-              <div className="form-group">
-                <label htmlFor={`entity${index}`}>
-                  Select Vendor:
-                </label>
-                <select
-                  className="form-control"
-                  name="entity"
-                  value={selectedVendor}
-                  onChange={handleVendorChange}
-                >
-                  <option value="">Select Vendor</option>
-                  {vendorList.map((vendor) => (
-                    <option key={vendor._id} value={vendor._id}>
-                      {vendor.Vendor_Name}
-                    </option>
-                  ))}
-                </select>
+              {/* select vendors droupdown  */}
+              <div className="form-group col-md-3">
+                <div className="form-group">
+                  <label htmlFor={`entity${index}`}>
+                    Select Vendor:
+                  </label>
+                  <select
+                    className="form-control"
+                    name="entity"
+                    value={selectedVendor}
+                    onChange={handleVendorChange}
+                  >
+                    <option value="">Select Vendor</option>
+                    {vendorList.map((vendor) => (
+                      <option key={vendor._id} value={vendor._id}>
+                        {vendor.Vendor_Name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
 
 
 
-          
+
 
               <div className="form-group col-md-3">
                 <div className="form-group">
@@ -395,37 +395,37 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
               </div>
 
               <div className="form-group col-md-3">
-  <label htmlFor={`rate${index}`}>
-    Quantity:
-  </label>
-  <div className="input-group">
-    <input
-      type="number"
-      placeholder="Add Quantity"
-      className="form-control"
-      name="quantity"
-      value={sections[index].quantity}
-      onChange={(e) => handleChange(e, index)}
-    />
-    <div className="input-group-append">
-      <button
-        className="btn btn-danger fw-bold"
-        type="button"
-        onClick={() => handleUpdateQuantity(index)}
-      >
-        Update
-      </button>
-    </div>
-  </div>
-  {selectedStockInfo && (
-    <p>Remaining Quantity: {selectedStockInfo.Stock_Quantity - sections[index].quantity}</p>
-  )}
-</div>
-
-             
-
+                <label htmlFor={`rate${index}`}>
+                  Quantity:
+                </label>
+                <div className="input-group">
+                  <input
+                    type="number"
+                    placeholder="Add Quantity"
+                    className="form-control"
+                    name="quantity"
+                    value={sections[index].quantity}
+                    onChange={(e) => handleChange(e, index)}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-danger fw-bold"
+                      type="button"
+                      onClick={() => handleUpdateQuantity(index)}
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+                {selectedStockInfo && (
+                  <p>Remaining Quantity: {selectedStockInfo.Stock_Quantity - sections[index].quantity}</p>
+                )}
               </div>
-            
+
+
+
+            </div>
+
           </div>
 
 
@@ -433,37 +433,37 @@ const [selectedVendorName, setSelectedVendorName] = useState('');
 
           <div className="form-group">
 
-          <div className="form-group col-md-3">
-                <label htmlFor={`rate${index}`}>
-                  Rate/Days:
-                </label>
-                <input
-                  type="text"
-                  placeholder="Rate/days"
-                  className="form-control"
-                  id={`rate${index}`}
-                  name="rate"
-                  value={selectedStockPrice !== null ? selectedStockPrice : ''}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
+            <div className="form-group col-md-3">
+              <label htmlFor={`rate${index}`}>
+                Rate/Days:
+              </label>
+              <input
+                type="text"
+                placeholder="Rate/days"
+                className="form-control"
+                id={`rate${index}`}
+                name="rate"
+                value={selectedStockPrice !== null ? selectedStockPrice : ''}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
 
 
-              <div className="form-group col-md-3">
-                <label htmlFor={`days${index}`}>
-                  Days:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Total days"
-                  id={`days${index}`}
-                  name="days"
-                  value={sections[index].days}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-         
+            <div className="form-group col-md-3">
+              <label htmlFor={`days${index}`}>
+                Days:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Total days"
+                id={`days${index}`}
+                name="days"
+                value={sections[index].days}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+
 
 
 

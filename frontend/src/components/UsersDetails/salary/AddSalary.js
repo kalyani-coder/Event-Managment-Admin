@@ -63,7 +63,7 @@ const AddSalary = () => {
     };
 
     axios
-      .post("https://eventmanagement-admin-hocm.onrender.com/api/staffsalary", salaryData)
+      .post("http://localhost:5000/api/staffsalary", salaryData)
       .then((response) => {
         console.log("Salary added successfully:", response.data);
       })
