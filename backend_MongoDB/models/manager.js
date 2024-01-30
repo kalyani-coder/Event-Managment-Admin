@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  managerEmail: { type: String, required: true },
-  managerPhone: { type: String, required: true },
-  managerAddress: { type: String, required: true },
-  managerCity: { type: String, required: true },
-  managerState: { type: String, required: true },
-  accountHolderName: { type: String, required: true },
-  accountNumber: { type: String, required: true },
-  ifscCode: { type: String, required: true },
-  bankName: { type: String, required: true },
-  branchName: { type: String, required: true },
-  profilePicture: { type: String, required: false }
+  firstName: { type: String, },
+  lastName: { type: String, },
+  managerEmail: { type: String, },
+  managerPhone: { type: String, },
+  managerAddress: { type: String, },
+  managerCity: { type: String, },
+  managerState: { type: String, },
+  accountHolderName: { type: String, },
+  accountNumber: { type: String, },
+  ifscCode: { type: String, },
+  bankName: { type: String, },
+  branchName: { type: String, },
+  profilePicture: { type: String,  }
 });
 
 module.exports = mongoose.model("Managers", Schema);
