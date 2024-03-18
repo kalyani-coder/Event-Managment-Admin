@@ -136,24 +136,51 @@ function QuotationForm() {
     },
   ]);
 
+  // const handleChange = (e, index) => {
+  //   const { name, value } = e.target;
+  //   setSections((prevSections) => {
+  //     const updatedSections = [...prevSections];
+  //     updatedSections[index] = {
+  //       ...updatedSections[index],
+  //       [name]: value,
+  //     };
+
+  //     // Calculate total amount
+  //     const quantity = parseFloat(updatedSections[index].quantity) || 0;
+  //     const ratePerDay = selectedStockInfo ? parseFloat(selectedStockInfo.Price) || 0 : 0;
+  //     const totalDays = parseFloat(updatedSections[index].days) || 0;
+  //     updatedSections[index].amount = (quantity * ratePerDay * totalDays).toFixed(2);
+
+  //     return updatedSections;
+  //   });
+  // };
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      updatedSections[index] = {
-        ...updatedSections[index],
-        [name]: value,
-      };
-
-      // Calculate total amount
-      const quantity = parseFloat(updatedSections[index].quantity) || 0;
-      const ratePerDay = selectedStockInfo ? parseFloat(selectedStockInfo.Price) || 0 : 0;
-      const totalDays = parseFloat(updatedSections[index].days) || 0;
-      updatedSections[index].amount = (quantity * ratePerDay * totalDays).toFixed(2);
-
-      return updatedSections;
-    });
+    const newSections = [...sections];
+  
+    // Update the corresponding field in the section
+    newSections[index] = {
+      ...newSections[index],
+      [name]: value
+    };
+  
+    // Calculate the amount if both "Rate/Days" and "Days" fields are filled
+    if (name === 'days') {
+      const ratePerDays = parseFloat(newSelectedStockPriceValue);
+      const days = parseFloat(value);
+      if (!isNaN(ratePerDays) && !isNaN(days)) {
+        newSections[index].amount = (ratePerDays * days).toFixed(2);
+      } else {
+        newSections[index].amount = '';
+      }
+    }
+  
+    // Update the state with the modified sections
+    setSections(newSections);
   };
+  
+
 
 
   const handleAddSection = () => {
@@ -185,8 +212,8 @@ function QuotationForm() {
         vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
         vendor_Stock: newSelectedStock,
         unit: section.unit,
-        quantity: parseFloat(section.newSelectedStockQuantityValue),
-        rateper_Days: parseFloat(selectedStockPrice),
+        quantity: parseFloat(updateQuantity),
+        rateper_Days: parseFloat(newSelectedStockPriceValue),
         days: parseFloat(section.days),
         amount: section.amount,
       }));
@@ -264,9 +291,8 @@ function QuotationForm() {
       section.title,
       section.particular,
       section.description,
-      section.entity,
       section.unit,
-      section.rate,
+      section.rateper_Days,
       section.days,
       section.amount,
     ]);
@@ -278,7 +304,6 @@ function QuotationForm() {
           "Title of Section",
           "Particular",
           "Description",
-          "Entity",
           "Unit",
           "Rate",
           "Days",
@@ -343,6 +368,38 @@ function QuotationForm() {
       setNewSelectedStockPriceValue('');
     }
   };
+
+  const [updateQuantity, setUpdateQuantity] = useState('');
+
+  const handleNewUpdateQuantity = async (e) => {
+    e.preventDefault();
+    try {
+      const vendorId = document.getElementById('vendorName').value;
+      const quantity = document.getElementById('updateQuantity').value;
+
+      // Send PATCH request to update stock quantity
+      const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ quantity })
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update stock quantity');
+      }
+
+      // Optionally, you can handle the response here
+      const data = await response.json();
+      console.log('Stock quantity updated successfully:', data);
+      alert('Stock quantity updated successfully:', data);
+
+      // Clear input field after successful update
+    } catch (error) {
+      console.error('Error updating stock quantity:', error);
+      // Handle error as needed
+    }
+  };
   return (
     <div className="container mt-5">
 
@@ -357,99 +414,14 @@ function QuotationForm() {
           <div className="form-row">
             <div className="entity" style={{ display: "flex" }}>
 
-              {/* select vendors droupdown  */}
-              <div className="form-group col-md-3">
-                <div className="form-group">
-                  <label htmlFor={`entity${index}`}>
-                    Select Vendor:
-                  </label>
-                  <select
-                    className="form-control"
-                    name="entity"
-                    value={selectedVendor}
-                    onChange={handleVendorChange}
-                  >
-                    <option value="">Select Vendor</option>
-                    {vendorList.map((vendor) => (
-                      <option key={vendor._id} value={vendor._id}>
-                        {vendor.Vendor_Name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group col-md-3">
-                <div className="form-group">
-                  <label htmlFor={`stock${index}`}>
-                    Select Stock:
-                  </label>
-                  <select
-                    className="form-control"
-                    name="stock"
-                    value={selectedStock}
-                    onChange={handleStockChange}
-                  >
-                    <option value="">Select Stock</option>
-                    {stockList.map((stock) => (
-                      <option key={stock._id} value={stock.Stock_Name}>
-                        {stock.Stock_Name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-
-              <div className="form-group col-md-3">
-                <label>
-                  Unit:<span style={{ color: "red" }}></span>
-                </label>
-                <div style={{ position: 'relative' }}>
-
-                  <input
-                    className="form-control"
-                    value={section.unit || ''}
-                    name="unit"
-                    type="text"
-                    placeholder="Enter value"
-                    style={{ paddingRight: '50px' }}
-                    onChange={(e) => handleChange(e, index)}
-                  />
-
-                </div>
-              </div>
-
-              <div className="form-group col-md-3">
-                <label htmlFor={`rate${index}`}>
-                  Quantity:
-                </label>
-                <div className="input-group">
-                  <input
-                    type="number"
-                    placeholder="Add Quantity"
-                    className="form-control"
-                    name="quantity"
-                    value={sections[index].quantity}
-                    onChange={(e) => handleChange(e, index)}
-                  />
-                  <div className="input-group-append">
-                    <button
-                      className="btn btn-danger fw-bold"
-                      type="button"
-                      onClick={() => handleUpdateQuantity(index)}
-                    >
-                      Update
-                    </button>
-                  </div>
-                </div>
-                {selectedStockInfo && (
-                  <p>Remaining Quantity: {selectedStockInfo.Stock_Quantity - sections[index].quantity}</p>
-                )}
-              </div>
-
+          
             </div>
           </div>
+
+
+
+
+
 
           <div className="form-group col-md-3">
             <label htmlFor="quantity">Select Stockname </label>
@@ -472,7 +444,7 @@ function QuotationForm() {
           </div>
 
           <div className="form-group col-md-3">
-            <label htmlFor="price">Price </label>
+            <label htmlFor="price">Rate/Days </label>
             <input
               type="text"
               className="form-control"
@@ -494,17 +466,37 @@ function QuotationForm() {
           </div>
 
           <div className="form-group col-md-3">
-            <label htmlFor="updateQuantity">Update Vendor Quantity</label>
+            <label>
+              Unit:<span style={{ color: "red" }}></span>
+            </label>
+            <div style={{ position: 'relative' }}>
+
+              <input
+                className="form-control"
+                value={section.unit || ''}
+                name="unit"
+                type="text"
+                placeholder="Enter value"
+                style={{ paddingRight: '50px' }}
+                onChange={(e) => handleChange(e, index)}
+              />
+
+            </div>
+          </div>
+
+          <div className="form-group col-md-3">
+            <label htmlFor="updateQuantity">Update Quantity</label>
             <input
               type="number"
               className="form-control"
               id="updateQuantity"
-             
+              value={updateQuantity}
+              onChange={(e) => setUpdateQuantity(e.target.value)}
             />
           </div>
 
           <div className="form-group col-md-3">
-            <button className="btn btn-primary">
+            <button className="btn btn-primary" onClick={handleNewUpdateQuantity}>
               Update Quantity
             </button>
           </div>
@@ -512,28 +504,16 @@ function QuotationForm() {
 
 
 
-          <div className="form-group">
+
+
+
+
+
+
+              <div className="form-group">
 
             <div className="form-group col-md-3">
-              <label htmlFor={`rate${index}`}>
-                Rate/Days:
-              </label>
-              <input
-                type="text"
-                placeholder="Rate/days"
-                className="form-control"
-                id={`rate${index}`}
-                name="rate"
-                value={selectedStockPrice !== null ? selectedStockPrice : ''}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-
-
-            <div className="form-group col-md-3">
-              <label htmlFor={`days${index}`}>
-                Days:
-              </label>
+              <label htmlFor={`days${index}`}>Days:</label>
               <input
                 type="text"
                 className="form-control"

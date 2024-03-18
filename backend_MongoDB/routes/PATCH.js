@@ -51,75 +51,78 @@ router.patch("/addvendor/:vendorId", async (req, res) => {
 //     }
 //   });
 
-router.patch('/inventory-stocks/:stockId', async (req, res) => {
-  const stockId = req.params.stockId;
-  const updateFields = req.body; // Assuming you send the fields to update in the request body
 
-  try {
-    // Check if the updateFields include Stock_Quantity
-    if ('Stock_Quantity' in updateFields) {
-      // Parse the Stock_Quantity value from the request body
-      const additionalQuantity = parseInt(updateFields.Stock_Quantity, 10) || 0;
 
-      // Find the existing stock
-      const existingStock = await InventoryStocks.findById(stockId);
 
-      if (!existingStock) {
-        return res.status(404).json({ message: 'Inventory stock not found' });
-      }
+// router.patch('/inventory-stocks/:stockId', async (req, res) => {
+//   const stockId = req.params.stockId;
+//   const updateFields = req.body; // Assuming you send the fields to update in the request body
 
-      // Increment the Stock_Quantity by the additionalQuantity
-      existingStock.Stock_Quantity += additionalQuantity;
+//   try {
+//     // Check if the updateFields include Stock_Quantity
+//     if ('Stock_Quantity' in updateFields) {
+//       // Parse the Stock_Quantity value from the request body
+//       const additionalQuantity = parseInt(updateFields.Stock_Quantity, 10) || 0;
 
-      // Save the updated stock to the database
-      const updatedStock = await existingStock.save();
+//       // Find the existing stock
+//       const existingStock = await InventoryStocks.findById(stockId);
 
-      res.status(200).json(updatedStock);
-    } else {
-      // If Stock_Quantity is not included in the updateFields, perform a regular update
-      const updatedStock = await InventoryStocks.findByIdAndUpdate(
-        stockId,
-        updateFields,
-        { new: true } // This option returns the updated document
-      );
+//       if (!existingStock) {
+//         return res.status(404).json({ message: 'Inventory stock not found' });
+//       }
 
-      if (!updatedStock) {
-        return res.status(404).json({ message: 'Inventory stock not found' });
-      }
+//       // Increment the Stock_Quantity by the additionalQuantity
+//       existingStock.Stock_Quantity += additionalQuantity;
 
-      res.status(200).json(updatedStock);
-    }
-  } catch (error) {
-    console.error('Error updating inventory stock:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+//       // Save the updated stock to the database
+//       const updatedStock = await existingStock.save();
 
-router.patch('/inventory-stocks/stock/:stockName/vendor/:vendorId', async (req, res) => {
-  const vendorId = req.params.vendorId;
-  const stockName = req.params.stockName;
-  const { updatedQuantity } = req.body; // Assuming the updated quantity is sent in the request body
+//       res.status(200).json(updatedStock);
+//     } else {
+//       // If Stock_Quantity is not included in the updateFields, perform a regular update
+//       const updatedStock = await InventoryStocks.findByIdAndUpdate(
+//         stockId,
+//         updateFields,
+//         { new: true } // This option returns the updated document
+//       );
 
-  try {
-    // Find the inventory stock by vendor ID and stock name
-    const stock = await InventoryStocks.findOne({ Vendor_Id: vendorId, Stock_Name: stockName });
+//       if (!updatedStock) {
+//         return res.status(404).json({ message: 'Inventory stock not found' });
+//       }
 
-    if (!stock) {
-      return res.status(404).json({ message: 'Inventory stock not found for the specified vendor and stock' });
-    }
+//       res.status(200).json(updatedStock);
+//     }
+//   } catch (error) {
+//     console.error('Error updating inventory stock:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
-    // Update the quantity
-    stock.Stock_Quantity -= updatedQuantity; // Subtract the updated quantity
+// router.patch('/inventory-stocks/stock/:stockName/vendor/:vendorId', async (req, res) => {
+//   const vendorId = req.params.vendorId;
+//   const stockName = req.params.stockName;
+//   const { updatedQuantity } = req.body; // Assuming the updated quantity is sent in the request body
 
-    // Save the updated stock
-    await stock.save();
+//   try {
+//     // Find the inventory stock by vendor ID and stock name
+//     const stock = await InventoryStocks.findOne({ Vendor_Id: vendorId, Stock_Name: stockName });
 
-    res.status(200).json({ message: 'Inventory stock quantity updated successfully' });
-  } catch (error) {
-    console.error('Error updating inventory stock quantity:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+//     if (!stock) {
+//       return res.status(404).json({ message: 'Inventory stock not found for the specified vendor and stock' });
+//     }
+
+//     // Update the quantity
+//     stock.Stock_Quantity -= updatedQuantity; // Subtract the updated quantity
+
+//     // Save the updated stock
+//     await stock.save();
+
+//     res.status(200).json({ message: 'Inventory stock quantity updated successfully' });
+//   } catch (error) {
+//     console.error('Error updating inventory stock quantity:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 
 // patch method for inventory stocks 
@@ -134,6 +137,42 @@ router.patch('/inventory-stocks/vendor/:vendorId/stock/:stockName', async (req, 
 
     if (!stock) {
       return res.status(404).json({ message: 'Stock not found' });
+    }
+
+    // Ensure the quantity to subtract is a valid number
+    const quantityToSubtract = parseFloat(quantity);
+    if (isNaN(quantityToSubtract)) {
+      return res.status(400).json({ message: 'Invalid quantity provided' });
+    }
+
+    // Ensure that the resulting quantity after subtraction is not negative
+    if (stock.Stock_Quantity - quantityToSubtract < 0) {
+      return res.status(400).json({ message: 'Invalid quantity, resulting quantity would be negative' });
+    }
+
+    // Update the Stock_Quantity and save
+    stock.Stock_Quantity -= quantityToSubtract;
+    await stock.save();
+
+    res.status(200).json(stock);
+  } catch (error) {
+    console.error('Error updating stock quantity:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+router.patch('/inventory-stocks/vendor/:vendorName', async (req, res) => {
+  const vendorName = req.params.vendorName;
+  const { quantity } = req.body;
+
+  try {
+    // Find the stock
+    const stock = await InventoryStocks.findOne({ Vendor_Name: vendorName });
+
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock not found for the specified vendor' });
     }
 
     // Ensure the quantity to subtract is a valid number
