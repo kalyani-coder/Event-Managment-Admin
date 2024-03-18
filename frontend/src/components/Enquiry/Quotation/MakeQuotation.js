@@ -419,10 +419,6 @@ function QuotationForm() {
           </div>
 
 
-
-
-
-
           <div className="form-group col-md-3">
             <label htmlFor="quantity">Select Stockname </label>
             <select className="form-control" id="stockName" onChange={newhandleStockChange}>
@@ -503,14 +499,7 @@ function QuotationForm() {
 
 
 
-
-
-
-
-
-
-
-              <div className="form-group">
+          <div className="form-group">
 
             <div className="form-group col-md-3">
               <label htmlFor={`days${index}`}>Days:</label>
