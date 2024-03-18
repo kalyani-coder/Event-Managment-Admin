@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -14,28 +15,25 @@ function QuotationForm() {
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedVendorName, setSelectedVendorName] = useState('');
 
-
-
-
-
-  // const [selectedVendor, setSelectedVendor] = useState('');
   const [stockList, setStockList] = useState([]);
   const [vendorList, setVendorList] = useState([]);
 
   const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
-  // const location = useLocation();
-  // const data = location.state || {};
-  // const enquiry = data || {};
+
   const location = useLocation();
 
-  // const enquiry = data.enquiry || {}; 
   const { enquiry } = location.state || {};
 
   // new 
 
+
+
+
+
+
   useEffect(() => {
     // Fetch the list of vendors from the first API
-    fetch('http://localhost:5000/api/addvendor')
+    fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor')
       .then((response) => response.json())
       .then((data) => setVendorList(data))
       .catch((error) => console.error('Error fetching vendors:', error));
@@ -44,20 +42,14 @@ function QuotationForm() {
   useEffect(() => {
     // Fetch the stock list based on the selected vendor
     if (selectedVendor) {
-      fetch(`http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`)
+      fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${selectedVendor}`)
         .then((response) => response.json())
         .then((data) => setStockList(data))
         .catch((error) => console.error('Error fetching stock list:', error));
     }
   }, [selectedVendor]);
 
-  // const handleVendorChange = (e) => {
-  //   const selectedVendor = e.target.value;
-  //   setSelectedVendor(selectedVendor);
-  //   // Reset selected stock and price when the vendor changes
-  //   setSelectedStock('');
-  //   setSelectedStockPrice(null);
-  // };
+
 
   const handleVendorChange = (e) => {
     const selectedVendorId = e.target.value;
@@ -111,14 +103,10 @@ function QuotationForm() {
       const updatedQuantity = sections[index].quantity;
 
       // Send a PATCH request to update stock quantity
-      await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
+      await axios.patch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
         quantity: updatedQuantity,
       });
 
-      // Optionally, you can fetch updated stock information and update the state
-      // For simplicity, you can re-fetch the entire stock list or update only the specific stock in the state
-
-      // Display a success message or update the UI as needed
       alert('Quantity updated successfully!');
     } catch (error) {
       console.error('Error updating quantity:', error);
@@ -194,17 +182,19 @@ function QuotationForm() {
         title: section.title,
         particular: section.particular,
         description: section.description,
-        vendor_Name: selectedVendorName, // Assuming you want to associate all sections with the selected vendor
-        vendor_Stock: selectedStock,
+        vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
+        vendor_Stock: newSelectedStock,
         unit: section.unit,
-        quantity: parseFloat(section.quantity),
+        quantity: parseFloat(section.newSelectedStockQuantityValue),
         rateper_Days: parseFloat(selectedStockPrice),
         days: parseFloat(section.days),
         amount: section.amount,
       }));
 
+
+
       // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("http://localhost:5000/api/quatationinfo", {
+      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quatationinfo", {
         quatationInfoData,
       });
 
@@ -303,11 +293,59 @@ function QuotationForm() {
     alert("PDF file generated");
   };
 
+
+  // new 
+  const [stockNames, setStockNames] = useState([]);
+  const [newSelectedStock, setNewSelectedStock] = useState('');
+  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] = useState('');
+  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] = useState('');
+  const [newstocksData, setNewStocksData] = useState([]);
+  const [newselectedVendor, setNewSelectedVendor] = useState('');
+
+
+
+  useEffect(() => {
+    fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks")
+      .then(response => response.json())
+      .then(data => {
+        const names = data.map(stock => stock.Stock_Name);
+        setStockNames(names);
+        setNewStocksData(data);
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+
+  const newhandleStockChange = (e) => {
+    const selectedStockName = e.target.value;
+    setNewSelectedStock(selectedStockName);
+
+    // Filter vendors associated with the selected stock
+    const selectedStockData = newstocksData.find(stock => stock.Stock_Name === selectedStockName);
+    if (selectedStockData) {
+      const vendors = newstocksData.filter(stock => stock.Stock_Name === selectedStockName).map(stock => stock.Vendor_Name);
+      setVendorNames(vendors);
+    } else {
+      setVendorNames([]);
+    }
+  };
+
+  const newhandleVendorChange = (e) => {
+    const selectedVendorName = e.target.value;
+    setNewSelectedVendor(selectedVendorName);
+
+    // Find the selected vendor's data
+    const selectedVendorData = newstocksData.find(stock => stock.Vendor_Name === selectedVendorName && stock.Stock_Name === newSelectedStock);
+    if (selectedVendorData) {
+      setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
+      setNewSelectedStockPriceValue(selectedVendorData.Price);
+    } else {
+      setNewSelectedStockQuantityValue('');
+      setNewSelectedStockPriceValue('');
+    }
+  };
   return (
     <div className="container mt-5">
-      {/* <h1 className="mb-4">Quotation Form of {eventName}</h1> */}
 
-      {/* <h1 className="mb-4">Quotation Form Of {enquiry.customer_name}</h1> */}
       <h1 className="mb-4">Quotation Form Of<span className="text-dark"> {enquiry.customer_name}</span></h1>
 
 
@@ -341,10 +379,6 @@ function QuotationForm() {
                 </div>
               </div>
 
-
-
-
-
               <div className="form-group col-md-3">
                 <div className="form-group">
                   <label htmlFor={`stock${index}`}>
@@ -372,15 +406,7 @@ function QuotationForm() {
                   Unit:<span style={{ color: "red" }}></span>
                 </label>
                 <div style={{ position: 'relative' }}>
-                  {/* <input
-                    className="form-control"
-                    // id={`unit${index}`}
-                    value={section.unit}
-                    name="unit"
-                    type="text"
-                    placeholder="Enter value"
-                    style={{ paddingRight: '50px' }}
-                  /> */}
+
                   <input
                     className="form-control"
                     value={section.unit || ''}
@@ -422,10 +448,65 @@ function QuotationForm() {
                 )}
               </div>
 
-
-
             </div>
+          </div>
 
+          <div className="form-group col-md-3">
+            <label htmlFor="quantity">Select Stockname </label>
+            <select className="form-control" id="stockName" onChange={newhandleStockChange}>
+              <option value="">Select Stock</option>
+              {stockNames.map(stockName => (
+                <option key={stockName} value={stockName}>{stockName}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group col-md-3">
+            <label htmlFor="vendorName">Vendor Names </label>
+            <select className="form-control" id="vendorName" onChange={newhandleVendorChange}>
+              <option value="">Select Vendor</option>
+              {vendorNames.map(vendor => (
+                <option key={vendor} value={vendor}>{vendor}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group col-md-3">
+            <label htmlFor="price">Price </label>
+            <input
+              type="text"
+              className="form-control"
+              id="price"
+              value={newSelectedStockPriceValue}
+              readOnly
+            />
+          </div>
+
+          <div className="form-group col-md-3">
+            <label htmlFor="quantity">Quantity </label>
+            <input
+              type="text"
+              className="form-control"
+              id="quantity"
+              value={newSelectedStockQuantityValue}
+              readOnly
+            />
+          </div>
+
+          <div className="form-group col-md-3">
+            <label htmlFor="updateQuantity">Update Vendor Quantity</label>
+            <input
+              type="number"
+              className="form-control"
+              id="updateQuantity"
+             
+            />
+          </div>
+
+          <div className="form-group col-md-3">
+            <button className="btn btn-primary">
+              Update Quantity
+            </button>
           </div>
 
 

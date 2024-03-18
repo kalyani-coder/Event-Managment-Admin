@@ -117,6 +117,43 @@ router.get('/inventory-stocks/vendor/:vendorId/stock/:stockName', async (req, re
   }
 });
 
+router.get('/inventory-stocks/stock/:stockName/vendor/:vendorId', async (req, res) => {
+  const vendorId = req.params.vendorId;
+  const stockName = req.params.stockName;
+
+  try {
+    // Assuming that you have fields called 'Vendor_Id' and 'Stock_Name' in your model
+    const stocks = await InventoryStocks.find({ Vendor_Id: vendorId, Stock_Name: stockName });
+
+    if (!stocks || stocks.length === 0) {
+      return res.status(404).json({ message: 'No inventory stocks found for the specified vendor and stock' });
+    }
+
+    res.status(200).json(stocks);
+  } catch (error) {
+    console.error('Error fetching inventory stocks by Vendor_Id and Stock_Name:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.get('/inventory-stocks/stock/:stockName', async (req, res) => {
+  const stockName = req.params.stockName;
+
+  try {
+    // Assuming that you have fields called 'Vendor_Id' and 'Stock_Name' in your model
+    const stocks = await InventoryStocks.find({Stock_Name: stockName });
+
+    if (!stocks || stocks.length === 0) {
+      return res.status(404).json({ message: 'No inventory stocks found for the specified vendor and stock' });
+    }
+
+    res.status(200).json(stocks);
+  } catch (error) {
+    console.error('Error fetching inventory stocks by Vendor_Id and Stock_Name:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // old code 
 // get method for quatationinfo 

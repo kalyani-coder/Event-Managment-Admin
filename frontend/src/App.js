@@ -37,6 +37,7 @@ import UpdateTaskPage from './components/UpdateTask/UpdateTask';
 import ViewTaskPage from "./components/UpdateTask/ViewTask";
 import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
+import Product from "./components/Inventory/Godown/Product";
 
 
 
@@ -87,6 +88,7 @@ function App() {
           <Route path="/vendorinventory" element={<VendorInventory />} />
 
           <Route path="/quotationform" element={<QuotationForm />}/>
+          <Route path="/product" element={<Product />}/>
         </Routes>
 
       </Router>

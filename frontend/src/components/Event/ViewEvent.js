@@ -11,7 +11,7 @@ const EventDetails = ({ routes }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/event")
+      .get("https://eventmanagement-admin-hocm.onrender.com/api/event")
       .then((response) => {
         setEventData(response.data);
         console.log(response.data);

@@ -39,7 +39,7 @@ const VendorPayment = () => {
         // Fetch the list of vendors when the component mounts
         const fetchVendors = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/vendor');
+                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/vendor');
                 setVendors(response.data);
             } catch (error) {
                 console.error('Error fetching vendors:', error);
@@ -66,7 +66,7 @@ const VendorPayment = () => {
 
         // Fetch vendor details based on the selected vendor
         try {
-            const response = await axios.get(`http://localhost:5000/api/vendor?company_name=${value}`);
+            const response = await axios.get(`https://eventmanagement-admin-hocm.onrender.com/api/vendor?company_name=${value}`);
             const vendorDetails = response.data[0]; // Assuming there's only one vendor with the given company_name
             setFormData((prevData) => ({
                 ...prevData,
@@ -83,7 +83,7 @@ const VendorPayment = () => {
 
         try {
             // Make a POST request to your API endpoint
-            const response = await axios.post('http://localhost:5000/api/vendorpayment', formData);
+            const response = await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment', formData);
 
             // If the request is successful, show a popup and clear the form
             if (response.status === 200) {

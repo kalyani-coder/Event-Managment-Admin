@@ -8,7 +8,7 @@ const ViewSalary = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/api/staffsalary")
+            .get("https://eventmanagement-admin-hocm.onrender.com/api/staffsalary")
             .then((response) => {
                 setSalaryData(response.data);
             })

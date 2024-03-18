@@ -25,7 +25,7 @@ const ExecutiveDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/executive/${_id}`)
+        .delete(`https://eventmanagement-admin-hocm.onrender.com/api/executive/${_id}`)
         .then(() => {
           console.log("Executive data deleted successfully");
           navigate("/executivedetails");

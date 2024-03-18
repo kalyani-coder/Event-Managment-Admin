@@ -48,7 +48,7 @@ function AddEvent() {
     const fetchCustomerNames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/enquiry?customer_name=${searchQuery}`
+          `https://eventmanagement-admin-hocm.onrender.com/api/enquiry?customer_name=${searchQuery}`
         );
 
         // Extract customer details from the response
@@ -116,7 +116,7 @@ function AddEvent() {
     try {
       // Make a POST request to the API endpoint
       const response = await axios.post(
-        "http://localhost:5000/api/event",
+        "https://eventmanagement-admin-hocm.onrender.com/api/event",
         eventData
       );
 

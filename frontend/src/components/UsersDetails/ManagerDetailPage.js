@@ -32,7 +32,7 @@ const ManagerDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/managerdetails/${_id}`)
+        .delete(`https://eventmanagement-admin-hocm.onrender.com/api/managerdetails/${_id}`)
         .then(() => {
           console.log("Manager data deleted successfully");
           navigate("/managerdetails");

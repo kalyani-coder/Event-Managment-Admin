@@ -10,7 +10,7 @@ const AccountantDetails = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/accountant")
+      .get("https://eventmanagement-admin-hocm.onrender.com/api/accountant")
       .then((response) => {
         setAccountantData(response.data);
       })

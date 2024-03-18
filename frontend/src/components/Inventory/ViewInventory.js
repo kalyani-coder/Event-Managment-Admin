@@ -9,7 +9,7 @@ const ViewInventory = () => {
 
   useEffect(() => {
     // Fetch inventory data from your API here
-    fetch("http://localhost:5000/api/inventorystock")
+    fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventorystock")
       .then((response) => response.json())
       .then((data) => {
         setInventoryItems(data);
@@ -45,7 +45,7 @@ const ViewInventory = () => {
     }
 
     fetch(
-      `http://localhost:5000/api/inventorystock/${itemName}/${changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""
+      `https://eventmanagement-admin-hocm.onrender.com/api/inventorystock/${itemName}/${changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""
       }${newQuantity}`,
       {
         method: "POST",

@@ -95,6 +95,33 @@ router.patch('/inventory-stocks/:stockId', async (req, res) => {
   }
 });
 
+router.patch('/inventory-stocks/stock/:stockName/vendor/:vendorId', async (req, res) => {
+  const vendorId = req.params.vendorId;
+  const stockName = req.params.stockName;
+  const { updatedQuantity } = req.body; // Assuming the updated quantity is sent in the request body
+
+  try {
+    // Find the inventory stock by vendor ID and stock name
+    const stock = await InventoryStocks.findOne({ Vendor_Id: vendorId, Stock_Name: stockName });
+
+    if (!stock) {
+      return res.status(404).json({ message: 'Inventory stock not found for the specified vendor and stock' });
+    }
+
+    // Update the quantity
+    stock.Stock_Quantity -= updatedQuantity; // Subtract the updated quantity
+
+    // Save the updated stock
+    await stock.save();
+
+    res.status(200).json({ message: 'Inventory stock quantity updated successfully' });
+  } catch (error) {
+    console.error('Error updating inventory stock quantity:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 // patch method for inventory stocks 
 router.patch('/inventory-stocks/vendor/:vendorId/stock/:stockName', async (req, res) => {
   const vendorId = req.params.vendorId;

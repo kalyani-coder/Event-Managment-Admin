@@ -9,7 +9,7 @@ const VendorPaymentView = () => {
     useEffect(() => {
         const fetchVendorPayments = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/vendorpayment');
+                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment');
                 setVendorPayments(response.data);
             } catch (error) {
                 console.error('Error fetching vendor payments:', error);

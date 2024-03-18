@@ -78,7 +78,7 @@ const AddAccountant = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/accountant",
+        "https://eventmanagement-admin-hocm.onrender.com/api/accountant",
         formData
       );
 
