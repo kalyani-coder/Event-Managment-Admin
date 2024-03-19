@@ -38,6 +38,7 @@ import ViewTaskPage from "./components/UpdateTask/ViewTask";
 import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
 import Product from "./components/Inventory/Godown/Product";
+import NewGodowns from "./components/Inventory/Godown/NewGodowns";
 
 import EventReport from './components/DownloadReport/EventReport';
 import VendorPaymentReport from "./components/DownloadReport/VendorPaymentReport";
