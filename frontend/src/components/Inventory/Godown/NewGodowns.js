@@ -209,6 +209,13 @@ const NewGodowns = () => {
     const [editProductData, setEditProductData] = useState(null);
     const [newPrice, setNewPrice] = useState('');
 
+    const [newQuantity, setNewQuantity] = useState(editProductData?.Stock_Quantity || '');
+
+const handleQuantityChange = (e) => {
+    setNewQuantity(e.target.value);
+};
+
+
     const handleEditProduct = (productData) => {
         setEditProductData(productData);
         setNewPrice(productData.Price);
@@ -216,30 +223,43 @@ const NewGodowns = () => {
     };
 
     const handleSaveEdit = async () => {
-        try {
-            const updatedProduct = { ...editProductData, Price: newPrice };
-            // Perform PATCH request to update the price
-            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${updatedProduct._id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedProduct)
-            });
-            if (response.ok) {
-                window.alert('Price updated successfully');
-                // TODO: Update your selectedProduct list or fetch it again from the server
-            } else {
-                window.alert('Failed to update price');
-            }
-            setShowEditModal(false);
-            setEditProductData(null);
-            setNewPrice('');
-        } catch (error) {
-            console.error('Error updating price:', error);
-            window.alert('Error updating price');
+    try {
+        // Calculate the updated quantity by adding the new quantity to the existing quantity
+        const updatedQuantity = editProductData.Stock_Quantity + parseInt(newQuantity);
+
+        // Create the updated product object with new price and calculated quantity
+        const updatedProduct = {
+            ...editProductData,
+            Price: newPrice,
+            Stock_Quantity: updatedQuantity
+        };
+
+        // Perform PATCH request to update the price and quantity
+        const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${updatedProduct._id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedProduct)
+        });
+
+        if (response.ok) {
+            window.alert('Price and quantity updated successfully');
+            // TODO: Update your selectedProduct list or fetch it again from the server
+        } else {
+            window.alert('Failed to update price and quantity');
         }
-    };
+
+        setShowEditModal(false);
+        setEditProductData(null);
+        setNewPrice('');
+        setNewQuantity('');
+    } catch (error) {
+        console.error('Error updating price and quantity:', error);
+        window.alert('Error updating price and quantity');
+    }
+};
+
 
     const handleCloseEdit = () => {
         setShowEditModal(false);
@@ -474,17 +494,21 @@ const NewGodowns = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="stockQuantity">Stock Quantity:</label>
-                                            <input
-                                                id="stockQuantity"
-                                                type="number"
-                                                value={editProductData.Stock_Quantity}
-                                                
-                                                style={{ borderRadius: "7px" }}
-                                            />
+                                            {editProductData && (
+                                                <div>
+                                                    <label htmlFor="stockQuantity">Stock Quantity:</label>
+                                                    <input
+                                                        id="stockQuantity"
+                                                        type="number"
+                                                        value={newQuantity}
+                                                        onChange={handleQuantityChange}
+                                                        style={{ borderRadius: "7px" }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </Modal.Body>
-                                    
+
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={handleCloseEdit}>
                                             Cancel

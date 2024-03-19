@@ -54,25 +54,31 @@ router.patch('/inventory-stocks/:stockId', async (req, res) => {
   router.patch("/:id", async (req, res) => {
     try {
         const productId = req.params.id;
-        const updatedQuantity = req.body.Stock_Quantity; // New quantity sent from the client
-        const existingProduct = await Product.findById(productId);
-        
+        const { Price, Stock_Quantity } = req.body; // Get updated Price and Stock_Quantity from request body
+
+        // Find the product by ID
+        const existingProduct = await InventoryStocks.findById(productId);
+
         if (!existingProduct) {
-            return res.status(404).json({ message: "Product not found" });
+            return res.status(404).json({ error: "Product not found" });
         }
 
-        // Add the new quantity to the existing quantity
-        const totalQuantity = existingProduct.Stock_Quantity + updatedQuantity;
+        // Calculate the updated quantity by adding the existing quantity and the new quantity
+        const updatedQuantity = existingProduct.Stock_Quantity + Stock_Quantity;
 
-        existingProduct.Stock_Quantity = totalQuantity;
+        // Update the product with the new Price and calculated Stock_Quantity
+        existingProduct.Price = Price;
+        existingProduct.Stock_Quantity = updatedQuantity;
         await existingProduct.save();
 
-        res.status(200).json({ message: "Stock quantity updated successfully", updatedQuantity: totalQuantity });
+        res.status(200).json(existingProduct);
     } catch (error) {
-        console.error("Error updating stock quantity:", error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Error updating product:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
+
+
 
 
 

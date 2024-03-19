@@ -380,56 +380,83 @@ export default function Sidebar() {
                   </a>
                   <ul className="collapse list-unstyled" id="InventorySubMenu">
 
-                    <li>
+                    {/* <li>
                       <Link to={"/godown"}>
+                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Godowns
+                      </Link>
+                    </li> */}
+
+                    <li>
+                      <Link to={"/newgodown"}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Godowns
                       </Link>
                     </li>
 
-                    <li>
-                      <Link to={"/newgodown"}>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
-                        />
-                        New Godowns
-                      </Link>
-                    </li>
-
                     
-                    <li>
+                    {/* <li>
                       <Link to={"/product"}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Product
                       </Link>
-                    </li>
+                    </li> */}
 
 
                   </ul>
                 </li>
 
-                <li>
+
+
+                <li className="active">
+                  <a
+                    href="#Downloadreport"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
+                  >
+                    <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#9b59b6" }} // Change color
+                      size="lg" />
+                    Download Report
+                  </a>
+                  <ul className="collapse list-unstyled" id="Downloadreport">
+
+                    <li>
+                      <Link to={"/eventreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Event Report
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link to={"/vendorpaymentreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Vendor Report
+                      </Link>
+                    </li>
+
+                  
+
+                  </ul>
+                </li>
+
+
+                
+
+                {/* <li>
                   <a href="#">
                     <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#9b59b6" }} // Change color
                       size="lg" />
                     Download Report
                   </a>
-                </li>
-                <li>
-                      <Link to={"/eventreport"}>
-                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
-                        />
-                        Event Report 
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={"/vendorpaymentreport"}>
-                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
-                        />
-                        Vendor Report  
-                      </Link>
-                    </li>
+                </li> */}
+
+              
                 <li>
                   <button className="btn btn-danger mt-5 ml-5"
                     onClick={handleLogout}
