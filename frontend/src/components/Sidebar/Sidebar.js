@@ -417,6 +417,20 @@ export default function Sidebar() {
                   </a>
                 </li>
                 <li>
+                      <Link to={"/eventreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Event Report 
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/vendorpaymentreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Vendor Report  
+                      </Link>
+                    </li>
+                <li>
                   <button className="btn btn-danger mt-5 ml-5"
                     onClick={handleLogout}
                   >Logout</button>
