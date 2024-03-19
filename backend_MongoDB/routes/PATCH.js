@@ -29,28 +29,50 @@ router.patch("/addvendor/:vendorId", async (req, res) => {
   });
 
   // PATCH route to update an inventory stock by ID
-// router.patch('/inventory-stocks/:stockId', async (req, res) => {
-//     const stockId = req.params.stockId;
-//     const updateFields = req.body; // Assuming you send the fields to update in the request body
+router.patch('/inventory-stocks/:stockId', async (req, res) => {
+    const stockId = req.params.stockId;
+    const updateFields = req.body; // Assuming you send the fields to update in the request body
   
-//     try {
-//       const updatedStock = await InventoryStocks.findByIdAndUpdate(
-//         stockId,
-//         updateFields,
-//         { new: true } // This option returns the updated document
-//       );
+    try {
+      const updatedStock = await InventoryStocks.findByIdAndUpdate(
+        stockId,
+        updateFields,
+        { new: true } 
+      );
   
-//       if (!updatedStock) {
-//         return res.status(404).json({ message: 'Inventory stock not found' });
-//       }
+      if (!updatedStock) {
+        return res.status(404).json({ message: 'Inventory stock not found' });
+      }
   
-//       res.status(200).json(updatedStock);
-//     } catch (error) {
-//       console.error('Error updating inventory stock:', error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   });
+      res.status(200).json(updatedStock);
+    } catch (error) {
+      console.error('Error updating inventory stock:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
+  router.patch("/:id", async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const updatedQuantity = req.body.Stock_Quantity; // New quantity sent from the client
+        const existingProduct = await Product.findById(productId);
+        
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Add the new quantity to the existing quantity
+        const totalQuantity = existingProduct.Stock_Quantity + updatedQuantity;
+
+        existingProduct.Stock_Quantity = totalQuantity;
+        await existingProduct.save();
+
+        res.status(200).json({ message: "Stock quantity updated successfully", updatedQuantity: totalQuantity });
+    } catch (error) {
+        console.error("Error updating stock quantity:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 
 
 

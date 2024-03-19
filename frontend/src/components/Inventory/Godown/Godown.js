@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, Table, Button } from 'react-bootstrap';
+import { Dropdown, Table, Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 // import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -218,7 +218,7 @@ const GodownInventory = () => {
             <h2>Godown Inventory</h2>
 
             <div className="d-flex justify-content-between">
-                <div className="dropdown">
+                {/* <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Vendors
                     </button>
@@ -233,7 +233,27 @@ const GodownInventory = () => {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </div> */}
+
+                <Form.Group controlId="SelectVendor">
+                    <Form.Label>Select Vendor:</Form.Label>
+                    <div className="relative">
+                        <Form.Select
+                            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                            aria-label="Select Vendor"
+                            name="vendor"
+                            style={{ width: '50%' }}
+                            onChange={(e) => setSelectedGodown(e.target.value)}
+                        >
+                            <option>Select Vendor</option>
+                            {vendors.map((vendor) => (
+                                <option key={vendor._id} value={vendor.Vendor_Name}>
+                                    {vendor.Vendor_Name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </div>
+                </Form.Group>
 
                 <div>
                     <h3>Add New Vendor</h3>

@@ -4,7 +4,6 @@ import { Form, Table } from 'react-bootstrap'; // Import Form from react-bootstr
 function YourComponent() {
   const [product, setProduct] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('')
-  console.log("Products", selectedProduct)
 
   useEffect(() => {
     const fetchData = async () => {

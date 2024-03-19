@@ -6,23 +6,40 @@ const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
 
 
-// Add Vendor Api delete route 
-router.delete("/deletevendor/:vendorId", async (req, res) => {
-  const vendorId = req.params.vendorId;
-
+router.delete("/addvendor/:id", async (req, res) => {
   try {
+    const vendorId = req.params.id;
     const deletedVendor = await AddVendor.findByIdAndDelete(vendorId);
-
-    if (!deletedVendor) {
-      return res.status(404).json({ message: "Vendor not found" });
+    
+    if (deletedVendor) {
+      res.status(200).json({ message: "Vendor deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Vendor not found" });
     }
-
-    res.status(200).json({ message: "Vendor deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting vendor:", err);
+  } catch (error) {
+    console.error("Error deleting vendor:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+// Add Vendor Api delete route 
+// router.delete("/vendor/:vendorId", async (req, res) => {
+//   const vendorId = req.params.vendorId;
+
+//   try {
+//     const deletedVendor = await AddVendor.findByIdAndDelete(vendorId);
+
+//     if (!deletedVendor) {
+//       return res.status(404).json({ message: "Vendor not found" });
+//     }
+
+//     res.status(200).json({ message: "Vendor deleted successfully" });
+//   } catch (err) {
+//     console.error("Error deleting vendor:", err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 // Inventory stocks delete route 
 router.delete('/inventory-stocks/:stockId', async (req, res) => {

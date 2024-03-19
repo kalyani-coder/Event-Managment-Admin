@@ -388,6 +388,14 @@ export default function Sidebar() {
                       </Link>
                     </li>
 
+                    <li>
+                      <Link to={"/newgodown"}>
+                        <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        New Godowns
+                      </Link>
+                    </li>
+
                     
                     <li>
                       <Link to={"/product"}>
