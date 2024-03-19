@@ -38,8 +38,9 @@ import ViewTaskPage from "./components/UpdateTask/ViewTask";
 import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
 import Product from "./components/Inventory/Godown/Product";
-import NewGodowns from "./components/Inventory/Godown/NewGodowns";
 
+import EventReport from './components/DownloadReport/EventReport';
+import VendorPaymentReport from "./components/DownloadReport/VendorPaymentReport";
 
 
 import QuotationForm from './components/Enquiry/Quotation/MakeQuotation';
@@ -90,6 +91,8 @@ function App() {
 
           <Route path="/quotationform" element={<QuotationForm />}/>
           <Route path="/product" element={<Product />}/>
+          <Route path="/eventreport" element={<EventReport />}/>
+          <Route path="/vendorpaymentreport" element={<VendorPaymentReport />}></Route>
           <Route path="/newgodown" element={<NewGodowns />}/>
           {/* **************** */}
         </Routes>
