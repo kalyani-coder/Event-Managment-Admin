@@ -431,7 +431,20 @@ export default function Sidebar() {
                         Event Report
                       </Link>
                     </li>
-
+                    <li>
+                      <Link to={"/managerreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Manager Report
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/enquiryreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Enquiry Report
+                      </Link>
+                    </li>
                     <li>
                       <Link to={"/vendorpaymentreport"}>
                         <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color

@@ -39,10 +39,11 @@ import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
 import Product from "./components/Inventory/Godown/Product";
 import NewGodowns from "./components/Inventory/Godown/NewGodowns";
-
+import QuotationForm from './components/Enquiry/Quotation/MakeQuotation';
 import EventReport from './components/DownloadReport/EventReport';
 import VendorPaymentReport from "./components/DownloadReport/VendorPaymentReport";
-import QuotationForm from './components/Enquiry/Quotation/MakeQuotation';
+import ManagerReport from "./components/DownloadReport/ManagerReport";
+import EnquiryReport from "./components/DownloadReport/EnquiryReport";
 
 
 
@@ -94,6 +95,8 @@ function App() {
           <Route path="/product" element={<Product />}/>
           <Route path="/eventreport" element={<EventReport />}/>
           <Route path="/vendorpaymentreport" element={<VendorPaymentReport />}></Route>
+          <Route path="/managerreport" element={<ManagerReport />}></Route>
+          <Route path="/Enquiryreport" element={<EnquiryReport />}></Route>
           <Route path="/newgodown" element={<NewGodowns />}/>
           {/* **************** */}
         </Routes>
