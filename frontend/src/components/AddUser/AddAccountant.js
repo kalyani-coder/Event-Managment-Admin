@@ -1,9 +1,11 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import "./AddAccountant.css";
 import React, { useState } from "react";
 import axios from "axios";
 
 const AddAccountant = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -23,15 +25,15 @@ const AddAccountant = () => {
       !fname ||
       !lname ||
       !email ||
-      !contact ||
-      !address ||
-      !city ||
-      state === "" || // Check against empty string
-      !holder_name ||
-      !account_number ||
-      !IFSC_code ||
-      !bank_name ||
-      !branch_name
+      !contact 
+      // !address ||
+      // !city ||
+      // state === "" || // Check against empty string
+      // !holder_name ||
+      // !account_number ||
+      // !IFSC_code ||
+      // !bank_name ||
+      // !branch_name 
     ) {
       alert("Please fill out all fields.");
       return false;
@@ -84,6 +86,9 @@ const AddAccountant = () => {
 
       if (response.status === 200) {
         console.log("Data successfully submitted:", response.data);
+        // Show success message
+      setSuccessMessage("Data submitted successfully!");
+      setShowSuccessAlert(true);
         handleDiscard();
       } else {
         console.log("Error submitting data.");
@@ -157,6 +162,11 @@ const AddAccountant = () => {
   return (
     <div className="container mt-5">
       <h2>Add Accountant</h2>
+      {showSuccessAlert && (
+        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="fname">
           <Form.Label>

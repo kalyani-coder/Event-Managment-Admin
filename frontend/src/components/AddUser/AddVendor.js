@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import "./AddVendor.css";
 import axios from "axios";
 
 const AddVendor = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [vendorCategory, setVendorCategory] = useState("");
   const [company_name, setcompany_name] = useState("");
   const [contact_person_name, setcontact_person_name] = useState("");
@@ -55,7 +57,9 @@ const AddVendor = () => {
       );
 
       if (response.status === 200) {
-        alert("data has been submitted ");
+        // Show success message
+      setSuccessMessage("Data submitted successfully!");
+      setShowSuccessAlert(true);
         handleDiscard();
       } else {
         alert("something went wrong");
@@ -120,6 +124,11 @@ const AddVendor = () => {
   return (
     <div className="container mt-5">
       <h2>Add Vendor</h2>
+      {showSuccessAlert && (
+        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="company_name">
           <Form.Label>

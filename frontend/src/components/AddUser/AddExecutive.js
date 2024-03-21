@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert  } from "react-bootstrap";
 import "./AddExecutive.css";
 import axios from "axios";
 
 const AddExecutive = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -72,7 +74,9 @@ const AddExecutive = () => {
       );
 
       if (response.status === 200) {
-        alert("Data submitted successfully!");
+         // Show success message
+      setSuccessMessage("Data submitted successfully!");
+      setShowSuccessAlert(true);
         handleDiscard();
       } else {
         alert("Error while submitting data.");
@@ -131,6 +135,11 @@ const AddExecutive = () => {
   return (
     <div className="container mt-5">
       <h2>Add Executive</h2>
+      {showSuccessAlert && (
+        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="fname">
           <Form.Label>

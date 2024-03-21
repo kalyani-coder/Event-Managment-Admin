@@ -1,7 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 
 export default function Enquiry() {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const getCurrentDate = () => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -39,7 +43,9 @@ export default function Enquiry() {
         formData
       );
       if (res.status === 200) {
-        alert("Enquiry Submitted Successfully");
+         // Show success message
+      setSuccessMessage("Data submitted successfully!");
+      setShowSuccessAlert(true);
         // Reset the form after successful submission
         setFormData({
           title: "",
@@ -99,6 +105,11 @@ export default function Enquiry() {
             <div className="card-body mt-5">
               <div className="form-group">
                 <h2>Enquiry</h2>
+                {showSuccessAlert && (
+        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
               </div>
 
               <div className="form-group">
