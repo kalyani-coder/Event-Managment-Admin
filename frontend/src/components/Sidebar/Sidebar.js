@@ -215,7 +215,7 @@ export default function Sidebar() {
                       <Link to={"/createquotation"}>
                         <FontAwesomeIcon icon={faMoneyCheck}
                           style={{ marginRight: "10px", color: "#fff" }} />
-                        Make Quotation
+                        Proposal
                       </Link>
                     </li>
                     <li>
