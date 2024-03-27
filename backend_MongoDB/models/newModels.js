@@ -204,13 +204,16 @@ const StaffSalarySchema = new Schema({
   time :String,
   month: String,
   adv_payment: Number,
-  adv_taken :Number,
   rem_payment: Number,
   incentive: Number,
   deduct_amount: Number,
+
+  adv_taken :Number,
   balance_amount :Number,
   type_Of_Salary : String,
-  name_Of_Salary : String,
+  salary_person_name : String,
+  salary_person_id : String,
+
 
 
 });

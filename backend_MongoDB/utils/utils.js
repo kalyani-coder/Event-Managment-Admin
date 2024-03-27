@@ -71,11 +71,11 @@ const FindTable = ({ table }) => {
     return ExecutiveTask;
   } else if (table.toLowerCase() == "managerlogin") {
     return ManagerLogin;
-  } else if (table.toLowerCase() == "addvendor"){
-  }else {
+  } else if (table.toLowerCase() == "addvendor") {
+  } else {
     return null;
   }
-}; 
+};
 
 const FilterBodyByTable = ({ req, table }) => {
   try {
@@ -412,6 +412,11 @@ const FilterBodyByTable = ({ req, table }) => {
         rem_payment,
         incentive,
         deduct_amount,
+        adv_taken,
+        balance_amount,
+        type_Of_Salary,
+        salary_person_name,
+        salary_person_id,
       } = req.body;
       return {
         staff_id,
@@ -424,6 +429,11 @@ const FilterBodyByTable = ({ req, table }) => {
         rem_payment,
         incentive,
         deduct_amount,
+        adv_taken,
+        balance_amount,
+        type_Of_Salary,
+        salary_person_name,
+        salary_person_id,
       };
     } else if (table == "staffsalarydetails") {
       const { staff_id, name, salary, date, month } = req.body;
