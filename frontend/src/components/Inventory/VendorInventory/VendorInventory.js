@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Sidebar from "../../Sidebar/Sidebar"
 
 const VendorInventory = () => {
     const [vendors, setVendors] = useState([]);
@@ -73,6 +74,8 @@ const VendorInventory = () => {
     };
 
     return (
+        <>
+        <Sidebar />
         <div className='ml-5 container'>
             <h2>Add Vendor</h2>
             <label>
@@ -138,6 +141,7 @@ const VendorInventory = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

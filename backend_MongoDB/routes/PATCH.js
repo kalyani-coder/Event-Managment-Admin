@@ -1,81 +1,108 @@
 const express = require("express");
 const router = express.Router();
 
-const {AddVendor} = require('../models/newModels')
-const {InventoryStocks} = require('../models/newModels')
+const { AddVendor } = require('../models/newModels')
+const { InventoryStocks } = require('../models/newModels')
+const { Enquiry } = require("../models/newModels");
+const { FilterBodyByTable } = require("../utils/utils");
+
+  
+
+// PATCH for enquiry /
+
+router.patch("/enquiry/:id", async (req, res) => {
+  const enquiryId = req.params.id;
+  
+  try {
+    // Extract fields to update from the request body
+    const updatedFields = FilterBodyByTable({ req, table: "enquiry" });
+    
+    // Update the Enquiry by ID
+    const enquiry = await Enquiry.findByIdAndUpdate(enquiryId, updatedFields, { new: true });
+    
+    if (!enquiry) {
+      return res.status(404).json({ message: "Enquiry not found" });
+    }
+    
+    res.status(200).json(enquiry);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 // PATCH route to update a vendor by ID
 router.patch("/addvendor/:vendorId", async (req, res) => {
-    const vendorId = req.params.vendorId;
-    const updateFields = req.body; // Assuming you send the fields to update in the request body
-  
-    try {
-      const updatedVendor = await AddVendor.findByIdAndUpdate(
-        vendorId,
-        updateFields,
-        { new: true } // This option returns the updated document
-      );
-  
-      if (!updatedVendor) {
-        return res.status(404).json({ message: "Vendor not found" });
-      }
-  
-      res.status(200).json(updatedVendor);
-    } catch (err) {
-      console.error("Error updating vendor:", err);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  });
+  const vendorId = req.params.vendorId;
+  const updateFields = req.body; // Assuming you send the fields to update in the request body
 
-  // PATCH route to update an inventory stock by ID
+  try {
+    const updatedVendor = await AddVendor.findByIdAndUpdate(
+      vendorId,
+      updateFields,
+      { new: true } // This option returns the updated document
+    );
+
+    if (!updatedVendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+
+    res.status(200).json(updatedVendor);
+  } catch (err) {
+    console.error("Error updating vendor:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// PATCH route to update an inventory stock by ID
 router.patch('/inventory-stocks/:stockId', async (req, res) => {
-    const stockId = req.params.stockId;
-    const updateFields = req.body; // Assuming you send the fields to update in the request body
-  
-    try {
-      const updatedStock = await InventoryStocks.findByIdAndUpdate(
-        stockId,
-        updateFields,
-        { new: true } 
-      );
-  
-      if (!updatedStock) {
-        return res.status(404).json({ message: 'Inventory stock not found' });
-      }
-  
-      res.status(200).json(updatedStock);
-    } catch (error) {
-      console.error('Error updating inventory stock:', error);
-      res.status(500).json({ message: 'Internal server error' });
+  const stockId = req.params.stockId;
+  const updateFields = req.body; // Assuming you send the fields to update in the request body
+
+  try {
+    const updatedStock = await InventoryStocks.findByIdAndUpdate(
+      stockId,
+      updateFields,
+      { new: true }
+    );
+
+    if (!updatedStock) {
+      return res.status(404).json({ message: 'Inventory stock not found' });
     }
-  });
 
-  router.patch("/:id", async (req, res) => {
-    try {
-        const productId = req.params.id;
-        const { Price, Stock_Quantity } = req.body; // Get updated Price and Stock_Quantity from request body
+    res.status(200).json(updatedStock);
+  } catch (error) {
+    console.error('Error updating inventory stock:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
-        // Find the product by ID
-        const existingProduct = await InventoryStocks.findById(productId);
+router.patch("/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const { Price, Stock_Quantity } = req.body; // Get updated Price and Stock_Quantity from request body
 
-        if (!existingProduct) {
-            return res.status(404).json({ error: "Product not found" });
-        }
+    // Find the product by ID
+    const existingProduct = await InventoryStocks.findById(productId);
 
-        // Calculate the updated quantity by adding the existing quantity and the new quantity
-        const updatedQuantity = existingProduct.Stock_Quantity + Stock_Quantity;
-
-        // Update the product with the new Price and calculated Stock_Quantity
-        existingProduct.Price = Price;
-        existingProduct.Stock_Quantity = updatedQuantity;
-        await existingProduct.save();
-
-        res.status(200).json(existingProduct);
-    } catch (error) {
-        console.error("Error updating product:", error);
-        res.status(500).json({ error: "Internal server error" });
+    if (!existingProduct) {
+      return res.status(404).json({ error: "Product not found" });
     }
+
+    // Calculate the updated quantity by adding the existing quantity and the new quantity
+    const updatedQuantity = existingProduct.Stock_Quantity + Stock_Quantity;
+
+    // Update the product with the new Price and calculated Stock_Quantity
+    existingProduct.Price = Price;
+    existingProduct.Stock_Quantity = updatedQuantity;
+    await existingProduct.save();
+
+    res.status(200).json(existingProduct);
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 

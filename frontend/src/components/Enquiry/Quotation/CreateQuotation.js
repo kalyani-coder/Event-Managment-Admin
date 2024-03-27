@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import Sidebar from "../../Sidebar/Sidebar"
 import { Button, Modal } from 'react-bootstrap';
-import "./ViewEnquiry.css"
 
 
-const ViewInquiryPage = ({ enquiry }) => {
+const CreateQuotation = ({ enquiry }) => {
   const [inquiries, setInquiries] = useState([]);
   const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -83,7 +82,7 @@ const ViewInquiryPage = ({ enquiry }) => {
     setDateRange({ startDate: "", endDate: "" });
   };
 
-
+  
   const [showModal, setShowModal] = useState(false);
 
   const openPopup = (enquiry) => {
@@ -95,18 +94,7 @@ const ViewInquiryPage = ({ enquiry }) => {
     setShowModal(false);
     setSelectedInquiry(null);
   };
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Ongoing":
-        return "text-yellow";
-      case "Hot":
-        return "text-red";
-      case "Completed":
-        return "text-green";
-      default:
-        return ""; // default color
-    }
-  };
+
   return (
     <>
       <Sidebar />
@@ -215,10 +203,6 @@ const ViewInquiryPage = ({ enquiry }) => {
                 border: "1px solid #ddd",
               }}
             >
-              <p className={`d-flex justify-content-end fw-bold ${getStatusColor(enquiry.status)}`}>
-                Status: {enquiry.status}
-              </p>
-              
               <div className="card-body">
                 <h5 className="card-title">{enquiry.title}</h5>
                 <p className="card-text">
@@ -233,14 +217,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                   <br />
                   Contact Number: {enquiry.contact}
                 </p>
-
-
-                {/* <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
-                  Quotation
-                </button> */}
-
-
-
+                <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
+                  Make Quotation
+                </button>
                 {/* <button
                   className="btn btn-outline-primary ml-2"
                   onClick={() => openPopup(enquiry)}
@@ -248,12 +227,12 @@ const ViewInquiryPage = ({ enquiry }) => {
                   View More
                 </button> */}
 
-                <button
+                {/* <button
                   className="btn btn-outline-primary ml-2"
                   onClick={() => openPopup(enquiry)}
                 >
                   View More
-                </button>
+                </button> */}
 
 
 
@@ -264,41 +243,41 @@ const ViewInquiryPage = ({ enquiry }) => {
 
         {selectedInquiry && (
           <Modal show={showModal} onHide={closePopup}>
-            <Modal.Header closeButton>
-              <Modal.Title>Inquiry Details</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {selectedInquiry && (
-                <div>
-                  <h2>{selectedInquiry.title}</h2>
-                  <p style={{ lineHeight: "35px" }}>
-                    Event Name: {selectedInquiry.event_name || ""}
-                    <br />
-                    Event Date: {selectedInquiry.event_date ? format(new Date(selectedInquiry.event_date), "dd/MM/yyyy") : ""}
-                    <br />
-                    Number of Estimated Guests: {selectedInquiry.guest_quantity}
-                    <br />
-                    Event Venue: {selectedInquiry.event_venue}
-                    <br />
-                    Event Requirement: {selectedInquiry.event_requirement}
-                    <br />
-                    Customer Name: {selectedInquiry.customer_name}
-                    <br />
-                    Customer Email: {selectedInquiry.email}
-                    <br />
-                    Contact Number: {selectedInquiry.contact}
-                    <br />
-                    Customer Address: {selectedInquiry.address}
-                  </p>
-                </div>
-              )}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={closePopup}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Inquiry Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedInquiry && (
+            <div>
+              <h2>{selectedInquiry.title}</h2>
+              <p style={{lineHeight: "35px"}}>
+                Event Name: {selectedInquiry.event_name || ""}
+                <br />
+                Event Date: {selectedInquiry.event_date ? format(new Date(selectedInquiry.event_date), "dd/MM/yyyy") : ""}
+                <br />
+                Number of Estimated Guests: {selectedInquiry.guest_quantity}
+                <br />
+                Event Venue: {selectedInquiry.event_venue}
+                <br />
+                Event Requirement: {selectedInquiry.event_requirement}
+                <br />
+                Customer Name: {selectedInquiry.customer_name}
+                <br />
+                Customer Email: {selectedInquiry.email}
+                <br />
+                Contact Number: {selectedInquiry.contact}
+                <br />
+                Customer Address: {selectedInquiry.address}
+              </p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closePopup}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
         )}
 
 
@@ -307,4 +286,4 @@ const ViewInquiryPage = ({ enquiry }) => {
   );
 };
 
-export default ViewInquiryPage;
+export default CreateQuotation;

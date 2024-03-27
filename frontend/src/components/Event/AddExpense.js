@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const AddExpense = () => {
     const EventId = useParams().event_id;
@@ -70,6 +72,8 @@ const AddExpense = () => {
     };
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-6">
@@ -170,6 +174,7 @@ const AddExpense = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

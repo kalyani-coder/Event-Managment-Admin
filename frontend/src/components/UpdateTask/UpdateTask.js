@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Sidebar from "../Sidebar/Sidebar"
 
 const UpdateTaskPage = () => {
     const getCurrentDate = () => {
@@ -91,6 +92,8 @@ const UpdateTaskPage = () => {
     }, []);
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h1>Update Task</h1>
             <form onSubmit={handleSubmit} id="updateTaskForm">
@@ -167,6 +170,7 @@ const UpdateTaskPage = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

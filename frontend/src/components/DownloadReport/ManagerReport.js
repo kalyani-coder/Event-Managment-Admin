@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const ManagerReport = () => {
   const [events, setEvents] = useState([]);
@@ -90,6 +92,8 @@ const handleSearchInputChange = (e) => {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Manager Report</h2>
       <div className="mb-3">
@@ -154,6 +158,7 @@ const handleSearchInputChange = (e) => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

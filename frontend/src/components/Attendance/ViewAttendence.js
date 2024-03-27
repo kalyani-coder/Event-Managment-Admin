@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const ViewAttendance = () => {
     const [attendanceData, setAttendanceData] = useState([]);
@@ -19,6 +21,8 @@ const ViewAttendance = () => {
     }, []); // Empty dependency array to run the effect only once on mount
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h2>View Attendance</h2>
             <table className="table table-bordered table-striped">
@@ -38,6 +42,7 @@ const ViewAttendance = () => {
                 </tbody>
             </table>
         </div>
+        </>
     );
 };
 

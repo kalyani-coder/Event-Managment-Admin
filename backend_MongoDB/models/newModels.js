@@ -12,6 +12,10 @@ const EnquirySchema = new Schema({
   email: String,
   contact: Number,
   address: String,
+  status : {
+    type : String,
+    default : ""
+  },
 });
 
 const QuotationSchema = new Schema({
@@ -259,6 +263,7 @@ const QuatationInfo = new Schema({
   rateper_Days :Number,
   days :Number,
   amount : String,
+  name : String, 
 })
 
 const InventoryStocks = new Schema({
@@ -301,9 +306,14 @@ const AccountantDetailsSchema = new Schema({
   branch_name: String,
 });
 
+const AddEventMaster = new Schema({
+  eventName : {type: String, required: true,}
+})
+
 module.exports = {
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   AddVendor : mongoose.model("AddVendor" , AddVendor),
+  AddEventMaster : mongoose.model("Addevent" , AddEventMaster),
   QuatationInfo  : mongoose.model("quatationinfo" , QuatationInfo),
   InventoryStocks : mongoose.model('inventory-stocks' , InventoryStocks),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),

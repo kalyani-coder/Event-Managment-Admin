@@ -4,14 +4,38 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
 
-const { InventoryStock } = require("../models/newModels");
+const { InventoryStock, AddEventMaster } = require("../models/newModels");
 const { ExecutiveTask } = require("../models/newModels");
 const { Attendance } = require("../models/newModels");
 const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
-const {AddVendor} = require('../models/newModels')
-const {InventoryStocks} = require('../models/newModels')
-const {QuatationInfo} = require('../models/newModels')
+const { AddVendor } = require('../models/newModels')
+const { InventoryStocks } = require('../models/newModels')
+const { QuatationInfo } = require('../models/newModels')
+
+
+// event add master post route 
+router.post("/addeventmaster", async (req, res) => {
+  const { eventName } = req.body;
+  try {
+    if (!eventName) {
+      return res.status(400).json({ message: "Please provide Event Name" });
+    }
+
+    const existingEvent = await AddEventMaster.findOne({ eventName });
+    if (existingEvent) {
+      return res.status(400).json({ message: "Event with this name already exists" });
+    }
+
+    const postmasterevent = new AddEventMaster({ eventName });
+    const saveeventName = await postmasterevent.save();
+    res.status(201).json({ message: "Event added successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 
 // post in addvendor api 
 router.post("/addvendor", async (req, res) => {
@@ -30,6 +54,7 @@ router.post("/addvendor", async (req, res) => {
 // POST route to add QuatationInfo
 router.post("/quatationinfo", async (req, res) => {
   try {
+    
     const { quatationInfoData } = req.body;
 
     // Validate and save each quatationInfoData
@@ -58,9 +83,9 @@ router.post('/inventory-stocks', async (req, res) => {
 
     if (existingStock) {
       // If a stock with the same name and vendor exists, send a response indicating the conflict
-      return res.status(409).json({ message: 'Stock with the same name and vendor already exists'});
+      return res.status(409).json({ message: 'Stock with the same name and vendor already exists' });
     }
- 
+
     // Create a new inventory stock instance
     const newStock = new InventoryStocks({
       Category,
@@ -246,7 +271,7 @@ router.post("/:table", async (req, res) => {
     table.toLowerCase() === "managerlogin"
   ) {
     res.status(400).send("Bad Request");
-    return;
+    return;``
   }
   const Table = FindTable({ table });
   const reqBody = FilterBodyByTable({ req, table });

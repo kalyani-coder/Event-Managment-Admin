@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import axios from "axios";
+import Sidebar from "../../Sidebar/Sidebar";
 
 const ExecutiveDetailPage = () => {
   const { _id } = useParams();
@@ -41,6 +42,8 @@ const ExecutiveDetailPage = () => {
   }
 
   return (
+<>
+    <Sidebar />
     <div className="container mt-5">
       <h2>
         {executive.fname} {executive.lname} Details
@@ -81,6 +84,7 @@ const ExecutiveDetailPage = () => {
         </Card.Body>
       </Card>
     </div>
+    </>
   );
 };
 

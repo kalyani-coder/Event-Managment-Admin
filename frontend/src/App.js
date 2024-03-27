@@ -1,3 +1,4 @@
+import React from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import AddAccountant from "./components/AddUser/AddAccountant";
 import AddManager from "./components/AddUser/AddManager";
@@ -5,7 +6,6 @@ import AddExecutive from "./components/AddUser/AddExecutive";
 import AddVendor from "./components/AddUser/AddVendor";
 import AccountantDetails from "./components/UsersDetails/AccountantDetails";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React from "react";
 
 import ManagerDetails from "./components/UsersDetails/ManagerDetails";
 import Enquiry from "./components/Enquiry/Enquiry";
@@ -44,6 +44,10 @@ import EventReport from './components/DownloadReport/EventReport';
 import VendorPaymentReport from "./components/DownloadReport/VendorPaymentReport";
 import ManagerReport from "./components/DownloadReport/ManagerReport";
 import EnquiryReport from "./components/DownloadReport/EnquiryReport";
+import CreateQuotation from "./components/Enquiry/Quotation/CreateQuotation"
+import FollowUpStatus from "./components/FollowupStatus/FollowUpStatus"
+
+import Login from "./components/Login/Login"
 
 
 
@@ -51,9 +55,10 @@ function App() {
   return (
     <>
       <Router>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Routes>
-          <Route path="/" element={<AddManager />} />
+          <Route path="/" element={<Login />} />
+          {/* <Route path="/" element={<AddManager />} /> */}
           <Route path="/addmanager" element={<AddManager />} />
           <Route path="/addaccountant" element={<AddAccountant />} />
           <Route path="/addvendor" element={<AddVendor />} />
@@ -98,6 +103,8 @@ function App() {
           <Route path="/managerreport" element={<ManagerReport />}></Route>
           <Route path="/Enquiryreport" element={<EnquiryReport />}></Route>
           <Route path="/newgodown" element={<NewGodowns />}/>
+          <Route path="/createquotation" element={<CreateQuotation />}/>
+          <Route path="/followupstatus" element={<FollowUpStatus />}/>
           {/* **************** */}
         </Routes>
 

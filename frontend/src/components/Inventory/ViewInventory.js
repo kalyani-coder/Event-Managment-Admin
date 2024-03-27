@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Sidebar from "../../components/Sidebar/Sidebar"
 
 const ViewInventory = () => {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -91,6 +92,8 @@ const ViewInventory = () => {
   // if()
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>View Inventory</h2>
       {loading ? (
@@ -149,6 +152,7 @@ const ViewInventory = () => {
       )}
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Sidebar from "../Sidebar/Sidebar"
 
 const VendorPayment = () => {
     const getCurrentDate = () => {
@@ -104,6 +105,8 @@ const VendorPayment = () => {
     };
 
     return (
+<>
+        <Sidebar />
         <div className="container">
             <form className="order p-4 " onSubmit={handleSubmit}>
                 <h2>Vendor Payment</h2>
@@ -136,6 +139,7 @@ const VendorPayment = () => {
                         required
                     />
                 </div>
+
                 <div className="row mb-2">
                     <div className="col">
                         <div className="form-group">
@@ -150,6 +154,7 @@ const VendorPayment = () => {
                         </div>
                     </div>
                 </div>
+                
                 <div className="form-group">
                     <label htmlFor="bankaccount">Bank Account</label>
                     <input className="form-control mb-2" type="text" name="bankaccount" placeholder="Bank Account" onChange={handleChange} value={formData.bankaccount} />
@@ -187,6 +192,7 @@ const VendorPayment = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

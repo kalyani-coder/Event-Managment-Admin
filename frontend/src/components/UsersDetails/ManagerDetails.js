@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
 
 const ManagerDetails = () => {
   const [managerData, setManagerData] = useState([]);
@@ -34,6 +35,8 @@ const ManagerDetails = () => {
   }, [searchQuery, managerData]);
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Manager Details</h2>
       <div className="mb-4">
@@ -81,6 +84,7 @@ const ManagerDetails = () => {
         <p className="text-centre">No manager details found.</p>
       )}
     </div>
+    </> 
   );
 };
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 function AdvPaymentForm() {
   const location = useLocation();
@@ -166,6 +168,8 @@ function AdvPaymentForm() {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Advance Payment Form</h2>
       <div className="mb-3">
@@ -249,6 +253,7 @@ function AdvPaymentForm() {
         Create Order for Manager
       </button>
     </div>
+    </>
   );
 }
 

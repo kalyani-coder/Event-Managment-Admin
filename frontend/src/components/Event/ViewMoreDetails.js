@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import axios from 'axios';
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const ViewMoreDetails = () => {
   const { eventId } = useParams();
@@ -25,6 +27,8 @@ const ViewMoreDetails = () => {
   }
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Event More Details</h2>
 
@@ -57,6 +61,7 @@ const ViewMoreDetails = () => {
         </Card.Body>
       </Card>
     </div>
+    </>
   );
 };
 

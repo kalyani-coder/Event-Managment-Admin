@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../../Sidebar/Sidebar";
 
 const ExecutiveDetails = () => {
   const [executiveData, setExecutiveData] = useState([]);
@@ -31,6 +32,8 @@ const ExecutiveDetails = () => {
   }, [searchQuery, executiveData]);
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Executive Details</h2>
       <div className="mb-4">
@@ -88,6 +91,7 @@ const ExecutiveDetails = () => {
         <p className="text-center">No executive details found.</p>
       )}
     </div>
+    </>
   );
 };
 

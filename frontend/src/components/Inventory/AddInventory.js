@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Sidebar from "../../components/Sidebar/Sidebar"
 
 const EventCategoryPage = () => {
     const [categories, setCategories] = useState([]);
@@ -30,6 +31,9 @@ const EventCategoryPage = () => {
     };
 
     return (
+
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h2>Add Event Category</h2>
 
@@ -87,6 +91,7 @@ const EventCategoryPage = () => {
                 </table>
             </div>
         </div>
+        </>
     );
 };
 

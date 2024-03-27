@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as XLSX from 'xlsx';
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const AttendanceBox = ({ attendanceData, whichbox, marker, date }) => {
   const [filteredData, setFilteredData] = useState([]);
@@ -111,6 +113,8 @@ const AttendancePage = () => {
     XLSX.writeFile(wb, `AttendanceSheet_${date}.xlsx`);
   };
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5 d-flex justify-content-center flex-column">
       <div className="d-flex justify-content-between">
         <h1>Attendance Sheet</h1>
@@ -190,6 +194,7 @@ const AttendancePage = () => {
         style={{ width: "fit-content", marginTop: "1rem", background: "white" }}
       ></input>
     </div>
+    </>
   );
 };
 

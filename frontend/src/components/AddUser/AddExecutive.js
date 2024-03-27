@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Form, Button, Alert  } from "react-bootstrap";
 import "./AddExecutive.css";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const AddExecutive = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -133,6 +135,8 @@ const AddExecutive = () => {
     "West Bengal",
   ];
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Add Executive</h2>
       {showSuccessAlert && (
@@ -339,6 +343,7 @@ const AddExecutive = () => {
         </Button>
       </Form>
     </div>
+    </>
   );
 };
 

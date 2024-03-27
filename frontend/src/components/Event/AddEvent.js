@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 function AddEvent() {
   const getCurrentDate = () => {
@@ -144,6 +146,8 @@ function AddEvent() {
 
   // JSX for the component
   return (
+    <>
+    <Sidebar />
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-md-10">
@@ -335,6 +339,7 @@ function AddEvent() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

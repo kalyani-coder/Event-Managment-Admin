@@ -75,7 +75,7 @@ const FindTable = ({ table }) => {
   }else {
     return null;
   }
-};
+}; 
 
 const FilterBodyByTable = ({ req, table }) => {
   try {
@@ -91,6 +91,7 @@ const FilterBodyByTable = ({ req, table }) => {
         email,
         contact,
         address,
+        status,
       } = req.body;
       return {
         enquiry_id,
@@ -103,6 +104,7 @@ const FilterBodyByTable = ({ req, table }) => {
         email,
         contact,
         address,
+        status,
       };
     } else if (table === "executivetask") {
       const { Task, exe_id, Date, Time, Status, EventId } = req.body;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Sidebar from "../../Sidebar/Sidebar";
 
 const ViewSalary = () => {
     const [salaryData, setSalaryData] = useState([]);
@@ -32,6 +33,8 @@ const ViewSalary = () => {
     };
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h5 className="mb-3">View Salary</h5>
 
@@ -78,6 +81,7 @@ const ViewSalary = () => {
                 </tbody>
             </table>
         </div>
+        </>
     );
 };
 

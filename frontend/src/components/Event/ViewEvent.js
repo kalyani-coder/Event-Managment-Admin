@@ -3,6 +3,8 @@ import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from 'xlsx';
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const EventDetails = ({ routes }) => {
   const [eventData, setEventData] = useState([]);
@@ -47,6 +49,8 @@ const EventDetails = ({ routes }) => {
 
 
   return (
+<>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Event Details</h2>
       <button className="btn btn-success mb-3" onClick={exportToExcel}>
@@ -87,6 +91,7 @@ const EventDetails = ({ routes }) => {
         <p className="text-center">No event details found.</p>
       )}
     </div>
+    </>
   );
 };
 

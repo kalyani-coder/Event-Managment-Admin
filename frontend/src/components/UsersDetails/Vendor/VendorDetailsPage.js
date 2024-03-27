@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import axios from "axios";
+import Sidebar from "../../Sidebar/Sidebar";
+
 
 const VendorDetailPage = () => {
   const { _id } = useParams();
@@ -38,6 +40,8 @@ const VendorDetailPage = () => {
   }
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>{vendor.company_name} Details</h2>
       <Card style={{ width: "100%" }}>
@@ -70,6 +74,7 @@ const VendorDetailPage = () => {
         </Card.Body>
       </Card>
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Table } from 'react-bootstrap'; // Import Form from react-bootstrap
+import Sidebar from "../../Sidebar/Sidebar"
+
 
 function YourComponent() {
   const [product, setProduct] = useState([]);
@@ -43,6 +45,9 @@ function YourComponent() {
 
 
   return (
+    <>
+
+    <Sidebar />
     <div className="container mt-5">
       <h2>Godown Inventory</h2>
       <Form.Group controlId="SelectClient">
@@ -63,6 +68,8 @@ function YourComponent() {
 
         </div>
       </Form.Group>
+
+      
 
       {selectedProduct && (
         <Table striped bordered hover
@@ -99,7 +106,11 @@ function YourComponent() {
 
         </Table>
       )}
+
+
+      
     </div>
+    </>
   );
 }
 

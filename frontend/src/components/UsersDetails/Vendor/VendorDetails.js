@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../../Sidebar/Sidebar";
 
 const VendorDetails = () => {
   const [vendorData, setVendorData] = useState([]);
@@ -34,6 +35,8 @@ const VendorDetails = () => {
   }, [searchQuery, vendorData]);
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Vendor Details</h2>
       <div className="mb-4">
@@ -87,6 +90,7 @@ const VendorDetails = () => {
         <p className="text-center">No vendor details found.</p>
       )}
     </div>
+    </>
   );
 };
 

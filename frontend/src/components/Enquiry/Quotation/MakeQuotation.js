@@ -5,6 +5,7 @@ import "jspdf-autotable";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import myImage from "./logo.png";
+import Sidebar from "../../Sidebar/Sidebar"
 
 function QuotationForm() {
   const [vendorNames, setVendorNames] = useState([]);
@@ -27,13 +28,9 @@ function QuotationForm() {
   // new 
 
 
-
-
-
-
   useEffect(() => {
     // Fetch the list of vendors from the first API
-    fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor')
+    fetch('http://localhost:5000/api/addvendor')
       .then((response) => response.json())
       .then((data) => setVendorList(data))
       .catch((error) => console.error('Error fetching vendors:', error));
@@ -42,7 +39,7 @@ function QuotationForm() {
   useEffect(() => {
     // Fetch the stock list based on the selected vendor
     if (selectedVendor) {
-      fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${selectedVendor}`)
+      fetch(`http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`)
         .then((response) => response.json())
         .then((data) => setStockList(data))
         .catch((error) => console.error('Error fetching stock list:', error));
@@ -103,7 +100,7 @@ function QuotationForm() {
       const updatedQuantity = sections[index].quantity;
 
       // Send a PATCH request to update stock quantity
-      await axios.patch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
+      await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
         quantity: updatedQuantity,
       });
 
@@ -136,24 +133,6 @@ function QuotationForm() {
     },
   ]);
 
-  // const handleChange = (e, index) => {
-  //   const { name, value } = e.target;
-  //   setSections((prevSections) => {
-  //     const updatedSections = [...prevSections];
-  //     updatedSections[index] = {
-  //       ...updatedSections[index],
-  //       [name]: value,
-  //     };
-
-  //     // Calculate total amount
-  //     const quantity = parseFloat(updatedSections[index].quantity) || 0;
-  //     const ratePerDay = selectedStockInfo ? parseFloat(selectedStockInfo.Price) || 0 : 0;
-  //     const totalDays = parseFloat(updatedSections[index].days) || 0;
-  //     updatedSections[index].amount = (quantity * ratePerDay * totalDays).toFixed(2);
-
-  //     return updatedSections;
-  //   });
-  // };
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -216,12 +195,13 @@ function QuotationForm() {
         rateper_Days: parseFloat(newSelectedStockPriceValue),
         days: parseFloat(section.days),
         amount: section.amount,
+        name : enquiry.customer_name,
       }));
 
 
 
       // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quatationinfo", {
+      await axios.post("http://localhost:5000/api/quatationinfo", {
         quatationInfoData,
       });
 
@@ -330,7 +310,7 @@ function QuotationForm() {
 
 
   useEffect(() => {
-    fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks")
+    fetch("http://localhost:5000/api/inventory-stocks")
       .then(response => response.json())
       .then(data => {
         const names = data.map(stock => stock.Stock_Name);
@@ -378,7 +358,7 @@ function QuotationForm() {
       const quantity = document.getElementById('updateQuantity').value;
 
       // Send PATCH request to update stock quantity
-      const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}`, {
+      const response = await fetch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -401,6 +381,8 @@ function QuotationForm() {
     }
   };
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
 
       <h1 className="mb-4">Quotation Form Of<span className="text-dark"> {enquiry.customer_name}</span></h1>
@@ -584,6 +566,7 @@ function QuotationForm() {
         Print
       </button>
     </div>
+    </>
   );
 }
 

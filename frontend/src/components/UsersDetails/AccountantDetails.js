@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar";
 
 const AccountantDetails = () => {
   const [accountantData, setAccountantData] = useState([]);
@@ -38,6 +39,9 @@ const AccountantDetails = () => {
   }, [searchQuery, accountantData]);
 
   return (
+
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2 className="mb-4">Accountant Details</h2>
       <div className="mb-4">
@@ -86,6 +90,7 @@ const AccountantDetails = () => {
         <p className="text-center">No accountant details found.</p>
       )}
     </div>
+    </>
   );
 };
 

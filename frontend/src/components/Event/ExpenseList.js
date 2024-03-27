@@ -1,5 +1,7 @@
 // ViewExpense.js
 import React, { useEffect, useState } from "react";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const ViewExpense = () => {
     const [expenses, setExpenses] = useState([]);
@@ -27,6 +29,8 @@ const ViewExpense = () => {
     }
 
     return (
+       <>
+        <Sidebar />
         <div className="container mt-5">
             <h5>Expense List</h5>
             {expenses.length === 0 ? (
@@ -56,6 +60,7 @@ const ViewExpense = () => {
                 </table>
             )}
         </div>
+        </>
     );
 };
 

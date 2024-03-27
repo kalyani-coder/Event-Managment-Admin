@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Sidebar from "../Sidebar/Sidebar"
 
 const ViewTaskPage = () => {
     const [tasks, setTasks] = useState([]);
@@ -19,6 +20,8 @@ const ViewTaskPage = () => {
     }, []);
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h1>View Tasks</h1>
             <div className="row">
@@ -40,6 +43,7 @@ const ViewTaskPage = () => {
                 ))}
             </div>
         </div>
+        </>
     );
 };
 

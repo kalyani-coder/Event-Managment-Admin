@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Sidebar from "../Sidebar/Sidebar"
 
 const OrderForm = () => {
   // State variables for form input fields
@@ -109,6 +110,8 @@ const OrderForm = () => {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h1>Create Order For Manager</h1>
       <form>
@@ -239,6 +242,7 @@ const OrderForm = () => {
         </button>
       </form>
     </div>
+    </>
   );
 };
 

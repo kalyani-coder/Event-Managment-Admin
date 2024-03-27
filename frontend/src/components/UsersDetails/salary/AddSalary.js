@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Sidebar from "../../Sidebar/Sidebar";
+
 
 const AddSalary = () => {
   const location = useLocation();
@@ -72,6 +74,8 @@ const AddSalary = () => {
       });
   };
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-6">
@@ -214,6 +218,7 @@ const AddSalary = () => {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

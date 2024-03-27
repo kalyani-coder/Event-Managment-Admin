@@ -2,6 +2,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import "./AddAccountant.css";
 import React, { useState } from "react";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
 
 const AddAccountant = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -160,6 +161,8 @@ const AddAccountant = () => {
   ];
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Add Accountant</h2>
       {showSuccessAlert && (
@@ -367,6 +370,7 @@ const AddAccountant = () => {
         </Button>
       </Form>
     </div>
+    </>
   );
 };
 

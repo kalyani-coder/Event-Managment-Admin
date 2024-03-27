@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserPlus,
@@ -19,6 +19,7 @@ export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  const navigate = useNavigate()
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -39,7 +40,8 @@ export default function Sidebar() {
     };
   }, []);
   const handleLogout = () => {
-    window.location.href = 'https://eventmanagement-qaii.onrender.com';
+    // window.location.href = 'https://eventmanagement-qaii.onrender.com';
+    navigate('/')
 
   }
 
@@ -210,10 +212,17 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"/quotation"}>
+                      <Link to={"/createquotation"}>
                         <FontAwesomeIcon icon={faMoneyCheck}
                           style={{ marginRight: "10px", color: "#fff" }} />
                         Make Quotation
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/followupstatus"}>
+                        <FontAwesomeIcon icon={faMoneyCheck}
+                          style={{ marginRight: "10px", color: "#fff" }} />
+                         FolloUp Status
                       </Link>
                     </li>
                     <li>
@@ -349,14 +358,14 @@ export default function Sidebar() {
                     Salary
                   </a>
                   <ul className="collapse list-unstyled" id="SalarySubMenu">
-                    {/* <li>
+                    <li>
                       <Link to={"/addsalary"}>
                         <FontAwesomeIcon icon={faMoneyCheck}
                           style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
                         Add Salary
                       </Link>
-                    </li> */}
+                    </li>
                     <li>
                       <Link to={"/viewsalary"}>
                         <FontAwesomeIcon icon={faMoneyCheck} style={{ marginRight: "10px", color: "#fff" }} // Change color

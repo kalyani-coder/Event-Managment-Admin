@@ -5,10 +5,22 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const {QuatationInfo} = require("../models/newModels")
+const { QuatationInfo } = require("../models/newModels");
+const { AddEventMaster } = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+// AddEventName route for get 
+
+router.get("/addeventmaster", async (req, res) => {
+  try {
+    const addEvent = await AddEventMaster.find()
+    res.status(200).json(addEvent)
+  } catch (e) {
+    res.status(404).json({ message: "Internal server Error " })
+  }
+}) 
 
 // get in addvendor api 
 router.get("/addvendor", async (req, res) => {
@@ -141,7 +153,7 @@ router.get('/inventory-stocks/stock/:stockName', async (req, res) => {
 
   try {
     // Assuming that you have fields called 'Vendor_Id' and 'Stock_Name' in your model
-    const stocks = await InventoryStocks.find({Stock_Name: stockName });
+    const stocks = await InventoryStocks.find({ Stock_Name: stockName });
 
     if (!stocks || stocks.length === 0) {
       return res.status(404).json({ message: 'No inventory stocks found for the specified vendor and stock' });

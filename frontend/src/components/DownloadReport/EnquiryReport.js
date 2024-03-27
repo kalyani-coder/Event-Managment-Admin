@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import Sidebar from "../Sidebar/Sidebar"
+
 
 const EnquiryReport = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -82,6 +84,8 @@ const EnquiryReport = () => {
   };
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Enqiry Report</h2>
       <div className="mb-3">
@@ -140,6 +144,7 @@ const EnquiryReport = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

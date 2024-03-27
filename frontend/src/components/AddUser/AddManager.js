@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar"
 
 const AddManager = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -139,6 +140,8 @@ const AddManager = () => {
 
 
   return (
+    <>
+    <Sidebar />
     <div className="container mt-5">
       <h2>Add Manager</h2>
       {showSuccessAlert && (
@@ -319,6 +322,7 @@ const AddManager = () => {
         </Button>
       </Form>
     </div>
+    </>
   );
 };
 

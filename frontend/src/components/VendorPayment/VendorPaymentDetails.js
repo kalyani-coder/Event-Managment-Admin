@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import axios from 'axios';
+import Sidebar from "../Sidebar/Sidebar"
 
 const ViewVendorPayment = () => {
     const { vendorId } = useParams();
@@ -45,6 +46,8 @@ const ViewVendorPayment = () => {
     }
 
     return (
+<>
+        <Sidebar />
         <div className="container mt-5">
             <h2>Vendor Payment Details</h2>
 
@@ -93,6 +96,7 @@ const ViewVendorPayment = () => {
                 </Card>
             )}
         </div>
+        </>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
+import Sidebar from "../Sidebar/Sidebar"
 
 const VendorPaymentView = () => {
     const [vendorPayments, setVendorPayments] = useState([]);
@@ -38,6 +39,8 @@ const VendorPaymentView = () => {
     };
 
     return (
+        <>
+        <Sidebar />
         <div className="container mt-5">
             <h2>Vendor Payment Details</h2>
             <table className="table table-bordered">
@@ -74,6 +77,7 @@ const VendorPaymentView = () => {
                 </button>
             </div>
         </div>
+        </>
     );
 };
 

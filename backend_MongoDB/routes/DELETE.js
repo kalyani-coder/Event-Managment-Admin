@@ -4,7 +4,25 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
+const {AddEventMaster} =  require('../models/newModels')
 
+
+router.delete('/addeventmaster/:id', async (req, res) => {
+  const deletedEventId = req.params.id;
+
+  try {
+    const deletedEventName = await AddEventMaster.findByIdAndDelete(deletedEventId);
+
+    if (!deletedEventName) {
+      return res.status(404).json({message: 'Event not found'});
+    }
+
+    res.status(200).json({ message: 'Event deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
 
 router.delete("/addvendor/:id", async (req, res) => {
   try {
