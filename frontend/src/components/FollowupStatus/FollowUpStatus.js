@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import Sidebar from "../Sidebar/Sidebar"
 import { Button, Modal } from 'react-bootstrap';
 import axios from "axios"
+import "../Enquiry/Quotation/ViewEnquiry.css"
 
 
 const FollowUpStatus = ({ enquiry }) => {
@@ -125,11 +126,24 @@ const FollowUpStatus = ({ enquiry }) => {
             // Set success message and show alert
             alert("Status updated successfully!");
             setShowModal
-            (false); // Hide the popup/modal
+                (false); // Hide the popup/modal
         } catch (error) {
             console.error("Error updating status:", error);
         }
     };
+
+    const getStatusColor = (status) => {
+        switch (status) {
+          case "Ongoing":
+            return "text-yellow";
+          case "Hot":
+            return "text-red";
+          case "Completed":
+            return "text-green";
+          default:
+            return ""; // default color
+        }
+      };
 
     return (
         <>
@@ -239,6 +253,10 @@ const FollowUpStatus = ({ enquiry }) => {
                                 border: "1px solid #ddd",
                             }}
                         >
+                            <p className={`d-flex justify-content-end fw-bold ${getStatusColor(enquiry.status)}`}>
+                                Status: {enquiry.status}
+                            </p>
+
                             <div className="card-body">
                                 <h5 className="card-title">{enquiry.title}</h5>
                                 <p className="card-text">
