@@ -201,11 +201,18 @@ const StaffSalarySchema = new Schema({
   lname: String,
   salary: Number,
   date: String,
+  time :String,
   month: String,
   adv_payment: Number,
+  adv_taken :Number,
   rem_payment: Number,
   incentive: Number,
   deduct_amount: Number,
+  balance_amount :Number,
+  type_Of_Salary : String,
+  name_Of_Salary : String,
+
+
 });
 
 const StaffSalaryDetailsSchema = new Schema({
