@@ -263,7 +263,8 @@ const QuatationInfo = new Schema({
   rateper_Days :Number,
   days :Number,
   amount : String,
-  name : String, 
+  name : String,
+  transport : String 
 })
 
 const InventoryStocks = new Schema({
