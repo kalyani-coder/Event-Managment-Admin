@@ -3,12 +3,9 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../../Sidebar/Sidebar";
 
-
 const AddSalary = () => {
   const location = useLocation();
   const managerDetails = location.state;
-  const id = location.state;
-  console.log(id);
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -29,27 +26,48 @@ const AddSalary = () => {
   const [lname, setlname] = useState("");
   const [salary, setsalary] = useState("");
   const [adv_payment, setadv_payment] = useState("");
-  const [date, setDate] = useState(getCurrentDate()); // Set initial value to the current date
-  const [time, setTime] = useState(getCurrentTime()); // Set initial value to the current time
+  const [date, setDate] = useState(getCurrentDate());
+  const [time, setTime] = useState(getCurrentTime());
   const [month, setMonth] = useState("");
   const [salaryTaken, setSalaryTaken] = useState("");
   const [advanceTaken, setAdvanceTaken] = useState("");
   const [incentive, setincentive] = useState("");
   const [deduct_amount, setdeduct_amount] = useState("");
   const [balanceAmount, setBalanceAmount] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const [managerOptions, setManagerOptions] = useState([]);
+  const [accountantOptions, setAccountantOptions] = useState([]);
+  const [executiveOptions, setExecutiveOptions] = useState([]);
+  const [salaryType, setSalaryType] = useState("");
 
   useEffect(() => {
     if (managerDetails) {
       setfname(managerDetails.fname);
       setlname(managerDetails.lname);
-      // ... (set other fields)
     }
   }, [managerDetails]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/managerdetails')
+      .then(response => response.json())
+      .then(data => setManagerOptions(data));
+
+    fetch('http://localhost:5000/api/accountant')
+      .then(response => response.json())
+      .then(data => setAccountantOptions(data));
+
+    fetch('http://localhost:5000/api/executive')
+      .then(response => response.json())
+      .then(data => setExecutiveOptions(data));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const salaryData = {
+      _id: "",
+      type_Of_Salary: selectedOption,
+      salary_person_name: salaryType,
       fname,
       lname,
       salary,
@@ -65,7 +83,7 @@ const AddSalary = () => {
     };
 
     axios
-      .post("https://eventmanagement-admin-hocm.onrender.com/api/staffsalary", salaryData)
+      .post("http://localhost:5000/api/staffsalary", salaryData)
       .then((response) => {
         console.log("Salary added successfully:", response.data);
       })
@@ -83,6 +101,49 @@ const AddSalary = () => {
             <div className="card-body">
               <h5 className="card-title">Add Salary</h5>
               <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                    <label htmlFor="typeOfSalary">Add Salary</label>
+                    <select
+                      className="form-control"
+                      value={selectedOption}
+                      onChange={(e) => setSelectedOption(e.target.value)}
+                      required
+                    >
+                      <option value="">Select</option>
+                      <option value="manager">Manager</option>
+                      <option value="accountant">Accountant</option>
+                      <option value="executive">Executive</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="salaryType">Select Salary Type</label>
+                    <select
+                      className="form-control"
+                      value={salaryType}
+                      onChange={(e) => setSalaryType(e.target.value)}
+                      required
+                    >
+                      <option value="">Select</option>
+                      {selectedOption === "manager" &&
+                        managerOptions.map((manager) => (
+                          <option key={manager._id} value={manager.fname}>
+                            {manager.fname}
+                          </option>
+                        ))}
+                      {selectedOption === "accountant" &&
+                        accountantOptions.map((accountant) => (
+                          <option key={accountant._id} value={accountant.fname}>
+                            {accountant.fname}
+                          </option>
+                        ))}
+                      {selectedOption === "executive" &&
+                        executiveOptions.map((executive) => (
+                          <option key={executive._id} value={executive.fname}>
+                            {executive.fname}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
                 <div className="form-group">
                   <label htmlFor="fname">First Name<span style={{ color: "red" }}>*</span></label>
                   <input

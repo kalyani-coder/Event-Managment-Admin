@@ -124,6 +124,7 @@ function QuotationForm() {
       srNumber: 1,
       title: "",
       particular: "",
+      transport:"",
       description: "",
       entity: "",
       unit: "",
@@ -170,6 +171,7 @@ function QuotationForm() {
         srNumber: newSRNumber,
         title: "",
         particular: "",
+        transport: "",
         description: "",
         entity: "",
         unit: "",
@@ -187,6 +189,7 @@ function QuotationForm() {
       const quatationInfoData = sections.map((section) => ({
         title: section.title,
         particular: section.particular,
+        transport: section.transport,
         description: section.description,
         vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
         vendor_Stock: newSelectedStock,
@@ -521,6 +524,19 @@ function QuotationForm() {
               id={`particular${index}`}
               name="particular"
               value={section.particular}
+              onChange={(e) => handleChange(e, index)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor={`transport${index}`}>
+              Transport:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`transport${index}`}
+              name="transport"
+              value={section.transport}
               onChange={(e) => handleChange(e, index)}
             />
           </div>
