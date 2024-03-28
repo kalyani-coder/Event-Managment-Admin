@@ -30,10 +30,10 @@ const AddSalary = () => {
   const [time, setTime] = useState(getCurrentTime());
   const [month, setMonth] = useState("");
   const [salaryTaken, setSalaryTaken] = useState("");
-  const [advanceTaken, setAdvanceTaken] = useState("");
+  const [adv_taken, setadv_taken] = useState("");
   const [incentive, setincentive] = useState("");
   const [deduct_amount, setdeduct_amount] = useState("");
-  const [balanceAmount, setBalanceAmount] = useState("");
+  const [balance_amount, setBalanceAmount] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [managerOptions, setManagerOptions] = useState([]);
   const [accountantOptions, setAccountantOptions] = useState([]);
@@ -65,27 +65,28 @@ const AddSalary = () => {
     e.preventDefault();
 
     const salaryData = {
-      _id: "",
+      // fname,
+      // lname,
+      
       type_Of_Salary: selectedOption,
       salary_person_name: salaryType,
-      fname,
-      lname,
       salary,
       adv_payment,
       date,
       time,
       month,
       salaryTaken,
-      advanceTaken,
+      adv_taken,
       incentive,
       deduct_amount,
-      balanceAmount,
+      balance_amount,
     };
 
     axios
       .post("http://localhost:5000/api/staffsalary", salaryData)
       .then((response) => {
         console.log("Salary added successfully:", response.data);
+        alert("Salary Added Successfully")
       })
       .catch((error) => {
         console.error("Error adding salary:", error);
@@ -144,17 +145,8 @@ const AddSalary = () => {
                         ))}
                     </select>
                   </div>
-                <div className="form-group">
-                  <label htmlFor="fname">First Name<span style={{ color: "red" }}>*</span></label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={fname}
-                    onChange={(e) => setfname(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="form-group">
+               
+                {/* <div className="form-group">
                   <label htmlFor="lname">Last Name<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="text"
@@ -163,7 +155,7 @@ const AddSalary = () => {
                     onChange={(e) => setlname(e.target.value)}
                     required
                   />
-                </div>
+                </div> */}
                 <div className="form-group">
                   <label htmlFor="date">Date</label>
                   <input
@@ -224,7 +216,7 @@ const AddSalary = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Salary Details</h5>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="salaryTaken">Salary Taken</label>
                 <input
                   type="text"
@@ -233,14 +225,14 @@ const AddSalary = () => {
                   onChange={(e) => setSalaryTaken(e.target.value)}
 
                 />
-              </div>
+              </div> */}
               <div className="form-group">
-                <label htmlFor="advanceTaken">Advance Taken</label>
+                <label htmlFor="adv_taken">Advance Taken</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={advanceTaken}
-                  onChange={(e) => setAdvanceTaken(e.target.value)}
+                  value={adv_taken}
+                  onChange={(e) => setadv_taken(e.target.value)}
 
                 />
               </div>
@@ -265,11 +257,11 @@ const AddSalary = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="balanceAmount">Balance Amount</label>
+                <label htmlFor="balance_amount">Balance Amount</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={balanceAmount}
+                  value={balance_amount}
                   onChange={(e) => setBalanceAmount(e.target.value)}
 
                 />
