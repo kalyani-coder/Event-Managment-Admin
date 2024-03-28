@@ -243,6 +243,37 @@ export default function Sidebar() {
                   </ul>
                 </li>
 
+
+
+
+                <li className="active">
+                  <a
+                    href="#addnewevent"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
+                  >
+                    <FontAwesomeIcon icon={faHandHoldingUsd}
+                      style={{ marginRight: "10px", color: "#9b59b6" }} // Change color
+                      size="lg" />
+                  Add New Event
+                  </a>
+                  <ul className="collapse list-unstyled" id="addnewevent">
+                    <li>
+                      <Link to={"/addnewevent"}>
+                        <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        AddEvent
+                      </Link>
+                    </li>
+                    
+                  </ul>
+                </li>
+
+
+
+
+
                 <li className="active">
                   <a
                     href="#pageSubmenu"

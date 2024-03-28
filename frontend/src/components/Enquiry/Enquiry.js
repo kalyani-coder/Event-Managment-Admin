@@ -98,7 +98,7 @@ export default function Enquiry() {
     };
 
     fetchRecentInquiries();
-  }, []); 
+  }, []);
 
 
   const [events, setEvents] = useState([]);
@@ -153,25 +153,25 @@ export default function Enquiry() {
                   onChange={handleInputChange}
                 />
               </div> */}
- <Form.Group controlId="SelectEvent">
-        <Form.Label>Select Event:</Form.Label>
-        <div className="relative">
-          <Form.Select
-            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-            aria-label="Select Event"
-            name="event"
-            value={formData.event_name} // Set selected value to formData.event_name
-            onChange={handleEventChange}
-          >
-            <option>Select Event</option>
-            {events.map((event, index) => (
-              <option key={index} value={event.eventName}>
-                {event.eventName}
-              </option>
-            ))}
-          </Form.Select>
-        </div>
-      </Form.Group>
+                <Form.Group controlId="SelectEvent">
+                  <Form.Label>Select Event:</Form.Label>
+                  <div className="relative">
+                    <Form.Select
+                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                      aria-label="Select Event"
+                      name="event"
+                      value={formData.event_name} // Set selected value to formData.event_name
+                      onChange={handleEventChange}
+                    >
+                      <option>Select Event</option>
+                      {events.map((event, index) => (
+                        <option key={index} value={event.eventName}>
+                          {event.eventName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
 
 
                 <div className="form-group">
