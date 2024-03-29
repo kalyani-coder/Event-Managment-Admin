@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar"
-
+import Sidebar from "../Sidebar/Sidebar";
+import { FaSortAmountDown, FaSortAmountUp, FaFilter, FaSearch } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const EnquiryReport = () => {
   const [enquiries, setEnquiries] = useState([]);
   const [filteredEnquiries, setFilteredEnquiries] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedVenue, setSelectedVenue] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     fetchEnquiryData();
@@ -15,135 +20,187 @@ const EnquiryReport = () => {
   const fetchEnquiryData = async () => {
     try {
       const response = await fetch(
-        "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+        "http://localhost:5000/api/enquiry"
       );
       const enquiryData = await response.json();
       setEnquiries(enquiryData);
-      setFilteredEnquiries(enquiryData); // Initially, display all enquiries
+      setFilteredEnquiries(enquiryData);
     } catch (error) {
       console.error("Error fetching enquiry data:", error);
     }
   };
 
-  // Function to handle search input change
-  const handleSearchInputChange = (e) => {
-    const { value } = e.target;
-    setSearchQuery(value);
-    filterEnquiries(value);
+  const handleSearchButtonClick = () => {
+    filterEnquiries();
   };
 
-  // Function to filter enquiries based on search query
-  const filterEnquiries = (query) => {
-    const filtered = enquiries.filter((enquiry) => {
-      return (
-        enquiry.event_name.toLowerCase().includes(query.toLowerCase()) ||
-        enquiry.event_date.includes(query) ||
-        enquiry.customer_name.toLowerCase().includes(query.toLowerCase())  ||
-        enquiry.event_requirement.toLowerCase().includes(query.toLowerCase() )
-      );
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const toggleSortOrder = () => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+    sortEnquiries(newSortOrder);
+  };
+
+  const filterEnquiries = () => {
+    let filtered = enquiries.filter((enquiry) => {
+      return (!selectedVenue || enquiry.event_venue === selectedVenue) &&
+             (!selectedDate || new Date(enquiry.event_date).toDateString() === selectedDate.toDateString());
     });
+    if (searchQuery) {
+      filtered = filtered.filter(enquiry =>
+        enquiry.event_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        enquiry.event_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        enquiry.event_requirement.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        enquiry.customer_name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
     setFilteredEnquiries(filtered);
   };
 
-  const exportToExcel = () => {
-    // Create a new array with only the required fields
-    const filteredData = filteredEnquiries.map((enquiry) => {
-      return {
-        EventName: enquiry.event_name,
-        EventDate: enquiry.event_date,
-        Guest_Quantity: enquiry.guest_quantity,
-        Event_Venue: enquiry.event_venue,
-        Event_Requirement: enquiry.event_requirement,
-        CustomerName: enquiry.customer_name,
-        Email: enquiry.email,
-        Contact: enquiry.contact,
-        Address: enquiry.address
-      };
+  const sortEnquiries = (order) => {
+    const sorted = [...filteredEnquiries].sort((a, b) => {
+      if (order === "asc") {
+        return new Date(a.event_date) - new Date(b.event_date);
+      } else {
+        return new Date(b.event_date) - new Date(a.event_date);
+      }
     });
+    setFilteredEnquiries(sorted);
+  };
 
-    // Create a new workbook and worksheet
+  const exportToExcel = () => {
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(filteredData);
+    const ws = XLSX.utils.json_to_sheet(filteredEnquiries);
 
-    // Set column widths
     const wscols = [
-      { wch: 20 }, // event_name
-      { wch: 15 }, // event_date
-      { wch: 15 }, // event_date
-      { wch: 15 }, // event_date
-      { wch: 15 }, // customer_name
-      { wch: 20 }, // email
-      { wch: 10 }, // contact
-      { wch: 15 }  // address
+      { wch: 20 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 10 },
+      { wch: 15 },
     ];
     ws["!cols"] = wscols;
 
-    // Append the worksheet to the workbook and save
     XLSX.utils.book_append_sheet(wb, ws, "Enquiries");
     XLSX.writeFile(wb, "enquiry_report.xlsx");
   };
 
+  const handleVenueFilterChange = (venue) => {
+    setSelectedVenue(venue);
+    filterEnquiries();
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const venueOptions = [...new Set(enquiries.map((enquiry) => enquiry.event_venue))];
+  
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>Enqiry Report</h2>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control mr-2" // Added margin to the right
-          placeholder="Search by Event Name, Event Date, Event Requirement Customer Name"
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          style={{ width: "50%", float: "left" }}
-        />
-        <div className="input-group-append">
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={() => filterEnquiries(searchQuery)}
-          >
-            Search
-          </button>
+      <Sidebar />
+      <div className="container mt-5">
+        <h2>Enquiry Report</h2>
+        <div className="mb-3 mt-3">
+          <input
+            type="text"
+            className="form-control mr-2"
+            placeholder="Search by Event Name, Event Date, Event Requirement, Customer Name"
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            style={{ width: "50%", float: "left" }}
+          />
+          <div className="input-group-append">
+            <button
+              className="btn btn-primary mr-2"
+              type="button"
+              onClick={handleSearchButtonClick}
+            >
+              <FaSearch /> Search
+            </button>
+            <div className="dropdown">
+              <button
+                className="btn btn-primary dropdown-toggle mr-2"
+                type="button"
+                id="venueFilterDropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={filterEnquiries}
+              >
+                <FaFilter /> Venue
+              </button>
+              <div className="dropdown-menu" aria-labelledby="venueFilterDropdown">
+                {venueOptions.map((option, index) => (
+                  <button
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handleVenueFilterChange(option)}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <DatePicker 
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select Date"
+                className="form-control mr-2"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <p>Total number of enquiries: {filteredEnquiries.length}</p>
-      <button className="btn btn-primary mb-3" onClick={exportToExcel}>
-        Export to Excel
-      </button>
-      <table className="table table-hover table-sm border border-secondary">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">Sr. No.</th>
-            <th scope="col">Event Name</th>
-            <th scope="col">Event Date</th>
-            <th scope="col">Guest Quntity</th>
-            <th scope="col">Event Venue</th>
-            <th scope="col">Event Requirement</th>
-            <th scope="col">Customer Name</th>
-            {/* <th scope="col">Email</th> */}
-            <th scope="col">Contact</th>
-            <th scope="col">Address</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEnquiries.map((enquiry, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{enquiry.event_name}</td>
-              <td>{enquiry.event_date}</td>
-              <td>{enquiry.guest_quantity}</td>
-              <td>{enquiry.event_venue}</td>
-              <td>{enquiry.event_requirement}</td>
-              <td>{enquiry.customer_name}</td>
-              {/* <td>{enquiry.email}</td> */}
-              <td>{enquiry.contact}</td>
-              <td>{enquiry.address}</td>
+        <p>Total number of enquiries: {filteredEnquiries.length}</p>
+        <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+          Export to Excel
+        </button>
+        <table className="table table-hover table-sm border border-secondary">
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Event Name</th>
+              <th scope="col" onClick={toggleSortOrder}>
+                Event Date{" "}
+                {sortOrder === "asc" ? (
+                  <FaSortAmountDown />
+                ) : (
+                  <FaSortAmountUp />
+                )}
+              </th>
+              <th scope="col">Guest Quantity</th>
+              <th scope="col">Event Venue</th>
+              <th scope="col">Event Requirement</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Contact</th>
+              <th scope="col">Address</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredEnquiries.map((enquiry, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{enquiry.event_name}</td>
+                <td>{enquiry.event_date}</td>
+                <td>{enquiry.guest_quantity}</td>
+                <td>{enquiry.event_venue}</td>
+                <td>{enquiry.event_requirement}</td>
+                <td>{enquiry.customer_name}</td>
+                <td>{enquiry.contact}</td>
+                <td>{enquiry.address}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

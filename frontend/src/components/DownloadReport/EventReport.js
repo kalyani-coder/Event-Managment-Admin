@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar"
-
+import Sidebar from "../Sidebar/Sidebar";
+import { FaSortAmountDown, FaSortAmountUp, FaSearch } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const EventReport = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sort order is ascending
+  const [caseSensitive, setCaseSensitive] = useState(false); // Default case sensitivity is false
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     fetchEventData();
@@ -25,126 +30,189 @@ const EventReport = () => {
     }
   };
 
-  // Function to handle search input change
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value);
-    filterEvents(e.target.value);
+    filterEvents(e.target.value, selectedDate);
   };
 
-  // Function to filter events based on search query
-  const filterEvents = (query) => {
+  const toggleCaseSensitive = () => {
+    // setCaseSensitive(!caseSensitive);
+    filterEvents(searchQuery, selectedDate);
+  };
+
+  const toggleSortOrder = () => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+    sortEvents(newSortOrder);
+  };
+
+  const filterEvents = (query, date) => {
     const filtered = events.filter((event) => {
+      const eventName = event && event.eventName ? (caseSensitive ? event.eventName : event.eventName.toLowerCase()) : "";
+      const companyName = event && event.company_name ? (caseSensitive ? event.company_name : event.company_name.toLowerCase()) : "";
+      const venue = event && event.venue ? (caseSensitive ? event.venue : event.venue.toLowerCase()) : "";
+      const eventDate = event && event.event_date ? (caseSensitive ? event.event_date : event.event_date.toLowerCase()) : "";
+  
+      // Check if event_date is defined before trying to use it
+      const dateMatch = !date || (eventDate && eventDate.includes(date.toISOString().slice(0, 10)));
+  
       return (
-        event.eventName.toLowerCase().includes(query.toLowerCase()) ||
-        event.fname.toLowerCase().includes(query.toLowerCase()) ||
-        event.company_name.toLowerCase().includes(query.toLowerCase()) ||
-        event.venue.toLowerCase().includes(query.toLowerCase()) ||
-        event.event_date.toLowerCase().includes(query.toLowerCase())
+        eventName.includes(query) ||
+        companyName.includes(query) ||
+        venue.includes(query) ||
+        dateMatch
       );
     });
-    setFilteredEvents(filtered);
+  
+    sortEvents(sortOrder, filtered);
+  };
+  
+  
+
+  const sortEvents = (order, data = null) => {
+    const eventsToSort = data || filteredEvents;
+    const sorted = [...eventsToSort].sort((a, b) => {
+      const valueA = a.event_date.toLowerCase();
+      const valueB = b.event_date.toLowerCase();
+
+      if (order === "asc") {
+        return valueA.localeCompare(valueB);
+      } else {
+        return valueB.localeCompare(valueA);
+      }
+    });
+
+    setFilteredEvents(sorted);
   };
 
   const exportToExcel = () => {
-    // Create a new array with only the required fields
-    const filteredData = filteredEvents.map(event => {
-        return {
-            EventName: event.eventName,
-            Fname: event.fname,
-            Company_Name: event.company_name,
-            Email: event.email,
-            Contact: event.contact,
-            Event_Type: event.event_type,
-            Venue: event.venue,
-            Subvenue: event.subvenue,
-            Guest_Number: event.guest_number,
-            QuotaionAmount: event.budget,
-            event_date: event.event_date
-        };
+    const filteredData = filteredEvents.map((event) => {
+      return {
+        EventName: event.eventName,
+        Company_Name: event.company_name,
+        Venue: event.venue,
+        Subvenue: event.subvenue,
+        Event_Date: event.event_date,
+        Guest_Number: event.guest_number,
+        QuotaionAmount: event.budget
+      };
     });
 
-    // Create a new workbook and worksheet
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(filteredData);
-
-    // Set column widths
     const wscols = [
-        { wch: 15 }, // eventName
-        { wch: 15 }, // fname
-        { wch: 15 }, // company_name
-        { wch: 15 }, // email
-        { wch: 12 }, // contact
-        { wch: 15 }, // event_type
-        { wch: 15 }, // venue
-        { wch: 12 }, // subvenue
-        { wch: 12 }, // guest_number
-        { wch: 15 }, // budget
-        { wch: 15 }  // event_date
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 }
     ];
-    ws['!cols'] = wscols;
+    ws["!cols"] = wscols;
 
-    // Append the worksheet to the workbook and save
     XLSX.utils.book_append_sheet(wb, ws, "Events");
     XLSX.writeFile(wb, "event_report.xlsx");
-};
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    filterEvents(searchQuery, date);
+  };
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>Event Report</h2>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control mr-2" // Added margin to the right
-          placeholder="Search Company Name, Event Name, Venue, Date"
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          style={{"width":"35%", float:"left"}}
-        />
-        <div className="input-group-append">
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={filterEvents}
-          >
-            Search
-          </button>
+      <Sidebar />
+      <div className="container mt-5">
+        <h2>Event Report</h2>
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control mr-2"
+            placeholder="Search Company Name, Event Name, Venue"
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            style={{ width: "35%", float: "left" }}
+          />
+          <div className="input-group-append">
+            <button
+              className="btn btn-primary mr-2"
+              type="button"
+              onClick={handleSearchInputChange}
+            >
+              <FaSearch /> Search
+            </button>
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Select Date"
+              className="form-control mr-2"
+            />
+            {/* <button
+              className="btn btn-primary mr-2"
+              type="button"
+              onClick={toggleSortOrder}
+            >
+              {sortOrder === "asc" ? (
+                <>
+                  <FaSortAmountDown /> Sort Ascending To Date
+                </>
+              ) : (
+                <>
+                  <FaSortAmountUp /> Sort Descending To Date
+                </>
+              )}
+            </button> */}
+            {/* <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={toggleCaseSensitive}
+            >
+              {`Case ${caseSensitive ? "Sensitive" : "Insensitive"}`}
+            </button> */}
+          </div>
         </div>
-      </div>
-      <p>Total number of events: {filteredEvents.length}</p>
-      <button className="btn btn-primary mb-3" onClick={exportToExcel}>
-        Export to Excel
-      </button>
-      <table className="table table-hover table-sm border border-secondary">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">Sr. No.</th>
-            <th scope="col">Company</th>
-            <th scope="col">Event</th>
-            <th scope="col">Venue</th>
-            <th scope="col">Subvenue</th>
-            <th scope="col">Event Date</th>
-            <th scope="col">Guest Number</th>
-            <th scope="col">Quotation Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEvents.map((event, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{event.company_name}</td>
-              <td>{event.eventName}</td>
-              <td>{event.venue}</td>
-              <td>{event.subvenue}</td>
-              <td>{event.event_date}</td>
-              <td>{event.guest_number}</td>
-              <td>{event.budget}</td>
+        <p>Total number of events: {filteredEvents.length}</p>
+        <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+          Export to Excel
+        </button>
+        <table className="table table-hover table-sm border border-secondary">
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Company Name</th>
+              <th scope="col">Event</th>
+              <th scope="col">Venue</th>
+              <th scope="col">Subvenue</th>
+              <th scope="col" onClick={toggleSortOrder}>
+                Event Date{" "}
+                {sortOrder === "asc" ? (
+                  <FaSortAmountDown />
+                ) : (
+                  <FaSortAmountUp />
+                )}
+              </th>
+              <th scope="col">Guest Number</th>
+              <th scope="col">Quotation Amount</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredEvents.map((event, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{event.company_name}</td>
+                <td>{event.eventName}</td>
+                <td>{event.venue}</td>
+                <td>{event.subvenue}</td>
+                <td>{event.event_date}</td>
+                <td>{event.guest_number}</td>
+                <td>{event.budget}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import Sidebar from "../Sidebar/Sidebar"
 
-
 const VendorPaymentReport = () => {
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedVendor, setSelectedVendor] = useState('');
 
   useEffect(() => {
     fetchPaymentData();
@@ -14,7 +14,7 @@ const VendorPaymentReport = () => {
 
   const fetchPaymentData = async () => {
     try {
-      const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment');
+      const response = await fetch('//localhost:5000/api/vendorpayment');
       const paymentData = await response.json();
       setPayments(paymentData);
       setFilteredPayments(paymentData); // Initially, display all payments
@@ -26,18 +26,21 @@ const VendorPaymentReport = () => {
   // Function to handle search input change
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value);
-    filterPayments(e.target.value);
+    filterPayments(e.target.value, selectedVendor);
   };
 
-  // Function to filter payments based on search query
-  const filterPayments = (query) => {
+  // Function to handle vendor selection change
+  const handleVendorSelectChange = (e) => {
+    setSelectedVendor(e.target.value);
+    filterPayments(searchQuery, e.target.value);
+  };
+
+  // Function to filter payments based on search query and selected vendor
+  const filterPayments = (query, vendor) => {
     const filtered = payments.filter((payment) => {
       return (
-        payment.fname.toLowerCase().includes(query.toLowerCase()) ||
-        payment.lname.toLowerCase().includes(query.toLowerCase()) ||
-        payment.event_name.toLowerCase().includes(query.toLowerCase()) ||
-        payment.date.toLowerCase().includes(query.toLowerCase()) ||
-        payment.description.toLowerCase().includes(query.toLowerCase())
+        payment.fname.toLowerCase().includes(query.toLowerCase()) &&
+        (vendor === '' || payment.vendor === vendor)
       );
     });
     setFilteredPayments(filtered);
@@ -76,7 +79,6 @@ const VendorPaymentReport = () => {
     ];
     ws['!cols'] = wscols;
 
-
     XLSX.utils.book_append_sheet(wb, ws, 'Payments');
     XLSX.writeFile(wb, 'payment_report.xlsx');
   };
@@ -96,6 +98,13 @@ const VendorPaymentReport = () => {
           style={{"width":"35%", float:"left"}}
         />
         <div className="input-group-append">
+          <select className="form-control mr-2" onChange={handleVendorSelectChange} value={selectedVendor}>
+            <option value="">All Vendors</option>
+            {/* Add options dynamically based on available vendors */}
+            {payments.map((payment, index) => (
+              <option key={index} value={payment.vendor}>{payment.vendor}</option>
+            ))}
+          </select>
           <button className="btn btn-primary" type="button" onClick={filterPayments}>Search</button>
         </div>
       </div>

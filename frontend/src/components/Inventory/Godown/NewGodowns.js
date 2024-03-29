@@ -18,7 +18,7 @@ const NewGodowns = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor', {
+            const response = await fetch('http://localhost:5000/api/addvendor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const NewGodowns = () => {
     useEffect(() => {
         const fetchVendors = async () => {
             try {
-                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor');
+                const response = await fetch('http://localhost:5000/api/addvendor');
                 if (response.ok) {
                     const data = await response.json();
                     setVendors(data);
@@ -107,7 +107,7 @@ const NewGodowns = () => {
         }
 
         try {
-            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/', {
+            const response = await fetch('http://localhost:5000/api/inventory-stocks/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -146,7 +146,7 @@ const NewGodowns = () => {
 
     const handleDeleteVendor = async (vendorId) => {
         try {
-            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/addvendor/${vendorId}`, {
+            const response = await fetch(`http://localhost:5000/api/addvendor/${vendorId}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
@@ -178,7 +178,7 @@ const NewGodowns = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks');
+                const response = await fetch('http://localhost:5000/api/inventory-stocks');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -197,7 +197,7 @@ const NewGodowns = () => {
         const selectedName = e.target.value;
         console.log(selectedName);
         try {
-            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/stock/${selectedName}`);
+            const response = await fetch(`http://localhost:5000/api/inventory-stocks/stock/${selectedName}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -239,7 +239,7 @@ const NewGodowns = () => {
             };
 
             // Perform PATCH request to update the price and quantity
-            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${updatedProduct._id}`, {
+            const response = await fetch(`http://localhost:5000/api/inventory-stocks/${updatedProduct._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
