@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../Sidebar/Sidebar";
-import {Form} from "react-bootstrap"
+import { Form } from "react-bootstrap";
 
 const VendorPayment = () => {
   const getCurrentDate = () => {
@@ -19,21 +19,24 @@ const VendorPayment = () => {
     return `${hh}:${mm}`;
   };
 
+  const calculateRemainingAmount = (paidAmt, advancePayment) => {
+    return paidAmt - advancePayment;
+  };
+
   const initialFormData = {
     fname: "",
-    lname: "",
+    // lname: "",
     event_name: "",
     date: getCurrentDate(),
     time: getCurrentTime(),
     bankaccount: "",
-    // salary: '',
     paid_amt: "",
     advance_payment: "",
     rem_amt: "",
     description: "",
-    selectedVendor: "",
-    selectedEvent: "", // Add a new field for selected event
-    eventName: "",
+     selectedVendor: "",
+     selectedEvent: "",
+    // eventName: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -41,11 +44,11 @@ const VendorPayment = () => {
   const [events, setEvents] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
 
+  //fetching vendors from addvendor
   useEffect(() => {
-    // Fetch the list of vendors when the component mounts
     const fetchVendors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/vendor");
+        const response = await axios.get("http://localhost:5000/api/addvendor");
         setVendors(response.data);
       } catch (error) {
         console.error("Error fetching vendors:", error);
@@ -53,7 +56,23 @@ const VendorPayment = () => {
     };
 
     fetchVendors();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
+
+  //fetching events from from selected event
+  useEffect(() => {
+    const fetchEventsForVendor = async () => {
+      try {
+        if (formData.selectedVendor) {
+          const response = await axios.get(`http://localhost:5000/api/event?eventName=${formData.selectedVendor}`);
+          setEvents(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching events for vendor:", error);
+      }
+    };
+
+    fetchEventsForVendor();
+  }, [formData.selectedVendor]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -63,38 +82,13 @@ const VendorPayment = () => {
     }));
   };
 
-  const handleVendorChange = async (event) => {
+  const handleVendorChange = (event) => {
     const { value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       selectedVendor: value,
-      selectedEvent: "", // Reset selected event when vendor changes
+      selectedEvent: "",
     }));
-
-    // Fetch vendor details based on the selected vendor
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/addvendor?Vendor_Name=${value}`
-      );
-      const vendorDetails = response.data[0];
-      setFormData((prevData) => ({
-        ...prevData,
-        fname: vendorDetails.contact_person_name,
-        // Add other fields as needed based on the vendor details
-      }));
-    } catch (error) {
-      console.error("Error fetching vendor details:", error);
-    }
-
-    // Fetch events based on the selected vendor
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/eventeventName?Vendor_Name=${value}`
-      );
-      setEvents(response.data);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
   };
 
   const handleEventChange = (event) => {
@@ -107,10 +101,11 @@ const VendorPayment = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("Form Data:", formData); // Log form data to console
 
     try {
       const response = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment",
+        "http://localhost:5000/api/vendorpayment",
         formData
       );
 
@@ -131,46 +126,35 @@ const VendorPayment = () => {
     setShowPopup(false);
   };
 
-  const [managerName, setManagerName] = useState([]);
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/addvendor");
-        setManagerName(response.data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
   return (
     <>
       <Sidebar />
       <div className="container">
         <form className="order p-4 " onSubmit={handleSubmit}>
           <h2>Vendor Payment</h2>
+          {/* Vendor Selection */}
           <div className="form-group">
-            <label htmlFor="selectedVendor">Select Vendor</label>
-            <Form.Group controlId="SelectCustomer">
-              <Form.Label>Select Manager:</Form.Label>
+            <Form.Group controlId="SelectVendor">
+              <Form.Label>Select Vendor:</Form.Label>
               <div className="relative">
                 <Form.Select
                   className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                  aria-label="Select Customer"
-                  name="customer"
+                  aria-label="Select Vendor"
+                  name="selectedVendor"
+                  onChange={handleVendorChange}
+                  value={formData.selectedVendor}
                 >
-                  <option>Select Manager</option>
-                  {managerName.map((manager) => (
-                    <option key={manager.id} value={manager.Vendor_Name}>
-                      {manager.Vendor_Name}
+                  <option>Select Vendor</option>
+                  {vendors.map((vendor) => (
+                    <option key={vendor.Vendor_Name} value={vendor.Vendor_Name}>
+                      {vendor.Vendor_Name}
                     </option>
                   ))}
                 </Form.Select>
               </div>
             </Form.Group>
           </div>
+          {/* Event Selection */}
           <div className="form-group">
             <label htmlFor="selectedEvent">Event Name</label>
             <select
@@ -180,27 +164,15 @@ const VendorPayment = () => {
               value={formData.selectedEvent}
               required
             >
-              <option value="">Select an event</option>
+              <option value="">Select event</option>
               {events.map((event) => (
-                <option key={event.eventName} value={event.eventName}>
+                <option key={event._id} value={event.eventName}>
                   {event.eventName}
                 </option>
               ))}
             </select>
           </div>
-          {/* <div className="form-group">
-                        <label htmlFor="fname">Name<span style={{ color: 'red' }}>*</span></label>
-                        <input
-                            className="form-control mb-2"
-                            type="text"
-                            name="fname"
-                            placeholder="First Name"
-                            onChange={handleChange}
-                            value={`${formData.fname} ${formData.lname}`}
-                            required
-                        />
-                    </div> */}
-
+          {/* Date and Time */}
           <div className="row mb-2">
             <div className="col">
               <div className="form-group">
@@ -227,7 +199,7 @@ const VendorPayment = () => {
               </div>
             </div>
           </div>
-
+          {/* Bank Account */}
           <div className="form-group">
             <label htmlFor="bankaccount">Bank Account</label>
             <input
@@ -239,7 +211,7 @@ const VendorPayment = () => {
               value={formData.bankaccount}
             />
           </div>
-
+          {/* Paid Amount */}
           <div className="form-group">
             <label htmlFor="paid_amt">Paid Amount</label>
             <input
@@ -251,6 +223,7 @@ const VendorPayment = () => {
               value={formData.paid_amt}
             />
           </div>
+          {/* Advance Payment */}
           <div className="form-group">
             <label htmlFor="advance_payment">Advance Payment</label>
             <input
@@ -262,17 +235,19 @@ const VendorPayment = () => {
               value={formData.advance_payment}
             />
           </div>
+          {/* Remaining Amount */}
           <div className="form-group">
-            <label htmlFor="rem_amt">Remaining Amount</label>
+            <label htmlFor="rem_amt">Pending Amount</label>
             <input
               className="form-control mb-2"
               type="text"
               name="rem_amt"
               placeholder="Remaining Amount"
-              onChange={handleChange}
-              value={formData.rem_amt}
+              value={calculateRemainingAmount(formData.paid_amt, formData.advance_payment)}
+              readOnly
             />
           </div>
+          {/* Description */}
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <input
@@ -284,6 +259,7 @@ const VendorPayment = () => {
               value={formData.description}
             />
           </div>
+          {/* Discard and Save buttons */}
           <button
             className="btn btn-secondary mr-2 action1-btn"
             type="button"
@@ -293,13 +269,12 @@ const VendorPayment = () => {
           </button>
           <button
             className="btn btn-primary action-btn"
-            onClick={handleSubmit}
             type="submit"
           >
             Save
           </button>
         </form>
-
+        {/* Popup for successful data saving */}
         {showPopup && (
           <div className="alert alert-success mt-3">
             Data saved successfully!

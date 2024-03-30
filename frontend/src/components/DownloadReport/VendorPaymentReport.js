@@ -56,7 +56,6 @@ const VendorPaymentReport = () => {
         'Remaining Amount': payment.rem_amt,
         'Date': payment.date,
         'Description': payment.description,
-        'Salary': payment.salary
       };
     });
 
@@ -98,13 +97,6 @@ const VendorPaymentReport = () => {
           style={{"width":"35%", float:"left"}}
         />
         <div className="input-group-append">
-          <select className="form-control mr-2" onChange={handleVendorSelectChange} value={selectedVendor}>
-            <option value="">All Vendors</option>
-            {/* Add options dynamically based on available vendors */}
-            {payments.map((payment, index) => (
-              <option key={index} value={payment.vendor}>{payment.vendor}</option>
-            ))}
-          </select>
           <button className="btn btn-primary" type="button" onClick={filterPayments}>Search</button>
         </div>
       </div>
@@ -121,7 +113,7 @@ const VendorPaymentReport = () => {
             <th scope="col">Remaining Amount</th>
             <th scope="col">Date</th>
             <th scope="col">Description</th>
-            <th scope="col">Salary</th>
+           
           </tr>
         </thead>
         <tbody>
@@ -135,7 +127,7 @@ const VendorPaymentReport = () => {
               <td>{payment.rem_amt}</td>
               <td>{payment.date}</td>
               <td>{payment.description}</td>
-              <td>{payment.salary}</td>
+              
             </tr>
           ))}
         </tbody>
