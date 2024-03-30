@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
-import Sidebar from "../Sidebar/Sidebar"
+import Sidebar from "../Sidebar/Sidebar";
 
 const VendorPaymentReport = () => {
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedVendor, setSelectedVendor] = useState('');
+  const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
     fetchPaymentData();
@@ -18,6 +19,10 @@ const VendorPaymentReport = () => {
       const paymentData = await response.json();
       setPayments(paymentData);
       setFilteredPayments(paymentData); // Initially, display all payments
+
+      // Extract vendors from payment data
+      const uniqueVendors = [...new Set(paymentData.map(payment => payment.vendor))];
+      setVendors(uniqueVendors);
     } catch (error) {
       console.error('Error fetching payment data:', error);
     }
@@ -39,6 +44,7 @@ const VendorPaymentReport = () => {
   const filterPayments = (query, vendor) => {
     const filtered = payments.filter((payment) => {
       return (
+        payment.fname && // Check if payment.fname is defined
         payment.fname.toLowerCase().includes(query.toLowerCase()) &&
         (vendor === '' || payment.vendor === vendor)
       );
@@ -62,19 +68,19 @@ const VendorPaymentReport = () => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(filteredData);
 
-     // Set column widths
-     const wscols = [
-        { wch: 15 }, // eventName
-        { wch: 15 }, // fname
-        { wch: 15 }, // company_name
-        { wch: 15 }, // email
-        { wch: 12 }, // contact
-        { wch: 15 }, // event_type
-        { wch: 15 }, // venue
-        { wch: 12 }, // subvenue
-        { wch: 12 }, // guest_number
-        { wch: 15 }, // budget
-        { wch: 15 }  // event_date
+    // Set column widths
+    const wscols = [
+      { wch: 15 }, // eventName
+      { wch: 15 }, // fname
+      { wch: 15 }, // company_name
+      { wch: 15 }, // email
+      { wch: 12 }, // contact
+      { wch: 15 }, // event_type
+      { wch: 15 }, // venue
+      { wch: 12 }, // subvenue
+      { wch: 12 }, // guest_number
+      { wch: 15 }, // budget
+      { wch: 15 }  // event_date
     ];
     ws['!cols'] = wscols;
 
@@ -84,55 +90,62 @@ const VendorPaymentReport = () => {
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>Vendor Payment Report</h2>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control mr-2"
-          placeholder="Search First Name, Last Name, Event Name, Date, Description"
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          style={{"width":"35%", float:"left"}}
-        />
-        <div className="input-group-append">
-          <button className="btn btn-primary" type="button" onClick={filterPayments}>Search</button>
+      <Sidebar />
+      <div className="container mt-5">
+        <h2>Vendor Payment Report</h2>
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control mr-2"
+            placeholder="Search First Name, Last Name, Event Name, Date, Description"
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            style={{ width: "35%", float: "left" }}
+          />
+          <div className="input-group-append">
+            <button className="btn btn-primary" type="button" onClick={filterPayments}>Search</button>
+          </div>
+          <select
+            className="form-control ml-2"
+            value={selectedVendor}
+            onChange={handleVendorSelectChange}
+          >
+            <option value="">All Vendors</option>
+            {/* Render options from fetched vendors */}
+            {vendors.map((vendor, index) => (
+              <option key={index} value={vendor}>{vendor}</option>
+            ))}
+          </select>
         </div>
-      </div>
-      <p>Total number of payments: {filteredPayments.length}</p>
-      <button className="btn btn-primary mb-3" onClick={exportToExcel}>Export to Excel</button>
-      <table className="table table-hover table-sm border border-secondary">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">Sr. No.</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Event Name</th>
-            <th scope="col">Paid Amount</th>
-            <th scope="col">Remaining Amount</th>
-            <th scope="col">Date</th>
-            <th scope="col">Description</th>
-           
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPayments.map((payment, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{payment.fname}</td>
-              <td>{payment.lname}</td>
-              <td>{payment.event_name}</td>
-              <td>{payment.paid_amt}</td>
-              <td>{payment.rem_amt}</td>
-              <td>{payment.date}</td>
-              <td>{payment.description}</td>
-              
+        <p>Total number of payments: {filteredPayments.length}</p>
+        <button className="btn btn-primary mb-3" onClick={exportToExcel}>Export to Excel</button>
+        <table className="table table-hover table-sm border border-secondary">
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Event Name</th>
+              <th scope="col">Paid Amount</th>
+              <th scope="col">Remaining Amount</th>
+              <th scope="col">Date</th>
+              <th scope="col">Description</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredPayments.map((payment, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{payment.fname}</td>
+                <td>{payment.event_name}</td>
+                <td>{payment.paid_amt}</td>
+                <td>{payment.rem_amt}</td>
+                <td>{payment.date}</td>
+                <td>{payment.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };
