@@ -19,7 +19,7 @@ const AddNewEvent = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/addeventmaster');
+                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/addeventmaster');
                 setEvents(response.data);
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -32,7 +32,7 @@ const AddNewEvent = () => {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/enquiry');
+                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/enquiry');
                 setCustomers(response.data);
             } catch (error) {
                 console.error('Error fetching customers:', error);
@@ -58,7 +58,7 @@ const AddNewEvent = () => {
     const handleSubmit = async () => {
         if (selectedCustomer && selectedEvent && selectedEventType) {
             try {
-                await axios.post('http://localhost:5000/api/event', {
+                await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/event', {
                     eventName: selectedEvent,
                     fname: selectedCustomer.customer_name,
                     email: selectedCustomer.email,

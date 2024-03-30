@@ -18,7 +18,7 @@ const NewGodowns = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/api/addvendor', {
+            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const NewGodowns = () => {
     useEffect(() => {
         const fetchVendors = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/addvendor');
+                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor');
                 if (response.ok) {
                     const data = await response.json();
                     setVendors(data);
@@ -107,7 +107,7 @@ const NewGodowns = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/inventory-stocks/', {
+            const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -146,7 +146,7 @@ const NewGodowns = () => {
 
     const handleDeleteVendor = async (vendorId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/addvendor/${vendorId}`, {
+            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/addvendor/${vendorId}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
@@ -178,7 +178,7 @@ const NewGodowns = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/inventory-stocks');
+                const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -197,7 +197,7 @@ const NewGodowns = () => {
         const selectedName = e.target.value;
         console.log(selectedName);
         try {
-            const response = await fetch(`http://localhost:5000/api/inventory-stocks/stock/${selectedName}`);
+            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/stock/${selectedName}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -239,7 +239,7 @@ const NewGodowns = () => {
             };
 
             // Perform PATCH request to update the price and quantity
-            const response = await fetch(`http://localhost:5000/api/inventory-stocks/${updatedProduct._id}`, {
+            const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/${updatedProduct._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -281,7 +281,7 @@ const NewGodowns = () => {
     const handleSaveEventName = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/addeventmaster", {
+            const response = await fetch("https://eventmanagement-admin-hocm.onrender.com/api/addeventmaster", {
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json"
@@ -325,7 +325,7 @@ const NewGodowns = () => {
 
                     <Form onSubmit={handleSubmit}>
                         {alertMessage && (
-                            <div style={{ width: '50%' }}>
+                            <div>
                                 <Alert variant={alertVariant}>{alertMessage}</Alert>
                             </div>
                         )}
@@ -336,7 +336,7 @@ const NewGodowns = () => {
                                 <Form.Control
                                     type="text"
                                     placeholder="Add Vendor"
-                                    style={{ width: '50%' }}
+                                   
                                     value={vendorName}
                                     onChange={handleChange}
                                     required
@@ -386,7 +386,7 @@ const NewGodowns = () => {
                                 <Form.Control
                                     type="text"
                                     placeholder="Product Category"
-                                    style={{ width: '50%' }}
+                                   
                                     name="Category"
                                     value={formData.Category}
                                     onChange={handleInputChange}
@@ -401,7 +401,7 @@ const NewGodowns = () => {
                                 <Form.Control
                                     type="text"
                                     placeholder="Stock Name"
-                                    style={{ width: '50%' }}
+                                   
                                     name="Stock_Name"
                                     value={formData.Stock_Name}
                                     onChange={handleInputChange}
@@ -417,7 +417,7 @@ const NewGodowns = () => {
                                     type="number"
                                     placeholder="Add Quantity"
                                     name="Stock_Quantity"
-                                    style={{ width: '50%' }}
+                                   
                                     value={formData.Stock_Quantity}
                                     onChange={handleInputChange}
                                     required
@@ -432,7 +432,7 @@ const NewGodowns = () => {
                                     type="number"
                                     placeholder="Price/Quantity"
                                     name="Price"
-                                    style={{ width: '50%' }}
+                                   
                                     value={formData.Price}
                                     onChange={handleInputChange}
                                     required
@@ -448,7 +448,7 @@ const NewGodowns = () => {
                                     className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
                                     aria-label="Select Vendor"
                                     name="vendor"
-                                    style={{ width: '50%' }}
+                                   
                                     value={selectedVendor}
                                     onChange={handleVendorChange}
                                     required
@@ -585,7 +585,7 @@ const NewGodowns = () => {
                                     value={eventName}
                                     onChange={handleEventChange}
                                     placeholder="Add Event Name Here..."
-                                    style={{ width: '50%' }}
+                                   
                                     name="event"
                                     required
                                 />

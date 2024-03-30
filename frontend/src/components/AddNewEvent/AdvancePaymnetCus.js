@@ -16,28 +16,29 @@ function AdvancePaymnetCus() {
     const [advancePayment, setAdvancePayment] = useState(null);
     const [remainingAmount, setRemainingAmount] = useState(null);
 
+    const [selectedCustomerDetails, setSelectedCustomerDetails] = useState({});
 
     useEffect(() => {
-        const fetchEvents = async () => {
+        const fetchCustomers = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/event');
+                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/event');
                 setCusName(response.data);
             } catch (error) {
-                console.error('Error fetching events:', error);
+                console.error('Error fetching customers:', error);
             }
         };
 
-        fetchEvents();
+        fetchCustomers();
     }, []);
 
     const handleCustomerSelect = (e) => {
         setSelectedCustomer(e.target.value);
 
-        const event = cusName.find((item) => item.fname === e.target.value);
-        if (event) {
-            setSelectedEvent(event.eventName);
+        const customerDetails = cusName.find((item) => item.fname === e.target.value);
+        if (customerDetails) {
+            setSelectedCustomerDetails(customerDetails);
         } else {
-            setSelectedEvent('');
+            setSelectedCustomerDetails({});
         }
     };
 
@@ -93,7 +94,12 @@ function AdvancePaymnetCus() {
     const handleSave = () => {
         const data = {
             client_name: selectedCustomer,
-            event_name: selectedEvent,
+            event_name: selectedCustomerDetails.eventName,
+            contact : selectedCustomerDetails.contact,
+            event_Type : selectedCustomerDetails.event_Type,
+            guest_number : selectedCustomerDetails.guest_number,
+            venue : selectedCustomerDetails.venue,
+            event_date : selectedCustomerDetails.event_date,
             amount: totalAmount,
             adv_payment: advancePayment,
             rem_payment: remainingAmount,
@@ -113,7 +119,7 @@ function AdvancePaymnetCus() {
             })
         };
     
-        axios.post('http://localhost:5000/api/advpayment', data)
+        axios.post('https://eventmanagement-admin-hocm.onrender.com/api/advpayment', data)
             .then(response => {
                 console.log('Data saved successfully:', response.data);
                 alert("Advance payment successfull")
@@ -132,28 +138,87 @@ function AdvancePaymnetCus() {
             <div className="container mt-5">
 
 
-                <h2 className="mb-4">Advance Payment Form</h2>
-                <Form.Group controlId="SelectCustomer">
-                    <Form.Label>Select Customers:</Form.Label>
-                    <div className="relative">
-                        <Form.Select
-                            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                            aria-label="Select Customer"
-                            name="customer"
-                            onChange={handleCustomerSelect}
-                        >
-                            <option>Select Customer</option>
-                            {cusName.map((cus) => (
-                                <option key={cus.id} value={cus.fname}>
-                                    {cus.fname}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </div>
-                </Form.Group>
+            <h2 className="mb-4">Advance Payment Form</h2>
+            <Form.Group controlId="SelectCustomer">
+                <Form.Label>Select Customers:</Form.Label>
+                <div className="relative">
+                    <Form.Select
+                        className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                        aria-label="Select Customer"
+                        name="customer"
+                        onChange={handleCustomerSelect}
+                    >
+                        <option>Select Customer</option>
+                        {cusName.map((cus) => (
+                            <option key={cus._id} value={cus.fname}>
+                                {cus.fname}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </div>
+            </Form.Group>
+
+            <div className="mb-3">
+                <label className="form-label">Event Name</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.eventName || ""}
+                    readOnly
+                />
+            </div>
+       
+            <div className="mb-3">
+                <label className="form-label">Contact</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.contact || ""}
+                    readOnly
+                />
+            </div>
+            <div className="mb-3">
+                <label className="form-label">Event Type</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.event_type || ""}
+                    readOnly
+                />
+            </div>
+
+            <div className="mb-3">
+                <label className="form-label">Guest Number</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.guest_number || ""}
+                    readOnly
+                />
+            </div>
+
+            <div className="mb-3">
+                <label className="form-label">Venue</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.venue || ""}
+                    readOnly
+                />
+            </div>
+
+            <div className="mb-3">
+                <label className="form-label">Event Date</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    value={selectedCustomerDetails.event_date || ""}
+                    readOnly
+                />
+            </div>
 
 
-                <Form.Group controlId="SelectEvent">
+                {/* <Form.Group controlId="SelectEvent">
                     <Form.Label>Events:</Form.Label>
                     <div className="relative">
                         <Form.Select
@@ -166,7 +231,7 @@ function AdvancePaymnetCus() {
                             <option>{selectedEvent || 'Event Name'}</option>
                         </Form.Select>
                     </div>
-                </Form.Group>
+                </Form.Group> */}
 
                 <div className="mb-3">
                     <label className="form-label">Total Amount:</label>

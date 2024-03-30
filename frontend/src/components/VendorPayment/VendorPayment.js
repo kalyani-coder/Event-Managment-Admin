@@ -45,7 +45,7 @@ const VendorPayment = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   //fetching vendors from addvendor
-  useEffect(() => {
+  useEffect(() => {https://eventmanagement-admin-hocm.onrender.com
     const fetchVendors = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/addvendor");
@@ -74,7 +74,7 @@ const VendorPayment = () => {
     fetchEventsForVendor();
   }, [formData.selectedVendor]);
 
-  const handleChange = (event) => {
+  const hhttps://eventmanagement-admin-hocm.onrender.com => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -89,7 +89,7 @@ const VendorPayment = () => {
       selectedVendor: value,
       selectedEvent: "",
     }));
-  };
+  };https://eventmanagement-admin-hocm.onrender.com
 
   const handleEventChange = (event) => {
     const { value } = event.target;
@@ -135,7 +135,7 @@ const VendorPayment = () => {
           {/* Vendor Selection */}
           <div className="form-group">
             <Form.Group controlId="SelectVendor">
-              <Form.Label>Select Vendor:</Form.Label>
+              <Form.Label>Select Vendor:</https://eventmanagement-admin-hocm.onrender.com
               <div className="relative">
                 <Form.Select
                   className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"

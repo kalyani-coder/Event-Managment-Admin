@@ -92,6 +92,11 @@ const AdvPaymentSchema = new Schema({
   },
   cash_whome_to_submit : String,
   transaction_id :String,
+  contact :String,
+  event_Type : String,
+  guest_number : String,
+  venue : String,
+  event_date : String,
 });
 
 const EventSchema = new Schema({
@@ -121,9 +126,11 @@ const OrderSchema = new Schema({
   adv_payment: Number,
   rem_payment: Number,
   total_amt: Number,
-  status: String,
-  completed: Boolean,
   address: String,
+  event_name: String,
+  assign_manager_name :String,
+  assign_manager_Id :String,
+
 });
 
 const Attendance = new Schema({

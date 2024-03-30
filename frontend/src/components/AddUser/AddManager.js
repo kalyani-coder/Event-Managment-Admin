@@ -74,7 +74,7 @@ const AddManager = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/managerdetails",
+        "https://eventmanagement-admin-hocm.onrender.com/api/managerdetails",
         formData
       );
       console.log("Data posted:", response.data);

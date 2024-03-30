@@ -161,6 +161,11 @@ const FilterBodyByTable = ({ req, table }) => {
         utrno_rtgs_id,
         transaction_id,
         details,
+        contact,
+        event_Type,
+        guest_number,
+        venue,
+        event_date,
       } = req.body;
       return {
         id,
@@ -179,6 +184,11 @@ const FilterBodyByTable = ({ req, table }) => {
         utrno_rtgs_id,
         transaction_id,
         details,
+        contact,
+        event_Type,
+        guest_number,
+        venue,
+        event_date,
       };
     } else if (table == "event") {
       const {
@@ -217,6 +227,7 @@ const FilterBodyByTable = ({ req, table }) => {
       const {
         order_id,
         event_id,
+        event_name,
         customer_name,
         contact,
         email,
@@ -226,11 +237,14 @@ const FilterBodyByTable = ({ req, table }) => {
         rem_payment,
         total_amt,
         status,
-        completed = false,
+        assign_manager_name,
+        assign_manager_Id,
+        
       } = req.body;
       return {
         order_id,
         event_id,
+        event_name,
         customer_name,
         contact,
         email,
@@ -240,7 +254,9 @@ const FilterBodyByTable = ({ req, table }) => {
         rem_payment,
         total_amt,
         status,
-        completed: completed.toLowerCase() === "true" ? true : false,
+        assign_manager_name,
+        assign_manager_Id,
+        
       };
     } else if (table == "eventexpense") {
       const {

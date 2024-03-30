@@ -30,7 +30,7 @@ function QuotationForm() {
 
   useEffect(() => {
     // Fetch the list of vendors from the first API
-    fetch('http://localhost:5000/api/addvendor')
+    fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor')
       .then((response) => response.json())
       .then((data) => setVendorList(data))
       .catch((error) => console.error('Error fetching vendors:', error));
@@ -39,7 +39,7 @@ function QuotationForm() {
   useEffect(() => {
     // Fetch the stock list based on the selected vendor
     if (selectedVendor) {
-      fetch(`http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`)
+      fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${selectedVendor}`)
         .then((response) => response.json())
         .then((data) => setStockList(data))
         .catch((error) => console.error('Error fetching stock list:', error));
@@ -100,7 +100,7 @@ function QuotationForm() {
       const updatedQuantity = sections[index].quantity;
 
       // Send a PATCH request to update stock quantity
-      await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
+      await axios.patch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
         quantity: updatedQuantity,
       });
 
@@ -204,7 +204,7 @@ function QuotationForm() {
 
 
       // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("http://localhost:5000/api/quatationinfo", {
+      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quatationinfo", {
         quatationInfoData,
       });
 
@@ -313,7 +313,7 @@ function QuotationForm() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/inventory-stocks")
+    fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks")
       .then(response => response.json())
       .then(data => {
         const names = data.map(stock => stock.Stock_Name);
@@ -361,7 +361,7 @@ function QuotationForm() {
       const quantity = document.getElementById('updateQuantity').value;
 
       // Send PATCH request to update stock quantity
-      const response = await fetch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`, {
+      const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'

@@ -18,7 +18,7 @@ const FollowUpStatus = ({ enquiry }) => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:5000/api/enquiry"
+                    "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
                 );
                 const data = await response.json();
 
@@ -117,7 +117,7 @@ const FollowUpStatus = ({ enquiry }) => {
             }
 
             const response = await axios.patch(
-                `http://localhost:5000/api/enquiry/${enquiryId}`,
+                `https://eventmanagement-admin-hocm.onrender.com/api/enquiry/${enquiryId}`,
                 { status: selectedStatus }
             );
 

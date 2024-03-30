@@ -47,7 +47,7 @@ function AdvPaymentForm() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/advpayment", orderDetails);
+      const response = await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/advpayment", orderDetails);
       console.log("Order Details:", orderDetails);
       console.log("API Response:", response.data);
       navigate("/orderform");
