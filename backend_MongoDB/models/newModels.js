@@ -276,6 +276,7 @@ const VendorPaymentSchema = new Schema({
   fname: String,
   lname: String,
   event_name: String,
+  vendor_name :String,
   paid_amt: Number,
   rem_amt: Number,
   date: String,
