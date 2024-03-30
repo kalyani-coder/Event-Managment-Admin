@@ -146,13 +146,20 @@ const FilterBodyByTable = ({ req, table }) => {
     } else if (table == "advpayment") {
       const {
         id,
-        enquiry_id,
-        event_name,
         client_name,
+        event_name,
+        enquiry_id,
         amount,
         adv_payment,
-        payment_date,
         rem_payment,
+        payment_date,
+        payment_time,
+        payment_method,
+        cheque_number,
+        whome_to_submit,
+        cash_whome_to_submit,
+        utrno_rtgs_id,
+        transaction_id,
         details,
       } = req.body;
       return {
@@ -162,8 +169,15 @@ const FilterBodyByTable = ({ req, table }) => {
         client_name,
         amount,
         adv_payment,
-        payment_date,
         rem_payment,
+        payment_date,
+        payment_time,
+        payment_method,
+        cheque_number,
+        whome_to_submit,
+        cash_whome_to_submit,
+        utrno_rtgs_id,
+        transaction_id,
         details,
       };
     } else if (table == "event") {
@@ -181,6 +195,7 @@ const FilterBodyByTable = ({ req, table }) => {
         subvenue,
         guest_number,
         budget,
+        address,
       } = req.body;
       return {
         eventName,
@@ -196,6 +211,7 @@ const FilterBodyByTable = ({ req, table }) => {
         subvenue,
         guest_number,
         budget,
+        address,
       };
     } else if (table == "order") {
       const {
@@ -454,6 +470,8 @@ const FilterBodyByTable = ({ req, table }) => {
         salary,
         description,
         advance_payment,
+        time,
+        bankAccount_Name,
       } = req.body;
       return {
         vendor_id,
@@ -468,6 +486,8 @@ const FilterBodyByTable = ({ req, table }) => {
         salary,
         description,
         advance_payment,
+        time,
+        bankAccount_Name,
       };
     } else if (table == "vendorpaymenthistory") {
       const {

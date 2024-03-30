@@ -186,7 +186,7 @@ function AddEvent() {
                 value={company_name}
                 onChange={(e) => setcompany_name(e.target.value)}
                 id="company_name"
-              />
+              />   
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>

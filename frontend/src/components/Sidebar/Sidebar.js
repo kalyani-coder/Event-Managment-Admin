@@ -266,6 +266,14 @@ export default function Sidebar() {
                         AddEvent
                       </Link>
                     </li>
+
+                    <li>
+                      <Link to={"/advpaymentcus"}>
+                        <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Ad Payment Cus
+                       </Link>
+                    </li>
                     
                   </ul>
                 </li>

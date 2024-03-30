@@ -6,8 +6,16 @@ import { Form, Button } from 'react-bootstrap';
 const AddNewEvent = () => {
     const [events, setEvents] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const [selectedCustomer, setSelectedCustomer] = useState(null); // State to hold the selected customer
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [selectedEvent, setSelectedEvent] = useState('');
+    const [selectedEventType, setSelectedEventType] = useState('');
+    const [subVenue, setSubVenue] = useState('');
+    const [budget, setBudget] = useState('');
 
+
+    const handleEventTypeChange = (event) => {
+        setSelectedEventType(event.target.value);
+    };
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -41,6 +49,39 @@ const AddNewEvent = () => {
     };
 
 
+
+
+    const handleEventChange = (event) => {
+        setSelectedEvent(event.target.value);
+    };
+
+    const handleSubmit = async () => {
+        if (selectedCustomer && selectedEvent && selectedEventType) {
+            try {
+                await axios.post('http://localhost:5000/api/event', {
+                    eventName: selectedEvent,
+                    fname: selectedCustomer.customer_name,
+                    email: selectedCustomer.email,
+                    contact: selectedCustomer.contact,
+                    guest_number: selectedCustomer.guest_quantity,
+                    venue: selectedCustomer.event_venue,
+                    event_date: selectedCustomer.event_date,
+                    address: selectedCustomer.address,
+                    event_type: selectedEventType,
+                    subvenue: subVenue,
+                    budget: budget
+                    
+                });
+                alert("Event Created successfully")
+            } catch (error) {
+                console.error('Error submitting event:', error);
+                // Handle error, display error message, etc.
+            }
+        } else {
+            console.log("client not found")
+        }
+    };
+
     return (
         <>
             <Sidebar />
@@ -56,6 +97,7 @@ const AddNewEvent = () => {
                                         className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
                                         aria-label="Select Event"
                                         name="event"
+                                        onChange={handleEventChange}
                                     >
                                         <option>Select Event</option>
                                         {events.map((event) => (
@@ -111,24 +153,17 @@ const AddNewEvent = () => {
                                 />
                             </div>
 
-                            <Form.Group controlId="SelectCustomer">
-                                <Form.Label>Event Type:</Form.Label>
-                                <div className="relative">
-                                    <Form.Select
-                                        className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                                        aria-label="Select Customer"
-                                        name="customer"
-                                    >
-                                        <option>Select Event Type</option>
-                                        <option>Family Function</option>
-                                        <option>Wedding</option>
-                                        <option>Birthday Party</option>
-                                        <option>Other</option>
-                                      
-                                    
-                                    </Form.Select>
-                                </div>
-                            </Form.Group>
+                            <div className="form-group">
+                                <label htmlFor="email">Number Of Guests</label>
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Guest"
+                                    value={selectedCustomer ? selectedCustomer.guest_quantity : ''}
+                                    id="guest"
+                                />
+                            </div>
+
 
                             <div className="form-group">
                                 <label htmlFor="email">Venue</label>
@@ -137,36 +172,18 @@ const AddNewEvent = () => {
                                     className="form-control "
                                     placeholder="Enter Venue"
                                     id="Venue"
+                                    value={selectedCustomer ? selectedCustomer.event_venue : ''}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="email">Sub Venue</label>
+                                <label htmlFor="email">Address</label>
                                 <input
                                     type="text"
                                     className="form-control "
-                                    placeholder="Enter Sub Venue"
-                                    id="SubVenue"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="email">Number Of Guests</label>
-                                <input
-                                    type="text"
-                                    className="form-control "
-                                    placeholder="Enter Guest"
-                                    id="guest"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="email">Budget</label>
-                                <input
-                                    type="text"
-                                    className="form-control "
-                                    placeholder="Enter Budget"
-                                    id="budget"
+                                    placeholder="Enter Address"
+                                    id="address"
+                                    value={selectedCustomer ? selectedCustomer.address : ''}
                                 />
                             </div>
 
@@ -177,10 +194,62 @@ const AddNewEvent = () => {
                                     className="form-control "
                                     placeholder="Enter Event Date"
                                     id="eventdate"
+                                    value={selectedCustomer ? selectedCustomer.event_date : ''}
                                 />
                             </div>
 
-                            <Button>Save Event</Button>
+                            <Form.Group controlId="SelectEventType">
+                                <Form.Label>Event Type:</Form.Label>
+                                <div className="relative">
+                                    <Form.Select
+                                        className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                                        aria-label="Select EventType"
+                                        name="eventType"
+                                        onChange={handleEventTypeChange}
+                                    >
+                                        <option>Select Event Type</option>
+                                        <option>Family Function</option>
+                                        <option>Wedding</option>
+                                        <option>Birthday Party</option>
+                                        <option>Other</option>
+                                    </Form.Select>
+                                </div>
+                            </Form.Group>
+
+
+
+
+                            <div className="form-group">
+                                <label htmlFor="subVenue">Sub Venue</label>
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Sub Venue"
+                                    id="subVenue"
+                                    value={subVenue}
+                                    onChange={(e) => setSubVenue(e.target.value)}
+                                />
+                            </div>
+
+                            {/* Input field for budget */}
+                            <div className="form-group">
+                                <label htmlFor="budget">Budget</label>
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Budget"
+                                    id="budget"
+                                    value={budget}
+                                    onChange={(e) => setBudget(e.target.value)}
+                                />
+                            </div>
+
+                            <Button onClick={handleSubmit}>Save Event</Button>
+
+
+
+
+
 
                         </div>
                     </div>

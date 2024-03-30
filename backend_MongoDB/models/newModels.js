@@ -12,9 +12,9 @@ const EnquirySchema = new Schema({
   email: String,
   contact: Number,
   address: String,
-  status : {
-    type : String,
-    default : ""
+  status: {
+    type: String,
+    default: ""
   },
 });
 
@@ -32,25 +32,66 @@ const QuotationSchema = new Schema({
   total_amount: Number,
 });
 
+
 const AdvPaymentSchema = new Schema({
   id: Number,
   enquiry_id: { type: Number, ref: "Enquiry" },
-  event_name: String,
-  client_name: String,
-  amount: Number,
-  adv_payment: Number,
-  payment_date: String,
-  rem_payment: Number,
-  details: String,
-  payment_method: String,
-  cash_reciever: String,
-  check_reciever: String,
-  utr_no: String,
-  cheque_no: String,
-  date: String,
-  time: String,
-  UPI_id: String,
-  transaction_id: String,
+  // event_name: String,
+  // client_name: String,
+  // amount: Number,
+  // adv_payment: Number,
+  // payment_date: String,
+  // rem_payment: Number,
+  // details: String,
+  // payment_method: String,
+  // cash_reciever: String,
+  // check_reciever: String,
+  // utr_no: String,
+  // cheque_no: String,
+  // date: String,
+  // time: String,
+  // UPI_id: String,
+  // transaction_id: String,
+
+  client_name: {
+    type: String,
+  },
+  event_name: {
+    type: String,
+  },
+
+  amount: {
+    type: Number,
+  },
+  adv_payment: {
+    type: Number,
+  },
+  rem_payment: {
+    type: Number,
+  },
+  payment_date: {
+    type: String,
+  },
+  payment_time: {
+    type: String,
+  },
+  payment_method: {
+    type: String,
+  },
+  cheque_number: {
+    type: String
+  },
+  whome_to_submit: {
+    type: String
+  },
+  utrno_rtgs_id: {
+    type: String
+  },
+  details: {
+    type: String
+  },
+  cash_whome_to_submit : String,
+  transaction_id :String,
 });
 
 const EventSchema = new Schema({
@@ -67,6 +108,7 @@ const EventSchema = new Schema({
   subvenue: String,
   guest_number: Number,
   budget: Number,
+  address: String,
 });
 
 const OrderSchema = new Schema({
@@ -81,6 +123,7 @@ const OrderSchema = new Schema({
   total_amt: Number,
   status: String,
   completed: Boolean,
+  address: String,
 });
 
 const Attendance = new Schema({
@@ -201,18 +244,18 @@ const StaffSalarySchema = new Schema({
   lname: String,
   salary: Number,
   date: String,
-  time :String,
+  time: String,
   month: String,
   adv_payment: Number,
   rem_payment: Number,
   incentive: Number,
   deduct_amount: Number,
 
-  adv_taken :Number,
-  balance_amount :Number,
-  type_Of_Salary : String,
-  salary_person_name : String,
-  salary_person_id : String,
+  adv_taken: Number,
+  balance_amount: Number,
+  type_Of_Salary: String,
+  salary_person_name: String,
+  salary_person_id: String,
 
 
 
@@ -238,6 +281,10 @@ const VendorPaymentSchema = new Schema({
   date: String,
   description: String,
   salary: Number,
+  advance_payment :String,
+  time :String,
+  bankAccount_Name:String,
+
 });
 
 const VendorPaymentHistorySchema = new Schema({
@@ -256,47 +303,47 @@ const InventoryStockSchema = new Schema({
 });
 
 const AddVendor = new Schema({
-  Vendor_Name : {
-      type : String,
-      required : true
+  Vendor_Name: {
+    type: String,
+    required: true
   }
 })
 
 const QuatationInfo = new Schema({
-  title : String,
-  particular : String,
-  description :String,
-  vendor_Name : String,
-  vendor_Stock : String,
-  unit : String,
-  quantity : Number,
-  rateper_Days :Number,
-  days :Number,
-  amount : String,
-  name : String,
-  transport : String 
+  title: String,
+  particular: String,
+  description: String,
+  vendor_Name: String,
+  vendor_Stock: String,
+  unit: String,
+  quantity: Number,
+  rateper_Days: Number,
+  days: Number,
+  amount: String,
+  name: String,
+  transport: String
 })
 
 const InventoryStocks = new Schema({
-  Category : {
-    type : String,
-    required : true
+  Category: {
+    type: String,
+    required: true
   },
-  Stock_Name : {
-    type  : String,
-    required : true
+  Stock_Name: {
+    type: String,
+    required: true
   },
-  Stock_Quantity :{
-    type : Number,
-    required : true
+  Stock_Quantity: {
+    type: Number,
+    required: true
 
   },
-  Price : {
-    type : Number,
-    required : true
+  Price: {
+    type: Number,
+    required: true
   },
-  Vendor_Id : String,
-  Vendor_Name : String,
+  Vendor_Id: String,
+  Vendor_Name: String,
 
 })
 
@@ -318,15 +365,15 @@ const AccountantDetailsSchema = new Schema({
 });
 
 const AddEventMaster = new Schema({
-  eventName : {type: String, required: true,}
+  eventName: { type: String, required: true, }
 })
 
 module.exports = {
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
-  AddVendor : mongoose.model("AddVendor" , AddVendor),
-  AddEventMaster : mongoose.model("Addevent" , AddEventMaster),
-  QuatationInfo  : mongoose.model("quatationinfo" , QuatationInfo),
-  InventoryStocks : mongoose.model('inventory-stocks' , InventoryStocks),
+  AddVendor: mongoose.model("AddVendor", AddVendor),
+  AddEventMaster: mongoose.model("Addevent", AddEventMaster),
+  QuatationInfo: mongoose.model("quatationinfo", QuatationInfo),
+  InventoryStocks: mongoose.model('inventory-stocks', InventoryStocks),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
   AdvPayment: mongoose.model("AdvPayment", AdvPaymentSchema),

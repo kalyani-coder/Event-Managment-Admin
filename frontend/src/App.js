@@ -47,7 +47,8 @@ import EnquiryReport from "./components/DownloadReport/EnquiryReport";
 import CreateQuotation from "./components/Enquiry/Quotation/CreateQuotation"
 import FollowUpStatus from "./components/FollowupStatus/FollowUpStatus"
 import AddNewEvent from './components/AddNewEvent/AddNewEvent'
-
+import AdvancePaymnetCus from "./components/AddNewEvent/AdvancePaymnetCus"
+import AssigntoManager from "./components/AddNewEvent/AssigntoManager";
 import Login from "./components/Login/Login"
 
 
@@ -107,6 +108,8 @@ function App() {
           <Route path="/createquotation" element={<CreateQuotation />}/>
           <Route path="/followupstatus" element={<FollowUpStatus />}/>
           <Route path="/addnewevent" element={<AddNewEvent />}/>
+          <Route path="/advpaymentcus" element={<AdvancePaymnetCus />}/>
+          <Route path="/assignmanager" element={<AssigntoManager />}/>
           {/* **************** */}
         </Routes>
 
