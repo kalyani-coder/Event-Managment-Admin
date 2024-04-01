@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Sidebar from "../Sidebar/Sidebar";
-import { FaSortAmountDown, FaSortAmountUp, FaFilter, FaSearch } from "react-icons/fa";
+import { FaSortAmountDown, FaSortAmountUp, FaFilter,FaCalendarAlt , FaSearch } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -122,7 +122,7 @@ const EnquiryReport = () => {
               type="button"
               onClick={handleSearchButtonClick}
             >
-              <FaSearch /> Search
+               Search
             </button>
             <div className="dropdown">
               <button
@@ -148,15 +148,20 @@ const EnquiryReport = () => {
                 ))}
               </div>
             </div>
-            <div>
-              <DatePicker 
-                selected={selectedDate}
-                onChange={handleDateChange}
-                dateFormat="dd-MM-yyyy"
-                placeholderText="Select Date"
-                className="form-control mr-2"
-              />
-            </div>
+            <div className="input-group">
+     
+
+
+      <DatePicker
+        selected={selectedDate}
+        onChange={handleDateChange}
+        dateFormat="dd-MM-yyyy"
+        placeholderText="Select Date"
+        className="form-control"
+      />
+
+
+    </div>
           </div>
         </div>
         <p>Total number of enquiries: {filteredEnquiries.length}</p>

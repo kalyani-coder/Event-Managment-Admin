@@ -20,25 +20,28 @@ const VendorPayment = () => {
   };
 
   const calculateRemainingAmount = (paidAmt, advancePayment) => {
-    return paidAmt - advancePayment;
+    const paid = parseInt(paidAmt);
+    const advance = parseInt(advancePayment);
+  
+    if (isNaN(paid) || isNaN(advance)) {
+      return 0;
+    }
+  
+    return paid - advance;
   };
 
   const initialFormData = {
+    selectedVendor: "",
+    selectedEvent: "",
     fname: "",
-    // lname: "",
     event_name: "",
     date: getCurrentDate(),
     time: getCurrentTime(),
     bankaccount: "",
     paid_amt: "",
     advance_payment: "",
-    rem_amt: "",
+    rem_amt: 0,
     description: "",
-     selectedVendor: "",
-     selectedEvent: "",
-     Vendor_Name:"",
-     eventName: "",
-     
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -46,7 +49,6 @@ const VendorPayment = () => {
   const [events, setEvents] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
 
-  //fetching vendors from addvendor
   useEffect(() => {
     const fetchVendors = async () => {
       try {
@@ -60,7 +62,6 @@ const VendorPayment = () => {
     fetchVendors();
   }, []);
 
-  //fetching events from from selected event
   useEffect(() => {
     const fetchEventsForVendor = async () => {
       try {
@@ -103,7 +104,6 @@ const VendorPayment = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Data:", formData); // Log form data to console
   
     try {
       const response = await axios.post(
@@ -113,12 +113,11 @@ const VendorPayment = () => {
           event_name: formData.selectedEvent,
           date: formData.date,
           time: formData.time,
-          bankaccount: formData.bankaccount,
+          bankAccount_Name: formData.bankaccount,
           paid_amt: formData.paid_amt,
           advance_payment: formData.advance_payment,
           rem_amt: formData.rem_amt,
           description: formData.description,
-          
         }
       );
   
@@ -139,13 +138,23 @@ const VendorPayment = () => {
     setShowPopup(false);
   };
 
+  const handleAdvancePaymentChange = (event) => {
+    const newAdvancePayment = parseInt(event.target.value);
+    if (!isNaN(newAdvancePayment)) {
+      setFormData((prevData) => ({
+        ...prevData,
+        advance_payment: newAdvancePayment,
+        rem_amt: calculateRemainingAmount(prevData.paid_amt, newAdvancePayment),
+      }));
+    }
+  };
+
   return (
     <>
       <Sidebar />
       <div className="container">
         <form className="order p-4 " onSubmit={handleSubmit}>
           <h2>Vendor Payment</h2>
-          {/* Vendor Selection */}
           <div className="form-group">
             <Form.Group controlId="SelectVendor">
               <Form.Label>Select Vendor:</Form.Label>
@@ -167,7 +176,6 @@ const VendorPayment = () => {
               </div>
             </Form.Group>
           </div>
-          {/* Event Selection */}
           <div className="form-group">
             <label htmlFor="selectedEvent">Event Name</label>
             <select
@@ -185,7 +193,6 @@ const VendorPayment = () => {
               ))}
             </select>
           </div>
-          {/* Date and Time */}
           <div className="row mb-2">
             <div className="col">
               <div className="form-group">
@@ -212,7 +219,6 @@ const VendorPayment = () => {
               </div>
             </div>
           </div>
-          {/* Bank Account */}
           <div className="form-group">
             <label htmlFor="bankaccount">Bank Account</label>
             <input
@@ -224,7 +230,6 @@ const VendorPayment = () => {
               value={formData.bankaccount}
             />
           </div>
-          {/* Paid Amount */}
           <div className="form-group">
             <label htmlFor="paid_amt">Paid Amount</label>
             <input
@@ -236,7 +241,6 @@ const VendorPayment = () => {
               value={formData.paid_amt}
             />
           </div>
-          {/* Advance Payment */}
           <div className="form-group">
             <label htmlFor="advance_payment">Advance Payment</label>
             <input
@@ -244,11 +248,10 @@ const VendorPayment = () => {
               type="text"
               name="advance_payment"
               placeholder="Advance Payment"
-              onChange={handleChange}
+              onChange={handleAdvancePaymentChange}
               value={formData.advance_payment}
             />
           </div>
-          {/* Remaining Amount */}
           <div className="form-group">
             <label htmlFor="rem_amt">Pending Amount</label>
             <input
@@ -256,11 +259,10 @@ const VendorPayment = () => {
               type="text"
               name="rem_amt"
               placeholder="Remaining Amount"
-              value={calculateRemainingAmount(formData.paid_amt, formData.advance_payment)}
+              value={formData.rem_amt}
               readOnly
             />
           </div>
-          {/* Description */}
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <input
@@ -272,7 +274,6 @@ const VendorPayment = () => {
               value={formData.description}
             />
           </div>
-          {/* Discard and Save buttons */}
           <button
             className="btn btn-secondary mr-2 action1-btn"
             type="button"
@@ -287,7 +288,6 @@ const VendorPayment = () => {
             Save
           </button>
         </form>
-        {/* Popup for successful data saving */}
         {showPopup && (
           <div className="alert alert-success mt-3">
             Data saved successfully!

@@ -54,11 +54,14 @@ const AddNewEvent = () => {
     const handleEventChange = (event) => {
         setSelectedEvent(event.target.value);
     };
+// const statusFetch = selectedCustomer.status
+
+// console.log("vedant",statusFetch)
 
     const handleSubmit = async () => {
         if (selectedCustomer && selectedEvent && selectedEventType) {
             try {
-                await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/event', {
+                await axios.post('http://localhost:5000/api/event', {
                     eventName: selectedEvent,
                     fname: selectedCustomer.customer_name,
                     email: selectedCustomer.email,
@@ -69,7 +72,8 @@ const AddNewEvent = () => {
                     address: selectedCustomer.address,
                     event_type: selectedEventType,
                     subvenue: subVenue,
-                    budget: budget
+                    budget: budget,
+                    status : selectedCustomer.status,
                     
                 });
                 alert("Event Created successfully")
@@ -81,6 +85,8 @@ const AddNewEvent = () => {
             console.log("client not found")
         }
     };
+
+
 
     return (
         <>
@@ -184,6 +190,17 @@ const AddNewEvent = () => {
                                     placeholder="Enter Address"
                                     id="address"
                                     value={selectedCustomer ? selectedCustomer.address : ''}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="status">status</label>
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="status"
+                                    id="status"
+                                    value={selectedCustomer ? selectedCustomer.status : ''}
                                 />
                             </div>
 
