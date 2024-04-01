@@ -114,6 +114,7 @@ const EventSchema = new Schema({
   guest_number: Number,
   budget: Number,
   address: String,
+  status : String
 });
 
 const OrderSchema = new Schema({
