@@ -36,7 +36,9 @@ const VendorPayment = () => {
     description: "",
      selectedVendor: "",
      selectedEvent: "",
-    // eventName: "",
+     Vendor_Name:"",
+     eventName: "",
+     
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -102,13 +104,24 @@ const VendorPayment = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Form Data:", formData); // Log form data to console
-
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/api/vendorpayment",
-        formData
+        {
+          fname: formData.selectedVendor,
+          event_name: formData.selectedEvent,
+          date: formData.date,
+          time: formData.time,
+          bankaccount: formData.bankaccount,
+          paid_amt: formData.paid_amt,
+          advance_payment: formData.advance_payment,
+          rem_amt: formData.rem_amt,
+          description: formData.description,
+          
+        }
       );
-
+  
       if (response.status === 200) {
         setShowPopup(true);
         setFormData(initialFormData);
@@ -117,7 +130,7 @@ const VendorPayment = () => {
       console.error("Error saving data:", error);
     }
   };
-
+  
   const handleDiscard = () => {
     setFormData(initialFormData);
   };
