@@ -42,3 +42,9 @@
     background-color: #0056b3;
 }
 
+@media (max-width : 768px){
+    .login-container{
+        color: #d63384;
+        margin-top : -70px
+    }
+}

@@ -134,53 +134,55 @@ const FollowUpStatus = ({ enquiry }) => {
 
     const getStatusColor = (status) => {
         switch (status) {
-          case "Ongoing":
-            return "text-yellow";
-          case "Hot":
-            return "text-red";
-          case "Completed":
-            return "text-green";
-          default:
-            return ""; // default color
+            case "Ongoing":
+                return "text-yellow";
+            case "Hot":
+                return "text-red";
+            case "Completed":
+                return "text-green";
+            default:
+                return ""; // default color
         }
-      };
+    };
 
     return (
         <>
             <Sidebar />
             <div className="container mt-5">
-                <div className="d-flex flex-wrap">
-                    <div>
+
+
+                <div className="d-flex flex-wrap align-items-center">
+                    <div style={{ width: '80%', position: 'relative' }}>
                         <input
                             type="text"
                             placeholder="Search by Event, Company, or Customer Name"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             style={{
-                                padding: '10px',
-                                marginRight: '10px',
+                                width: '100%',
+                                padding: '8px',
                                 borderRadius: '5px',
-                                border: '1px solid #ddd',
-                                fontSize: '16px',
-                                width: '300px',
+                                border: '1px solid #ccc',
                             }}
                         />
                         <button
                             onClick={handleSearch}
                             style={{
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #007BFF',
-                                backgroundColor: '#007BFF',
-                                color: '#fff',
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                padding: '8px 16px',
+                                borderRadius: '0 5px 5px 0',
+                                border: '1px solid #ccc',
+                                backgroundColor: '#f0f0f0',
                                 cursor: 'pointer',
-                                fontSize: '16px',
                             }}
                         >
                             Search
                         </button>
                     </div>
-                    <div style={{ marginBottom: '20px', marginLeft: '5px' }}>
+
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}>
                         <label style={{ marginRight: '10px' }}>Start Date:</label>
                         <input
                             type="date"
@@ -221,9 +223,10 @@ const FollowUpStatus = ({ enquiry }) => {
                                 color: '#fff',
                                 cursor: 'pointer',
                                 fontSize: '16px',
+                                marginLeft: '10px',
                             }}
                         >
-                            Filter by Date
+                            Apply
                         </button>
                         <button
                             onClick={clearFilters}
@@ -235,54 +238,50 @@ const FollowUpStatus = ({ enquiry }) => {
                                 color: '#fff',
                                 cursor: 'pointer',
                                 fontSize: '16px',
+                                marginLeft: '10px', // Add left margin for spacing between buttons
                             }}
                         >
-                            Clear Filters
+                            Clear
                         </button>
                     </div>
                 </div>
-                <div className="d-flex flex-wrap justify-content-between">
-                    {filteredInquiries.map((enquiry) => (
-                        <div
-                            key={enquiry._id}
-                            className="card"
-                            style={{
-                                width: "30%",
-                                marginBottom: "20px",
-                                padding: "15px",
-                                border: "1px solid #ddd",
-                            }}
-                        >
-                            <p className={`d-flex justify-content-end fw-bold ${getStatusColor(enquiry.status)}`}>
-                                Status: {enquiry.status}
-                            </p>
 
-                            <div className="card-body">
-                                <h5 className="card-title">{enquiry.title}</h5>
-                                <p className="card-text">
-                                    Event Name: {enquiry.event_name || ""}
-                                    <br />
-                                    Event Date:{" "}
+
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Event Name</th>
+                            <th scope="col">Event Date</th>
+                            <th scope="col"> Name</th>
+                            <th scope="col"> Number</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style={{ background: "white", borderRadius: "10px" }}>
+                        {filteredInquiries.map((enquiry) => (
+                            <tr key={enquiry._id}>
+                                <td>{enquiry.event_name || ""}</td>
+                                <td>
                                     {enquiry.event_date
                                         ? format(new Date(enquiry.event_date), "dd/MM/yyyy")
                                         : ""}
-                                    <br />
-                                    Customer Name: {enquiry.customer_name}
-                                    <br />
-                                    Contact Number: {enquiry.contact}
-                                </p>
+                                </td>
+                                <td>{enquiry.customer_name}</td>
+                                <td>{enquiry.contact}</td>
+                                <td className={`fw-bold ${getStatusColor(enquiry.status)}`}>
+                                    {enquiry.status}
+                                </td>
+                                <td>
+                                    <button className="btn btn-outline-primary" onClick={() => handleShowModal(enquiry._id)}>
+                                        Update Status
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                                <button className="btn btn-outline-primary ml-2" onClick={() => handleShowModal(enquiry._id)}>
-                                    Update Status
-                                </button>
-
-
-
-
-                            </div>
-                        </div>
-                    ))}
-                </div>
 
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>

@@ -318,7 +318,8 @@ const NewGodowns = () => {
         <>
 
             <Sidebar />
-            <div className='responsive-godown'>
+            {/* <div className='responsive-godown'> */}
+            <div>
 
                 <div className="container">
                     <h4>Godown</h4>
@@ -475,7 +476,7 @@ const NewGodowns = () => {
                                     className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
                                     aria-label="Select Client"
                                     name="name"
-                                    style={{ width: '50%', marginBottom: '70px' }}
+                                    style={{marginBottom: '70px' }}
                                     onChange={handleSelecteChange}
                                 >
                                     <option>Select Product</option>

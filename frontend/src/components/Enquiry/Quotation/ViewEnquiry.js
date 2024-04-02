@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import Sidebar from "../../Sidebar/Sidebar"
 import { Button, Modal } from 'react-bootstrap';
-import "./ViewEnquiry.css"
 
+import "../Quotation/ViewEnquiry.css"
 
 const ViewInquiryPage = ({ enquiry }) => {
   const [inquiries, setInquiries] = useState([]);
@@ -111,45 +111,52 @@ const ViewInquiryPage = ({ enquiry }) => {
     <>
       <Sidebar />
       <div className="container mt-5">
-        <div className="d-flex flex-wrap">
-          <div>
+
+
+        <div className="d-flex flex-wrap align-items-center">
+          <div style={{ width: '80%', position: 'relative' }}>
             <input
               type="text"
               placeholder="Search by Event, Company, or Customer Name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                padding: '10px',
-                marginRight: '10px',
+                width: '100%',
+                padding: '8px',
                 borderRadius: '5px',
-                border: '1px solid #ddd',
-                fontSize: '16px',
-                width: '300px',
+                border: '1px solid #ccc',
               }}
             />
             <button
               onClick={handleSearch}
               style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #007BFF',
-                backgroundColor: '#007BFF',
-                color: '#fff',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                padding: '8px 16px',
+                borderRadius: '0 5px 5px 0',
+                border: '1px solid #ccc',
+                backgroundColor: '#f0f0f0',
                 cursor: 'pointer',
-                fontSize: '16px',
               }}
             >
               Search
             </button>
           </div>
-          <div style={{ marginBottom: '20px', marginLeft: '5px' }}>
+
+
+
+
+
+
+
+
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}>
             <label style={{ marginRight: '10px' }}>Start Date:</label>
             <input
               type="date"
               value={dateRange.startDate}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, startDate: e.target.value })
-              }
+              onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
               style={{
                 padding: '10px',
                 marginRight: '10px',
@@ -162,9 +169,7 @@ const ViewInquiryPage = ({ enquiry }) => {
             <input
               type="date"
               value={dateRange.endDate}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, endDate: e.target.value })
-              }
+              onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
               style={{
                 padding: '10px',
                 marginRight: '10px',
@@ -183,9 +188,10 @@ const ViewInquiryPage = ({ enquiry }) => {
                 color: '#fff',
                 cursor: 'pointer',
                 fontSize: '16px',
+                marginLeft: '10px', // Add left margin for spacing between date inputs and buttons
               }}
             >
-              Filter by Date
+              Apply
             </button>
             <button
               onClick={clearFilters}
@@ -197,13 +203,17 @@ const ViewInquiryPage = ({ enquiry }) => {
                 color: '#fff',
                 cursor: 'pointer',
                 fontSize: '16px',
+                marginLeft: '10px', // Add left margin for spacing between buttons
               }}
             >
-              Clear Filters
+              Clear
             </button>
           </div>
         </div>
-        <div className="d-flex flex-wrap justify-content-between">
+
+        {/* old table format  */}
+
+        {/* <div className="d-flex flex-wrap justify-content-between">
           {filteredInquiries.map((enquiry) => (
             <div
               key={enquiry._id}
@@ -218,7 +228,7 @@ const ViewInquiryPage = ({ enquiry }) => {
               <p className={`d-flex justify-content-end fw-bold ${getStatusColor(enquiry.status)}`}>
                 Status: {enquiry.status}
               </p>
-              
+
               <div className="card-body">
                 <h5 className="card-title">{enquiry.title}</h5>
                 <p className="card-text">
@@ -235,19 +245,6 @@ const ViewInquiryPage = ({ enquiry }) => {
                 </p>
 
 
-                {/* <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
-                  Quotation
-                </button> */}
-
-
-
-                {/* <button
-                  className="btn btn-outline-primary ml-2"
-                  onClick={() => openPopup(enquiry)}
-                >
-                  View More
-                </button> */}
-
                 <button
                   className="btn btn-outline-primary ml-2"
                   onClick={() => openPopup(enquiry)}
@@ -260,10 +257,41 @@ const ViewInquiryPage = ({ enquiry }) => {
               </div>
             </div>
           ))}
+        </div> */}
+
+
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Event Name</th>
+                <th scope="col">Event Date</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Contact No.</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody style={{ background: "white", borderRadius: "10px" }}>
+              {filteredInquiries.map((enquiry) => (
+                <tr key={enquiry._id}>
+                  <td>{enquiry.event_name}</td>
+                  <td>{enquiry.event_date ? format(new Date(enquiry.event_date), "dd/MM/yyyy") : ""}</td>
+                  <td>{enquiry.customer_name}</td>
+                  <td>{enquiry.contact}</td>
+                  <td>
+                    <button className="btn btn-primary" onClick={() => openPopup(enquiry)}>View More</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
+
+
+
         {selectedInquiry && (
-          <Modal show={showModal} onHide={closePopup}>
+          <Modal show={showModal} onHide={closePopup} dialogClassName="modal-dialog-centered modal-dialog-responsive">
             <Modal.Header closeButton>
               <Modal.Title>Inquiry Details</Modal.Title>
             </Modal.Header>
@@ -300,6 +328,8 @@ const ViewInquiryPage = ({ enquiry }) => {
             </Modal.Footer>
           </Modal>
         )}
+
+
 
 
       </div>

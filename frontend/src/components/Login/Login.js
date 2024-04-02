@@ -30,6 +30,8 @@ const Login = () => {
   };
 
   return (
+    <>
+
     <div className="main-div-for-login mt-5">
       <div className="login-container">
         <h2>Login</h2>
@@ -53,6 +55,9 @@ const Login = () => {
         </form>
       </div>
     </div>
+
+    </>
+
   );
 }
 

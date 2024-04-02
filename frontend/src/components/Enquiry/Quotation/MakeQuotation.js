@@ -397,14 +397,13 @@ function QuotationForm() {
         <div key={index} className="mb-4">
 
           <div className="form-row">
-            <div className="entity" style={{ display: "flex" }}>
+            <div className="entity">
 
           
             </div>
           </div>
 
 
-          <div className="form-group col-md-3">
             <label htmlFor="quantity">Select Stockname </label>
             <select className="form-control" id="stockName" onChange={newhandleStockChange}>
               <option value="">Select Stock</option>
@@ -412,9 +411,7 @@ function QuotationForm() {
                 <option key={stockName} value={stockName}>{stockName}</option>
               ))}
             </select>
-          </div>
 
-          <div className="form-group col-md-3">
             <label htmlFor="vendorName">Vendor Names </label>
             <select className="form-control" id="vendorName" onChange={newhandleVendorChange}>
               <option value="">Select Vendor</option>
@@ -422,9 +419,7 @@ function QuotationForm() {
                 <option key={vendor} value={vendor}>{vendor}</option>
               ))}
             </select>
-          </div>
 
-          <div className="form-group col-md-3">
             <label htmlFor="price">Rate/Days </label>
             <input
               type="text"
@@ -433,9 +428,7 @@ function QuotationForm() {
               value={newSelectedStockPriceValue}
               readOnly
             />
-          </div>
 
-          <div className="form-group col-md-3">
             <label htmlFor="quantity">Quantity </label>
             <input
               type="text"
@@ -444,9 +437,7 @@ function QuotationForm() {
               value={newSelectedStockQuantityValue}
               readOnly
             />
-          </div>
 
-          <div className="form-group col-md-3">
             <label>
               Unit:<span style={{ color: "red" }}></span>
             </label>
@@ -462,10 +453,8 @@ function QuotationForm() {
                 onChange={(e) => handleChange(e, index)}
               />
 
-            </div>
           </div>
 
-          <div className="form-group col-md-3">
             <label htmlFor="updateQuantity">Update Quantity</label>
             <input
               type="number"
@@ -474,9 +463,8 @@ function QuotationForm() {
               value={updateQuantity}
               onChange={(e) => setUpdateQuantity(e.target.value)}
             />
-          </div>
 
-          <div className="form-group col-md-3">
+          <div className="form-group col-md-3 mt-3">
             <button className="btn btn-primary" onClick={handleNewUpdateQuantity}>
               Update Quantity
             </button>
@@ -486,7 +474,6 @@ function QuotationForm() {
 
           <div className="form-group">
 
-            <div className="form-group col-md-3">
               <label htmlFor={`days${index}`}>Days:</label>
               <input
                 type="text"
@@ -497,7 +484,7 @@ function QuotationForm() {
                 value={sections[index].days}
                 onChange={(e) => handleChange(e, index)}
               />
-            </div>
+         
 
 
 

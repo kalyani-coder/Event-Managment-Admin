@@ -111,38 +111,48 @@ const CreateQuotation = ({ enquiry }) => {
     <>
       <Sidebar />
       <div className="container mt-5">
-        <div className="d-flex flex-wrap">
-          <div>
+
+
+        <div className="d-flex flex-wrap align-items-center">
+          <div style={{ width: '80%', position: 'relative' }}>
             <input
               type="text"
               placeholder="Search by Event, Company, or Customer Name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                padding: '10px',
-                marginRight: '10px',
+                width: '100%',
+                padding: '8px',
                 borderRadius: '5px',
-                border: '1px solid #ddd',
-                fontSize: '16px',
-                width: '300px',
+                border: '1px solid #ccc',
               }}
             />
             <button
               onClick={handleSearch}
               style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #007BFF',
-                backgroundColor: '#007BFF',
-                color: '#fff',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                padding: '8px 16px',
+                borderRadius: '0 5px 5px 0',
+                border: '1px solid #ccc',
+                backgroundColor: '#f0f0f0',
                 cursor: 'pointer',
-                fontSize: '16px',
               }}
             >
               Search
             </button>
           </div>
-          <div style={{ marginBottom: '20px', marginLeft: '5px' }}>
+
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '20px',
+            marginLeft: '5px',
+            marginTop: '17px',
+            flexDirection: 'column', // Stack items vertically on mobile devices
+          }}>
             <label style={{ marginRight: '10px' }}>Start Date:</label>
             <input
               type="date"
@@ -153,9 +163,11 @@ const CreateQuotation = ({ enquiry }) => {
               style={{
                 padding: '10px',
                 marginRight: '10px',
+                marginBottom: '10px', // Add bottom margin for spacing between inputs
                 borderRadius: '5px',
                 border: '1px solid #ddd',
                 fontSize: '16px',
+                width: '100%', // Make inputs full width on mobile devices
               }}
             />
             <label style={{ marginRight: '10px' }}>End Date:</label>
@@ -168,42 +180,52 @@ const CreateQuotation = ({ enquiry }) => {
               style={{
                 padding: '10px',
                 marginRight: '10px',
+                marginBottom: '10px', // Add bottom margin for spacing between inputs
                 borderRadius: '5px',
                 border: '1px solid #ddd',
                 fontSize: '16px',
+                width: '100%', // Make inputs full width on mobile devices
               }}
             />
-            <button
-              onClick={handleDateRangeFilter}
-              style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #28A745',
-                backgroundColor: '#28A745',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '16px',
-              }}
-            >
-              Filter by Date
-            </button>
-            <button
-              onClick={clearFilters}
-              style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #DC3545',
-                backgroundColor: '#DC3545',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '16px',
-              }}
-            >
-              Clear Filters
-            </button>
+            <div style={{ display: 'flex' }}>
+              <button
+                onClick={handleDateRangeFilter}
+                style={{
+                  padding: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #28A745',
+                  backgroundColor: '#28A745',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  width: '100px', // Adjust button width for mobile devices
+                  marginRight: '10px', // Add right margin for spacing between buttons
+                }}
+              >
+                Apply
+              </button>
+              <button
+                onClick={clearFilters}
+                style={{
+                  padding: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #DC3545',
+                  backgroundColor: '#DC3545',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  width: '100px', // Adjust button width for mobile devices
+                }}
+              >
+                Clear
+              </button>
+            </div>
           </div>
         </div>
-        <div className="d-flex flex-wrap justify-content-between">
+
+
+
+        {/* <div className="d-flex flex-wrap justify-content-between">
           {filteredInquiries.map((enquiry) => (
             <div
               key={enquiry._id}
@@ -235,26 +257,42 @@ const CreateQuotation = ({ enquiry }) => {
                 <button className="btn btn-outline-primary ml-2" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
                   Make Quotation
                 </button>
-                {/* <button
-                  className="btn btn-outline-primary ml-2"
-                  onClick={() => openPopup(enquiry)}
-                >
-                  View More
-                </button> */}
-
-                {/* <button
-                  className="btn btn-outline-primary ml-2"
-                  onClick={() => openPopup(enquiry)}
-                >
-                  View More
-                </button> */}
-
-
-
+             
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
+
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Event Name</th>
+              <th scope="col">Event Date</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Contact Number</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody style={{ background: "white" }}>
+            {filteredInquiries.map((enquiry, index) => (
+              <tr key={enquiry._id}>
+                <td>{enquiry.event_name || ""}</td>
+                <td>{enquiry.event_date ? format(new Date(enquiry.event_date), "dd/MM/yyyy") : ""}</td>
+                <td>{enquiry.customer_name}</td>
+                <td>{enquiry.contact}</td>
+                <td>
+                  <button className="btn btn-outline-primary" onClick={() => navigate('/quotationform', { state: { enquiry: enquiry } })}>
+                    Make Quotation
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+
+
+
 
         {selectedInquiry && (
           <Modal show={showModal} onHide={closePopup}>
