@@ -7,9 +7,9 @@ import { Form, Button } from "react-bootstrap";
 const AssigntoManager = () => {
     const [eventName, setEventName] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState({});
-    
+
     const [selectedCustomer, setSelectedCustomer] = useState('');
-   
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -50,8 +50,8 @@ const AssigntoManager = () => {
         e.preventDefault();
         try {
             const selectedManagerName = e.target.elements.customer.value; // Get the selected manager's ID from the form
-           
-    
+
+
             const postData = {
                 event_name: selectedEvent.event_name,
                 customer_name: selectedEvent.client_name,
@@ -62,10 +62,10 @@ const AssigntoManager = () => {
                 adv_payment: selectedEvent.adv_payment || 0,
                 rem_payment: selectedEvent.rem_payment || 0,
                 total_amt: selectedEvent.amount || 0,
-                assign_manager_name:selectedManagerName, // Get the selected manager's name based on ID
+                assign_manager_name: selectedManagerName, // Get the selected manager's name based on ID
                 // assign_manager_Id: selectedManagerId
             };
-    
+
             const response = await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/order', postData);
             // console.log('Data posted successfully:', response.data);
             alert('Order assign to manager successfully')
@@ -82,143 +82,145 @@ const AssigntoManager = () => {
             }
         }
     };
-    
-    
+
+
     return (
         <>
             <Sidebar />
             <div className="container mt-5">
-            <h2 className="mb-4">Assign to Manager</h2>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="SelectEvent">
-                    <Form.Label>Select Event:</Form.Label>
-                    <div className="relative">
-                        <Form.Select
-                            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                            aria-label="Select Event"
-                            name="event"
-                            onChange={handleEventChange}
-                        >
-                            <option>Select Event</option>
-                            {eventName.map((event) => (
-                                <option key={event._id} value={event.event_name}>
-                                    {event.event_name}
-                                </option>
-                            ))}
-                        </Form.Select>
+                <h2 className="mb-4">Assign to Manager</h2>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="SelectEvent">
+                        <Form.Label>Select Event:</Form.Label>
+                        <div className="relative">
+                            <Form.Select
+                                className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                                aria-label="Select Event"
+                                name="event"
+                                onChange={handleEventChange}
+                            >
+                                <option>Select Event</option>
+                                {eventName.map((event) => (
+                                    <option key={event._id} value={event.event_name}>
+                                        {event.event_name}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                    </Form.Group>
+
+                    {/* Display inputs for selected event details */}
+                    <div className="mb-3">
+                        <label className="form-label">Customer Name</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedCustomer}
+                            readOnly
+                            required
+                        />
                     </div>
-                </Form.Group>
+                    <div className="mb-3">
+                        <label className="form-label">Contact Number</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.contact || ''}
+                            readOnly
+                            required
+                        />
+                    </div>
 
-                {/* Display inputs for selected event details */}
-                <div className="mb-3">
-                    <label className="form-label">Customer Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedCustomer}
-                        readOnly
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Contact Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.contact || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">Venue</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.venue || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">Venue</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.venue || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">Guest Number</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.guest_number || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">Guest Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.guest_number || ''}
-                        readOnly
-                    />
-                </div>
-               
-                <div className="mb-3">
-                    <label className="form-label">Amount</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.amount || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">Amount</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.amount || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">Advance Payment</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.adv_payment || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">Advance Payment</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.adv_payment || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">Pending Payment</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.rem_payment || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">Pending Payment</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.rem_payment || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">payment Date</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.payment_date || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">payment Date</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.payment_date || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label className="form-label">payment Time</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={selectedEvent.payment_time || ''}
-                        readOnly
-                    />
-                </div>
+                    <div className="mb-3">
+                        <label className="form-label">payment Time</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={selectedEvent.payment_time || ''}
+                            readOnly
+                        />
+                    </div>
 
-                <Form.Group controlId="SelectCustomer">
-    <Form.Label>Select Manager:</Form.Label>
-    <div className="relative">
-        <Form.Select
-            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-            aria-label="Select Customer"
-            name="customer"
-            required
-        >
-            <option>Select Manager</option>
-            {managerName.map((manager) => (
-                <option key={manager.id} value={manager.id}>{manager.fname} {manager.lname}</option>
-            ))}
-        </Form.Select>
-    </div>
-</Form.Group>
+                    <Form.Group controlId="SelectCustomer">
+                        <Form.Label>Select Manager:</Form.Label>
+                        <div className="relative">
+                            <Form.Select
+                                className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                                aria-label="Select Customer"
+                                name="customer"
+                                required
+                            >
+                                <option>Select Manager</option>
+                                {managerName.map((manager) => (
+                                    <option key={manager.id} value={manager.id}>{manager.fname} {manager.lname}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                    </Form.Group>
 
-               
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </Form>
+
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </Form>
             </div>
 
         </>
