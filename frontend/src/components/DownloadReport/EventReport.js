@@ -6,28 +6,30 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const EventReport = () => {
-  const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc"); 
-  const [caseSensitive, setCaseSensitive] = useState(false); 
+  const [caseSensitive, setCaseSensitive] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(""); 
 
-  useEffect(() => {
-    fetchEventData();
-  }, [selectedStatus, selectedDate]); // Trigger fetchEventData when selectedStatus or selectedDate changes
+  const handleStatusChange = (status) => {
+    setSelectedStatus(status);
+    filterEvents(status);
+  };
+
+
+  
 
   const fetchEventData = async () => {
     try {
-      let url = "https://eventmanagement-admin-hocm.onrender.com/api/event"; 
+      let url = "http://localhost:5000/api/event";
       if (selectedStatus) {
         url = `http://localhost:5000/api/event/status/${selectedStatus}`;
       }
+      console.log("Fetching data from:", url);
       const response = await fetch(url);
       const eventData = await response.json();
+      console.log("Fetched data:", eventData);
       setEvents(eventData);
-      setFilteredEvents(eventData); 
+      filterEvents(searchQuery, selectedDate, selectedStatus, eventData); // Filter events after fetching
     } catch (error) {
       console.error("Error fetching event data:", error);
     }
@@ -39,36 +41,7 @@ const EventReport = () => {
     filterEvents(query, selectedDate, selectedStatus);
   };
 
-  const toggleSortOrder = () => {
-    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(newSortOrder);
-    sortEvents(newSortOrder);
-  };
-
-  const filterEvents = (query, date, status) => {
-    const filtered = events.filter((event) => {
-      const eventName = event.eventName || "";
-      const companyName = event.company_name || "";
-      const venue = event.venue || "";
-      const eventDate = event.event_date || "";
-      const eventStatus = event.status || ""; 
-
-      const dateMatch = !date || (eventDate && eventDate.includes(date.toISOString().slice(0, 10)));
-
-      const normalizedQuery = caseSensitive ? query : query.toLowerCase();
-
-      return (
-        eventName.toLowerCase().includes(normalizedQuery) ||
-        companyName.toLowerCase().includes(normalizedQuery) ||
-        venue.toLowerCase().includes(normalizedQuery) ||
-        dateMatch ||
-        (status && eventStatus === status) 
-      );
-    });
-
-    sortEvents(sortOrder, filtered);
-  };
-
+ 
   const sortEvents = (order, data = null) => {
     const eventsToSort = data || filteredEvents;
     const sorted = [...eventsToSort].sort((a, b) => {
@@ -93,7 +66,7 @@ const EventReport = () => {
       Subvenue: event.subvenue,
       Event_Date: event.event_date,
       Guest_Number: event.guest_number,
-      QuotaionAmount: event.budget,
+      QuotationAmount: event.budget,
       status: event.status
     }));
 
@@ -119,10 +92,46 @@ const EventReport = () => {
     filterEvents(searchQuery, date, selectedStatus);
   };
 
-  const handleStatusChange = (status) => {
-    setSelectedStatus(status);
-    // Fetch data when status changes
-    fetchEventData();
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [sortOrder, setSortOrder] = useState('asc');
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedStatus]); // Fetch data when selectedStatus changes
+
+  const fetchData = async () => {
+    try {
+      let url = 'http://localhost:5000/api/event';
+      if (selectedStatus !== 'All') {
+        url += `/status/${selectedStatus}`;
+      }
+      const response = await fetch(url);
+      const data = await response.json();
+      setEvents(data);
+      setFilteredEvents(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const filterEvents = (status) => {
+    if (status === 'All') {
+      setFilteredEvents(events);
+    } else {
+      const filtered = events.filter(event => event.status === status);
+      setFilteredEvents(filtered);
+    }
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+
+  const clearFilters = () => {
+    setSelectedStatus('All');
   };
 
   return (
@@ -130,67 +139,64 @@ const EventReport = () => {
       <Sidebar />
       <div className="container mt-5">
         <h2>Event Report</h2>
-        <div className="mb-3">
-          <div className="dropdown">
-            <button className="btn btn-secondary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter by Status
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => handleStatusChange("")}>All</a>
-              <a className="dropdown-item" onClick={() => handleStatusChange("hot")}><FaFire /> Hot</a>
-              <a className="dropdown-item" onClick={() => handleStatusChange("completed")}><FaCheckCircle /> Completed</a>
-              <a className="dropdown-item" onClick={() => handleStatusChange("ongoing")}><FaCog /> Ongoing</a>
-            </div>
+        
+        <div className="d-flex justify-content-between mb-3">
+        <div className="dropdown">
+          <button className="btn btn-primary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by Status
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a className="dropdown-item" onClick={() => handleStatusChange('All')}>All</a>
+            <a className="dropdown-item" onClick={() => handleStatusChange('Ongoing')}><FaCog /> Ongoing</a>
+            <a className="dropdown-item" onClick={() => handleStatusChange('Completed')}><FaCheckCircle /> Completed</a>
+            <a className="dropdown-item" onClick={() => handleStatusChange('Hot')}><FaFire /> Hot</a>
           </div>
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="yyyy-MM-dd"
-            placeholderText="Select Date"
-            className="form-control mr-2"
-          />
         </div>
+        <button className="btn btn-primary" onClick={clearFilters}>Clear All Filters</button>
+      </div>
+
         <p>Total number of events: {filteredEvents.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>
           Export to Excel
         </button>
-        <table className="table table-hover table-sm border border-secondary">
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Sr. No.</th>
-              <th scope="col">Company Name</th>
-              <th scope="col">Event</th>
-              <th scope="col">Venue</th>
-              <th scope="col">Subvenue</th>
-              <th scope="col" onClick={toggleSortOrder}>
-                Event Date{" "}
-                {sortOrder === "asc" ? (
-                  <FaSortAmountDown />
-                ) : (
-                  <FaSortAmountUp />
-                )}
-              </th>
-              <th scope="col">Guest Number</th>
-              <th scope="col">Quotation Amount</th>
-              <th scope="col">Status</th>
+          
+        <table className="table table-hover table-sm border border-dark table-responsive-md" style={{backgroundColor: 'white'}}>
+        <thead className="thead-light">
+          <tr>
+            <th scope="col">Sr. No.</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Event</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Subvenue</th>
+            <th scope="col" onClick={toggleSortOrder}>
+              Event Date{" "}
+              {sortOrder === "asc" ? (
+                <FaSortAmountDown />
+              ) : (
+                <FaSortAmountUp />
+              )}
+            </th>
+            <th scope="col">Guest Number</th>
+            <th scope="col">Quotation Amount</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEvents.map((event, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{event.company_name}</td>
+              <td>{event.eventName}</td>
+              <td>{event.venue}</td>
+              <td>{event.subvenue}</td>
+              <td>{event.event_date}</td>
+              <td>{event.guest_number}</td>
+              <td>{event.budget}</td>
+              <td>{event.status}</td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredEvents.map((event, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{event.company_name}</td>
-                <td>{event.eventName}</td>
-                <td>{event.venue}</td>
-                <td>{event.subvenue}</td>
-                <td>{event.event_date}</td>
-                <td>{event.guest_number}</td>
-                <td>{event.budget}</td>
-                <td>{event.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
       </div>
     </>
   );

@@ -119,7 +119,7 @@ const handleSearchInputChange = (e) => {
       <button className="btn btn-primary mb-3" onClick={exportToExcel}>
         Export to Excel
       </button>
-      <table className="table table-hover table-sm border border-secondary">
+      <table className="table table-hover table-sm border border-dark table-responsive-md" style={{backgroundColor: 'white'}}>
         <thead className="thead-light">
           <tr>
             <th scope="col">Sr. No.</th>

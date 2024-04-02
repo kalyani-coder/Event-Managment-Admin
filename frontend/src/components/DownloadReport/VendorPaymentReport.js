@@ -84,6 +84,15 @@ const filterPayments = (query, vendor, paidAmtFilter, remAmtFilter, name, date) 
   });
   setFilteredPayments(filtered);
 };
+const clearFilters = () => {
+  setSearchQuery('');
+  setSelectedVendor('');
+  setPaidAmountFilter('');
+  setRemainingAmountFilter('');
+  setNameFilter('');
+  setSelectedDate(null);
+  setFilteredPayments(payments); // Reset to show all payments
+};
 
   const exportToExcel = () => {
     const filteredData = filteredPayments.map(payment => {
@@ -126,8 +135,8 @@ const filterPayments = (query, vendor, paidAmtFilter, remAmtFilter, name, date) 
       <Sidebar />
       <div className="container mt-5">
         <h2>Vendor Payment Report</h2>
-        <div className="mb-3">
-          <input
+        <div className="d-flex justify-content-between mb-3">
+          {/* <input
             type="text"
             className="form-control mr-2 mb-3"
             placeholder="Search  Event Name, Date, Description"
@@ -137,14 +146,15 @@ const filterPayments = (query, vendor, paidAmtFilter, remAmtFilter, name, date) 
           />
           <div className="input-group-append">
             <button className="btn btn-primary" type="button" onClick={filterPayments}>Search</button>
-          </div>
+          </div> */}
           <select className="form-control mr-2 mb-2" value={nameFilter} onChange={handleNameFilterChange}
           style={{ width: "30%" }}>
-            <option value="">All Vendors</option>
+            <option value="">Filter By All Vendors</option>
             {payments.map((payment, index) => (
               <option key={index} value={payment.fname}>{payment.fname}</option>
             ))}
           </select>
+          <button className="btn btn-primary mb-3" onClick={clearFilters}>Clear Filters</button>
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
@@ -155,7 +165,7 @@ const filterPayments = (query, vendor, paidAmtFilter, remAmtFilter, name, date) 
         </div>
         <p>Total number of payments: {filteredPayments.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>Export to Excel</button>
-        <table className="table table-hover table-sm border border-secondary">
+        <table className="table table-hover table-sm border border-dark table-responsive-md" style={{backgroundColor: 'white'}}>
           <thead className="thead-light">
             <tr>
               <th scope="col">Sr. No.</th>

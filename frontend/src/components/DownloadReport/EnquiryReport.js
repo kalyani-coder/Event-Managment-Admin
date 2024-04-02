@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Sidebar from "../Sidebar/Sidebar";
-import { FaSortAmountDown, FaSortAmountUp, FaFilter,FaCalendarAlt , FaSearch } from "react-icons/fa";
+import { FaSortAmountDown, FaSortAmountUp, FaFilter, FaCalendarAlt, FaSearch } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -17,6 +17,10 @@ const EnquiryReport = () => {
     fetchEnquiryData();
   }, []);
 
+  useEffect(() => {
+    filterEnquiries();
+  }, [selectedVenue, selectedDate, searchQuery]); // Re-run filter when filter parameters change
+
   const fetchEnquiryData = async () => {
     try {
       const response = await fetch(
@@ -24,14 +28,10 @@ const EnquiryReport = () => {
       );
       const enquiryData = await response.json();
       setEnquiries(enquiryData);
-      setFilteredEnquiries(enquiryData);
+      setFilteredEnquiries(enquiryData); // Set filtered data to all data initially
     } catch (error) {
       console.error("Error fetching enquiry data:", error);
     }
-  };
-
-  const handleSearchButtonClick = () => {
-    filterEnquiries();
   };
 
   const handleSearchInputChange = (e) => {
@@ -39,9 +39,7 @@ const EnquiryReport = () => {
   };
 
   const toggleSortOrder = () => {
-    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(newSortOrder);
-    sortEnquiries(newSortOrder);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   const filterEnquiries = () => {
@@ -50,25 +48,21 @@ const EnquiryReport = () => {
              (!selectedDate || new Date(enquiry.event_date).toDateString() === selectedDate.toDateString());
     });
     if (searchQuery) {
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(enquiry =>
-        enquiry.event_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        enquiry.event_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        enquiry.event_requirement.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        enquiry.customer_name.toLowerCase().includes(searchQuery.toLowerCase())
+        enquiry.event_name.toLowerCase().includes(query) ||
+        enquiry.event_date.toLowerCase().includes(query) ||
+        enquiry.event_requirement.toLowerCase().includes(query) ||
+        enquiry.customer_name.toLowerCase().includes(query)
       );
     }
     setFilteredEnquiries(filtered);
   };
 
-  const sortEnquiries = (order) => {
-    const sorted = [...filteredEnquiries].sort((a, b) => {
-      if (order === "asc") {
-        return new Date(a.event_date) - new Date(b.event_date);
-      } else {
-        return new Date(b.event_date) - new Date(a.event_date);
-      }
-    });
-    setFilteredEnquiries(sorted);
+  const clearFilters = () => {
+    setSelectedVenue("");
+    setSelectedDate(null);
+    setSearchQuery("");
   };
 
   const exportToExcel = () => {
@@ -93,7 +87,6 @@ const EnquiryReport = () => {
 
   const handleVenueFilterChange = (venue) => {
     setSelectedVenue(venue);
-    filterEnquiries();
   };
 
   const handleDateChange = (date) => {
@@ -101,29 +94,14 @@ const EnquiryReport = () => {
   };
 
   const venueOptions = [...new Set(enquiries.map((enquiry) => enquiry.event_venue))];
-  
+
   return (
     <>
       <Sidebar />
       <div className="container mt-5">
         <h2>Enquiry Report</h2>
         <div className="mb-3 mt-3">
-          <input
-            type="text"
-            className="form-control mr-2"
-            placeholder="Search by Event Name, Event Date, Event Requirement, Customer Name"
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-            style={{ width: "50%", float: "left" }}
-          />
           <div className="input-group-append">
-            <button
-              className="btn btn-primary mr-2"
-              type="button"
-              onClick={handleSearchButtonClick}
-            >
-               Search
-            </button>
             <div className="dropdown">
               <button
                 className="btn btn-primary dropdown-toggle mr-2"
@@ -132,9 +110,8 @@ const EnquiryReport = () => {
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                onClick={filterEnquiries}
               >
-                <FaFilter /> Venue
+                <FaFilter /> Filter By Venue
               </button>
               <div className="dropdown-menu" aria-labelledby="venueFilterDropdown">
                 {venueOptions.map((option, index) => (
@@ -149,62 +126,63 @@ const EnquiryReport = () => {
               </div>
             </div>
             <div className="input-group">
-     
-
-
-      <DatePicker
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="dd-MM-yyyy"
-        placeholderText="Select Date"
-        className="form-control"
-      />
-
-
-    </div>
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select Date"
+                className="form-control"
+              />
+              <button className="btn btn-primary ml-2" onClick={clearFilters}>
+      Clear Filters
+    </button>
+            </div>
+            
           </div>
         </div>
         <p>Total number of enquiries: {filteredEnquiries.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>
           Export to Excel
         </button>
-        <table className="table table-hover table-sm border border-secondary">
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Sr. No.</th>
-              <th scope="col">Event Name</th>
-              <th scope="col" onClick={toggleSortOrder}>
-                Event Date{" "}
-                {sortOrder === "asc" ? (
-                  <FaSortAmountDown />
-                ) : (
-                  <FaSortAmountUp />
-                )}
-              </th>
-              <th scope="col">Guest Quantity</th>
-              <th scope="col">Event Venue</th>
-              <th scope="col">Event Requirement</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Contact</th>
-              <th scope="col">Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEnquiries.map((enquiry, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{enquiry.event_name}</td>
-                <td>{enquiry.event_date}</td>
-                <td>{enquiry.guest_quantity}</td>
-                <td>{enquiry.event_venue}</td>
-                <td>{enquiry.event_requirement}</td>
-                <td>{enquiry.customer_name}</td>
-                <td>{enquiry.contact}</td>
-                <td>{enquiry.address}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <table className="table table-hover table-sm border border-dark table-responsive-md" style={{backgroundColor: 'white'}}>
+  <thead className="thead-light">
+    <tr>
+      <th scope="col">Sr. No.</th>
+      <th scope="col">Event Name</th>
+      <th scope="col" onClick={toggleSortOrder}>
+        Event Date{" "}
+        {sortOrder === "asc" ? (
+          <FaSortAmountDown />
+        ) : (
+          <FaSortAmountUp />
+        )}
+      </th>
+      <th scope="col">Guest Quantity</th>
+      <th scope="col">Event Venue</th>
+      <th scope="col">Event Requirement</th>
+      <th scope="col">Customer Name</th>
+      <th scope="col">Contact</th>
+      <th scope="col">Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredEnquiries.map((enquiry, index) => (
+      <tr key={index}>
+        <td>{index + 1}</td>
+        <td>{enquiry.event_name}</td>
+        <td>{enquiry.event_date}</td>
+        <td>{enquiry.guest_quantity}</td>
+        <td>{enquiry.event_venue}</td>
+        <td>{enquiry.event_requirement}</td>
+        <td>{enquiry.customer_name}</td>
+        <td>{enquiry.contact}</td>
+        <td>{enquiry.address}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+
       </div>
     </>
   );
