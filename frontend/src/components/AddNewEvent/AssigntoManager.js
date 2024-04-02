@@ -49,7 +49,7 @@ const AssigntoManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const selectedManagerName = e.target.elements.customer.value; // Get the selected manager's ID from the form
+            const selectedManagerName = e.target.elements.customer.value;
 
 
             const postData = {
@@ -62,7 +62,7 @@ const AssigntoManager = () => {
                 adv_payment: selectedEvent.adv_payment || 0,
                 rem_payment: selectedEvent.rem_payment || 0,
                 total_amt: selectedEvent.amount || 0,
-                assign_manager_name: selectedManagerName, // Get the selected manager's name based on ID
+                assign_manager_name: selectedManagerName, 
                 // assign_manager_Id: selectedManagerId
             };
 
