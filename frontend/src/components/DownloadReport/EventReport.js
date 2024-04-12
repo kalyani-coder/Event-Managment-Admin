@@ -9,6 +9,7 @@ const EventReport = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
   const handleStatusChange = (status) => {
     setSelectedStatus(status);
@@ -103,7 +104,7 @@ const EventReport = () => {
 
   const fetchData = async () => {
     try {
-      let url = 'http://localhost:5000/api/event';
+      let url = 'https://eventmanagement-admin-hocm.onrender.com/api/event';
       if (selectedStatus !== 'All') {
         url += `/status/${selectedStatus}`;
       }
@@ -125,15 +126,33 @@ const EventReport = () => {
     }
   };
 
+   const handleDateRangeFilter = () => {
+    const filtered = filteredEvents.filter((event) => {
+      const eventDate = new Date(event.event_date);
+      const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
+      const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
+
+      return (
+        (!startDate || eventDate >= startDate) &&
+        (!endDate || eventDate <= endDate)
+      );
+    });
+
+    setFilteredEvents(filtered);
+  };
+
+
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
 
   const clearFilters = () => {
-    setSelectedStatus('All');
-  };
-
+  setSelectedStatus('All');
+  setSearchQuery('');
+  setDateRange({ startDate: '', endDate: '' });
+   filterEvents('All');
+};
   return (
     <>
       <Sidebar />
@@ -141,19 +160,80 @@ const EventReport = () => {
         <h2>Event Report</h2>
         
         <div className="d-flex justify-content-between mb-3">
-        <div className="dropdown">
-          <button className="btn btn-primary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Filter by Status
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" onClick={() => handleStatusChange('All')}>All</a>
-            <a className="dropdown-item" onClick={() => handleStatusChange('Ongoing')}><FaCog /> Ongoing</a>
-            <a className="dropdown-item" onClick={() => handleStatusChange('Completed')}><FaCheckCircle /> Completed</a>
-            <a className="dropdown-item" onClick={() => handleStatusChange('Hot')}><FaFire /> Hot</a>
-          </div>
-        </div>
-        <button className="btn btn-primary" onClick={clearFilters}>Clear All Filters</button>
-      </div>
+  <div className="dropdown">
+    <button className="btn btn-primary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ minWidth: '150px' }}>
+      Filter by Status
+    </button>
+    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a className="dropdown-item" onClick={() => handleStatusChange('All')}>All</a>
+      <a className="dropdown-item" onClick={() => handleStatusChange('Ongoing')}><FaCog /> Ongoing</a>
+      <a className="dropdown-item" onClick={() => handleStatusChange('Confirm')}><FaCheckCircle /> Confirm</a>
+      <a className="dropdown-item" onClick={() => handleStatusChange('Hot')}><FaFire /> Hot</a>
+    </div>
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <label style={{ marginRight: '10px' }}>Start Date:</label>
+    <input
+      type="date"
+      value={dateRange.startDate}
+      onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
+      style={{
+        padding: '10px',
+        marginRight: '10px',
+        borderRadius: '5px',
+        border: '1px solid #ddd',
+        fontSize: '16px',
+        minWidth: '150px', // Set a fixed width to ensure consistency with the dropdown button
+      }}
+    />
+    <label style={{ marginRight: '10px' }}>End Date:</label>
+    <input
+      type="date"
+      value={dateRange.endDate}
+      onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
+      style={{
+        padding: '10px',
+        marginRight: '10px',
+        borderRadius: '5px',
+        border: '1px solid #ddd',
+        fontSize: '16px',
+        minWidth: '150px', // Set a fixed width to ensure consistency with the dropdown button
+      }}
+    />
+    <button
+      onClick={handleDateRangeFilter}
+      style={{
+        padding: '10px',
+        borderRadius: '5px',
+        border: '1px solid #28A745',
+        backgroundColor: '#28A745',
+        color: '#fff',
+        cursor: 'pointer',
+        fontSize: '16px',
+        marginLeft: '10px', // Add left margin for spacing between date inputs and buttons
+      }}
+    >
+      Apply
+    </button>
+  </div>
+  <button
+              onClick={clearFilters}
+              style={{
+                padding: '10px',
+                borderRadius: '5px',
+                border: '1px solid #DC3545',
+                backgroundColor: '#DC3545',
+                color: '#fff',
+                cursor: 'pointer',
+                fontSize: '16px',
+                marginLeft: '10px', // Add left margin for spacing between buttons
+              }}
+            >
+              Clear
+            </button>
+
+</div>
+
 
         <p>Total number of events: {filteredEvents.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>

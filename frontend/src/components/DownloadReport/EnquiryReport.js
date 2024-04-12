@@ -11,6 +11,7 @@ const EnquiryReport = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedVenue, setSelectedVenue] = useState("");
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
@@ -59,10 +60,29 @@ const EnquiryReport = () => {
     setFilteredEnquiries(filtered);
   };
 
+  const handleDateRangeFilter = () => {
+    const filtered = enquiries.filter((enquiry) => {
+      const eventDate = new Date(enquiry.event_date);
+      const startDate = dateRange.startDate
+        ? new Date(dateRange.startDate)
+        : null;
+      const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
+  
+      return (
+        (!startDate || eventDate >= startDate) &&
+        (!endDate || eventDate <= endDate)
+      );
+    });
+  
+    setFilteredEnquiries(filtered); // Corrected from setFilteredInquiries
+  };
+  
+
   const clearFilters = () => {
     setSelectedVenue("");
-    setSelectedDate(null);
+    // setSelectedDate(null);
     setSearchQuery("");
+    setDateRange({ startDate: "", endDate: "" }); // Reset startDate and endDate
   };
 
   const exportToExcel = () => {
@@ -125,7 +145,7 @@ const EnquiryReport = () => {
                 ))}
               </div>
             </div>
-            <div className="input-group">
+            {/* <div className="input-group">
               <DatePicker
                 selected={selectedDate}
                 onChange={handleDateChange}
@@ -136,10 +156,68 @@ const EnquiryReport = () => {
               <button className="btn btn-primary ml-2" onClick={clearFilters}>
       Clear Filters
     </button>
-            </div>
-            
+            </div> */}
+            {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}> */}
+            <label style={{ marginRight: '10px' }}>Start Date:</label>
+            <input
+              type="date"
+              value={dateRange.startDate}
+              onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
+              style={{
+                padding: '10px',
+                marginRight: '10px',
+                borderRadius: '5px',
+                border: '1px solid #ddd',
+                fontSize: '16px',
+              }}
+            />
+            <label style={{ marginRight: '10px' }}>End Date:</label>
+            <input
+              type="date"
+              value={dateRange.endDate}
+              onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
+              style={{
+                padding: '10px',
+                marginRight: '10px',
+                borderRadius: '5px',
+                border: '1px solid #ddd',
+                fontSize: '16px',
+              }}
+            />
+            <button
+              onClick={handleDateRangeFilter}
+              style={{
+                padding: '10px',
+                borderRadius: '5px',
+                border: '1px solid #28A745',
+                backgroundColor: '#28A745',
+                color: '#fff',
+                cursor: 'pointer',
+                fontSize: '16px',
+                marginLeft: '10px', // Add left margin for spacing between date inputs and buttons
+              }}
+            >
+              Apply
+            </button>
+            <button
+              onClick={clearFilters}
+              style={{
+                padding: '10px',
+                borderRadius: '5px',
+                border: '1px solid #DC3545',
+                backgroundColor: '#DC3545',
+                color: '#fff',
+                cursor: 'pointer',
+                fontSize: '16px',
+                marginLeft: '10px', // Add left margin for spacing between buttons
+              }}
+            >
+              Clear
+            </button>
+          {/* </div> */}
           </div>
         </div>
+        
         <p>Total number of enquiries: {filteredEnquiries.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>
           Export to Excel
