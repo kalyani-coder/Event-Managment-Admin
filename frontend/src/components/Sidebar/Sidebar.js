@@ -487,6 +487,20 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
+                      <Link to={"/enquiryreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Enquiry Report
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/customerreport"}>
+                        <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Customer Report
+                      </Link>
+                    </li>
+                    <li>
                       <Link to={"/managerreport"}>
                         <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
@@ -494,10 +508,10 @@ export default function Sidebar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"/enquiryreport"}>
+                      <Link to={"/paymentreport"}>
                         <FontAwesomeIcon icon={faFileDownload} style={{ marginRight: "10px", color: "#fff" }} // Change color
                         />
-                        Enquiry Report
+                        Payment Report
                       </Link>
                     </li>
                     <li>

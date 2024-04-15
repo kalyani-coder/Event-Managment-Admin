@@ -49,7 +49,9 @@ import FollowUpStatus from "./components/FollowupStatus/FollowUpStatus"
 import AddNewEvent from './components/AddNewEvent/AddNewEvent'
 import AdvancePaymnetCus from "./components/AddNewEvent/AdvancePaymnetCus"
 import AssigntoManager from "./components/AddNewEvent/AssigntoManager";
-import Login from "./components/Login/Login"
+import Login from "./components/Login/Login";
+import CustomerReport from "./components/DownloadReport/CustomerReport";
+import PaymentReport from "./components/DownloadReport/PaymentReport";
 
 
 
@@ -110,6 +112,8 @@ function App() {
           <Route path="/addnewevent" element={<AddNewEvent />}/>
           <Route path="/advpaymentcus" element={<AdvancePaymnetCus />}/>
           <Route path="/assignmanager" element={<AssigntoManager />}/>
+          <Route path="/customerreport" element={<CustomerReport />}/>
+          <Route path="/paymentreport" element={<PaymentReport />}/>
           {/* **************** */}
         </Routes>
 
