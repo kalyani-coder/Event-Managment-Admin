@@ -10,7 +10,7 @@ function YourComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks');
+        const response = await fetch('http://localhost:5000/api/inventory-stocks');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -29,7 +29,7 @@ function YourComponent() {
     const selectedName = e.target.value; // Access selected value, not name
     console.log(selectedName);
     try {
-      const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/stock/${selectedName}`);
+      const response = await fetch(`http://localhost:5000/api/inventory-stocks/stock/${selectedName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

@@ -16,6 +16,10 @@ const EnquirySchema = new Schema({
     type: String,
     default: ""
   },
+  hot_input_value : {
+    type : String,
+    default : ""
+  },
 });
 
 const QuotationSchema = new Schema({

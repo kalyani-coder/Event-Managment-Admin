@@ -13,7 +13,7 @@ const AssigntoManager = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/advpayment');
+                const response = await axios.get('http://localhost:5000/api/advpayment');
                 setEventName(response.data);
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -36,7 +36,7 @@ const AssigntoManager = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/managerdetails');
+                const response = await axios.get('http://localhost:5000/api/managerdetails');
                 setManagerName(response.data);
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -66,7 +66,7 @@ const AssigntoManager = () => {
                 // assign_manager_Id: selectedManagerId
             };
 
-            const response = await axios.post('https://eventmanagement-admin-hocm.onrender.com/api/order', postData);
+            const response = await axios.post('http://localhost:5000/api/order', postData);
             // console.log('Data posted successfully:', response.data);
             alert('Order assign to manager successfully')
             // Reset form or show success message

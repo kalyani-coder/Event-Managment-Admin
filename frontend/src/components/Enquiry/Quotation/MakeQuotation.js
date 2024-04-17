@@ -30,7 +30,7 @@ function QuotationForm() {
 
   useEffect(() => {
     // Fetch the list of vendors from the first API
-    fetch('https://eventmanagement-admin-hocm.onrender.com/api/addvendor')
+    fetch('http://localhost:5000/api/addvendor')
       .then((response) => response.json())
       .then((data) => setVendorList(data))
       .catch((error) => console.error('Error fetching vendors:', error));
@@ -39,7 +39,7 @@ function QuotationForm() {
   useEffect(() => {
     // Fetch the stock list based on the selected vendor
     if (selectedVendor) {
-      fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${selectedVendor}`)
+      fetch(`http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`)
         .then((response) => response.json())
         .then((data) => setStockList(data))
         .catch((error) => console.error('Error fetching stock list:', error));
@@ -100,7 +100,7 @@ function QuotationForm() {
       const updatedQuantity = sections[index].quantity;
 
       // Send a PATCH request to update stock quantity
-      await axios.patch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
+      await axios.patch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`, {
         quantity: updatedQuantity,
       });
 
@@ -124,7 +124,7 @@ function QuotationForm() {
       srNumber: 1,
       title: "",
       particular: "",
-      transport:"",
+      transport: "",
       description: "",
       entity: "",
       unit: "",
@@ -138,13 +138,13 @@ function QuotationForm() {
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const newSections = [...sections];
-  
+
     // Update the corresponding field in the section
     newSections[index] = {
       ...newSections[index],
       [name]: value
     };
-  
+
     // Calculate the amount if both "Rate/Days" and "Days" fields are filled
     if (name === 'days') {
       const ratePerDays = parseFloat(newSelectedStockPriceValue);
@@ -155,11 +155,11 @@ function QuotationForm() {
         newSections[index].amount = '';
       }
     }
-  
+
     // Update the state with the modified sections
     setSections(newSections);
   };
-  
+
 
 
 
@@ -198,13 +198,13 @@ function QuotationForm() {
         rateper_Days: parseFloat(newSelectedStockPriceValue),
         days: parseFloat(section.days),
         amount: section.amount,
-        name : enquiry.customer_name,
+        name: enquiry.customer_name,
       }));
 
 
 
       // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("https://eventmanagement-admin-hocm.onrender.com/api/quatationinfo", {
+      await axios.post("http://localhost:5000/api/quatationinfo", {
         quatationInfoData,
       });
 
@@ -313,7 +313,7 @@ function QuotationForm() {
 
 
   useEffect(() => {
-    fetch("https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks")
+    fetch("http://localhost:5000/api/inventory-stocks")
       .then(response => response.json())
       .then(data => {
         const names = data.map(stock => stock.Stock_Name);
@@ -361,7 +361,7 @@ function QuotationForm() {
       const quantity = document.getElementById('updateQuantity').value;
 
       // Send PATCH request to update stock quantity
-      const response = await fetch(`https://eventmanagement-admin-hocm.onrender.com/api/inventory-stocks/vendor/${vendorId}`, {
+      const response = await fetch(`http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -385,23 +385,23 @@ function QuotationForm() {
   };
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
+      <Sidebar />
+      <div className="container mt-5">
 
-      <h1 className="mb-4">Quotation Form Of<span className="text-dark"> {enquiry.customer_name}</span></h1>
-
-
+        <h1 className="mb-4">Quotation Form Of<span className="text-dark"> {enquiry.customer_name}</span></h1>
 
 
-      {sections.map((section, index) => (
-        <div key={index} className="mb-4">
 
-          <div className="form-row">
-            <div className="entity">
 
-          
+        {sections.map((section, index) => (
+          <div key={index} className="mb-4">
+
+            <div className="form-row">
+              <div className="entity">
+
+
+              </div>
             </div>
-          </div>
 
 
             <label htmlFor="quantity">Select Stockname </label>
@@ -453,7 +453,7 @@ function QuotationForm() {
                 onChange={(e) => handleChange(e, index)}
               />
 
-          </div>
+            </div>
 
             <label htmlFor="updateQuantity">Update Quantity</label>
             <input
@@ -464,15 +464,20 @@ function QuotationForm() {
               onChange={(e) => setUpdateQuantity(e.target.value)}
             />
 
-          <div className="form-group col-md-3 mt-3">
-            <button className="btn btn-primary" onClick={handleNewUpdateQuantity}>
-              Update Quantity
-            </button>
-          </div>
+            <div className="form-group row-md-3 mt-3 ">
+            <button className="btn btn-primary " onClick={handleNewUpdateQuantity}>
+                Update Quantity
+              </button>
+              <button className="btn btn-primary ms-3">
+                Add Stocks
+              </button>
+            </div>
+              
+            
 
 
 
-          <div className="form-group">
+            <div className="form-group">
 
               <label htmlFor={`days${index}`}>Days:</label>
               <input
@@ -484,12 +489,12 @@ function QuotationForm() {
                 value={sections[index].days}
                 onChange={(e) => handleChange(e, index)}
               />
-         
 
 
 
 
-            <label htmlFor={`title${index}`}>
+              {/* in second chnages need to remove this input  */}
+              {/* <label htmlFor={`title${index}`}>
               Title:
             </label>
             <input
@@ -499,9 +504,12 @@ function QuotationForm() {
               name="title"
               value={section.title}
               onChange={(e) => handleChange(e, index)}
-            />
-          </div>
-          <div className="form-group">
+            /> */}
+
+            </div>
+
+            {/* in second chnages need to remove this input  */}
+            {/* <div className="form-group">
             <label htmlFor={`particular${index}`}>
               Particular:
             </label>
@@ -513,62 +521,63 @@ function QuotationForm() {
               value={section.particular}
               onChange={(e) => handleChange(e, index)}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`transport${index}`}>
-              Transport:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`transport${index}`}
-              name="transport"
-              value={section.transport}
-              onChange={(e) => handleChange(e, index)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor={`description${index}`}>
-              Description:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`description${index}`}
-              name="description"
-              value={section.description}
-              onChange={(e) => handleChange(e, index)}
-            />
-          </div>
+          </div> */}
+
+            <div className="form-group">
+              <label htmlFor={`transport${index}`}>
+                Transport:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id={`transport${index}`}
+                name="transport"
+                value={section.transport}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`description${index}`}>
+                Description:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id={`description${index}`}
+                name="description"
+                value={section.description}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
 
 
-          <div className="form-group">
-            <label htmlFor={`amount${index}`}>
-              Amount:
-            </label>
-            <input
-              type="text"
-              placeholder="Total Amount"
-              className="form-control"
-              id={`amount${index}`}
-              name="amount"
-              value={sections[index].amount}
-              onChange={(e) => handleChange(e, index)}
-            />
+            <div className="form-group">
+              <label htmlFor={`amount${index}`}>
+                Amount:
+              </label>
+              <input
+                type="text"
+                placeholder="Total Amount"
+                className="form-control"
+                id={`amount${index}`}
+                name="amount"
+                value={sections[index].amount}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
 
-      <button className="btn btn-primary" onClick={handleAddSection}>
-        Add Section
-      </button>
-      <button className="btn btn-success mx-2" onClick={handleSave}>
-        Save
-      </button>
-      <button className="btn btn-success mx-2" onClick={handlePrint}>
-        Print
-      </button>
-    </div>
+        <button className="btn btn-primary" onClick={handleAddSection}>
+          Add Item
+        </button>
+        <button className="btn btn-success mx-2" onClick={handleSave}>
+          View & Save
+        </button>
+        <button className="btn btn-success mx-2" onClick={handlePrint}>
+          Print
+        </button>
+      </div>
     </>
   );
 }

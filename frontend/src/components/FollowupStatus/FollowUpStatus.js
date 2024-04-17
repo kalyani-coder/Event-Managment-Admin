@@ -18,7 +18,7 @@ const FollowUpStatus = ({ enquiry }) => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+                    "http://localhost:5000/api/enquiry"
                 );
                 const data = await response.json();
 
@@ -107,6 +107,10 @@ const FollowUpStatus = ({ enquiry }) => {
 
     const [enquiryId, setEnquiryId] = useState("");
 
+    const [hotInputValue, setHotInputValue] = useState('');
+    const handleHotInputChange = (event) => {
+        setHotInputValue(event.target.value);
+    };
 
 
     const handleUpdateStatus = async () => {
@@ -116,17 +120,23 @@ const FollowUpStatus = ({ enquiry }) => {
                 return;
             }
 
+            let requestBody = { status: selectedStatus };
+
+            // If 'Hot' is selected, include hotInputValue in the request body
+            if (selectedStatus === 'Hot') {
+                requestBody.hot_input_value = hotInputValue;
+            }
+
             const response = await axios.patch(
-                `https://eventmanagement-admin-hocm.onrender.com/api/enquiry/${enquiryId}`,
-                { status: selectedStatus }
+                `http://localhost:5000/api/enquiry/${enquiryId}`,
+                requestBody
             );
 
             console.log("Status updated successfully:", response.data);
 
             // Set success message and show alert
             alert("Status updated successfully!");
-            setShowModal
-                (false); // Hide the popup/modal
+            setShowModal(false); // Hide the popup/modal
         } catch (error) {
             console.error("Error updating status:", error);
         }
@@ -138,7 +148,7 @@ const FollowUpStatus = ({ enquiry }) => {
                 return "text-yellow";
             case "Hot":
                 return "text-red";
-            case "Completed":
+            case "Conform":
                 return "text-green";
             default:
                 return ""; // default color
@@ -315,19 +325,35 @@ const FollowUpStatus = ({ enquiry }) => {
                             <label className="form-check-label" htmlFor="statusHot">
                                 Hot
                             </label>
+                            {selectedStatus === 'Hot' && (
+                                <input
+                                    type="text"
+                                    value={hotInputValue}
+                                    onChange={handleHotInputChange}
+                                    placeholder="Enter here..."
+                                    style={{
+                                        padding: '8px',
+                                        marginTop: '8px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '4px',
+                                        width: '100%',
+                                        boxSizing: 'border-box',
+                                    }}
+                                />
+                            )}
                         </div>
                         <div className="form-check">
                             <input
                                 className="form-check-input"
                                 type="radio"
                                 name="statusOptions"
-                                id="statusCompleted"
-                                value="Completed"
-                                checked={selectedStatus === 'Completed'}
+                                id="statusConform"
+                                value="Conform"
+                                checked={selectedStatus === 'Conform'}
                                 onChange={handleStatusChange}
                             />
-                            <label className="form-check-label" htmlFor="statusCompleted">
-                                Completed
+                            <label className="form-check-label" htmlFor="statusConform">
+                                Conform
                             </label>
                         </div>
                     </Modal.Body>

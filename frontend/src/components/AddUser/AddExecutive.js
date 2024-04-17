@@ -71,7 +71,7 @@ const AddExecutive = () => {
 
     try {
       const response = await axios.post(
-        "https://eventmanagement-admin-hocm.onrender.com/api/executive",
+        "http://localhost:5000/api/executive",
         formData
       );
 

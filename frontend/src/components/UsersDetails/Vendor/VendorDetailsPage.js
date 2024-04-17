@@ -24,7 +24,7 @@ const VendorDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`https://eventmanagement-admin-hocm.onrender.com/api/vendor/${_id}`)
+        .delete(`http://localhost:5000/api/vendor/${_id}`)
         .then(() => {
           console.log("Vendor data deleted successfully");
           navigate("/vendordetails");

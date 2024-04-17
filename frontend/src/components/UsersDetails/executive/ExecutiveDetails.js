@@ -12,7 +12,7 @@ const ExecutiveDetails = () => {
   useEffect(() => {
     // Fetch executive data from the API
     axios
-      .get("https://eventmanagement-admin-hocm.onrender.com/api/executive")
+      .get("http://localhost:5000/api/executive")
       .then((response) => {
         setExecutiveData(response.data);
       })

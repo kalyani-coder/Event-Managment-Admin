@@ -18,7 +18,7 @@ const ViewInquiryPage = ({ enquiry }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+          "http://localhost:5000/api/enquiry"
         );
         const data = await response.json();
 

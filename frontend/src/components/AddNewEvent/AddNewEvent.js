@@ -19,7 +19,7 @@ const AddNewEvent = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/addeventmaster');
+                const response = await axios.get('http://localhost:5000/api/addeventmaster');
                 setEvents(response.data);
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -32,7 +32,7 @@ const AddNewEvent = () => {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/enquiry');
+                const response = await axios.get('http://localhost:5000/api/enquiry');
                 setCustomers(response.data);
             } catch (error) {
                 console.error('Error fetching customers:', error);

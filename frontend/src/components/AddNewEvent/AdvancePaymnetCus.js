@@ -21,7 +21,7 @@ function AdvancePaymnetCus() {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('https://eventmanagement-admin-hocm.onrender.com/api/event');
+                const response = await axios.get('http://localhost:5000/api/event');
                 setCusName(response.data);
             } catch (error) {
                 console.error('Error fetching customers:', error);
@@ -119,7 +119,7 @@ function AdvancePaymnetCus() {
             })
         };
     
-        axios.post('https://eventmanagement-admin-hocm.onrender.com/api/advpayment', data)
+        axios.post('http://localhost:5000/api/advpayment', data)
             .then(response => {
                 console.log('Data saved successfully:', response.data);
                 alert("Advance payment successfull")
