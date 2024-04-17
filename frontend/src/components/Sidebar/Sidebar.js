@@ -281,6 +281,14 @@ export default function Sidebar() {
                         Customer Payment
                        </Link>
                     </li>
+
+                    <li>
+                      <Link to={"/costingform"}>
+                        <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: "10px", color: "#fff" }} // Change color
+                        />
+                        Costing Form
+                       </Link>
+                    </li>
                     
                   </ul>
                 </li>

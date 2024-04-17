@@ -52,7 +52,7 @@ import AssigntoManager from "./components/AddNewEvent/AssigntoManager";
 import Login from "./components/Login/Login";
 import CustomerReport from "./components/DownloadReport/CustomerReport";
 import PaymentReport from "./components/DownloadReport/PaymentReport";
-
+import CostingForm from "./components/AddNewEvent/CostingForm";
 
 
 function App() {
@@ -114,6 +114,7 @@ function App() {
           <Route path="/assignmanager" element={<AssigntoManager />}/>
           <Route path="/customerreport" element={<CustomerReport />}/>
           <Route path="/paymentreport" element={<PaymentReport />}/>
+          <Route path="/costingform" element={<CostingForm />}/>
           {/* **************** */}
         </Routes>
 
