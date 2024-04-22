@@ -9,13 +9,25 @@ const Master = () => {
     const [eventName, setEventName] = useState(''); 
     const [alertMessage, setAlertMessage] = useState('');
     const [alertVariant, setAlertVariant] = useState('');
-    const [showModal, setShowModal] = useState(false); 
+    const [showVendorModal, setShowVendorModal] = useState(false); 
+    const [showEventModal, setShowEventModal] = useState(false); 
     const [vendors, setVendors] = useState([]); 
-    const [events, setEvents] = useState([]); // State for storing events data
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        fetchEvents(); // Fetch events when component mounts
+        fetchVendors();
+        fetchEvents();
     }, []);
+
+    const fetchVendors = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/addvendor');
+            const data = await response.json();
+            setVendors(data);
+        } catch (error) {
+            console.error('Error fetching vendors:', error);
+        }
+    };
 
     const fetchEvents = async () => {
         try {
@@ -45,6 +57,7 @@ const Master = () => {
                 setAlertMessage("Vendor added successfully.");
                 setAlertVariant("success");
                 setVendorName('');
+                fetchVendors();
             } else {
                 setAlertMessage("Failed to add vendor.");
                 setAlertVariant("danger");
@@ -56,36 +69,36 @@ const Master = () => {
         }
     };
 
-    const handleTrashIconClick = async (eventId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    const handleViewVendors = () => {
+        setShowVendorModal(true);
+    };
+
+    const handleDeleteVendor = async (vendorId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this vendor?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:5000/api/addeventmaster/${eventId}`, {
+                const response = await fetch(`http://localhost:5000/api/addvendor/${vendorId}`, {
                     method: 'DELETE'
                 });
     
                 if (response.ok) {
-                    setAlertMessage("Event deleted successfully.");
+                    setAlertMessage("Vendor deleted successfully.");
                     setAlertVariant("success");
-                    setEvents(prevEvents => prevEvents.filter(event => event._id !== eventId));
+                    fetchVendors();
                 } else {
-                    setAlertMessage("Failed to delete event.");
+                    setAlertMessage("Failed to delete vendor.");
                     setAlertVariant("danger");
                 }
             } catch (error) {
-                console.error('Error deleting event:', error);
-                setAlertMessage("Failed to delete event. Please try again later.");
+                console.error('Error deleting vendor:', error);
+                setAlertMessage("Failed to delete vendor. Please try again later.");
                 setAlertVariant("danger");
             }
         }
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-    const handleViewEvents = () => {
-        setShowModal(true);
+    const handleCloseVendorModal = () => {
+        setShowVendorModal(false);
     };
 
     const handleEventSubmit = async (e) => {
@@ -104,7 +117,7 @@ const Master = () => {
                 setAlertMessage("Event added successfully.");
                 setAlertVariant("success");
                 setEventName('');
-                fetchEvents(); // Fetch events again to update the list
+                fetchEvents();
             } else {
                 setAlertMessage("Failed to add event.");
                 setAlertVariant("danger");
@@ -114,6 +127,38 @@ const Master = () => {
             setAlertMessage("Failed to add event. Please try again later.");
             setAlertVariant("danger");
         }
+    };
+
+    const handleViewEvents = () => {
+        setShowEventModal(true);
+    };
+
+    const handleDeleteEvent = async (eventId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/addeventmaster/${eventId}`, {
+                    method: 'DELETE'
+                });
+    
+                if (response.ok) {
+                    setAlertMessage("Event deleted successfully.");
+                    setAlertVariant("success");
+                    fetchEvents();
+                } else {
+                    setAlertMessage("Failed to delete event.");
+                    setAlertVariant("danger");
+                }
+            } catch (error) {
+                console.error('Error deleting event:', error);
+                setAlertMessage("Failed to delete event. Please try again later.");
+                setAlertVariant("danger");
+            }
+        }
+    };
+
+    const handleCloseEventModal = () => {
+        setShowEventModal(false);
     };
 
     return (
@@ -132,7 +177,7 @@ const Master = () => {
                         <Form.Control
                             type="text"
                             placeholder="Add Vendor"
-                            value={vendorName} // Corrected variable name
+                            value={vendorName}
                             onChange={(e) => setVendorName(e.target.value)}
                             required
                         />
@@ -140,11 +185,11 @@ const Master = () => {
                     <div className="d-flex">
                         <Button className="mt-3" type="submit" variant="info" onClick={handleVendorSubmit}>Add Vendor</Button>
                         <div style={{ width: '10px' }}></div>
-                        <Button className="mt-3" type="button" variant="info" onClick={handleViewEvents}>View Vendor</Button>
+                        <Button className="mt-3" type="button" variant="info" onClick={handleViewVendors}>View Vendors</Button>
                     </div>
                 </Form.Group>
 
-                <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Vendors List</Modal.Title>
                     </Modal.Header>
@@ -164,16 +209,34 @@ const Master = () => {
                                         icon={faTrash}
                                         className="ml-2"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => handleTrashIconClick(vendor._id)}
+                                        onClick={() => handleDeleteVendor(vendor._id)}
                                     />
                                 </div>
                             </div>
                         ))}
                     </Modal.Body>
                 </Modal>
-               {/* Event List */}
-               
-               <Modal show={showModal} onHide={handleCloseModal}>
+
+                <Form>
+                    <Form.Group controlId="event">
+                        <h5 className='mt-3'>Add Events Name:</h5>
+                        <div className="relative">
+                            <Form.Control
+                                placeholder="Add Event Name Here..."
+                                value={eventName}
+                                onChange={(e) => setEventName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="d-flex">
+                            <Button className="mt-3" type="submit" variant="info" onClick={handleEventSubmit}>Add Event</Button>
+                            <div style={{ width: '10px' }}></div>
+                            <Button className="mt-3" type="button" variant="info" onClick={handleViewEvents}>View Events</Button>
+                        </div>
+                    </Form.Group>
+                </Form>
+
+                <Modal show={showEventModal} onHide={handleCloseEventModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Events List</Modal.Title>
                     </Modal.Header>
@@ -193,31 +256,13 @@ const Master = () => {
                                         icon={faTrash}
                                         className="ml-2"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => handleTrashIconClick(event._id)}
+                                        onClick={() => handleDeleteEvent(event._id)}
                                     />
                                 </div>
                             </div>
                         ))}
                     </Modal.Body>
                 </Modal>
-                <Form>
-                    <Form.Group controlId="event">
-                        <h5 className='mt-3'>Add Events Name:</h5>
-                        <div className="relative">
-                            <Form.Control
-                                placeholder="Add Event Name Here..."
-                                value={eventName}
-                                onChange={(e) => setEventName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="d-flex">
-                            <Button className="mt-3" type="submit" variant="info" onClick={handleEventSubmit}>Add Event</Button>
-                            <div style={{ width: '10px' }}></div>
-                            <Button className="mt-3" type="submit" variant="info" onClick={handleViewEvents}>View Events</Button>
-                        </div>
-                    </Form.Group>
-                </Form>
             </div>
         </>
     );

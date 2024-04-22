@@ -328,73 +328,13 @@ const NewGodowns = () => {
       {/* <div className='responsive-godown'> */}
       <div>
         <div className="container">
-          <h4>Godown</h4>
-
           <Form onSubmit={handleSubmit}>
             {alertMessage && (
               <div>
                 <Alert variant={alertVariant}>{alertMessage}</Alert>
               </div>
             )}
-
-            <Form.Group controlId="addvendor">
-              <Form.Label>Add Vendor:</Form.Label>
-              <div className="relative">
-                <Form.Control
-                  type="text"
-                  placeholder="Add Vendor"
-                  value={vendorName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="d-flex">
-                <Button className="mt-3" type="submit" variant="info">
-                  Add Vendor
-                </Button>
-                <div style={{ width: "10px" }}></div>
-                <Button
-                  className="mt-3"
-                  type="submit"
-                  variant="info"
-                  onClick={handleViewVendors}
-                >
-                  View Vendor
-                </Button>
-              </div>
-            </Form.Group>
           </Form>
-
-          <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Vendors List</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <div>Vendors Name</div>
-                <div>Action</div>
-              </div>
-              {vendors.map((vendor) => (
-                <div
-                  key={vendor._id}
-                  className="d-flex justify-content-between align-items-center"
-                >
-                  <div style={{ lineHeight: "45px" }}>{vendor.Vendor_Name}</div>
-                  <div>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="ml-2"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleTrashIconClick(vendor._id)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </Modal.Body>
-          </Modal>
-
-          <hr />
-
           <h4>Add Stocks</h4>
           <Form onSubmit={handleSubmitformData}>
             <Form.Group controlId="Category">
@@ -590,26 +530,6 @@ const NewGodowns = () => {
             )}
           </div>
           <hr />
-
-          {/* Add events from here  */}
-          <Form onSubmit={handleSaveEventName}>
-            <Form.Group controlId="event">
-              <h5>Add Events Name:</h5>
-              <div className="relative">
-                <Form.Control
-                  type="text"
-                  value={eventName}
-                  onChange={handleEventChange}
-                  placeholder="Add Event Name Here..."
-                  name="event"
-                  required
-                />
-              </div>
-              <Button className="mt-3" type="submit" variant="info">
-                Add Event
-              </Button>
-            </Form.Group>
-          </Form>
         </div>
       </div>
     </>
