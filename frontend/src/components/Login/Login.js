@@ -30,59 +30,50 @@ const Login = () => {
   };
 
   return (
-    <section className="vh-100">
-      <div className="container py-5 h-100">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div
-              className="card shadow-2-strong"
-              style={{ borderRadius: "1rem" }}
-            >
-              <div className="card-body p-5 text-center">
-                <h3 className="mb-5">Login</h3>
-                <form onSubmit={handleSubmit}>
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      className="form-control form-control-lg"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      className="form-control form-control-lg"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  <button
-                    data-mdb-button-init
-                    data-mdb-ripple-init
-                    className="btn btn-primary btn-lg btn-block"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Login
-                  </button>
-
-                  <hr className="my-4" />
-                </form>
+    <>
+      <div className="container">
+        <div className="screen">
+          <div className="screen__content">
+            <form className="login" onSubmit={handleSubmit}>
+              <h3 className="fw-bold">Login</h3>
+              <div className="login__field">
+                <i className="login__icon fas fa-user"></i>
+                <input
+                  type="text"
+                  className="login__input"
+                  placeholder="User name / Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
               </div>
-            </div>
+              <div className="login__field">
+                <i className="login__icon fas fa-lock"></i>
+                <input
+                  type="password"
+                  className="login__input"
+                  placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button type="submit" className="button login__submit">
+                <span className="button__text">Log In Now</span>
+                <i className="button__icon fas fa-chevron-right"></i>
+              </button>
+            </form>
+          </div>
+          <div className="screen__background">
+            <span className="screen__background__shape screen__background__shape4"></span>
+            <span className="screen__background__shape screen__background__shape3"></span>
+            <span className="screen__background__shape screen__background__shape2"></span>
+            <span className="screen__background__shape screen__background__shape1"></span>
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 
-export default Login
-
+export default Login;

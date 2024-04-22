@@ -57,6 +57,7 @@ import Header from "./components/Sidebar/Header";
 import "./App.css";
 import { Divider } from "@mui/material/Divider";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Master from "./components/master/Master";
 
 function App() {
   return (
@@ -128,6 +129,7 @@ function App() {
             <Route path="/customerreport" element={<CustomerReport />} />
             <Route path="/paymentreport" element={<PaymentReport />} />
             <Route path="/costingform" element={<CostingForm />} />
+            <Route path="/master" element={<Master />}/>
             {/* **************** */}
           </Routes>
         </Router>

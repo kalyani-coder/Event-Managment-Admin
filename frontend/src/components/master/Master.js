@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from "../Sidebar/Sidebar"
+import Header from "../Sidebar/Header"
 import { Form, Button, Alert, Modal, Table } from 'react-bootstrap';
 
 
@@ -7,7 +7,7 @@ const Master = () => {
     return (
         <>
 
-            <Sidebar />
+            <Header />
             <div className="container">
                 <h4 className='mt-5'>Master</h4>
                 <Form.Group controlId="addvendor">

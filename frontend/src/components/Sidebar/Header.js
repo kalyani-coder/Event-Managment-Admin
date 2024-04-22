@@ -732,6 +732,8 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
+
+
             <List>
               <ListItem
                 disablePadding
@@ -769,6 +771,8 @@ export default function Sidenav() {
                   </ListItemButton>
                 </div>
               </ListItem>
+
+
               {activetab == "Salary" && (
                 <Menu
                   id="simple-menu"
@@ -795,6 +799,77 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
+
+
+
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Master")}
+              >
+                <div className="menuitems-of-header ">
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                    className={
+                      activetab === "Master"
+                        ? "menuitems-of-header active"
+                        : "menuitems-of-header"
+                    }
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <AccountBalanceWalletTwoToneIcon
+                        sx={{ color: "#9b59b6" }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Master"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </div>
+              </ListItem>
+
+
+              {activetab == "Master" && (
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to={"/master"}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <span className="icon-text">Master</span>
+                    </Link>{" "}
+                  </MenuItem>
+                
+                </Menu>
+              )}
+
+            </List>
+
+
+
+
+
+
+
+
+
             <List>
               <ListItem
                 disablePadding
