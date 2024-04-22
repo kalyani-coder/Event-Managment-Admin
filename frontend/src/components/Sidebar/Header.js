@@ -799,9 +799,7 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
-
-
-
+            
             <List>
               <ListItem
                 disablePadding
@@ -861,14 +859,6 @@ export default function Sidenav() {
               )}
 
             </List>
-
-
-
-
-
-
-
-
 
             <List>
               <ListItem
