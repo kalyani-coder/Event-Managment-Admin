@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Sidebar/Header";
 
 const AccountantDetails = () => {
   const [accountantData, setAccountantData] = useState([]);
@@ -41,7 +41,7 @@ const AccountantDetails = () => {
   return (
 
     <>
-    <Sidebar />
+      <Header />
     <div className="container mt-5">
       <h2 className="mb-4">Accountant Details</h2>
       <div className="mb-4">

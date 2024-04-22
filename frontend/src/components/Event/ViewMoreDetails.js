@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
-import axios from 'axios';
-import Sidebar from "../Sidebar/Sidebar"
-
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
+import axios from "axios";
+import Header from "../Sidebar/Header";
 
 const ViewMoreDetails = () => {
   const { eventId } = useParams();
@@ -17,7 +16,7 @@ const ViewMoreDetails = () => {
         setEventDetails(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching event details:', error);
+        console.error("Error fetching event details:", error);
       });
   }, [eventId]);
 
@@ -28,39 +27,38 @@ const ViewMoreDetails = () => {
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>Event More Details</h2>
+      <Header />
 
-      <Card bg="light" className="mt-3">
-        <Card.Body>
-          <Card.Title>{eventDetails.fname}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Company: {eventDetails.company_name}
-          </Card.Subtitle>
-          <Card.Text>Event: {eventDetails.eventName}</Card.Text>
-          <Card.Text>Venue: {eventDetails.venue}</Card.Text>
-          <Card.Text>Subvenue: {eventDetails.subvenue}</Card.Text>
-          <Card.Text>Event Date: {eventDetails.event_date}</Card.Text>
-          <Card.Text>Guest Number: {eventDetails.guest_number}</Card.Text>
-          <Card.Text>Budget: ${eventDetails.budget}</Card.Text>
-          <Card.Text>Date: {eventDetails.event_date}</Card.Text>
-          <Card.Text>Time: {eventDetails.currentTime}</Card.Text>
+      <div className="container mt-5">
+        <h2>Event More Details</h2>
 
-          <Link to={`/add-expense/${eventId}`}>
-            <Button variant="primary" className="mr-2">
-              Add Expense
-            </Button>
-          </Link>
+        <Card bg="light" className="mt-3">
+          <Card.Body>
+            <Card.Title>{eventDetails.fname}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">
+              Company: {eventDetails.company_name}
+            </Card.Subtitle>
+            <Card.Text>Event: {eventDetails.eventName}</Card.Text>
+            <Card.Text>Venue: {eventDetails.venue}</Card.Text>
+            <Card.Text>Subvenue: {eventDetails.subvenue}</Card.Text>
+            <Card.Text>Event Date: {eventDetails.event_date}</Card.Text>
+            <Card.Text>Guest Number: {eventDetails.guest_number}</Card.Text>
+            <Card.Text>Budget: ${eventDetails.budget}</Card.Text>
+            <Card.Text>Date: {eventDetails.event_date}</Card.Text>
+            <Card.Text>Time: {eventDetails.currentTime}</Card.Text>
 
-          <Link to={`/expenses/${eventId}`}>
-            <Button variant="success">
-              View Expenses
-            </Button>
-          </Link>
-        </Card.Body>
-      </Card>
-    </div>
+            <Link to={`/add-expense/${eventId}`}>
+              <Button variant="primary" className="mr-2">
+                Add Expense
+              </Button>
+            </Link>
+
+            <Link to={`/expenses/${eventId}`}>
+              <Button variant="success">View Expenses</Button>
+            </Link>
+          </Card.Body>
+        </Card>
+      </div>
     </>
   );
 };

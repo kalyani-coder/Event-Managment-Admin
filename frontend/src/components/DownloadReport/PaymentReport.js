@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Sidebar/Header";
 
 const PaymentReport = () => {
   const [salaryData, setSalaryData] = useState([]);
@@ -8,7 +8,6 @@ const PaymentReport = () => {
   const [filterType, setFilterType] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [totalPayments, setTotalPayments] = useState(0);
-
 
   useEffect(() => {
     fetchSalaryData();
@@ -55,7 +54,9 @@ const PaymentReport = () => {
     let filtered = salaryData;
 
     if (filterType !== "") {
-      filtered = filtered.filter((entry) => entry.type_Of_Salary === filterType);
+      filtered = filtered.filter(
+        (entry) => entry.type_Of_Salary === filterType
+      );
     }
 
     if (dateRange.startDate !== "" && dateRange.endDate !== "") {
@@ -77,7 +78,8 @@ const PaymentReport = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container mt-5">
         <h2>Payment Report</h2>
         <div className="mb-3">

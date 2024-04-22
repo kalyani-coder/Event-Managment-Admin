@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Sidebar/Header";
 
 const CustomerReport = () => {
   const [events, setEvents] = useState([]);
@@ -102,7 +102,8 @@ const CustomerReport = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container mt-5">
         <h2>Customer Wise Report</h2>
         <div className="mb-3 d-flex align-items-center">
@@ -119,10 +120,10 @@ const CustomerReport = () => {
             ))}
           </select>
           <button className="btn btn-success mr-2" onClick={applyFilter}>
-            Apply 
+            Apply
           </button>
           <button className="btn btn-danger" onClick={clearFilter}>
-            Clear 
+            Clear
           </button>
         </div>
 

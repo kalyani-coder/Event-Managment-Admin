@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
-import Sidebar from "../Sidebar/Sidebar"
-import { Form, Button, Modal, Table } from 'react-bootstrap';
-
+import Header from "../Sidebar/Header";
+import { Form, Button, Modal, Table } from "react-bootstrap";
 
 export default function Enquiry() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -11,8 +10,8 @@ export default function Enquiry() {
 
   const getCurrentDate = () => {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   };
@@ -100,16 +99,17 @@ export default function Enquiry() {
     fetchRecentInquiries();
   }, []);
 
-
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/addeventmaster');
+        const response = await axios.get(
+          "http://localhost:5000/api/addeventmaster"
+        );
         setEvents(response.data);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
       }
     };
 
@@ -118,15 +118,16 @@ export default function Enquiry() {
 
   const handleEventChange = (e) => {
     const eventName = e.target.value;
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      event_name: eventName
+      event_name: eventName,
     }));
   };
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container">
         <div className="card-1">
           <div className="row justify-content-center">
@@ -135,7 +136,11 @@ export default function Enquiry() {
                 <div className="form-group">
                   <h2>Enquiry</h2>
                   {showSuccessAlert && (
-                    <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+                    <Alert
+                      variant="success"
+                      onClose={() => setShowSuccessAlert(false)}
+                      dismissible
+                    >
                       {successMessage}
                     </Alert>
                   )}
@@ -172,7 +177,6 @@ export default function Enquiry() {
                     </Form.Select>
                   </div>
                 </Form.Group>
-
 
                 <div className="form-group">
                   <label htmlFor="customer_name">
@@ -303,7 +307,6 @@ export default function Enquiry() {
 
         {/* Display recent inquiries */}
         <div className="mt-5">
-
           <ul>
             {recentInquiries.map((inquiry, index) => (
               <li key={index}>

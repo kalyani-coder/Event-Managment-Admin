@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar"
-
+import Header from "../Sidebar/Header";
 
 function AdvPaymentForm() {
   const location = useLocation();
@@ -47,7 +46,10 @@ function AdvPaymentForm() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/advpayment", orderDetails);
+      const response = await axios.post(
+        "http://localhost:5000/api/advpayment",
+        orderDetails
+      );
       console.log("Order Details:", orderDetails);
       console.log("API Response:", response.data);
       navigate("/orderform");
@@ -149,16 +151,16 @@ function AdvPaymentForm() {
 
   function getCurrentDate() {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy = today.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   }
 
   function getCurrentTime() {
     const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
     return `${hh}:${mm}`;
   }
 
@@ -169,90 +171,101 @@ function AdvPaymentForm() {
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2 className="mb-4">Advance Payment Form</h2>
-      <div className="mb-3">
-        <label className="form-label">Event Name:</label>
-        <input type="text" className="form-control" value={event_name} disabled />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Customer Name:</label>
-        <input
-          type="text"
-          className="form-control"
-          value={client_name}
-          onChange={(e) => setClientName(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Total Amount:</label>
-        <input
-          type="number"
-          className="form-control"
-          value={amount}
-          onChange={(e) => setAmount(parseInt(e.target.value))}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Advance Payment:</label>
-        <input
-          type="number"
-          className="form-control"
-          value={adv_payment}
-          onChange={(e) => setAdvPayment(parseInt(e.target.value))}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Remaining Amount:</label>
-        <input type="number" className="form-control" value={rem_payment} readOnly />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Payment Method:</label>
-        <select
-          className="form-control"
-          value={payment_method}
-          onChange={(e) => setPaymentMethod(e.target.value)}
-        >
-          <option value="upi">UPI</option>
-          <option value="cheque">Cheque</option>
-          <option value="cash">Cash</option>
-          <option value="netbanking">Net Banking</option>
-        </select>
-      </div>
-      {renderpayment_methodFields()}
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">Transaction Details</h5>
-          <div className="mb-3">
-            <label className="form-label">Date of Transaction:</label>
-            <input
-              type="date"
-              className="form-control"
-              value={payment_date}
-              onChange={(e) => setPaymentDate(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Time of Transaction:</label>
-            <input
-              type="time"
-              className="form-control"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
+      <Header />
+
+      <div className="container mt-5">
+        <h2 className="mb-4">Advance Payment Form</h2>
+        <div className="mb-3">
+          <label className="form-label">Event Name:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={event_name}
+            disabled
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Customer Name:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={client_name}
+            onChange={(e) => setClientName(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Total Amount:</label>
+          <input
+            type="number"
+            className="form-control"
+            value={amount}
+            onChange={(e) => setAmount(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Advance Payment:</label>
+          <input
+            type="number"
+            className="form-control"
+            value={adv_payment}
+            onChange={(e) => setAdvPayment(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Remaining Amount:</label>
+          <input
+            type="number"
+            className="form-control"
+            value={rem_payment}
+            readOnly
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Payment Method:</label>
+          <select
+            className="form-control"
+            value={payment_method}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="upi">UPI</option>
+            <option value="cheque">Cheque</option>
+            <option value="cash">Cash</option>
+            <option value="netbanking">Net Banking</option>
+          </select>
+        </div>
+        {renderpayment_methodFields()}
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Transaction Details</h5>
+            <div className="mb-3">
+              <label className="form-label">Date of Transaction:</label>
+              <input
+                type="date"
+                className="form-control"
+                value={payment_date}
+                onChange={(e) => setPaymentDate(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Time of Transaction:</label>
+              <input
+                type="time"
+                className="form-control"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+              />
+            </div>
           </div>
         </div>
+
+        <button className="btn btn-success mx-2" onClick={handleSave}>
+          Save
+        </button>
+
+        <button className="btn btn-info my-5" onClick={handleCreateOrder}>
+          Create Order for Manager
+        </button>
       </div>
-
-      <button className="btn btn-success mx-2" onClick={handleSave}>
-        Save
-      </button>
-
-      <button className="btn btn-info my-5" onClick={handleCreateOrder}>
-        Create Order for Manager
-      </button>
-    </div>
     </>
   );
 }

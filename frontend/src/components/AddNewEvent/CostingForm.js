@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Header from "../Sidebar/Header";
 
 const CostingForm = () => {
   return (
-    <div>CostingForm</div>
-  )
-}
+    <>
+      <Header />
+    </>
+  );
+};
 
-export default CostingForm
+export default CostingForm;

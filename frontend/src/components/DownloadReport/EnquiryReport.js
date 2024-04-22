@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar";
-import { FaSortAmountDown, FaSortAmountUp, FaFilter, FaCalendarAlt, FaSearch } from "react-icons/fa";
+import Header from "../Sidebar/Header";
+import {
+  FaSortAmountDown,
+  FaSortAmountUp,
+  FaFilter,
+  FaCalendarAlt,
+  FaSearch,
+} from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -45,16 +51,21 @@ const EnquiryReport = () => {
 
   const filterEnquiries = () => {
     let filtered = enquiries.filter((enquiry) => {
-      return (!selectedVenue || enquiry.event_venue === selectedVenue) &&
-             (!selectedDate || new Date(enquiry.event_date).toDateString() === selectedDate.toDateString());
+      return (
+        (!selectedVenue || enquiry.event_venue === selectedVenue) &&
+        (!selectedDate ||
+          new Date(enquiry.event_date).toDateString() ===
+            selectedDate.toDateString())
+      );
     });
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(enquiry =>
-        enquiry.event_name.toLowerCase().includes(query) ||
-        enquiry.event_date.toLowerCase().includes(query) ||
-        enquiry.event_requirement.toLowerCase().includes(query) ||
-        enquiry.customer_name.toLowerCase().includes(query)
+      filtered = filtered.filter(
+        (enquiry) =>
+          enquiry.event_name.toLowerCase().includes(query) ||
+          enquiry.event_date.toLowerCase().includes(query) ||
+          enquiry.event_requirement.toLowerCase().includes(query) ||
+          enquiry.customer_name.toLowerCase().includes(query)
       );
     }
     setFilteredEnquiries(filtered);
@@ -67,16 +78,15 @@ const EnquiryReport = () => {
         ? new Date(dateRange.startDate)
         : null;
       const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
-  
+
       return (
         (!startDate || eventDate >= startDate) &&
         (!endDate || eventDate <= endDate)
       );
     });
-  
+
     setFilteredEnquiries(filtered); // Corrected from setFilteredInquiries
   };
-  
 
   const clearFilters = () => {
     setSelectedVenue("");
@@ -113,11 +123,14 @@ const EnquiryReport = () => {
     setSelectedDate(date);
   };
 
-  const venueOptions = [...new Set(enquiries.map((enquiry) => enquiry.event_venue))];
+  const venueOptions = [
+    ...new Set(enquiries.map((enquiry) => enquiry.event_venue)),
+  ];
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container mt-5">
         <h2>Enquiry Report</h2>
         <div className="mb-3 mt-3">
@@ -133,7 +146,10 @@ const EnquiryReport = () => {
               >
                 <FaFilter /> Filter By Venue
               </button>
-              <div className="dropdown-menu" aria-labelledby="venueFilterDropdown">
+              <div
+                className="dropdown-menu"
+                aria-labelledby="venueFilterDropdown"
+              >
                 {venueOptions.map((option, index) => (
                   <button
                     key={index}
@@ -158,43 +174,47 @@ const EnquiryReport = () => {
     </button>
             </div> */}
             {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}> */}
-            <label style={{ marginRight: '10px' }}>Start Date:</label>
+            <label style={{ marginRight: "10px" }}>Start Date:</label>
             <input
               type="date"
               value={dateRange.startDate}
-              onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, startDate: e.target.value })
+              }
               style={{
-                padding: '10px',
-                marginRight: '10px',
-                borderRadius: '5px',
-                border: '1px solid #ddd',
-                fontSize: '16px',
+                padding: "10px",
+                marginRight: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                fontSize: "16px",
               }}
             />
-            <label style={{ marginRight: '10px' }}>End Date:</label>
+            <label style={{ marginRight: "10px" }}>End Date:</label>
             <input
               type="date"
               value={dateRange.endDate}
-              onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, endDate: e.target.value })
+              }
               style={{
-                padding: '10px',
-                marginRight: '10px',
-                borderRadius: '5px',
-                border: '1px solid #ddd',
-                fontSize: '16px',
+                padding: "10px",
+                marginRight: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                fontSize: "16px",
               }}
             />
             <button
               onClick={handleDateRangeFilter}
               style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #28A745',
-                backgroundColor: '#28A745',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '16px',
-                marginLeft: '10px', // Add left margin for spacing between date inputs and buttons
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #28A745",
+                backgroundColor: "#28A745",
+                color: "#fff",
+                cursor: "pointer",
+                fontSize: "16px",
+                marginLeft: "10px", // Add left margin for spacing between date inputs and buttons
               }}
             >
               Apply
@@ -202,65 +222,66 @@ const EnquiryReport = () => {
             <button
               onClick={clearFilters}
               style={{
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #DC3545',
-                backgroundColor: '#DC3545',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '16px',
-                marginLeft: '10px', // Add left margin for spacing between buttons
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #DC3545",
+                backgroundColor: "#DC3545",
+                color: "#fff",
+                cursor: "pointer",
+                fontSize: "16px",
+                marginLeft: "10px", // Add left margin for spacing between buttons
               }}
             >
               Clear
             </button>
-          {/* </div> */}
+            {/* </div> */}
           </div>
         </div>
-        
+
         <p>Total number of enquiries: {filteredEnquiries.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>
           Export to Excel
         </button>
-        <table className="table table-hover table-sm border border-dark table-responsive-md" style={{backgroundColor: 'white'}}>
-  <thead className="thead-light">
-    <tr>
-      <th scope="col">Sr. No.</th>
-      <th scope="col">Event Name</th>
-      <th scope="col" onClick={toggleSortOrder}>
-        Event Date{" "}
-        {sortOrder === "asc" ? (
-          <FaSortAmountDown />
-        ) : (
-          <FaSortAmountUp />
-        )}
-      </th>
-      <th scope="col">Guest Quantity</th>
-      <th scope="col">Event Venue</th>
-      <th scope="col">Event Requirement</th>
-      <th scope="col">Customer Name</th>
-      <th scope="col">Contact</th>
-      <th scope="col">Address</th>
-    </tr>
-  </thead>
-  <tbody>
-    {filteredEnquiries.map((enquiry, index) => (
-      <tr key={index}>
-        <td>{index + 1}</td>
-        <td>{enquiry.event_name}</td>
-        <td>{enquiry.event_date}</td>
-        <td>{enquiry.guest_quantity}</td>
-        <td>{enquiry.event_venue}</td>
-        <td>{enquiry.event_requirement}</td>
-        <td>{enquiry.customer_name}</td>
-        <td>{enquiry.contact}</td>
-        <td>{enquiry.address}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-
+        <table
+          className="table table-hover table-sm border border-dark table-responsive-md"
+          style={{ backgroundColor: "white" }}
+        >
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Event Name</th>
+              <th scope="col" onClick={toggleSortOrder}>
+                Event Date{" "}
+                {sortOrder === "asc" ? (
+                  <FaSortAmountDown />
+                ) : (
+                  <FaSortAmountUp />
+                )}
+              </th>
+              <th scope="col">Guest Quantity</th>
+              <th scope="col">Event Venue</th>
+              <th scope="col">Event Requirement</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Contact</th>
+              <th scope="col">Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredEnquiries.map((enquiry, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{enquiry.event_name}</td>
+                <td>{enquiry.event_date}</td>
+                <td>{enquiry.guest_quantity}</td>
+                <td>{enquiry.event_venue}</td>
+                <td>{enquiry.event_requirement}</td>
+                <td>{enquiry.customer_name}</td>
+                <td>{enquiry.contact}</td>
+                <td>{enquiry.address}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );

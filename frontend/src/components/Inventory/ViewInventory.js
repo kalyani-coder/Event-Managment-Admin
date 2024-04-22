@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar"
+import Header from "../../components/Sidebar/Header";
 
 const ViewInventory = () => {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -46,7 +46,8 @@ const ViewInventory = () => {
     }
 
     fetch(
-      `http://localhost:5000/api/inventorystock/${itemName}/${changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""
+      `http://localhost:5000/api/inventorystock/${itemName}/${
+        changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""
       }${newQuantity}`,
       {
         method: "POST",
@@ -93,65 +94,76 @@ const ViewInventory = () => {
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>View Inventory</h2>
-      {loading ? (
-        <p>Loading inventory data...</p>
-      ) : (
-        <table className="table table-hover table-sm border border-secondary">
-          <thead className="thead-light">
-            <tr>
-              <th>Item Name</th>
-              <th>Quantity in Stock</th>
-              <th>Update Stock</th>
-              <th>Increase</th>
-              <th>Decrease</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventoryItems.map((item) => (
-              <tr key={item.addstocks}>
-                <td>{item.addstocks}</td>
-                <td>{item.quantity}</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="Enter Quantity"
-                    value={updatedQuantity[item.addstocks] || ""}
-                    onChange={(e) =>
-                      handleInputChange(item.addstocks, e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleUpdateQuantity(item.addstocks, "increase", item._id)
-                    }
-                  >
-                    Increase
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleUpdateQuantity(item.addstocks, "decrease", item._id)
-                    }
-                  >
-                    Decrease
-                  </button>
-                </td>
+      <Header />
+
+      <div className="container mt-5">
+        <h2>View Inventory</h2>
+        {loading ? (
+          <p>Loading inventory data...</p>
+        ) : (
+          <table className="table table-hover table-sm border border-secondary">
+            <thead className="thead-light">
+              <tr>
+                <th>Item Name</th>
+                <th>Quantity in Stock</th>
+                <th>Update Stock</th>
+                <th>Increase</th>
+                <th>Decrease</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {successMessage && (
-        <div className="alert alert-success">{successMessage}</div>
-      )}
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-    </div>
+            </thead>
+            <tbody>
+              {inventoryItems.map((item) => (
+                <tr key={item.addstocks}>
+                  <td>{item.addstocks}</td>
+                  <td>{item.quantity}</td>
+                  <td>
+                    <input
+                      type="number"
+                      placeholder="Enter Quantity"
+                      value={updatedQuantity[item.addstocks] || ""}
+                      onChange={(e) =>
+                        handleInputChange(item.addstocks, e.target.value)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(
+                          item.addstocks,
+                          "increase",
+                          item._id
+                        )
+                      }
+                    >
+                      Increase
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(
+                          item.addstocks,
+                          "decrease",
+                          item._id
+                        )
+                      }
+                    >
+                      Decrease
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {successMessage && (
+          <div className="alert alert-success">{successMessage}</div>
+        )}
+        {errorMessage && (
+          <div className="alert alert-danger">{errorMessage}</div>
+        )}
+      </div>
     </>
   );
 };
