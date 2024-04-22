@@ -196,6 +196,8 @@ const VendorPayment = () => {
               ))}
             </select>
           </div>
+
+
           <div className="row mb-2">
             <div className="col">
               <div className="form-group">
@@ -222,6 +224,8 @@ const VendorPayment = () => {
               </div>
             </div>
           </div>
+
+          
           <div className="form-group">
             <label htmlFor="bankaccount">Bank Account</label>
             <input
