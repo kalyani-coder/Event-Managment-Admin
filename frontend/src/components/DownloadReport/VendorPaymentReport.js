@@ -97,14 +97,14 @@ const VendorPaymentReport = () => {
   };
 
   // Function to handle name filter change
-  const handleNameFilterChange = (e) => {
-    setNameFilter(e.target.value);
+  const handleNameFilterChange = (value) => {
+    setNameFilter(value);
     filterPayments(
       searchQuery,
       selectedVendor,
       paidAmountFilter,
       remainingAmountFilter,
-      e.target.value,
+      value,
       selectedDate,
       selectedEvent
     );
@@ -241,47 +241,46 @@ const VendorPaymentReport = () => {
       <div className="container mt-5">
         <h2>Vendor Payment Report</h2>
         <div className="d-flex flex-wrap align-items-center">
-          <div className="flex-grow-1 mr-2">
-            <select
-              className="form-control mb-2 w-70"
-              value={nameFilter}
-              onChange={handleNameFilterChange}
-            >
-              <option value="">Filter By All Vendors</option>
-              {payments.map((payment, index) => (
-                <option key={index} value={payment.fname}>
-                  {payment.fname}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="d-flex flex-grow-1 mr-2">
+  <div className="dropdown">
+    <button className="btn btn-primary dropdown-toggle" type="button" id="vendorDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Filter By Vendor
+    </button>
+    <div className="dropdown-menu" aria-labelledby="vendorDropdown">
+      <button className="dropdown-item" onClick={() => handleNameFilterChange('')}>All Vendors</button>
+      {payments.map((payment, index) => (
+        <button key={index} className="dropdown-item" onClick={() => handleNameFilterChange(payment.fname)}>{payment.fname}</button>
+      ))}
+    </div>
+  </div>
 
-          <div className="dropdown mr-2">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="eventDropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Filter By Event
-            </button>
-            <div
-              className="dropdown-menu"
-              aria-labelledby="eventDropdownMenuButton"
-            >
-              {payments.map((payment, index) => (
-                <button
-                  key={index}
-                  className="dropdown-item"
-                  onClick={() => handleEventFilter(payment.event_name)}
-                >
-                  {payment.event_name}
-                </button>
-              ))}
-            </div>
-          </div>
+  <div className="dropdown ml-2">
+    <button
+      className="btn btn-primary dropdown-toggle"
+      type="button"
+      id="eventDropdownMenuButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Filter By Event
+    </button>
+    <div
+      className="dropdown-menu"
+      aria-labelledby="eventDropdownMenuButton"
+    >
+      {payments.map((payment, index) => (
+        <button
+          key={index}
+          className="dropdown-item"
+          onClick={() => handleEventFilter(payment.event_name)}
+        >
+          {payment.event_name}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
 
           <button className="btn btn-danger mb-2" onClick={clearFilters}>
             Clear
@@ -289,31 +288,37 @@ const VendorPaymentReport = () => {
         </div>
 
         <div className="d-flex align-items-center">
-          <label style={{ marginRight: "10px" }}>Start Date:</label>
-          <input
-            type="date"
-            value={dateRange.startDate}
-            onChange={(e) =>
-              setDateRange({ ...dateRange, startDate: e.target.value })
-            }
-            className="form-control mr-2"
-          />
-          <label style={{ marginRight: "10px" }}>End Date:</label>
-          <input
-            type="date"
-            value={dateRange.endDate}
-            onChange={(e) =>
-              setDateRange({ ...dateRange, endDate: e.target.value })
-            }
-            className="form-control mr-2"
-          />
-          <button
-            onClick={handleDateRangeFilter}
-            className="btn btn-success mr-2"
-          >
-            Apply
-          </button>
-        </div>
+  <label style={{ marginRight: "10px" }}>Start Date:</label>
+  <div className="input-group input-group-sm mr-2">
+    <input
+      type="date"
+      value={dateRange.startDate}
+      onChange={(e) =>
+        setDateRange({ ...dateRange, startDate: e.target.value })
+      }
+      className="form-control form-control-sm" 
+    />
+  </div>
+  <label style={{ marginRight: "10px" }}>End Date:</label>
+  <div className="input-group input-group-sm mr-2">
+    <input
+      type="date"
+      value={dateRange.endDate}
+      onChange={(e) =>
+        setDateRange({ ...dateRange, endDate: e.target.value })
+      }
+      className="form-control form-control-sm" 
+    />
+  </div>
+  <button
+    onClick={handleDateRangeFilter}
+    className="btn btn-success"
+  >
+    Apply
+  </button>
+</div>
+
+
 
         <p>Total number of payments: {filteredPayments.length}</p>
         <button className="btn btn-primary mb-3" onClick={exportToExcel}>

@@ -103,7 +103,7 @@ const NewGodowns = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/inventory-stocks/",
+        "http://localhost:5000/api/inventory-stocks",
         {
           method: "POST",
           headers: {
