@@ -30,32 +30,59 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="main-div-for-login ">
-        <div className="login-container">
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter Your Email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
-            <input type="submit" value="Login" />
-          </form>
+    <section className="vh-100">
+      <div className="container py-5 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div
+              className="card shadow-2-strong"
+              style={{ borderRadius: "1rem" }}
+            >
+              <div className="card-body p-5 text-center">
+                <h3 className="mb-5">Login</h3>
+                <form onSubmit={handleSubmit}>
+                  <div data-mdb-input-init className="form-outline mb-4">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="form-control form-control-lg"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div data-mdb-input-init className="form-outline mb-4">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      className="form-control form-control-lg"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <button
+                    data-mdb-button-init
+                    data-mdb-ripple-init
+                    className="btn btn-primary btn-lg btn-block"
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    Login
+                  </button>
+
+                  <hr className="my-4" />
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-export default Login;
+export default Login
+

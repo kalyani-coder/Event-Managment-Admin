@@ -1,0 +1,123 @@
+/* Dashboard.css */
+
+.container-dashboard{
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  margin-left: 20%;
+}
+
+.card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    margin-bottom: 5px;
+  }
+  
+  .text-success {
+    color: green;
+  }
+/* Dashboard.css */
+.breadcrumb {
+  background-color: transparent;
+  margin-left: 20;
+}
+
+.breadcrumb-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-text {
+  margin-bottom: 5px;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+#pieChart {
+  height: 300px;
+}
+  /* Recent activity card */
+.activity-card {
+  background-color: white;
+  padding: 20px;
+}
+
+.activity-title {
+  text-align: center;
+  color: black;
+}
+
+.activity-dot {
+  margin-right: 10px;
+}
+
+.green-dot {
+  color: green;
+}
+
+.yellow-dot {
+  color: yellow;
+}
+
+.orange-dot {
+  color: orange;
+}
+
+.red-dot {
+  color: red;
+}
+
+span{
+  font-size:15px;
+}
+a{
+text-decoration:none; 
+color: #0062cc;
+border-bottom:2px solid #0062cc;
+}
+.box{
+  padding:60px 0px;
+}
+
+.box-part{
+  background:#FFF;
+  border-radius:0;
+  padding:60px 10px;
+  margin:30px 0px;
+}
+.text{
+  margin:20px 0px;
+}
+
+.fa{
+   color:#4183D7;
+}

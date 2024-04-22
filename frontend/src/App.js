@@ -56,6 +56,7 @@ import CostingForm from "./components/AddNewEvent/CostingForm";
 import Header from "./components/Sidebar/Header";
 import "./App.css";
 import { Divider } from "@mui/material/Divider";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -67,6 +68,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             {/* <Route path="/" element={<AddManager />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/addmanager" element={<AddManager />} />
             <Route path="/addaccountant" element={<AddAccountant />} />
             <Route path="/addvendor" element={<AddVendor />} />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Header from "../../components/Sidebar/Header";
 
 const EventCategoryPage = () => {
   const [categories, setCategories] = useState([]);
