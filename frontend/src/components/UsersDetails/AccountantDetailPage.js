@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar"
+import Header from "../Sidebar/Header";
 
 const AccountantDetailPage = () => {
   const { _id } = useParams();
@@ -43,7 +43,7 @@ const AccountantDetailPage = () => {
 
   return (
     <>
-    <Sidebar />
+      <Header />
     <div className="container mt-5">
       <h2>
         {accountant.fname} {accountant.lname} Details

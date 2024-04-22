@@ -33,92 +33,107 @@ import VendorPaymentView from "./components/VendorPayment/ViewVendorPayment";
 import ViewVendorPayment from "./components/VendorPayment/VendorPaymentDetails";
 import Attendance from "./components/Attendance/Attendance";
 import ViewAttendance from "./components/Attendance/ViewAttendence";
-import UpdateTaskPage from './components/UpdateTask/UpdateTask';
+import UpdateTaskPage from "./components/UpdateTask/UpdateTask";
 import ViewTaskPage from "./components/UpdateTask/ViewTask";
 import GodownInventory from "./components/Inventory/Godown/Godown";
 import VendorInventory from "./components/Inventory/VendorInventory/VendorInventory";
 import Product from "./components/Inventory/Godown/Product";
 import NewGodowns from "./components/Inventory/Godown/NewGodowns";
-import QuotationForm from './components/Enquiry/Quotation/MakeQuotation';
-import EventReport from './components/DownloadReport/EventReport';
+import QuotationForm from "./components/Enquiry/Quotation/MakeQuotation";
+import EventReport from "./components/DownloadReport/EventReport";
 import VendorPaymentReport from "./components/DownloadReport/VendorPaymentReport";
 import ManagerReport from "./components/DownloadReport/ManagerReport";
 import EnquiryReport from "./components/DownloadReport/EnquiryReport";
-import CreateQuotation from "./components/Enquiry/Quotation/CreateQuotation"
-import FollowUpStatus from "./components/FollowupStatus/FollowUpStatus"
-import AddNewEvent from './components/AddNewEvent/AddNewEvent'
-import AdvancePaymnetCus from "./components/AddNewEvent/AdvancePaymnetCus"
+import CreateQuotation from "./components/Enquiry/Quotation/CreateQuotation";
+import FollowUpStatus from "./components/FollowupStatus/FollowUpStatus";
+import AddNewEvent from "./components/AddNewEvent/AddNewEvent";
+import AdvancePaymnetCus from "./components/AddNewEvent/AdvancePaymnetCus";
 import AssigntoManager from "./components/AddNewEvent/AssigntoManager";
 import Login from "./components/Login/Login";
 import CustomerReport from "./components/DownloadReport/CustomerReport";
 import PaymentReport from "./components/DownloadReport/PaymentReport";
 import CostingForm from "./components/AddNewEvent/CostingForm";
-
+import Header from "./components/Sidebar/Header";
+import "./App.css";
+import { Divider } from "@mui/material/Divider";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Master from "./components/master/Master";
 
 function App() {
   return (
     <>
-      <Router>
-        {/* <Sidebar /> */}
-        <Routes>
-          <Route path="/" element={<Login />} />
-          {/* <Route path="/" element={<AddManager />} /> */}
-          <Route path="/addmanager" element={<AddManager />} />
-          <Route path="/addaccountant" element={<AddAccountant />} />
-          <Route path="/addvendor" element={<AddVendor />} />
-          <Route path="/addexecutive" element={<AddExecutive />} />
-          <Route path="/accountantdetails" element={<AccountantDetails />} />
-          <Route path="/managerdetails" element={<ManagerDetails />} />
-          <Route path="/executicedetails" element={<ExecutiveDetails />} />
-          <Route path="/executive/:_id" element={<ExecutiveDetailPage />} />
-          <Route path="/addenquiry" element={<Enquiry />} />
-          <Route path="/addevent" element={<AddEvent />} />
-          <Route path="/manager/:_id" element={<ManagerDetailPage />} />
-          <Route path="/accountant/:_id" element={<AccountantDetailPage />} />
-          <Route path="/quotation" element={<ViewEnquiry />} />
-          <Route path="/quotationform/:_id" element={<MakeQuotation />} />
-          <Route path="/advancepayment" element={<AdvancePaymentForm />} />
-          <Route path="/orderform" element={<OrderForm />} />
-          <Route path="/addsalary/" element={<AddSalary />} />
-          <Route path="/vendordetails" element={<VendorDetails />} />
-          <Route path="/vendor/:_id" element={<VendorDetailPage />} />
-          <Route path="/view-more/:_id" element={<ViewVendorPayment />} />
-          <Route path="/viewevent" element={<EventDetails />} />
-          <Route path="/event-more-details/:eventId" element={<EventMoreDetails />} />
-          <Route path="/add-expense/:eventId" element={<AddExpense />} />
-          <Route path="/expenses/:eventId" element={<ExpenseList />} />
-          <Route path="/viewsalary/" element={<ViewSalary />} />
-          <Route path="/vendorpayment" element={<VendorPayment />} />
-          <Route path="/viewvendorpayment" element={<VendorPaymentView />} />
-          <Route path="/addinventory" element={<AddInventory />} />
-          <Route path="/godown" element={<GodownInventory />} />
+      <div className="PReadd">
+        <Router>
+          {/*      <Header />
+           */}
+          <Routes>
+            <Route path="/" element={<Login />} />
+            {/* <Route path="/" element={<AddManager />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/viewinventory" element={<ViewInventory />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/viewattendance" element={<ViewAttendance />} />
-          <Route path="/updatetask" element={<UpdateTaskPage />} />
-          <Route path="/viewtask" element={<ViewTaskPage />} />
-          <Route path="/vendorinventory" element={<VendorInventory />} />
+            <Route path="/addmanager" element={<AddManager />} />
+            <Route path="/addaccountant" element={<AddAccountant />} />
+            <Route path="/addvendor" element={<AddVendor />} />
+            <Route path="/addexecutive" element={<AddExecutive />} />
+            <Route path="/accountantdetails" element={<AccountantDetails />} />
+            <Route path="/managerdetails" element={<ManagerDetails />} />
+            <Route path="/executicedetails" element={<ExecutiveDetails />} />
+            <Route path="/executive/:_id" element={<ExecutiveDetailPage />} />
+            <Route path="/addenquiry" element={<Enquiry />} />
+            <Route path="/addevent" element={<AddEvent />} />
+            <Route path="/manager/:_id" element={<ManagerDetailPage />} />
+            <Route path="/accountant/:_id" element={<AccountantDetailPage />} />
+            <Route path="/quotation" element={<ViewEnquiry />} />
+            <Route path="/quotationform/:_id" element={<MakeQuotation />} />
+            <Route path="/advancepayment" element={<AdvancePaymentForm />} />
+            <Route path="/orderform" element={<OrderForm />} />
+            <Route path="/addsalary/" element={<AddSalary />} />
+            <Route path="/vendordetails" element={<VendorDetails />} />
+            <Route path="/vendor/:_id" element={<VendorDetailPage />} />
+            <Route path="/view-more/:_id" element={<ViewVendorPayment />} />
+            <Route path="/viewevent" element={<EventDetails />} />
+            <Route
+              path="/event-more-details/:eventId"
+              element={<EventMoreDetails />}
+            />
+            <Route path="/add-expense/:eventId" element={<AddExpense />} />
+            <Route path="/expenses/:eventId" element={<ExpenseList />} />
+            <Route path="/viewsalary/" element={<ViewSalary />} />
+            <Route path="/vendorpayment" element={<VendorPayment />} />
+            <Route path="/viewvendorpayment" element={<VendorPaymentView />} />
+            <Route path="/addinventory" element={<AddInventory />} />
+            <Route path="/godown" element={<GodownInventory />} />
 
-          <Route path="/quotationform" element={<QuotationForm />}/>
-          <Route path="/product" element={<Product />}/>
-          <Route path="/eventreport" element={<EventReport />}/>
-          <Route path="/vendorpaymentreport" element={<VendorPaymentReport />}></Route>
-          <Route path="/managerreport" element={<ManagerReport />}></Route>
-          <Route path="/Enquiryreport" element={<EnquiryReport />}></Route>
-          <Route path="/newgodown" element={<NewGodowns />}/>
-          <Route path="/createquotation" element={<CreateQuotation />}/>
-          <Route path="/followupstatus" element={<FollowUpStatus />}/>
-          <Route path="/addnewevent" element={<AddNewEvent />}/>
-          <Route path="/advpaymentcus" element={<AdvancePaymnetCus />}/>
-          <Route path="/assignmanager" element={<AssigntoManager />}/>
-          <Route path="/customerreport" element={<CustomerReport />}/>
-          <Route path="/paymentreport" element={<PaymentReport />}/>
-          <Route path="/costingform" element={<CostingForm />}/>
-          {/* **************** */}
-        </Routes>
+            <Route path="/viewinventory" element={<ViewInventory />} />
+            <Route path="/attendance" element={<Attendance />} />
+            <Route path="/viewattendance" element={<ViewAttendance />} />
+            <Route path="/updatetask" element={<UpdateTaskPage />} />
+            <Route path="/viewtask" element={<ViewTaskPage />} />
+            <Route path="/vendorinventory" element={<VendorInventory />} />
 
-      </Router>
+            <Route path="/quotationform" element={<QuotationForm />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/eventreport" element={<EventReport />} />
+            <Route
+              path="/vendorpaymentreport"
+              element={<VendorPaymentReport />}
+            ></Route>
+            <Route path="/managerreport" element={<ManagerReport />}></Route>
+            <Route path="/Enquiryreport" element={<EnquiryReport />}></Route>
+            <Route path="/newgodown" element={<NewGodowns />} />
+            <Route path="/createquotation" element={<CreateQuotation />} />
+            <Route path="/followupstatus" element={<FollowUpStatus />} />
+            <Route path="/addnewevent" element={<AddNewEvent />} />
+            <Route path="/advpaymentcus" element={<AdvancePaymnetCus />} />
+            <Route path="/assignmanager" element={<AssigntoManager />} />
+            <Route path="/customerreport" element={<CustomerReport />} />
+            <Route path="/paymentreport" element={<PaymentReport />} />
+            <Route path="/costingform" element={<CostingForm />} />
+            <Route path="/master" element={<Master />}/>
+            {/* **************** */}
+          </Routes>
+        </Router>
+      </div>
     </>
   );
 }

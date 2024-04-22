@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Form, Button, Alert  } from "react-bootstrap";
-import "./AddExecutive.css";
+import { Form, Button, Alert } from "react-bootstrap";
+// import "./AddExecutive.css";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar"
-
+import Header from "../Sidebar/Header";
 
 const AddExecutive = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -45,7 +44,6 @@ const AddExecutive = () => {
     return true;
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -76,9 +74,9 @@ const AddExecutive = () => {
       );
 
       if (response.status === 200) {
-         // Show success message
-      setSuccessMessage("Data submitted successfully!");
-      setShowSuccessAlert(true);
+        // Show success message
+        setSuccessMessage("Data submitted successfully!");
+        setShowSuccessAlert(true);
         handleDiscard();
       } else {
         alert("Error while submitting data.");
@@ -136,213 +134,190 @@ const AddExecutive = () => {
   ];
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2>Add Executive</h2>
-      {showSuccessAlert && (
-        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
-          {successMessage}
-        </Alert>
-      )}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="fname">
-          <Form.Label>
-            First Name <span style={{ color: "red" }}>*</span>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            value={fname}
-            onChange={(e) => setfname(e.target.value)}
-            placeholder="Enter first name"
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="lname">
-          <Form.Label>
-            Last Name <span style={{ color: "red" }}>*</span>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            value={lname}
-            onChange={(e) => setlname(e.target.value)}
-            placeholder="Enter last name"
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="email">
-          <Form.Label>
-            Email
-          </Form.Label>
-          <Form.Control
-            type="email"
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-            placeholder="Enter email"
-
-          />
-        </Form.Group>
-
-        <Form.Group controlId="contact">
-          <Form.Label>
-            Phone<span style={{ color: "red" }}>*</span>
-          </Form.Label>
-          <Form.Control
-            type="tel"
-            value={contact}
-            onChange={(e) => setcontact(e.target.value)}
-            placeholder="Enter phone"
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="address">
-          <Form.Label>
-            Address
-          </Form.Label>
-          <Form.Control
-            type="text"
-            value={address}
-            onChange={(e) => setaddress(e.target.value)}
-            placeholder="Enter address"
-
-          />
-        </Form.Group>
-
-        <Form.Group controlId="city">
-          <Form.Label>
-            City
-          </Form.Label>
-          <Form.Control
-            type="text"
-            value={city}
-            onChange={(e) => setcity(e.target.value)}
-            placeholder="Enter city"
-
-          />
-        </Form.Group>
-
-        <Form.Group controlId="state">
-          <Form.Label>
-            State
-          </Form.Label>
-          <Form.Control
-            as="select"
-            value={state}
-            onChange={(e) => setstate(e.target.value)}
-
+      <Header />{" "}
+      <div className="container mt-5">
+        <h2>Add Executive</h2>
+        {showSuccessAlert && (
+          <Alert
+            variant="success"
+            onClose={() => setShowSuccessAlert(false)}
+            dismissible
           >
-            {indianStates.map((state) => (
-              <option key={state} value={state}>
-                {state}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-        <div>
-          <hr />
-          <br />
-          <h3>Bank Details:</h3>
-          <Form.Group controlId="holder_name">
+            {successMessage}
+          </Alert>
+        )}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="fname">
             <Form.Label>
-              Account Holder Name
+              First Name <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={holder_name}
-              onChange={(e) => setholder_name(e.target.value)}
-              placeholder="Enter account holder name"
-
+              value={fname}
+              onChange={(e) => setfname(e.target.value)}
+              placeholder="Enter first name"
+              required
             />
           </Form.Group>
-          <Form.Group controlId="account_number">
+
+          <Form.Group controlId="lname">
             <Form.Label>
-              Account Number
+              Last Name <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
               type="text"
-              value={account_number}
-              onChange={(e) => setaccount_number(e.target.value)}
-              placeholder="Enter account number"
-
+              value={lname}
+              onChange={(e) => setlname(e.target.value)}
+              placeholder="Enter last name"
+              required
             />
           </Form.Group>
 
-          <Form.Group controlId="IFSC_code">
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+              placeholder="Enter email"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="contact">
             <Form.Label>
-              IFSC Code
+              Phone<span style={{ color: "red" }}>*</span>
             </Form.Label>
+            <Form.Control
+              type="tel"
+              value={contact}
+              onChange={(e) => setcontact(e.target.value)}
+              placeholder="Enter phone"
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="address">
+            <Form.Label>Address</Form.Label>
             <Form.Control
               type="text"
-              value={IFSC_code}
-              onChange={(e) => setIFSC_code(e.target.value)}
-              placeholder="Enter IFSC code"
-
+              value={address}
+              onChange={(e) => setaddress(e.target.value)}
+              placeholder="Enter address"
             />
           </Form.Group>
 
-          <Form.Group controlId="bank_name">
-            <Form.Label>
-              Bank Name
-            </Form.Label>
+          <Form.Group controlId="city">
+            <Form.Label>City</Form.Label>
             <Form.Control
               type="text"
-              value={bank_name}
-              onChange={(e) => setbank_name(e.target.value)}
-              placeholder="Enter bank name"
-
+              value={city}
+              onChange={(e) => setcity(e.target.value)}
+              placeholder="Enter city"
             />
           </Form.Group>
 
-          <Form.Group controlId="branch_name">
-            <Form.Label>
-              Branch Name
-            </Form.Label>
+          <Form.Group controlId="state">
+            <Form.Label>State</Form.Label>
             <Form.Control
-              type="text"
-              value={branch_name}
-              onChange={(e) => setbranch_name(e.target.value)}
-              placeholder="Enter branch name"
-
-            />
+              as="select"
+              value={state}
+              onChange={(e) => setstate(e.target.value)}
+            >
+              {indianStates.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </Form.Control>
           </Form.Group>
-          <br />
-          <hr />
-        </div>
+          <div>
+            <hr />
+            <br />
+            <h3>Bank Details:</h3>
+            <Form.Group controlId="holder_name">
+              <Form.Label>Account Holder Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={holder_name}
+                onChange={(e) => setholder_name(e.target.value)}
+                placeholder="Enter account holder name"
+              />
+            </Form.Group>
+            <Form.Group controlId="account_number">
+              <Form.Label>Account Number</Form.Label>
+              <Form.Control
+                type="text"
+                value={account_number}
+                onChange={(e) => setaccount_number(e.target.value)}
+                placeholder="Enter account number"
+              />
+            </Form.Group>
 
-        <Form.Group controlId="profilePicture">
-          <Form.Label>Profile Picture</Form.Label>
-          <div className="custom-file">
-            <Form.Control
-              type="file"
-              className="custom-file-input"
-              onChange={handleFileChange}
-              accept="image/*"
-            />
-            <Form.Label className="custom-file-label">
-              {profilePicture ? profilePicture.name : "Choose File"}
-            </Form.Label>
-            {profilePicture && (
-              <button
-                type="button"
-                className="btn btn-link btn-sm"
-                onClick={handleRemoveProfilePicture}
-              >
-                Remove
-              </button>
-            )}
+            <Form.Group controlId="IFSC_code">
+              <Form.Label>IFSC Code</Form.Label>
+              <Form.Control
+                type="text"
+                value={IFSC_code}
+                onChange={(e) => setIFSC_code(e.target.value)}
+                placeholder="Enter IFSC code"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="bank_name">
+              <Form.Label>Bank Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={bank_name}
+                onChange={(e) => setbank_name(e.target.value)}
+                placeholder="Enter bank name"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="branch_name">
+              <Form.Label>Branch Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={branch_name}
+                onChange={(e) => setbranch_name(e.target.value)}
+                placeholder="Enter branch name"
+              />
+            </Form.Group>
+            <br />
+            <hr />
           </div>
-        </Form.Group>
 
-        <Button className="my-4" variant="info" type="submit">
-          Submit
-        </Button>
-        <Button variant="info" className="mx-5" onClick={handleDiscard}>
-          Discard
-        </Button>
-      </Form>
-    </div>
+          <Form.Group controlId="profilePicture">
+            <Form.Label>Profile Picture</Form.Label>
+            <div className="custom-file">
+              <Form.Control
+                type="file"
+                className="custom-file-input"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <Form.Label className="custom-file-label">
+                {profilePicture ? profilePicture.name : "Choose File"}
+              </Form.Label>
+              {profilePicture && (
+                <button
+                  type="button"
+                  className="btn btn-link btn-sm"
+                  onClick={handleRemoveProfilePicture}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          </Form.Group>
+
+          <Button className="my-4" variant="info" type="submit">
+            Submit
+          </Button>
+          <Button variant="info" className="mx-5" onClick={handleDiscard}>
+            Discard
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar"
+import Header from "../Sidebar/Header";
 
 const ManagerDetailPage = () => {
   const location = useLocation();
@@ -50,7 +50,7 @@ const ManagerDetailPage = () => {
 
   return (
     <>
-    <Sidebar />
+      <Header />
     <div className="container mt-5">
       <h2>
         {manager.fname} {manager.lname} Details

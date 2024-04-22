@@ -16,9 +16,9 @@ const EnquirySchema = new Schema({
     type: String,
     default: ""
   },
-  hot_input_value : {
-    type : String,
-    default : ""
+  hot_input_value: {
+    type: String,
+    default: ""
   },
 });
 
@@ -94,13 +94,13 @@ const AdvPaymentSchema = new Schema({
   details: {
     type: String
   },
-  cash_whome_to_submit : String,
-  transaction_id :String,
-  contact :String,
-  event_Type : String,
-  guest_number : String,
-  venue : String,
-  event_date : String,
+  cash_whome_to_submit: String,
+  transaction_id: String,
+  contact: String,
+  event_Type: String,
+  guest_number: String,
+  venue: String,
+  event_date: String,
 });
 
 const EventSchema = new Schema({
@@ -118,7 +118,7 @@ const EventSchema = new Schema({
   guest_number: Number,
   budget: Number,
   address: String,
-  status : String
+  status: String
 });
 
 const OrderSchema = new Schema({
@@ -133,8 +133,8 @@ const OrderSchema = new Schema({
   total_amt: Number,
   address: String,
   event_name: String,
-  assign_manager_name :String,
-  assign_manager_Id :String,
+  assign_manager_name: String,
+  assign_manager_Id: String,
 
 });
 
@@ -215,8 +215,8 @@ const ManagerDetailsSchema = new Schema({
   fname: String,
   lname: String,
   email: String,
+  password : String,
   contact: Number,
-  // profile_image: String,
   address: String,
   city: String,
   state: String,
@@ -288,15 +288,15 @@ const VendorPaymentSchema = new Schema({
   fname: String,
   lname: String,
   event_name: String,
-  vendor_name :String,
+  vendor_name: String,
   paid_amt: Number,
   rem_amt: Number,
   date: String,
   description: String,
   salary: Number,
-  advance_payment :String,
-  time :String,
-  bankAccount_Name:String,
+  advance_payment: String,
+  time: String,
+  bankAccount_Name: String,
 
 });
 
@@ -381,7 +381,22 @@ const AddEventMaster = new Schema({
   eventName: { type: String, required: true, }
 })
 
+const advancePaymantManager = new Schema({
+  manager_Name: { type: String },
+  manager_Id: { type: String },
+  EventName: { type: String },
+  EventId: { type: String },
+  Date: { type: String },
+  Time: { type: String },
+  Bank_Name: { type: String },
+  paid_Amount: { type: Number },
+  adv_Payment: { type: Number },
+  Pending_Amount: { type: Number },
+  description: { type: String }
+})
+
 module.exports = {
+  advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),

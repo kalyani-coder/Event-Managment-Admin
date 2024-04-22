@@ -4,7 +4,47 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
-const {AddEventMaster} =  require('../models/newModels')
+const {AddEventMaster,advancePaymantManager} =  require('../models/newModels')
+const { ManagerDetails } = require("../models/newModels");
+
+// DELETE ROUTE FOR MANAGER 
+
+router.delete('/addmanager/:id', async (req, res) => {
+  const deletedManagerId = req.params.id;
+
+  try {
+    const deletedManager = await ManagerDetails.findByIdAndDelete(deletedManagerId);
+
+    if (!deletedManager) {
+      return res.status(404).json({message: 'Payment not found'});
+    }
+
+    res.status(200).json({ message: 'Payment deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
+
+
+
+// DELETE ROUTE FOR ADVPAYMENT 
+router.delete('/advpaymanager/:id', async (req, res) => {
+  const deletedAdvPayManagerId = req.params.id;
+
+  try {
+    const deletedEventName = await advancePaymantManager.findByIdAndDelete(deletedAdvPayManagerId);
+
+    if (!deletedEventName) {
+      return res.status(404).json({message: 'Payment not found'});
+    }
+
+    res.status(200).json({ message: 'Payment deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
 
 
 router.delete('/addeventmaster/:id', async (req, res) => {

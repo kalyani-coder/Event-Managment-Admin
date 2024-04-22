@@ -6,13 +6,35 @@ const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
 const { QuatationInfo } = require("../models/newModels");
-const { AddEventMaster } = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails } = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
 
-// AddEventName route for get 
+// GEt  for manager all 
+router.get("/addmanager", async (req, res) => {
+  try {
+    const Manager = await ManagerDetails.find()
+    res.status(201).json(Manager)
 
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+
+
+//Advance payment for manager GET route
+router.get("/advpaymanager", async (req, res) => {
+  try {
+    const advpayManager = await advancePaymantManager.find()
+    res.status(201).json(advpayManager)
+
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+
+// AddEventName route for get 
 router.get("/addeventmaster", async (req, res) => {
   try {
     const addEvent = await AddEventMaster.find()
@@ -20,7 +42,8 @@ router.get("/addeventmaster", async (req, res) => {
   } catch (e) {
     res.status(404).json({ message: "Internal server Error " })
   }
-}) 
+})
+
 
 // get in addvendor api 
 router.get("/addvendor", async (req, res) => {

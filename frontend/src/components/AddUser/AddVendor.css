@@ -1,9 +1,4 @@
-/* .container {
-    width: 80%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-left: 270px !important;
-} */
+
 
 /* new css  */
 .container {
@@ -26,12 +21,3 @@
     }
 }
 
-/* @media (max-width: 768px){
-.container {
-    width: 182%;
-    padding-right: 0px;
-    padding-left: 25px;
-    margin-right: auto !important;
-    margin-left: auto !important;
-}
-} */

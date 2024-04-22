@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../../Sidebar/Sidebar";
+import Header from "../../Sidebar/Header";
 
 const VendorDetails = () => {
   const [vendorData, setVendorData] = useState([]);
@@ -36,60 +36,53 @@ const VendorDetails = () => {
 
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <h2 className="mb-4">Vendor Details</h2>
-      <div className="mb-4">
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by company name or contact person"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      <Header />
+      <div className="container mt-5">
+        <h2 className="mb-4">Vendor Details</h2>
+        <div className="mb-4">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by company name or contact person"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
+
+        {filteredVendorData.length > 0 ? (
+          filteredVendorData.map((vendor) => (
+            <Card key={vendor._id} style={{ width: "100%" }}>
+              <Card.Body>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="">
+                    <Card.Title>{vendor.company_name}</Card.Title>
+                    <Card.Subtitle className="text-muted">
+                      Contact Person Name: {vendor.contact_person_name}
+                    </Card.Subtitle>
+                    <Card.Text>Contact: {vendor.contact}</Card.Text>
+                    {/* <Card.Text>Email: {vendor.gmail}</Card.Text> */}
+                  </div>
+                  <div className="">
+                    <Link
+                      to={{
+                        pathname: `/vendor/${vendor._id}`,
+                      }}
+                      state={vendor}
+                      className="btn btn-info"
+                    >
+                      View more{" "}
+                    </Link>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          ))
+        ) : (
+          <p className="text-center">No vendor details found.</p>
+        )}
       </div>
-
-      {filteredVendorData.length > 0 ? (
-        filteredVendorData.map((vendor) => (
-          <Card
-            key={vendor._id}
-            style={{ width: "100%", }}
-          >
-            <Card.Body>
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="">
-                  <Card.Title>{vendor.company_name}</Card.Title>
-                  <Card.Subtitle className="text-muted">
-                    Contact Person Name: {vendor.contact_person_name}
-                  </Card.Subtitle>
-                  <Card.Text>Contact: {vendor.contact}</Card.Text>
-                  {/* <Card.Text>Email: {vendor.gmail}</Card.Text> */}
-                </div>
-                <div className="">
-                  <Link
-                    to={{
-                      pathname: `/vendor/${vendor._id}`,
-                    }}
-                    state={vendor}
-                    className="btn btn-info"
-                  >
-                    View more{" "}
-                  </Link>
-
-                </div>
-              </div>
-
-
-
-            </Card.Body>
-          </Card>
-        ))
-      ) : (
-        <p className="text-center">No vendor details found.</p>
-      )}
-    </div>
     </>
   );
 };

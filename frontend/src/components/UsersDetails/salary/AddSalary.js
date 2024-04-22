@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import Sidebar from "../../Sidebar/Sidebar";
+import Header from "../../Sidebar/Header";
 
 const AddSalary = () => {
   const location = useLocation();
@@ -9,16 +9,16 @@ const AddSalary = () => {
 
   const getCurrentDate = () => {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   };
 
   const getCurrentTime = () => {
     const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
     return `${hh}:${mm}`;
   };
 
@@ -48,17 +48,17 @@ const AddSalary = () => {
   }, [managerDetails]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/managerdetails')
-      .then(response => response.json())
-      .then(data => setManagerOptions(data));
+    fetch("http://localhost:5000/api/managerdetails")
+      .then((response) => response.json())
+      .then((data) => setManagerOptions(data));
 
-    fetch('http://localhost:5000/api/accountant')
-      .then(response => response.json())
-      .then(data => setAccountantOptions(data));
+    fetch("http://localhost:5000/api/accountant")
+      .then((response) => response.json())
+      .then((data) => setAccountantOptions(data));
 
-    fetch('http://localhost:5000/api/executive')
-      .then(response => response.json())
-      .then(data => setExecutiveOptions(data));
+    fetch("http://localhost:5000/api/executive")
+      .then((response) => response.json())
+      .then((data) => setExecutiveOptions(data));
   }, []);
 
   const handleSubmit = (e) => {
@@ -67,7 +67,7 @@ const AddSalary = () => {
     const salaryData = {
       // fname,
       // lname,
-      
+
       type_Of_Salary: selectedOption,
       salary_person_name: salaryType,
       salary,
@@ -86,7 +86,7 @@ const AddSalary = () => {
       .post("http://localhost:5000/api/staffsalary", salaryData)
       .then((response) => {
         console.log("Salary added successfully:", response.data);
-        alert("Salary Added Successfully")
+        alert("Salary Added Successfully");
       })
       .catch((error) => {
         console.error("Error adding salary:", error);
@@ -94,15 +94,16 @@ const AddSalary = () => {
   };
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Add Salary</h5>
-              <form onSubmit={handleSubmit}>
-              <div className="form-group">
+      <Header />
+
+      <div className="container mt-5">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Add Salary</h5>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
                     <label htmlFor="typeOfSalary">Add Salary</label>
                     <select
                       className="form-control"
@@ -145,8 +146,8 @@ const AddSalary = () => {
                         ))}
                     </select>
                   </div>
-               
-                {/* <div className="form-group">
+
+                  {/* <div className="form-group">
                   <label htmlFor="lname">Last Name<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="text"
@@ -156,67 +157,64 @@ const AddSalary = () => {
                     required
                   />
                 </div> */}
-                <div className="form-group">
-                  <label htmlFor="date">Date</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="date">Date</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="time">Time</label>
-                  <input
-                    type="time"
-                    className="form-control"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="month">Salary of Month</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="salary">Salary Amount</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={salary}
-                    onChange={(e) => setsalary(e.target.value)}
-
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="adv_payment">Advance Payment</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={adv_payment}
-                    onChange={(e) => setadv_payment(e.target.value)}
-
-                  />
-                </div>
-                <button className="btn btn-info" type="submit">
-                  Add Salary
-                </button>
-              </form>
+                  <div className="form-group">
+                    <label htmlFor="time">Time</label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="month">Salary of Month</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={month}
+                      onChange={(e) => setMonth(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="salary">Salary Amount</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={salary}
+                      onChange={(e) => setsalary(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="adv_payment">Advance Payment</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={adv_payment}
+                      onChange={(e) => setadv_payment(e.target.value)}
+                    />
+                  </div>
+                  <button className="btn btn-info" type="submit">
+                    Add Salary
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Salary Details</h5>
-              {/* <div className="form-group">
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Salary Details</h5>
+                {/* <div className="form-group">
                 <label htmlFor="salaryTaken">Salary Taken</label>
                 <input
                   type="text"
@@ -226,53 +224,49 @@ const AddSalary = () => {
 
                 />
               </div> */}
-              <div className="form-group">
-                <label htmlFor="adv_taken">Advance Taken</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={adv_taken}
-                  onChange={(e) => setadv_taken(e.target.value)}
-
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="incentive">Incentive Amount</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={incentive}
-                  onChange={(e) => setincentive(e.target.value)}
-
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="deduct_amount">Deduct Amount</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={deduct_amount}
-                  onChange={(e) => setdeduct_amount(e.target.value)}
-
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="balance_amount">Balance Amount</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={balance_amount}
-                  onChange={(e) => setBalanceAmount(e.target.value)}
-
-                />
+                <div className="form-group">
+                  <label htmlFor="adv_taken">Advance Taken</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={adv_taken}
+                    onChange={(e) => setadv_taken(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="incentive">Incentive Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={incentive}
+                    onChange={(e) => setincentive(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="deduct_amount">Deduct Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={deduct_amount}
+                    onChange={(e) => setdeduct_amount(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="balance_amount">Balance Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={balance_amount}
+                    onChange={(e) => setBalanceAmount(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
-}
+};
 
 export default AddSalary;

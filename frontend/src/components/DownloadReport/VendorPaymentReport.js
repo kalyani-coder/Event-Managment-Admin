@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Sidebar/Header";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -236,7 +236,8 @@ const VendorPaymentReport = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container mt-5">
         <h2>Vendor Payment Report</h2>
         <div className="d-flex flex-wrap align-items-center">

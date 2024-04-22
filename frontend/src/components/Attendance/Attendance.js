@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as XLSX from 'xlsx';
-import Sidebar from "../Sidebar/Sidebar"
-
+import * as XLSX from "xlsx";
+import Header from "../Sidebar/Header";
 
 const AttendanceBox = ({ attendanceData, whichbox, marker, date }) => {
   const [filteredData, setFilteredData] = useState([]);
@@ -20,19 +19,19 @@ const AttendanceBox = ({ attendanceData, whichbox, marker, date }) => {
           style={
             item.present === item.real
               ? {
-                background: index % 2 ? "#e6e6e6" : "#f0f5f1",
-                cursor: "pointer",
-              }
+                  background: index % 2 ? "#e6e6e6" : "#f0f5f1",
+                  cursor: "pointer",
+                }
               : {
-                cursor: "pointer",
-                background: item.present
-                  ? index % 2
-                    ? "#e3f6ff"
-                    : "#c9eeff"
-                  : index % 2
+                  cursor: "pointer",
+                  background: item.present
+                    ? index % 2
+                      ? "#e3f6ff"
+                      : "#c9eeff"
+                    : index % 2
                     ? "#ffe3ed"
                     : "#ffc9cd",
-              }
+                }
           }
         >
           <p
@@ -56,7 +55,7 @@ const AttendanceBox = ({ attendanceData, whichbox, marker, date }) => {
 };
 
 const AttendancePage = () => {
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [attendanceData, setAttendanceData] = useState([]);
 
   useEffect(() => {
@@ -104,96 +103,101 @@ const AttendancePage = () => {
     const sheetData = attendanceData.map(({ id, name, present }) => ({
       Date: date,
       Name: name,
-      Status: present ? 'Present' : 'Absent',
+      Status: present ? "Present" : "Absent",
     }));
 
     const ws = XLSX.utils.json_to_sheet(sheetData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'AttendanceSheet');
+    XLSX.utils.book_append_sheet(wb, ws, "AttendanceSheet");
     XLSX.writeFile(wb, `AttendanceSheet_${date}.xlsx`);
   };
   return (
     <>
-    <Sidebar />
-    <div className="container mt-5 d-flex justify-content-center flex-column">
-      <div className="d-flex justify-content-between">
-        <h1>Attendance Sheet</h1>
-        <button onClick={exportToExcel}>Export to Excel</button>
-      </div>
-      <div
-        className="mt-3"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
-          background: "white",
-          borderRadius: "4px",
-          width: "100%",
-        }}
-      >
-        <input
-          type="date"
-          placeholder={date}
-          onChange={(e) => {
-            e.preventDefault();
-            const [year, month, day] = e.target.value.split("-");
-            handleDateChange(`${day}-${month}-${year}`);
-          }}
+      <Header />
+
+      <div className="container mt-5 d-flex justify-content-center flex-column">
+        <div className="d-flex justify-content-between">
+          <h1>Attendance Sheet</h1>
+          <button onClick={exportToExcel}>Export to Excel</button>
+        </div>
+        <div
+          className="mt-3"
           style={{
-            outline: "none",
-            border: "none",
+            display: "flex",
+            flexDirection: "column",
+            padding: "1rem",
             background: "white",
-            color: "black",
+            borderRadius: "4px",
+            width: "100%",
           }}
-          className="p-2 mx-0 mb-2 rounded-lg"
-        ></input>
-        <div className="row p-0 m-0">
-          <div className="col-sm-12 col-md-6 my-2 p-0 pt-3 p-1">
-            <p
-              style={{
-                fontWeight: "bold",
-                fontSize: "20px",
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              Absent
-            </p>
-            <AttendanceBox
-              attendanceData={attendanceData}
-              whichbox={false}
-              marker={marker}
-              date={date}
-            />
-          </div>
-          <div className="col-sm-12 col-md-6 my-2 pt-3 p-1">
-            <p
-              style={{
-                fontWeight: "bold",
-                fontSize: "20px",
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              Present
-            </p>
-            <AttendanceBox
-              attendanceData={attendanceData}
-              whichbox={true}
-              marker={marker}
-              date={date}
-            />
+        >
+          <input
+            type="date"
+            placeholder={date}
+            onChange={(e) => {
+              e.preventDefault();
+              const [year, month, day] = e.target.value.split("-");
+              handleDateChange(`${day}-${month}-${year}`);
+            }}
+            style={{
+              outline: "none",
+              border: "none",
+              background: "white",
+              color: "black",
+            }}
+            className="p-2 mx-0 mb-2 rounded-lg"
+          ></input>
+          <div className="row p-0 m-0">
+            <div className="col-sm-12 col-md-6 my-2 p-0 pt-3 p-1">
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                Absent
+              </p>
+              <AttendanceBox
+                attendanceData={attendanceData}
+                whichbox={false}
+                marker={marker}
+                date={date}
+              />
+            </div>
+            <div className="col-sm-12 col-md-6 my-2 pt-3 p-1">
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                Present
+              </p>
+              <AttendanceBox
+                attendanceData={attendanceData}
+                whichbox={true}
+                marker={marker}
+                date={date}
+              />
+            </div>
           </div>
         </div>
+        <input
+          type="button"
+          className="rounded-lg outline-none border-0 p-2"
+          value={"Apply Changes"}
+          onClick={submit}
+          style={{
+            width: "fit-content",
+            marginTop: "1rem",
+            background: "white",
+          }}
+        ></input>
       </div>
-      <input
-        type="button"
-        className="rounded-lg outline-none border-0 p-2"
-        value={"Apply Changes"}
-        onClick={submit}
-        style={{ width: "fit-content", marginTop: "1rem", background: "white" }}
-      ></input>
-    </div>
     </>
   );
 };

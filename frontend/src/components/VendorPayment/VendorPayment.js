@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Sidebar/Header";
 import { Form } from "react-bootstrap";
 
 const VendorPayment = () => {
@@ -22,11 +22,11 @@ const VendorPayment = () => {
   const calculateRemainingAmount = (paidAmt, advancePayment) => {
     const paid = parseInt(paidAmt);
     const advance = parseInt(advancePayment);
-  
+
     if (isNaN(paid) || isNaN(advance)) {
       return 0;
     }
-  
+
     return paid - advance;
   };
 
@@ -66,7 +66,9 @@ const VendorPayment = () => {
     const fetchEventsForVendor = async () => {
       try {
         if (formData.selectedVendor) {
-          const response = await axios.get(`http://localhost:5000/api/event?eventName=${formData.selectedVendor}`);
+          const response = await axios.get(
+            `http://localhost:5000/api/event?eventName=${formData.selectedVendor}`
+          );
           setEvents(response.data);
         }
       } catch (error) {
@@ -104,7 +106,7 @@ const VendorPayment = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       const response = await axios.post(
         "http://localhost:5000/api/vendorpayment",
@@ -120,7 +122,7 @@ const VendorPayment = () => {
           description: formData.description,
         }
       );
-  
+
       if (response.status === 200) {
         setShowPopup(true);
         setFormData(initialFormData);
@@ -129,7 +131,7 @@ const VendorPayment = () => {
       console.error("Error saving data:", error);
     }
   };
-  
+
   const handleDiscard = () => {
     setFormData(initialFormData);
   };
@@ -151,7 +153,8 @@ const VendorPayment = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
+
       <div className="container">
         <form className="order p-4 " onSubmit={handleSubmit}>
           <h2>Vendor Payment</h2>
@@ -193,6 +196,8 @@ const VendorPayment = () => {
               ))}
             </select>
           </div>
+
+
           <div className="row mb-2">
             <div className="col">
               <div className="form-group">
@@ -219,6 +224,8 @@ const VendorPayment = () => {
               </div>
             </div>
           </div>
+
+          
           <div className="form-group">
             <label htmlFor="bankaccount">Bank Account</label>
             <input
@@ -281,10 +288,7 @@ const VendorPayment = () => {
           >
             Discard
           </button>
-          <button
-            className="btn btn-primary action-btn"
-            type="submit"
-          >
+          <button className="btn btn-primary action-btn" type="submit">
             Save
           </button>
         </form>
