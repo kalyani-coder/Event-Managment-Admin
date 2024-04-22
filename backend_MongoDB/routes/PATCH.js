@@ -5,25 +5,107 @@ const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
+const { AddEventMaster,advancePaymantManager } = require("../models/newModels")
+const { ManagerDetails } = require("../models/newModels");
 
-  
+
+// PATCH for manager api 
+router.patch("/addmanager/:id", async (req, res) => {
+  try {
+    const managerId = req.params.id;
+    const updatedData = req.body;
+
+    const updateManager = await ManagerDetails.findByIdAndUpdate(
+      managerId,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updateManager) {
+      return res.status(404).json({ message: "Manager not found" });
+    }
+
+    res.status(200).json(updateManager);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update Manager" });
+  }
+});
+
+//PATCH FOR ADVPAYMANAGER 
+router.patch("/advpaymanager/:id", async (req, res) => {
+  try {
+    const advpaymanagerId = req.params.id;
+    const updatedData = req.body;
+
+    const updateEvent = await advancePaymantManager.findByIdAndUpdate(
+      advpaymanagerId,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updateEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.status(200).json(updateEvent);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update event" });
+  }
+});
+
+
+
+//PATCH FOR ADDEVENTMASTER
+router.patch("/addeventmaster/:id", async (req, res) => {
+  try {
+    const eventId = req.params.id;
+    const updatedEventName = req.body.eventName; 
+    const updateEvent = await AddEventMaster.findByIdAndUpdate(
+      eventId,
+      { eventName: updatedEventName },
+      { new: true } 
+    );
+
+    if (!updateEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    res.status(200).json(updateEvent);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update event" });
+  }
+});
+
+//PATCH FOR EVENTMANSTER 
+router.patch("/addeventmaster/:id", async (req, res) => {
+  try {
+    const eventId = req.params.id;
+    const updatedEventName = req.body.eventName; 
+    const updateEvent = await AddEventMaster.findByIdAndUpdate(
+      eventId,
+      { eventName: updatedEventName },
+      { new: true } 
+    );
+
+    if (!updateEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    res.status(200).json(updateEvent);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update event" });
+  }
+});
 
 // PATCH for enquiry /
-
 router.patch("/enquiry/:id", async (req, res) => {
   const enquiryId = req.params.id;
-  
+
   try {
-    // Extract fields to update from the request body
     const updatedFields = FilterBodyByTable({ req, table: "enquiry" });
-    
-    // Update the Enquiry by ID
     const enquiry = await Enquiry.findByIdAndUpdate(enquiryId, updatedFields, { new: true });
-    
     if (!enquiry) {
       return res.status(404).json({ message: "Enquiry not found" });
     }
-    
+
     res.status(200).json(enquiry);
   } catch (error) {
     console.error(error);
@@ -35,13 +117,13 @@ router.patch("/enquiry/:id", async (req, res) => {
 // PATCH route to update a vendor by ID
 router.patch("/addvendor/:vendorId", async (req, res) => {
   const vendorId = req.params.vendorId;
-  const updateFields = req.body; // Assuming you send the fields to update in the request body
+  const updateFields = req.body; 
 
   try {
     const updatedVendor = await AddVendor.findByIdAndUpdate(
       vendorId,
       updateFields,
-      { new: true } // This option returns the updated document
+      { new: true } 
     );
 
     if (!updatedVendor) {
@@ -58,7 +140,7 @@ router.patch("/addvendor/:vendorId", async (req, res) => {
 // PATCH route to update an inventory stock by ID
 router.patch('/inventory-stocks/:stockId', async (req, res) => {
   const stockId = req.params.stockId;
-  const updateFields = req.body; // Assuming you send the fields to update in the request body
+  const updateFields = req.body; 
 
   try {
     const updatedStock = await InventoryStocks.findByIdAndUpdate(
@@ -81,7 +163,7 @@ router.patch('/inventory-stocks/:stockId', async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-    const { Price, Stock_Quantity } = req.body; // Get updated Price and Stock_Quantity from request body
+    const { Price, Stock_Quantity } = req.body; 
 
     // Find the product by ID
     const existingProduct = await InventoryStocks.findById(productId);
@@ -90,10 +172,8 @@ router.patch("/:id", async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    // Calculate the updated quantity by adding the existing quantity and the new quantity
+    // Calculate the updated quantity 
     const updatedQuantity = existingProduct.Stock_Quantity + Stock_Quantity;
-
-    // Update the product with the new Price and calculated Stock_Quantity
     existingProduct.Price = Price;
     existingProduct.Stock_Quantity = updatedQuantity;
     await existingProduct.save();

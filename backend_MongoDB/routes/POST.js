@@ -1,5 +1,8 @@
 const express = require("express");
+const bcrypt = require('bcryptjs'); 
+const jwt = require('jsonwebtoken');
 const router = express.Router();
+JWT_SECRET="vedant"
 
 const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
@@ -11,7 +14,121 @@ const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
-const { QuatationInfo } = require('../models/newModels')
+const { QuatationInfo, advancePaymantManager } = require('../models/newModels')
+
+
+
+// Login with JWT Token
+router.post("/manager/login", async (req, res) => {
+  try {
+      const { email, password } = req.body;
+
+      const manager = await ManagerDetails.findOne({ email });
+      if (!manager) {
+          return res.status(404).json({ message: "Email not found" });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, manager.password);
+      if (!isPasswordValid) {
+          return res.status(401).json({ message: "Incorrect password" });
+      }
+
+      const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
+
+      res.status(200).json({ message: "Login successful",email : manager.email, _id: manager._id, token,  });
+  } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+router.post('/addmanager', async (req, res) => {
+  try {
+    const {
+      fname,
+      lname,
+      email,
+      password,
+      contact,
+      address,
+      city,
+      state,
+      holder_name,
+      account_number,
+      IFSC_code,
+      bank_name,
+      branch_name,
+  
+  } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newManager = new ManagerDetails({
+    fname: fname,
+    lname: lname,
+    email: email,
+    password: hashedPassword,
+    contact: contact,
+    address: address,
+    city: city,
+    state: state,
+    holder_name: holder_name,
+    account_number: account_number,
+    IFSC_code: IFSC_code,
+    bank_name: bank_name,
+    branch_name: branch_name,
+  });
+
+  const savedManager = await newManager.save();
+
+  res.status(201).json({ message: "Manager added successfully" });
+} catch (error) {
+  console.error('Error saving advance payment:', error);
+  res.status(500).json({ message: 'Failed to add Manager' });
+}
+});
+
+
+
+
+
+router.post('/advpaymanager', async (req, res) => {
+  try {
+    const {
+      manager_Name,
+      manager_Id,
+      EventName,
+      EventId,
+      Date,
+      Time,
+      Bank_Name,
+      paid_Amount,
+      adv_Payment,
+      Pending_Amount,
+      description, } = req.body;
+
+    const newAdvancePayment = new advancePaymantManager({
+      manager_Name: manager_Name,
+      manager_Id: manager_Id,
+      EventName: EventName,
+      EventId: EventId,
+      Date: Date,
+      Time: Time,
+      Bank_Name: Bank_Name,
+      paid_Amount: paid_Amount,
+      adv_Payment: adv_Payment,
+      Pending_Amount: Pending_Amount,
+      description: description,
+    });
+
+    const savedAdvancePayment = await newAdvancePayment.save();
+
+    res.status(201).json({ message: "Advanvce payment successfully for manager " });
+  } catch (error) {
+    console.error('Error saving advance payment:', error);
+    res.status(500).json({ message: 'Failed to save advance payment' });
+  }
+});
 
 
 // event add master post route 
@@ -54,7 +171,7 @@ router.post("/addvendor", async (req, res) => {
 // POST route to add QuatationInfo
 router.post("/quatationinfo", async (req, res) => {
   try {
-    
+
     const { quatationInfoData } = req.body;
 
     // Validate and save each quatationInfoData
@@ -271,7 +388,7 @@ router.post("/:table", async (req, res) => {
     table.toLowerCase() === "managerlogin"
   ) {
     res.status(400).send("Bad Request");
-    return;``
+    return; ``
   }
   const Table = FindTable({ table });
   const reqBody = FilterBodyByTable({ req, table });
