@@ -129,7 +129,7 @@ function App() {
             <Route path="/customerreport" element={<CustomerReport />} />
             <Route path="/paymentreport" element={<PaymentReport />} />
             <Route path="/costingform" element={<CostingForm />} />
-            <Route path="/master" element={<Master />}/>
+            <Route path="/master" element={<Master />} />
             {/* **************** */}
           </Routes>
         </Router>

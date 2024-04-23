@@ -25,6 +25,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import GridViewIcon from "@mui/icons-material/GridView";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Header.css";
@@ -42,6 +43,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Dashboard from "./../Dashboard/Dashboard";
 
 const drawerWidth = 240;
 
@@ -189,7 +191,7 @@ export default function Sidenav() {
                 color: "black",
               }}
             >
-              Event Management
+              {activetab}
             </Typography>
           </Toolbar>
         </div>
@@ -221,6 +223,47 @@ export default function Sidenav() {
             </DrawerHeader>
 
             <Divider />
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "DashBoard")}
+              >
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/dashboard"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                      className={
+                        activetab === "Event management"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <GridViewIcon sx={{ color: "#9b59b6" }} />{" "}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="DashBoard"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List>
             <List>
               <ListItem
                 disablePadding
@@ -733,7 +776,6 @@ export default function Sidenav() {
               )}
             </List>
 
-
             <List>
               <ListItem
                 disablePadding
@@ -772,7 +814,6 @@ export default function Sidenav() {
                 </div>
               </ListItem>
 
-
               {activetab == "Salary" && (
                 <Menu
                   id="simple-menu"
@@ -799,7 +840,7 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
-            
+
             <List>
               <ListItem
                 disablePadding
@@ -838,7 +879,6 @@ export default function Sidenav() {
                 </div>
               </ListItem>
 
-
               {activetab == "Master" && (
                 <Menu
                   id="simple-menu"
@@ -854,10 +894,8 @@ export default function Sidenav() {
                       <span className="icon-text">Master</span>
                     </Link>{" "}
                   </MenuItem>
-                
                 </Menu>
               )}
-
             </List>
 
             <List>
@@ -886,7 +924,11 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon icon={faClipboardList} color="#9b59b6" />{" "}
+                      <FontAwesomeIcon
+                        icon={faClipboardList}
+                        color="#9b59b6"
+                        size="lg"
+                      />{" "}
                     </ListItemIcon>
                     <ListItemText
                       primary="Inventory Stock"
