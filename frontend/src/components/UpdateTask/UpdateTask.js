@@ -47,7 +47,7 @@ const UpdateTaskPage = () => {
 
     try {
       // Make a POST request to the API endpoint
-      const response = await fetch("http://localhost:5000/api/executivetask", {
+      const response = await fetch("https://car-wash-backend-api.onrender.com/api/clients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

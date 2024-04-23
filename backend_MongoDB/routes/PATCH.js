@@ -6,7 +6,29 @@ const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster,advancePaymantManager } = require("../models/newModels")
-const { ManagerDetails } = require("../models/newModels");
+const { ManagerDetails, ManagerTask } = require("../models/newModels");
+
+// PATCH for managertask api 
+router.patch("/managertask/:id", async (req, res) => {
+  try {
+    const advpaymanagerId = req.params.id;
+    const updatedData = req.body;
+
+    const updateEvent = await ManagerTask.findByIdAndUpdate(
+      advpaymanagerId,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updateEvent) {
+      return res.status(404).json({ message: "Manager Task not Found" });
+    }
+
+    res.status(200).json(updateEvent);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update Manager Task" });
+  }
+});
 
 
 // PATCH for manager api 

@@ -6,10 +6,21 @@ const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
 const { QuatationInfo } = require("../models/newModels");
-const { AddEventMaster, advancePaymantManager, ManagerDetails } = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+// manager task api get route 
+router.get("/managertask", async (req, res) => {
+  try {
+    const Manager = await ManagerTask.find()
+    res.status(201).json(Manager)
+
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
 
 // GEt  for manager all 
 router.get("/addmanager", async (req, res) => {
