@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import "./AddManager.css"
+import "./AddManager.css";
 
 const AddManager = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -141,6 +141,7 @@ const AddManager = () => {
   return (
     <>
       <Header />
+
       <div className="container">
         {showSuccessAlert && (
           <Alert
@@ -152,8 +153,9 @@ const AddManager = () => {
           </Alert>
         )}
 
-        <Form onSubmit={handleSubmit} clasName="input-area">
-          <h2 className="ms-5">Add Manager</h2>
+        <Form onSubmit={handleSubmit} className="mt-[10%]">
+          <h2 className="text-[35px] pl-[1em] pb-3">Add Manager</h2>
+
           <div className="row mb-2">
             <div className="col px-5">
               <Form.Group controlId="fname">
@@ -185,7 +187,6 @@ const AddManager = () => {
               </Form.Group>
             </div>
           </div>
-
 
           <div className="row mb-2">
             <div className="col px-5">
@@ -295,7 +296,6 @@ const AddManager = () => {
             </div>
           </div>
 
-
           <div className="row mb-2">
             <div className="col px-5">
               <Form.Group controlId="branch_name">
@@ -325,7 +325,11 @@ const AddManager = () => {
               <Button className="manager-btn my-4" variant="info" type="submit">
                 Submit
               </Button>
-              <Button variant="info" className="manager-btn ms-4" onClick={handleDiscard}>
+              <Button
+                variant="info"
+                className="manager-btn ms-4"
+                onClick={handleDiscard}
+              >
                 Discard
               </Button>
             </div>
@@ -333,7 +337,6 @@ const AddManager = () => {
 
           {/* <button className="manager-btn"> Hover me
           </button> */}
-
         </Form>
       </div>
     </>
