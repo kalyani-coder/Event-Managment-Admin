@@ -395,9 +395,19 @@ const advancePaymantManager = new Schema({
   description: { type: String }
 })
 
+const managerTask = new Schema({
+  manager_Id : {type : String},
+  manager_Name : {type : String},
+  task : {type : String},
+  date : {type : String},
+  time : {type : String},
+
+})
+
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
+  ManagerTask : mongoose.model("ManagerTask", managerTask),
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),
   QuatationInfo: mongoose.model("quatationinfo", QuatationInfo),

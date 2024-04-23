@@ -5,7 +5,26 @@ const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
 const {AddEventMaster,advancePaymantManager} =  require('../models/newModels')
-const { ManagerDetails } = require("../models/newModels");
+const { ManagerDetails , ManagerTask} = require("../models/newModels");
+
+
+// DELETE route for manager task 
+router.delete('/managertask/:id', async (req, res) => {
+  const deletedManagerId = req.params.id;
+
+  try {
+    const deletedManager = await ManagerTask.findByIdAndDelete(deletedManagerId);
+
+    if (!deletedManager) {
+      return res.status(404).json({message: 'Manager task not found'});
+    }
+
+    res.status(200).json({ message: 'Manager task deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
 
 // DELETE ROUTE FOR MANAGER 
 
