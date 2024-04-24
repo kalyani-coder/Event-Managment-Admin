@@ -12,7 +12,7 @@ const ManagerDetails = () => {
   useEffect(() => {
     // Fetch manager data from the API
     axios
-      .get("http://localhost:5000/api/managerdetails")
+      .get("http://localhost:5000/api/addmanager")
       .then((response) => {
         setManagerData(response.data);
       })

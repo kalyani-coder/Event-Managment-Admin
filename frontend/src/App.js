@@ -58,6 +58,8 @@ import "./App.css";
 import { Divider } from "@mui/material/Divider";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Master from "./components/master/Master";
+import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
+
 
 function App() {
   return (
@@ -130,6 +132,8 @@ function App() {
             <Route path="/paymentreport" element={<PaymentReport />} />
             <Route path="/costingform" element={<CostingForm />} />
             <Route path="/master" element={<Master />} />
+            <Route path="/advpaymentmanager" element={<AdvPaymentManager />}/>
+
             {/* **************** */}
           </Routes>
         </Router>
