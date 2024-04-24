@@ -39,53 +39,55 @@ const ManagerDetails = () => {
   return (
     <>
       <Header />
-      <div className="container mt-5">
-        <h2 className="mb-4">Manager Details</h2>
-        <div className="mb-4">
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by first name or last name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+      <div className="w-full  md:h-full  flex items-center justify-center ">
+        <div className="">
+          <h2 className="text-[35px] pl-[1em] ">Manager Details</h2>
+          <div className="mb-4">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by first name or last name"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
 
-        {filteredManagerData.length > 0 ? (
-          filteredManagerData.map((manager) => (
-            <Card
-              key={manager.id}
-              style={{ width: "100%", marginBottom: "20px" }}
-            >
-              <Card.Body>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="">
-                    <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      Contact Number: {manager.contact}
-                    </Card.Subtitle>
-                    {/* <Card.Text>Address: {manager.address}</Card.Text> */}
+          {filteredManagerData.length > 0 ? (
+            filteredManagerData.map((manager) => (
+              <Card
+                key={manager.id}
+                style={{ width: "100%", marginBottom: "20px" }}
+              >
+                <Card.Body>
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="">
+                      <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Contact Number: {manager.contact}
+                      </Card.Subtitle>
+                      {/* <Card.Text>Address: {manager.address}</Card.Text> */}
+                    </div>
+                    <div className="">
+                      <Link
+                        to={{
+                          pathname: `/manager/${manager._id}`,
+                        }}
+                        state={manager}
+                        className="btn btn-info"
+                      >
+                        View more{" "}
+                      </Link>
+                    </div>
                   </div>
-                  <div className="">
-                    <Link
-                      to={{
-                        pathname: `/manager/${manager._id}`,
-                      }}
-                      state={manager}
-                      className="btn btn-info"
-                    >
-                      View more{" "}
-                    </Link>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          ))
-        ) : (
-          <p className="text-centre">No manager details found.</p>
-        )}
+                </Card.Body>
+              </Card>
+            ))
+          ) : (
+            <p className="text-centre">No manager details found.</p>
+          )}
+        </div>
       </div>
     </>
   );

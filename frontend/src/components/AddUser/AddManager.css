@@ -12,11 +12,11 @@
 
 @media (max-width: 768px) {
   .main-container-for-Addaccount {
-    width: 107%;
-    padding-right: 8px;
+    /* width: 107%;
+    padding-right: 8px; */
     padding-left: 41px;
-    margin-right: auto !important;
-    margin-left: auto !important;
+    /* margin-right: auto !important;
+    margin-left: auto !important; */
     margin-top: 1em;
     background-color: #ad789fef;
   }

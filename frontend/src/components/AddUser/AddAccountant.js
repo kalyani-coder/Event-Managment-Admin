@@ -163,7 +163,7 @@ const AddAccountant = () => {
   return (
     <>
       <Header />{" "}
-      <div className="w-full  md:h-full  flex items-center justify-center main-container-for-Addaccount">
+      <div className="w-full  md:h-full  flex items-center justify-center main-container-for-Addaccount overflow-hidden">
         <div className="">
           {showSuccessAlert && (
             <Alert
