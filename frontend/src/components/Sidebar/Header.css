@@ -1,6 +1,12 @@
 .header-component {
   background-color: #ffccf6;
 }
+@media (max-width: 768px) {
+  .header-component {
+    background-color: #ffccf6;
+    width: 100vh;
+  }
+}
 .icon-text {
   align-items: center;
   appearance: none;

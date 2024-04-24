@@ -50,51 +50,92 @@ const Dashboard = () => {
     // Render the Pie Chart
     new ApexCharts(document.querySelector("#pieChart"), options).render();
   }, []);
-  
 
   return (
     <>
       <Header />
-      
-      <div className="container-dashboard">
-        <div className="row">
-        <div className="col-md-12">
-  <div className="row">
-    <div className="col-md-4">
-      <div className="card shadow custom-card">
-        <div className="card-body text-center">
-          <h5 className="card-title">
-            <FaUser className="icon user-icon mb-2" style={{ fontSize: '2rem' }} /> Enquiry | Today
-          </h5>
-          <p className="card-text mb-0" style={{ fontSize: '1.5rem' }}>145</p>
-          <p className="card-text text-success" style={{ fontSize: '1.2rem' }}>12% increase</p>
-        </div>
-      </div>
-    </div>
-    <div className="col-md-4">
-      <div className="card shadow custom-card">
-        <div className="card-body text-center">
-          <h5 className="card-title">
-            <FaCalendarAlt className="icon calendar-icon mb-2" style={{ fontSize: '2rem' }} /> Events | Today
-          </h5>
-          <p className="card-text mb-0" style={{ fontSize: '1.5rem' }}>145</p>
-          <p className="card-text text-success" style={{ fontSize: '1.2rem' }}>12% increase</p>
-        </div>
-      </div>
-    </div>
-    <div className="col-md-4">
-      <div className="card shadow custom-card">
-        <div className="card-body text-center">
-          <h5 className="card-title">
-            <FaShoppingCart className="icon cart-icon mb-2" style={{ fontSize: '2rem' }} /> Order | Today
-          </h5>
-          <p className="card-text mb-0" style={{ fontSize: '1.5rem' }}>145</p>
-          <p className="card-text text-success" style={{ fontSize: '1.2rem' }}>12% increase</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+      <div className="w-full h-screen  flex items-center justify-center main-container-for-Addaccount">
+        <div className="row container-dashboard">
+          <div className="col-md-12">
+            <div className="row">
+              <div className="col-md-4">
+                <div className="card shadow custom-card">
+                  <div className="card-body text-center">
+                    <h5 className="card-title">
+                      <FaUser
+                        className="icon user-icon mb-2"
+                        style={{ fontSize: "2rem" }}
+                      />{" "}
+                      Enquiry | Today
+                    </h5>
+                    <p
+                      className="card-text mb-0"
+                      style={{ fontSize: "1.5rem" }}
+                    >
+                      145
+                    </p>
+                    <p
+                      className="card-text text-success"
+                      style={{ fontSize: "1.2rem" }}
+                    >
+                      12% increase
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="card shadow custom-card">
+                  <div className="card-body text-center">
+                    <h5 className="card-title">
+                      <FaCalendarAlt
+                        className="icon calendar-icon mb-2"
+                        style={{ fontSize: "2rem" }}
+                      />{" "}
+                      Events | Today
+                    </h5>
+                    <p
+                      className="card-text mb-0"
+                      style={{ fontSize: "1.5rem" }}
+                    >
+                      145
+                    </p>
+                    <p
+                      className="card-text text-success"
+                      style={{ fontSize: "1.2rem" }}
+                    >
+                      12% increase
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="card shadow custom-card">
+                  <div className="card-body text-center">
+                    <h5 className="card-title">
+                      <FaShoppingCart
+                        className="icon cart-icon mb-2"
+                        style={{ fontSize: "2rem" }}
+                      />{" "}
+                      Order | Today
+                    </h5>
+                    <p
+                      className="card-text mb-0"
+                      style={{ fontSize: "1.5rem" }}
+                    >
+                      145
+                    </p>
+                    <p
+                      className="card-text text-success"
+                      style={{ fontSize: "1.2rem" }}
+                    >
+                      12% increase
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="col-md-8">
             <div className="activity-card">
@@ -143,7 +184,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          
+
           {/* <div className="col-md-8">
             <div className="activity-card">
               <h2 className="activity-title">Updated Task</h2>
@@ -156,7 +197,6 @@ const Dashboard = () => {
               </ul>
             </div>
           </div> */}
-          
         </div>
       </div>
     </>

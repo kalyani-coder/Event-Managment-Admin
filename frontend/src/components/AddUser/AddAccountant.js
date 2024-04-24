@@ -163,226 +163,228 @@ const AddAccountant = () => {
   return (
     <>
       <Header />{" "}
-      <div className="container">
-        {showSuccessAlert && (
-          <Alert
-            variant="success"
-            onClose={() => setShowSuccessAlert(false)}
-            dismissible
-          >
-            {successMessage}
-          </Alert>
-        )}
+      <div className="w-full  flex items-center justify-center main-container-for-Addaccount">
+        <div className="">
+          {showSuccessAlert && (
+            <Alert
+              variant="success"
+              onClose={() => setShowSuccessAlert(false)}
+              dismissible
+            >
+              {successMessage}
+            </Alert>
+          )}
 
-        <Form onSubmit={handleSubmit} className="mt-[10%]">
-          <h2 className="text-[35px] pl-[1em] pb-3">Add Accountant</h2>
+          <Form onSubmit={handleSubmit} className="mt-[10%]">
+            <h2 className="text-[35px] pl-[1em] ">Add Accountant</h2>
 
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="fname">
-                <Form.Label>
-                  First Name <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={fname}
-                  onChange={(e) => setfname(e.target.value)}
-                  placeholder="Enter first name"
-                  required
-                />
-              </Form.Group>
-            </div>
-            <div className="col px-5">
-              <Form.Group controlId="lname">
-                <Form.Label>
-                  Last Name <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={lname}
-                  onChange={(e) => setlname(e.target.value)}
-                  placeholder="Enter last name"
-                  required
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
-                  placeholder="Enter email"
-                />
-              </Form.Group>
-            </div>
-            <div className="col px-5">
-              <Form.Group controlId="contact">
-                <Form.Label>
-                  Phone <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  type="tel"
-                  value={contact}
-                  onChange={(e) => setcontact(e.target.value)}
-                  placeholder="Enter phone"
-                  required
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="address">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={address}
-                  onChange={(e) => setaddress(e.target.value)}
-                  placeholder="Enter address"
-                />
-              </Form.Group>
-            </div>
-
-            <div className="col px-5">
-              <Form.Group controlId="city">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={city}
-                  onChange={(e) => setcity(e.target.value)}
-                  placeholder="Enter city"
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="state">
-                <Form.Label>State</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={state}
-                  onChange={(e) => setstate(e.target.value)}
-                >
-                  {indianStates.map((state) => (
-                    <option key={state} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </div>
-
-            <div className="col px-5">
-              <Form.Group controlId="holder_name">
-                <Form.Label>Account Holder Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={holder_name}
-                  onChange={(e) => setholder_name(e.target.value)}
-                  placeholder="Enter account holder name"
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="account_number">
-                <Form.Label>Account Number</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={account_number}
-                  onChange={(e) => setaccount_number(e.target.value)}
-                  placeholder="Enter account number"
-                />
-              </Form.Group>
-            </div>
-
-            <div className="col px-5">
-              <Form.Group controlId="IFSC_code">
-                <Form.Label>IFSC Code</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={IFSC_code}
-                  onChange={(e) => setIFSC_code(e.target.value)}
-                  placeholder="Enter IFSC code"
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="bank_name">
-                <Form.Label>Bank Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={bank_name}
-                  onChange={(e) => setbank_name(e.target.value)}
-                  placeholder="Enter bank name"
-                />
-              </Form.Group>
-            </div>
-
-            <div className="col px-5">
-              <Form.Group controlId="branch_name">
-                <Form.Label>Branch Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={branch_name}
-                  onChange={(e) => setbranch_name(e.target.value)}
-                  placeholder="Enter branch name"
-                />
-              </Form.Group>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col px-5">
-              <Form.Group controlId="profilePicture">
-                <Form.Label>Profile Picture</Form.Label>
-                <div className="custom-file flex">
-                  <Form.Control
-                    type="file"
-                    className="custom-file-input"
-                    onChange={handleFileChange}
-                    accept="image/*"
-                  />
-                  <Form.Label className="custom-file-label">
-                    {profilePicture ? profilePicture.name : "Choose File"}
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="fname">
+                  <Form.Label>
+                    First Name <span style={{ color: "red" }}>*</span>
                   </Form.Label>
-                  <div className="">
-                    {profilePicture && (
-                      <button
-                        type="button"
-                        className="manager-btn p-1"
-                        onClick={handleRemoveProfilePicture}
-                      >
-                        Remove
-                      </button>
-                    )}
+                  <Form.Control
+                    type="text"
+                    value={fname}
+                    onChange={(e) => setfname(e.target.value)}
+                    placeholder="Enter first name"
+                    required
+                  />
+                </Form.Group>
+              </div>
+              <div className="col px-5">
+                <Form.Group controlId="lname">
+                  <Form.Label>
+                    Last Name <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={lname}
+                    onChange={(e) => setlname(e.target.value)}
+                    placeholder="Enter last name"
+                    required
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
+                    placeholder="Enter email"
+                  />
+                </Form.Group>
+              </div>
+              <div className="col px-5">
+                <Form.Group controlId="contact">
+                  <Form.Label>
+                    Phone <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="tel"
+                    value={contact}
+                    onChange={(e) => setcontact(e.target.value)}
+                    placeholder="Enter phone"
+                    required
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="address">
+                  <Form.Label>Address</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={address}
+                    onChange={(e) => setaddress(e.target.value)}
+                    placeholder="Enter address"
+                  />
+                </Form.Group>
+              </div>
+
+              <div className="col px-5">
+                <Form.Group controlId="city">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={city}
+                    onChange={(e) => setcity(e.target.value)}
+                    placeholder="Enter city"
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="state">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={state}
+                    onChange={(e) => setstate(e.target.value)}
+                  >
+                    {indianStates.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </div>
+
+              <div className="col px-5">
+                <Form.Group controlId="holder_name">
+                  <Form.Label>Account Holder Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={holder_name}
+                    onChange={(e) => setholder_name(e.target.value)}
+                    placeholder="Enter account holder name"
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="account_number">
+                  <Form.Label>Account Number</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={account_number}
+                    onChange={(e) => setaccount_number(e.target.value)}
+                    placeholder="Enter account number"
+                  />
+                </Form.Group>
+              </div>
+
+              <div className="col px-5">
+                <Form.Group controlId="IFSC_code">
+                  <Form.Label>IFSC Code</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={IFSC_code}
+                    onChange={(e) => setIFSC_code(e.target.value)}
+                    placeholder="Enter IFSC code"
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="bank_name">
+                  <Form.Label>Bank Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={bank_name}
+                    onChange={(e) => setbank_name(e.target.value)}
+                    placeholder="Enter bank name"
+                  />
+                </Form.Group>
+              </div>
+
+              <div className="col px-5">
+                <Form.Group controlId="branch_name">
+                  <Form.Label>Branch Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={branch_name}
+                    onChange={(e) => setbranch_name(e.target.value)}
+                    placeholder="Enter branch name"
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="profilePicture">
+                  <Form.Label>Profile Picture</Form.Label>
+                  <div className="custom-file flex">
+                    <Form.Control
+                      type="file"
+                      className="custom-file-input"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
+                    <Form.Label className="custom-file-label">
+                      {profilePicture ? profilePicture.name : "Choose File"}
+                    </Form.Label>
+                    <div className="">
+                      {profilePicture && (
+                        <button
+                          type="button"
+                          className="manager-btn p-1"
+                          onClick={handleRemoveProfilePicture}
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Form.Group>
+                </Form.Group>
+              </div>
             </div>
-          </div>
-          <div className="row mb-2 py-2">
-            <div className="col px-5">
-              <Button className="manager-btn " variant="info" type="submit">
-                Submit
-              </Button>
-              <Button
-                variant="info"
-                className="manager-btn ms-4"
-                onClick={handleDiscard}
-              >
-                Discard
-              </Button>
+            <div className="row mb-2 py-2">
+              <div className="col px-5">
+                <Button className="manager-btn " variant="info" type="submit">
+                  Submit
+                </Button>
+                <Button
+                  variant="info"
+                  className="manager-btn ms-4"
+                  onClick={handleDiscard}
+                >
+                  Discard
+                </Button>
+              </div>
             </div>
-          </div>
-        </Form>
+          </Form>
+        </div>
       </div>
     </>
   );
