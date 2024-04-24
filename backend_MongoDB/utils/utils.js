@@ -237,13 +237,12 @@ const FilterBodyByTable = ({ req, table }) => {
         email,
         date,
         venue,
-        adv_payment,
-        rem_payment,
-        total_amt,
         status,
         assign_manager_name,
         assign_manager_Id,
-        
+        event_Type,
+        guest_Number,
+
       } = req.body;
       return {
         order_id,
@@ -254,13 +253,12 @@ const FilterBodyByTable = ({ req, table }) => {
         email,
         date,
         venue,
-        adv_payment,
-        rem_payment,
-        total_amt,
         status,
         assign_manager_name,
         assign_manager_Id,
-        
+        event_Type,
+        guest_Number,
+
       };
     } else if (table == "eventexpense") {
       const {

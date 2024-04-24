@@ -39,10 +39,7 @@ mongoose
   .connect(
     "mongodb+srv://vedantr:Z3xQLJYpdhTnfYem@eventmanagementadmin.rwc1byd.mongodb.net/?retryWrites=true&w=majority",
     {
-      useNewUrlParser: true,
-      // useUnifiedTopology: true,
       dbName: "event-management",
-      // connectTimeoutMS: 30000,
     }
   )
   .then(() => {
