@@ -39,54 +39,60 @@ const ManagerDetails = () => {
   return (
     <>
       <Header />
-      <div className="w-full  md:h-full  flex items-center justify-center ">
-        <div className="">
-          <h2 className="text-[35px] pl-[1em] ">Manager Details</h2>
-          <div className="mb-4">
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search by first name or last name"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <div>
+            <h2 className="text-[35px]">Manager Details</h2>
+            <div className="mb-4">
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search by first name or last name"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-
-          {filteredManagerData.length > 0 ? (
-            filteredManagerData.map((manager) => (
-              <Card
-                key={manager.id}
-                style={{ width: "100%", marginBottom: "20px" }}
-              >
-                <Card.Body>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="">
-                      <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">
-                        Contact Number: {manager.contact}
-                      </Card.Subtitle>
-                      {/* <Card.Text>Address: {manager.address}</Card.Text> */}
-                    </div>
-                    <div className="">
-                      <Link
-                        to={{
-                          pathname: `/manager/${manager._id}`,
-                        }}
-                        state={manager}
-                        className="btn btn-info"
-                      >
-                        View more{" "}
-                      </Link>
-                    </div>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))
-          ) : (
-            <p className="text-centre">No manager details found.</p>
-          )}
+          <div className="row row-cols-1 row-cols-md-3">
+            {" "}
+            {/* Bootstrap grid with 3 columns */}
+            {filteredManagerData.length > 0 ? (
+              filteredManagerData.map((manager) => (
+                <div className="col mb-4">
+                  {" "}
+                  {/* Each card takes one column */}
+                  <Card style={{ width: "100%" }}>
+                    <Card.Body>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div className="">
+                          <Card.Title>{`${manager.fname} ${manager.lname}`}</Card.Title>
+                          <Card.Subtitle className="mb-2 text-muted">
+                            Contact Number: {manager.contact}
+                          </Card.Subtitle>
+                        </div>
+                        <div className="">
+                          <Link
+                            to={{ pathname: `/manager/${manager._id}` }}
+                            state={manager}
+                            className="btn btn-info"
+                          >
+                            View more
+                          </Link>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))
+            ) : (
+              <p className="text-centre">No manager details found.</p>
+            )}
+          </div>
         </div>
       </div>
     </>

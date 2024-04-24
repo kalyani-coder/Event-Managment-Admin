@@ -54,17 +54,16 @@ import CustomerReport from "./components/DownloadReport/CustomerReport";
 import PaymentReport from "./components/DownloadReport/PaymentReport";
 import CostingForm from "./components/AddNewEvent/CostingForm";
 import Header from "./components/Sidebar/Header";
-import "./App.css";
+// import "./App.css";
 import { Divider } from "@mui/material/Divider";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Master from "./components/master/Master";
 import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
 
-
 function App() {
   return (
     <>
-      <div className="PReadd h-screen">
+      <div className="PReadd  overflow-hidden">
         <Router>
           {/*      <Header />
            */}
@@ -132,7 +131,7 @@ function App() {
             <Route path="/paymentreport" element={<PaymentReport />} />
             <Route path="/costingform" element={<CostingForm />} />
             <Route path="/master" element={<Master />} />
-            <Route path="/advpaymentmanager" element={<AdvPaymentManager />}/>
+            <Route path="/advpaymentmanager" element={<AdvPaymentManager />} />
 
             {/* **************** */}
           </Routes>

@@ -37,51 +37,59 @@ const VendorDetails = () => {
   return (
     <>
       <Header />
-      <div className="container mt-5">
-        <h2 className="mb-4">Vendor Details</h2>
-        <div className="mb-4">
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by company name or contact person"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <h2 className="text-[35px]">Vendor Details</h2>
+          <div className="mb-4">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by company name or contact person"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="row row-cols-1 row-cols-md-3">
+            {filteredVendorData.length > 0 ? (
+              filteredVendorData.map((vendor) => (
+                <div className="col mb-4">
+                  <Card key={vendor._id} style={{ width: "100%" }}>
+                    <Card.Body>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div className="">
+                          <Card.Title>{vendor.company_name}</Card.Title>
+                          <Card.Subtitle className="text-muted">
+                            Contact Person Name: {vendor.contact_person_name}
+                          </Card.Subtitle>
+                          <Card.Text>Contact: {vendor.contact}</Card.Text>
+                          {/* <Card.Text>Email: {vendor.gmail}</Card.Text> */}
+                        </div>
+                        <div className="">
+                          <Link
+                            to={{
+                              pathname: `/vendor/${vendor._id}`,
+                            }}
+                            state={vendor}
+                            className="btn btn-info"
+                          >
+                            View more{" "}
+                          </Link>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))
+            ) : (
+              <p className="text-center">No vendor details found.</p>
+            )}
           </div>
         </div>
-
-        {filteredVendorData.length > 0 ? (
-          filteredVendorData.map((vendor) => (
-            <Card key={vendor._id} style={{ width: "100%" }}>
-              <Card.Body>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="">
-                    <Card.Title>{vendor.company_name}</Card.Title>
-                    <Card.Subtitle className="text-muted">
-                      Contact Person Name: {vendor.contact_person_name}
-                    </Card.Subtitle>
-                    <Card.Text>Contact: {vendor.contact}</Card.Text>
-                    {/* <Card.Text>Email: {vendor.gmail}</Card.Text> */}
-                  </div>
-                  <div className="">
-                    <Link
-                      to={{
-                        pathname: `/vendor/${vendor._id}`,
-                      }}
-                      state={vendor}
-                      className="btn btn-info"
-                    >
-                      View more{" "}
-                    </Link>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          ))
-        ) : (
-          <p className="text-center">No vendor details found.</p>
-        )}
       </div>
     </>
   );

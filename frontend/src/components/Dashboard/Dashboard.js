@@ -55,8 +55,8 @@ const Dashboard = () => {
     <>
       <Header />
 
-      <div className="w-full  md:h-full  flex items-center justify-center main-container-for-Addaccount">
-        <div className="row container-dashboard mt-[10%]">
+      <div className="w-full  h-screen  flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
+        <div className="row container-dashboard md:h-[80vh] h-[80vh]">
           <div className="col-md-12">
             <div className="row">
               <div className="col-md-4">

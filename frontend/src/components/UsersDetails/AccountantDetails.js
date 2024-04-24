@@ -39,57 +39,67 @@ const AccountantDetails = () => {
   }, [searchQuery, accountantData]);
 
   return (
-
     <>
       <Header />
-    <div className="container mt-5">
-      <h2 className="mb-4">Accountant Details</h2>
-      <div className="mb-4">
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by first name, last name, phone, or address"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      <div
+        className="w-full  h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <h2 className="text-[35px]">Accountant Details</h2>
+          <div className="mb-4">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by first name, last name, phone, or address"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="row row-cols-1 row-cols-md-3">
+            {filteredAccountantData.length > 0 ? (
+              filteredAccountantData.map((accountant) => (
+                <div className="col mb-4">
+                  <Card
+                    key={accountant.id}
+                    style={{ width: "100%", marginBottom: "20px" }}
+                  >
+                    <Card.Body>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div className="">
+                          <Card.Title>{`${accountant.fname || ""} ${
+                            accountant.lname || ""
+                          }`}</Card.Title>
+                          <Card.Subtitle className="mb-2 text-muted">
+                            Contact Number: {accountant.contact || ""}
+                          </Card.Subtitle>
+                          {/* <Card.Text>Address: {accountant.address || ''}</Card.Text> */}
+                        </div>
+                        <div className="">
+                          {" "}
+                          <Link
+                            to={{
+                              pathname: `/accountant/${accountant._id}`,
+                            }}
+                            className="btn btn-info"
+                            state={accountant}
+                          >
+                            View More
+                          </Link>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))
+            ) : (
+              <p className="text-center">No accountant details found.</p>
+            )}
+          </div>
         </div>
       </div>
-
-      {filteredAccountantData.length > 0 ? (
-        filteredAccountantData.map((accountant) => (
-          <Card
-            key={accountant.id}
-            style={{ width: "100%", marginBottom: "20px" }}
-          >
-            <Card.Body>
-
-              <div className="d-flex align-items-center justify-content-between">
-                <div className=""><Card.Title>{`${accountant.fname || ''} ${accountant.lname || ''}`}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Contact Number: {accountant.contact || ''}
-                  </Card.Subtitle>
-                  {/* <Card.Text>Address: {accountant.address || ''}</Card.Text> */}
-                </div>
-                <div className=""> <Link
-                  to={{
-                    pathname: `/accountant/${accountant._id}`,
-                  }}
-                  className="btn btn-info"
-                  state={accountant}
-                >
-                  View More
-                </Link></div>
-              </div>
-
-
-            </Card.Body>
-          </Card>
-        ))
-      ) : (
-        <p className="text-center">No accountant details found.</p>
-      )}
-    </div>
     </>
   );
 };

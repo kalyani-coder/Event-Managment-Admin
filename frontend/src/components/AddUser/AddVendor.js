@@ -125,8 +125,8 @@ const AddVendor = () => {
   return (
     <>
       <Header />{" "}
-      <div className="w-full  md:h-full  flex items-center justify-center main-container-for-Addaccount overflow-hidden">
-        <div className="">
+      <div className="w-full  h-screen  flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
+        <div className="md:h-[80vh] h-[80vh]">
           {showSuccessAlert && (
             <Alert
               variant="success"
@@ -136,7 +136,7 @@ const AddVendor = () => {
               {successMessage}
             </Alert>
           )}
-          <Form onSubmit={handleSubmit} className="mt-[10%]">
+          <Form onSubmit={handleSubmit} className="">
             <h2 className="text-[35px] pl-[1em]">Add Vendor</h2>
             <div className="row mb-2">
               <div className="col px-5">
