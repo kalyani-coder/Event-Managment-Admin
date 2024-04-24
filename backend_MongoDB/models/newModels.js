@@ -128,11 +128,10 @@ const OrderSchema = new Schema({
   email: String,
   date: String,
   venue: String,
-  adv_payment: Number,
-  rem_payment: Number,
-  total_amt: Number,
   address: String,
   event_name: String,
+  event_Type :String,
+  guest_Number : String,
   assign_manager_name: String,
   assign_manager_Id: String,
 

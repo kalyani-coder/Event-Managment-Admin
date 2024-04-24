@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button,Alert, Modal } from "react-bootstrap";
 
 function AdvancePaymnetCus() {
   const navigate = useNavigate("");
   const [cusName, setCusName] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
-
   const [totalAmount, setTotalAmount] = useState(null);
   const [advancePayment, setAdvancePayment] = useState(null);
   const [remainingAmount, setRemainingAmount] = useState(null);
-
   const [selectedCustomerDetails, setSelectedCustomerDetails] = useState({});
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertVariant, setAlertVariant] = useState("");
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -73,6 +73,9 @@ function AdvancePaymnetCus() {
   const [submittedTo, setSubmittedTo] = useState("");
   const [chequeNumber, setChequeNumber] = useState("");
   const [transaction, setTransaction] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [managers, setManagers] = useState([]);
+  const [selectedManager, setSelectedManager] = useState("");
 
   const [cash, setCash] = useState("");
 
@@ -118,19 +121,81 @@ function AdvancePaymnetCus() {
         transaction_id: transaction,
       }),
     };
-
+  
     axios
       .post("http://localhost:5000/api/advpayment", data)
       .then((response) => {
-        console.log("Data saved successfully:", response.data);
-        alert("Advance payment successfull");
-        navigate("/assignmanager");
+        // Display alert box after successfully saving data
+        alert("Customer payment successfully saved.");
+        setShowModal(true);
+        fetchManagers();
       })
       .catch((error) => {
         console.error("Error saving data:", error);
-        // Optionally, handle error or display error message to the user
+        setAlertMessage("Failed to save customer payment.");
+        setAlertVariant("danger");
       });
   };
+  const fetchManagers = () => {
+    axios
+      .get("http://localhost:5000/api/addmanager")
+      .then((response) => {
+        setManagers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching managers:", error);
+      });
+  };
+
+  const handleAssign = () => {
+    const selectedManagerDetails = managers.find(manager => manager._id === selectedManager);
+
+    const data = {
+      _id: "",
+      customer_name: "",
+      contact: "",
+      email: "",
+      date: "",
+      venue: "",
+      event_name: "",
+      event_Type: "",
+      guest_Number: "",
+      assign_manager_name: "",
+      assign_manager_Id: "",
+    };
+
+    if (selectedCustomerDetails) {
+      data.customer_name = selectedCustomerDetails.customer_name || "";
+      data.contact = selectedCustomerDetails.contact || "";
+      data.email = selectedCustomerDetails.email || "";
+      data.date = selectedCustomerDetails.date || "";
+      data.venue = selectedCustomerDetails.venue || "";
+      data.event_name = selectedCustomerDetails.event_name || "";
+      data.event_Type = selectedCustomerDetails.event_Type || "";
+      data.guest_Number = selectedCustomerDetails.guest_Number || "";
+    }
+
+    if (selectedManagerDetails) {
+      data.assign_manager_name = selectedManagerDetails.name || "";
+      data.assign_manager_Id = selectedManager || "";
+    }
+
+    axios
+      .post("http://localhost:5000/api/order", data)
+      .then((response) => {
+        console.log("Data assigned to manager successfully:", response.data);
+        setShowModal(false);
+        setAlertMessage("Data assigned to manager successfully.");
+        setAlertVariant("success");
+      })
+      .catch((error) => {
+        console.error("Error assigning data to manager:", error);
+        setAlertMessage("Failed to assign data to manager.");
+        setAlertVariant("danger");
+      });
+};
+
+  
 
   return (
     <>
@@ -138,6 +203,11 @@ function AdvancePaymnetCus() {
 
       <div className="container mt-5">
         <h2 className="mb-4">Advance Payment Form</h2>
+        {alertMessage && (
+          <div>
+            <Alert variant={alertVariant}>{alertMessage}</Alert>
+          </div>
+        )}
         <Form.Group controlId="SelectCustomer">
           <Form.Label>Select Customers:</Form.Label>
           <div className="relative">
@@ -372,6 +442,33 @@ function AdvancePaymnetCus() {
         <button className="btn btn-success mx-2 mt-3" onClick={handleSave}>
           Save & Assign To Manager
         </button>
+
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton style={{ marginTop: "30px" }}>
+            <Modal.Title>Assign to Manager</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Select
+              value={selectedManager}
+              onChange={(e) => setSelectedManager(e.target.value)}
+            >
+              <option value="">Select Manager</option>
+              {managers.map((manager) => (
+                <option key={manager.manager_Id} value={manager.manager_Id}>
+                  {manager.fname} {manager.lname}
+                </option>
+              ))}
+            </Form.Select>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleAssign}>
+              Assign
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );

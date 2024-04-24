@@ -7,46 +7,43 @@ import "./AddManager.css";
 const AddManager = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [fname, setfname] = useState("");
-  const [lname, setlname] = useState("");
-  const [email, setemail] = useState("");
-  const [contact, setcontact] = useState("");
-  const [address, setaddress] = useState("");
-  const [city, setcity] = useState("");
-  const [state, setstate] = useState("");
-  const [account_number, setaccount_number] = useState("");
-  const [holder_name, setholder_name] = useState("");
-  const [bank_name, setbank_name] = useState("");
-  const [branch_name, setbranch_name] = useState("");
-  const [IFSC_code, setIFSC_code] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [contact, setContact] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [holderName, setHolderName] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [branchName, setBranchName] = useState("");
+  const [ifscCode, setIfscCode] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
   const isValidForm = () => {
-    // Assuming fname, lname, and contact are the values of input fields
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const contact = document.getElementById("contact").value;
-
-    if (!fname || !lname || !contact) {
-      alert("Please fill out all fields.");
+    if (!fname || !lname || !contact || !password) {
+      alert("Please fill out all required fields.");
       return false;
     }
     return true;
   };
 
   const handleDiscard = () => {
-    setfname("");
-    setlname("");
-    setemail("");
-    setcontact("");
-    setaddress("");
-    setcity("");
-    setstate("");
-    setaccount_number("");
-    setholder_name("");
-    setbank_name("");
-    setbranch_name("");
-    setIFSC_code("");
+    setFname("");
+    setLname("");
+    setEmail("");
+    setPassword("");
+    setContact("");
+    setAddress("");
+    setCity("");
+    setState("");
+    setAccountNumber("");
+    setHolderName("");
+    setBankName("");
+    setBranchName("");
+    setIfscCode("");
   };
 
   const handleSubmit = async (event) => {
@@ -60,34 +57,31 @@ const AddManager = () => {
       fname,
       lname,
       email,
+      password,
       contact,
       address,
       city,
       state,
-      holder_name,
-      account_number,
-      IFSC_code,
-      bank_name,
-      branch_name,
-      profilePicture: profilePicture ? profilePicture.name : null,
+      holderName,
+      accountNumber,
+      ifscCode,
+      bankName,
+      branchName,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/managerdetails",
+        "http://localhost:5000/api/addmanager",
         formData
       );
       console.log("Data posted:", response.data);
 
-      // Show success message
       setSuccessMessage("Manager Added successfully!");
       setShowSuccessAlert(true);
 
-      // Clear the form
       handleDiscard();
     } catch (error) {
       console.error("Error posting data:", error);
-      // Handle error if needed
     }
   };
 
@@ -142,207 +136,219 @@ const AddManager = () => {
     <>
       <Header />
       <div className="w-full md:h-full flex items-center justify-center main-container-for-Addaccount ">
-        <div className="">
-          {showSuccessAlert && (
-            <Alert
-              variant="success"
-              onClose={() => setShowSuccessAlert(false)}
-              dismissible
-            >
-              {successMessage}
-            </Alert>
-          )}
+      <div className="">
+        {showSuccessAlert && (
+          <Alert
+            variant="success"
+            onClose={() => setShowSuccessAlert(false)}
+            dismissible
+          >
+            {successMessage}
+          </Alert>
+        )}
 
-          <Form onSubmit={handleSubmit} className="mt-[10%]">
-            <h2 className="text-[35px] pl-[1em] ">Add Manager</h2>
+        <Form onSubmit={handleSubmit} className="mt-[10%]">
+          <h2 className="text-[35px] pl-[1em] pb-3">Add Manager</h2>
 
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="fname">
-                  <Form.Label>
-                    First Name <span style={{ color: "red" }}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className="input-area"
-                    type="text"
-                    value={fname}
-                    onChange={(e) => setfname(e.target.value)}
-                    placeholder="Enter first name"
-                    required
-                  />
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="lname">
-                  <Form.Label>
-                    Last Name <span style={{ color: "red" }}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={lname}
-                    onChange={(e) => setlname(e.target.value)}
-                    placeholder="Enter last name"
-                    required
-                  />
-                </Form.Group>
-              </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="fname">
+                <Form.Label>
+                  First Name <span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  className="input-area"
+                  type="text"
+                  value={fname}
+                  onChange={(e) => setFname(e.target.value)}
+                  placeholder="Enter first name"
+                  required
+                />
+              </Form.Group>
             </div>
-
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                    placeholder="Enter email"
-                  />
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="contact">
-                  <Form.Label>
-                    Phone<span style={{ color: "red" }}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="tel"
-                    value={contact}
-                    onChange={(e) => setcontact(e.target.value)}
-                    placeholder="Enter phone"
-                    required
-                  />
-                </Form.Group>
-              </div>
+            <div className="col px-5">
+              <Form.Group controlId="lname">
+                <Form.Label>
+                  Last Name <span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  value={lname}
+                  onChange={(e) => setLname(e.target.value)}
+                  placeholder="Enter last name"
+                  required
+                />
+              </Form.Group>
             </div>
+          </div>
 
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="address">
-                  <Form.Label>Address</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={address}
-                    onChange={(e) => setaddress(e.target.value)}
-                    placeholder="Enter address"
-                  />
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="city">
-                  <Form.Label>City</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={city}
-                    onChange={(e) => setcity(e.target.value)}
-                    placeholder="Enter city"
-                  />
-                </Form.Group>
-              </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter email"
+                />
+              </Form.Group>
             </div>
+            <div className="col px-5">
+              <Form.Group controlId="password">
+                <Form.Label>
+                  Password <span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  required
+                />
+              </Form.Group>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="contact">
+                <Form.Label>
+                  Phone<span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="tel"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  placeholder="Enter phone"
+                  required
+                />
+              </Form.Group>
+            </div>
+          </div>
 
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="state">
-                  <Form.Label>State</Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={state}
-                    onChange={(e) => setstate(e.target.value)}
-                  >
-                    {indianStates.map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="holder_name">
-                  <Form.Label>Account Holder Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={holder_name}
-                    onChange={(e) => setholder_name(e.target.value)}
-                    placeholder="Enter account holder name"
-                  />
-                </Form.Group>
-              </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="address">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Enter address"
+                />
+              </Form.Group>
             </div>
+            <div className="col px-5">
+              <Form.Group controlId="city">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={city}
+                  onChange={(e) => setcity(e.target.value)}
+                  placeholder="Enter city"
+                />
+              </Form.Group>
+            </div>
+          </div>
 
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="account_number">
-                  <Form.Label>Account Number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={account_number}
-                    onChange={(e) => setaccount_number(e.target.value)}
-                    placeholder="Enter account number"
-                  />
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="bank_name">
-                  <Form.Label>Bank Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={bank_name}
-                    onChange={(e) => setbank_name(e.target.value)}
-                    placeholder="Enter bank name"
-                  />
-                </Form.Group>
-              </div>
-            </div>
-
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="branch_name">
-                  <Form.Label>Branch Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={branch_name}
-                    onChange={(e) => setbranch_name(e.target.value)}
-                    placeholder="Enter branch name"
-                  />
-                </Form.Group>
-              </div>
-              <div className="col px-5">
-                <Form.Group controlId="IFSC_code">
-                  <Form.Label>IFSC Code</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={IFSC_code}
-                    onChange={(e) => setIFSC_code(e.target.value)}
-                    placeholder="Enter IFSC code"
-                  />
-                </Form.Group>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Button
-                  className="manager-btn my-4"
-                  variant="info"
-                  type="submit"
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="state">
+                <Form.Label>State</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                 >
-                  Submit
-                </Button>
-                <Button
-                  variant="info"
-                  className="manager-btn ms-4"
-                  onClick={handleDiscard}
-                >
-                  Discard
-                </Button>
-              </div>
+                  {indianStates.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </div>
+            <div className="col px-5">
+              <Form.Group controlId="holder_name">
+                <Form.Label>Account Holder Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={holder_name}
+                  onChange={(e) => setHolderName(e.target.value)}
+                  placeholder="Enter account holder name"
+                />
+              </Form.Group>
+            </div>
+          </div>
 
-            {/* <button className="manager-btn"> Hover me
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="account_number">
+                <Form.Label>Account Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={account_number}
+                  onChange={(e) => setAccountNumber(e.target.value)}
+                  placeholder="Enter account number"
+                />
+              </Form.Group>
+            </div>
+            <div className="col px-5">
+              <Form.Group controlId="bank_name">
+                <Form.Label>Bank Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={bank_name}
+                  onChange={(e) => setBankName(e.target.value)}
+                  placeholder="Enter bank name"
+                />
+              </Form.Group>
+            </div>
+          </div>
+
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="branch_name">
+                <Form.Label>Branch Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={branch_name}
+                  onChange={(e) => setBranchName(e.target.value)}
+                  placeholder="Enter branch name"
+                />
+              </Form.Group>
+            </div>
+            <div className="col px-5">
+              <Form.Group controlId="IFSC_code">
+                <Form.Label>IFSC Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={IFSC_code}
+                  onChange={(e) => setIfscCode(e.target.value)}
+                  placeholder="Enter IFSC code"
+                />
+              </Form.Group>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Button className="manager-btn my-4" variant="info" type="submit">
+                Submit
+              </Button>
+              <Button
+                variant="info"
+                className="manager-btn ms-4"
+                onClick={handleDiscard}
+              >
+                Discard
+              </Button>
+            </div>
+          </div>
+
+          {/* <button className="manager-btn"> Hover me
           </button> */}
-          </Form>
-        </div>
+        </Form>
+      </div>
       </div>
     </>
   );
