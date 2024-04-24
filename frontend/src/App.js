@@ -62,7 +62,7 @@ import Master from "./components/master/Master";
 function App() {
   return (
     <>
-      <div className="PReadd">
+      <div className="PReadd h-screen">
         <Router>
           {/*      <Header />
            */}
