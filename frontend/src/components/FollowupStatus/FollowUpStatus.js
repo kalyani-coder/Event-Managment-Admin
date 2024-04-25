@@ -258,9 +258,9 @@ const FollowUpStatus = ({ enquiry }) => {
               </div>
             </div>
           </div>
-          <div className="table-responsive w-[105%] md:w-full">
+          <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
-              <thead>
+              <thead className="sticky top-0 bg-white">
                 <tr>
                   <th scope="col">Event Name</th>
                   <th scope="col">Event Date</th>

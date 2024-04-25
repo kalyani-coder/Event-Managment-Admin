@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 const VendorPayment = () => {
   const getCurrentDate = () => {
@@ -154,152 +154,188 @@ const VendorPayment = () => {
   return (
     <>
       <Header />
+      <div
+        className="w-full  h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
+          <Form className=" " onSubmit={handleSubmit}>
+            <h2 className="text-[35px]  pl-[1em]">Vendor Payment</h2>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <Form.Group controlId="SelectVendor">
+                    <Form.Label>Select Vendor:</Form.Label>
+                    <div className="relative">
+                      <Form.Select
+                        className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                        aria-label="Select Vendor"
+                        name="selectedVendor"
+                        onChange={handleVendorChange}
+                        value={formData.selectedVendor}
+                      >
+                        <option>Select Vendor</option>
+                        {vendors.map((vendor) => (
+                          <option
+                            key={vendor.Vendor_Name}
+                            value={vendor.Vendor_Name}
+                          >
+                            {vendor.Vendor_Name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </div>
+                  </Form.Group>
+                </div>
+              </div>
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="selectedEvent">Event Name</label>
+                  <select
+                    className="form-control mb-2"
+                    name="selectedEvent"
+                    onChange={handleEventChange}
+                    value={formData.selectedEvent}
+                    required
+                  >
+                    <option value="">Select event</option>
+                    {events.map((event) => (
+                      <option key={event._id} value={event.eventName}>
+                        {event.eventName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
 
-      <div className="container">
-        <form className="order p-4 " onSubmit={handleSubmit}>
-          <h2>Vendor Payment</h2>
-          <div className="form-group">
-            <Form.Group controlId="SelectVendor">
-              <Form.Label>Select Vendor:</Form.Label>
-              <div className="relative">
-                <Form.Select
-                  className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                  aria-label="Select Vendor"
-                  name="selectedVendor"
-                  onChange={handleVendorChange}
-                  value={formData.selectedVendor}
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="date">Date</label>
+                  <input
+                    className="form-control"
+                    type="date"
+                    name="date"
+                    onChange={handleChange}
+                    value={formData.date}
+                  />
+                </div>
+              </div>
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="time">Time</label>
+                  <input
+                    className="form-control"
+                    type="time"
+                    name="time"
+                    onChange={handleChange}
+                    value={formData.time}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="bankaccount">Bank Account</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="bankaccount"
+                    placeholder="Bank Account"
+                    onChange={handleChange}
+                    value={formData.bankaccount}
+                  />
+                </div>
+              </div>
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="paid_amt">Paid Amount</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="paid_amt"
+                    placeholder="Paid Amount"
+                    onChange={handleChange}
+                    value={formData.paid_amt}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="advance_payment">Advance Payment</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="advance_payment"
+                    placeholder="Advance Payment"
+                    onChange={handleAdvancePaymentChange}
+                    value={formData.advance_payment}
+                  />
+                </div>
+              </div>
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="rem_amt">Pending Amount</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="rem_amt"
+                    placeholder="Remaining Amount"
+                    value={formData.rem_amt}
+                    readOnly
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="description"
+                    placeholder="Description"
+                    onChange={handleChange}
+                    value={formData.description}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Button
+                  className="manager-btn ms-1"
+                  type="button"
+                  onClick={handleDiscard}
                 >
-                  <option>Select Vendor</option>
-                  {vendors.map((vendor) => (
-                    <option key={vendor.Vendor_Name} value={vendor.Vendor_Name}>
-                      {vendor.Vendor_Name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-            </Form.Group>
-          </div>
-          <div className="form-group">
-            <label htmlFor="selectedEvent">Event Name</label>
-            <select
-              className="form-control mb-2"
-              name="selectedEvent"
-              onChange={handleEventChange}
-              value={formData.selectedEvent}
-              required
-            >
-              <option value="">Select event</option>
-              {events.map((event) => (
-                <option key={event._id} value={event.eventName}>
-                  {event.eventName}
-                </option>
-              ))}
-            </select>
-          </div>
+                  {" "}
+                  Discard
+                </Button>
 
-
-          <div className="row mb-2">
-            <div className="col">
-              <div className="form-group">
-                <label htmlFor="date">Date</label>
-                <input
-                  className="form-control"
-                  type="date"
-                  name="date"
-                  onChange={handleChange}
-                  value={formData.date}
-                />
+                <Button className="manager-btn ms-3" type="submit">
+                  Save
+                </Button>
               </div>
             </div>
-            <div className="col">
-              <div className="form-group">
-                <label htmlFor="time">Time</label>
-                <input
-                  className="form-control"
-                  type="time"
-                  name="time"
-                  onChange={handleChange}
-                  value={formData.time}
-                />
-              </div>
+          </Form>
+          {showPopup && (
+            <div className="alert alert-success mt-3">
+              Data saved successfully!
+              <button
+                type="button"
+                className="close"
+                onClick={handlePopupClose}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-          </div>
-
-          
-          <div className="form-group">
-            <label htmlFor="bankaccount">Bank Account</label>
-            <input
-              className="form-control mb-2"
-              type="text"
-              name="bankaccount"
-              placeholder="Bank Account"
-              onChange={handleChange}
-              value={formData.bankaccount}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="paid_amt">Paid Amount</label>
-            <input
-              className="form-control mb-2"
-              type="text"
-              name="paid_amt"
-              placeholder="Paid Amount"
-              onChange={handleChange}
-              value={formData.paid_amt}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="advance_payment">Advance Payment</label>
-            <input
-              className="form-control mb-2"
-              type="text"
-              name="advance_payment"
-              placeholder="Advance Payment"
-              onChange={handleAdvancePaymentChange}
-              value={formData.advance_payment}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="rem_amt">Pending Amount</label>
-            <input
-              className="form-control mb-2"
-              type="text"
-              name="rem_amt"
-              placeholder="Remaining Amount"
-              value={formData.rem_amt}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              className="form-control mb-2"
-              type="text"
-              name="description"
-              placeholder="Description"
-              onChange={handleChange}
-              value={formData.description}
-            />
-          </div>
-          <button
-            className="btn btn-secondary mr-2 action1-btn"
-            type="button"
-            onClick={handleDiscard}
-          >
-            Discard
-          </button>
-          <button className="btn btn-primary action-btn" type="submit">
-            Save
-          </button>
-        </form>
-        {showPopup && (
-          <div className="alert alert-success mt-3">
-            Data saved successfully!
-            <button type="button" className="close" onClick={handlePopupClose}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

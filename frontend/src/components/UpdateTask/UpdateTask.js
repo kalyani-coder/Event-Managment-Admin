@@ -47,14 +47,17 @@ const UpdateTaskPage = () => {
 
     try {
       // Make a POST request to the API endpoint
-      const response = await fetch("https://car-wash-backend-api.onrender.com/api/clients", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // Send all task data to the API
-        body: JSON.stringify(task),
-      });
+      const response = await fetch(
+        "https://car-wash-backend-api.onrender.com/api/clients",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Send all task data to the API
+          body: JSON.stringify(task),
+        }
+      );
 
       if (response.ok) {
         console.log("Task successfully updated.");
@@ -96,86 +99,88 @@ const UpdateTaskPage = () => {
   return (
     <>
       <Header />
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-96 min-w-8 mx-4 ">
+          {" "}
+          <h1 className="text-[35px]">Update Task</h1>
+          <form onSubmit={handleSubmit} id="updateTaskForm">
+            <div className="mb-3">
+              <label htmlFor="Task" className="form-label">
+                Task
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="Task"
+                name="Task"
+                value={task.Task}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Date" className="form-label">
+                Date
+              </label>
+              <input
+                type="date"
+                className="form-control"
+                id="date"
+                name="Date"
+                value={task.Date}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="time" className="form-label">
+                Time
+              </label>
+              <input
+                type="time"
+                className="form-control"
+                id="time"
+                name="Time"
+                value={task.Time}
+                onChange={handleInputChange}
+              />
+            </div>
 
-      <div className="container mt-5">
-        <h1>Update Task</h1>
-        <form onSubmit={handleSubmit} id="updateTaskForm">
-          <div className="mb-3">
-            <label htmlFor="Task" className="form-label">
-              Task
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="Task"
-              name="Task"
-              value={task.Task}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="Date" className="form-label">
-              Date
-            </label>
-            <input
-              type="date"
-              className="form-control"
-              id="date"
-              name="Date"
-              value={task.Date}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="time" className="form-label">
-              Time
-            </label>
-            <input
-              type="time"
-              className="form-control"
-              id="time"
-              name="Time"
-              value={task.Time}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="manager" className="form-label">
-              Manager
-            </label>
-            <select
-              className="form-select"
-              id="manager"
-              name="Manager"
-              value={task.Manager}
-              onChange={handleInputChange}
-            >
-              <option value="" disabled>
-                Select a manager
-              </option>
-              {loadingManagers ? (
+            <div className="mb-3 ">
+              <label htmlFor="manager" className="form-label">
+                Manager
+              </label>
+              <select
+                className="form-select rounded-2xl"
+                id="manager"
+                name="Manager"
+                value={task.Manager}
+                onChange={handleInputChange}
+              >
                 <option value="" disabled>
-                  Loading managers...
+                  Select a manager
                 </option>
-              ) : (
-                managers.map((manager) => (
-                  <option key={manager.id} value={manager.id}>
-                    {manager.fname} {manager.lname}
+                {loadingManagers ? (
+                  <option value="" disabled>
+                    Loading managers...
                   </option>
-                ))
-              )}
-            </select>
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Update Task
-          </button>
-        </form>
-        {showSuccessMessage && (
-          <div className="alert alert-success mt-3" role="alert">
-            Task successfully updated!
-          </div>
-        )}
+                ) : (
+                  managers.map((manager) => (
+                    <option key={manager.id} value={manager.id}>
+                      {manager.fname} {manager.lname}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+            <button type="submit" className="manager-btn ms-1">
+              Update Task
+            </button>
+          </form>
+          {showSuccessMessage && (
+            <div className="alert alert-success mt-3" role="alert">
+              Task successfully updated!
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

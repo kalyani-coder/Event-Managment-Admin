@@ -95,56 +95,71 @@ const AddSalary = () => {
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <div className="row">
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] md:flex">
           <div className="col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Add Salary</h5>
                 <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="typeOfSalary">Add Salary</label>
-                    <select
-                      className="form-control"
-                      value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                      required
-                    >
-                      <option value="">Select</option>
-                      <option value="manager">Manager</option>
-                      <option value="accountant">Accountant</option>
-                      <option value="executive">Executive</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="salaryType">Select Salary Type</label>
-                    <select
-                      className="form-control"
-                      value={salaryType}
-                      onChange={(e) => setSalaryType(e.target.value)}
-                      required
-                    >
-                      <option value="">Select</option>
-                      {selectedOption === "manager" &&
-                        managerOptions.map((manager) => (
-                          <option key={manager._id} value={manager.fname}>
-                            {manager.fname}
-                          </option>
-                        ))}
-                      {selectedOption === "accountant" &&
-                        accountantOptions.map((accountant) => (
-                          <option key={accountant._id} value={accountant.fname}>
-                            {accountant.fname}
-                          </option>
-                        ))}
-                      {selectedOption === "executive" &&
-                        executiveOptions.map((executive) => (
-                          <option key={executive._id} value={executive.fname}>
-                            {executive.fname}
-                          </option>
-                        ))}
-                    </select>
+                  <h2 className="text-[35px] pl-4">Add Salary</h2>
+                  <div className="row mb-2">
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="typeOfSalary">Add Salary</label>
+                        <select
+                          className="form-control"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                          required
+                        >
+                          <option value="">Select</option>
+                          <option value="manager">Manager</option>
+                          <option value="accountant">Accountant</option>
+                          <option value="executive">Executive</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="salaryType">Select Salary Type</label>
+                        <select
+                          className="form-control"
+                          value={salaryType}
+                          onChange={(e) => setSalaryType(e.target.value)}
+                          required
+                        >
+                          <option value="">Select</option>
+                          {selectedOption === "manager" &&
+                            managerOptions.map((manager) => (
+                              <option key={manager._id} value={manager.fname}>
+                                {manager.fname}
+                              </option>
+                            ))}
+                          {selectedOption === "accountant" &&
+                            accountantOptions.map((accountant) => (
+                              <option
+                                key={accountant._id}
+                                value={accountant.fname}
+                              >
+                                {accountant.fname}
+                              </option>
+                            ))}
+                          {selectedOption === "executive" &&
+                            executiveOptions.map((executive) => (
+                              <option
+                                key={executive._id}
+                                value={executive.fname}
+                              >
+                                {executive.fname}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
                   </div>
 
                   {/* <div className="form-group">
@@ -157,55 +172,75 @@ const AddSalary = () => {
                     required
                   />
                 </div> */}
-                  <div className="form-group">
-                    <label htmlFor="date">Date</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                    />
+                  <div className="row mb-2">
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="date">Date</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          value={date}
+                          onChange={(e) => setDate(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="time">Time</label>
+                        <input
+                          type="time"
+                          className="form-control"
+                          value={time}
+                          onChange={(e) => setTime(e.target.value)}
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="time">Time</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={time}
-                      onChange={(e) => setTime(e.target.value)}
-                    />
+                  <div className="row mb-2">
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="month">Salary of Month</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={month}
+                          onChange={(e) => setMonth(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="salary">Salary Amount</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={salary}
+                          onChange={(e) => setsalary(e.target.value)}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="month">Salary of Month</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={month}
-                      onChange={(e) => setMonth(e.target.value)}
-                    />
+                  <div className="row mb-2">
+                    <div className="col px-5">
+                      <div className="form-group">
+                        <label htmlFor="adv_payment">Advance Payment</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={adv_payment}
+                          onChange={(e) => setadv_payment(e.target.value)}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="salary">Salary Amount</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={salary}
-                      onChange={(e) => setsalary(e.target.value)}
-                    />
+                  <div className="row mb-2">
+                    <div className="col px-5">
+                      <button className="manager-btn ms-1" type="submit">
+                        Add Salary
+                      </button>
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="adv_payment">Advance Payment</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={adv_payment}
-                      onChange={(e) => setadv_payment(e.target.value)}
-                    />
-                  </div>
-                  <button className="btn btn-info" type="submit">
-                    Add Salary
-                  </button>
                 </form>
               </div>
             </div>
@@ -213,7 +248,7 @@ const AddSalary = () => {
           <div className="col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Salary Details</h5>
+                <h5 className="text-[35px] pl-4 ">Salary Details</h5>
                 {/* <div className="form-group">
                 <label htmlFor="salaryTaken">Salary Taken</label>
                 <input
@@ -224,41 +259,53 @@ const AddSalary = () => {
 
                 />
               </div> */}
-                <div className="form-group">
-                  <label htmlFor="adv_taken">Advance Taken</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={adv_taken}
-                    onChange={(e) => setadv_taken(e.target.value)}
-                  />
+                <div className="row mb-2">
+                  <div className="col px-5">
+                    <div className="form-group">
+                      <label htmlFor="adv_taken">Advance Taken</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={adv_taken}
+                        onChange={(e) => setadv_taken(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col px-5">
+                    <div className="form-group">
+                      <label htmlFor="incentive">Incentive Amount</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={incentive}
+                        onChange={(e) => setincentive(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="incentive">Incentive Amount</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={incentive}
-                    onChange={(e) => setincentive(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="deduct_amount">Deduct Amount</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={deduct_amount}
-                    onChange={(e) => setdeduct_amount(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="balance_amount">Balance Amount</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={balance_amount}
-                    onChange={(e) => setBalanceAmount(e.target.value)}
-                  />
+                <div className="row mb-2">
+                  <div className="col px-5">
+                    <div className="form-group">
+                      <label htmlFor="deduct_amount">Deduct Amount</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={deduct_amount}
+                        onChange={(e) => setdeduct_amount(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col px-5">
+                    <div className="form-group">
+                      <label htmlFor="balance_amount">Balance Amount</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={balance_amount}
+                        onChange={(e) => setBalanceAmount(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

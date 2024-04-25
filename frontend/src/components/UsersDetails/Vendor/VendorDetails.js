@@ -54,7 +54,7 @@ const VendorDetails = () => {
               />
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-md-3">
+          <div className="row row-cols-1 row-cols-md-3 overflow-y-auto h-[70vh]  md:mt-0 w-full">
             {filteredVendorData.length > 0 ? (
               filteredVendorData.map((vendor) => (
                 <div className="col mb-4">

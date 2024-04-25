@@ -35,55 +35,58 @@ const ViewSalary = () => {
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h5 className="mb-3">View Salary</h5>
-
-        <div className="form-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by name"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
+          {" "}
+          <h2 className="text-[35px]">View Salary</h2>
+          <div className="form-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by name"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </div>
+          <div className="overflow-y-auto h-[70vh]  md:mt-0 w-full">
+            <table className="table table-bordered bg-white">
+              <thead className="sticky top-0 bg-white">
+                {" "}
+                <tr>
+                  {/* <th className="text-center">Staff ID</th> */}
+                  <th className="text-center">First Name</th>
+                  <th className="text-center">Last Name</th>
+                  <th className="text-center">Salary</th>
+                  <th className="text-center">Date</th>
+                  <th className="text-center">Month</th>
+                  <th className="text-center">Advance Payment</th>
+                  <th className="text-center">Remaining Payment</th>
+                  <th className="text-center">Incentive</th>
+                  <th className="text-center">Deduct Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredSalaryData.map((item) => (
+                  <tr key={item.staff_id}>
+                    {/* <td className="text-center">{item.staff_id}</td> */}
+                    <td className="text-center">{item.fname}</td>
+                    <td className="text-center">{item.lname}</td>
+                    <td className="text-center">{item.salary}</td>
+                    <td className="text-center">{item.date}</td>
+                    <td className="text-center">{item.month}</td>
+                    <td className="text-center">{item.adv_payment}</td>
+                    <td className="text-center">{item.rem_payment}</td>
+                    <td className="text-center">{item.incentive}</td>
+                    <td className="text-center">{item.deduct_amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        <table
-          className="table table-striped table-bordered"
-          style={{ borderColor: "black" }}
-        >
-          <thead>
-            <tr>
-              {/* <th className="text-center">Staff ID</th> */}
-              <th className="text-center">First Name</th>
-              <th className="text-center">Last Name</th>
-              <th className="text-center">Salary</th>
-              <th className="text-center">Date</th>
-              <th className="text-center">Month</th>
-              <th className="text-center">Advance Payment</th>
-              <th className="text-center">Remaining Payment</th>
-              <th className="text-center">Incentive</th>
-              <th className="text-center">Deduct Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredSalaryData.map((item) => (
-              <tr key={item.staff_id}>
-                {/* <td className="text-center">{item.staff_id}</td> */}
-                <td className="text-center">{item.fname}</td>
-                <td className="text-center">{item.lname}</td>
-                <td className="text-center">{item.salary}</td>
-                <td className="text-center">{item.date}</td>
-                <td className="text-center">{item.month}</td>
-                <td className="text-center">{item.adv_payment}</td>
-                <td className="text-center">{item.rem_payment}</td>
-                <td className="text-center">{item.incentive}</td>
-                <td className="text-center">{item.deduct_amount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </>
   );

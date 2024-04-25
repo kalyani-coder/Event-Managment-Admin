@@ -174,138 +174,142 @@ const Master = () => {
   return (
     <>
       <Header />
-      <div className="container">
-        <h4 className="mt-5">Master</h4>
-        {alertMessage && (
-          <div>
-            <Alert variant={alertVariant}>{alertMessage}</Alert>
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[30%] ">
+          <h2 className="text-[35px] pl-[1em]">Master</h2>
+          {alertMessage && (
+            <div>
+              <Alert variant={alertVariant}>{alertMessage}</Alert>
+            </div>
+          )}
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="addvendor">
+                <div className="relative">
+                  <label htmlFor="date">Add Vendors:</label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Add Vendor"
+                    value={vendorName}
+                    onChange={(e) => setVendorName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className=" mt-3 grid gap-2 md:flex">
+                  <Button
+                    className="manager-btn ms-1"
+                    type="submit"
+                    variant="info"
+                    onClick={handleVendorSubmit}
+                  >
+                    Add Vendor
+                  </Button>
+                  <Button
+                    className="manager-btn ms-1"
+                    type="button"
+                    variant="info"
+                    onClick={handleViewVendors}
+                  >
+                    View Vendors
+                  </Button>
+                </div>
+              </Form.Group>
+            </div>
           </div>
-        )}
-        <div className="row mb-2">
-          <div className="col px-5">
-            <Form.Group controlId="addvendor">
-              <h5>Add Vendors:</h5>
-              <div className="relative">
-                <Form.Control
-                  type="text"
-                  placeholder="Add Vendor"
-                  value={vendorName}
-                  onChange={(e) => setVendorName(e.target.value)}
-                  required
-                />
+          <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
+            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+              <Modal.Title>Vendors List</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <div>Vendors Name</div>
+                <div>Action</div>
               </div>
-              <div className="d-flex">
-                <Button
-                  className="mt-3"
-                  type="submit"
-                  variant="info"
-                  onClick={handleVendorSubmit}
+              {vendors.map((vendor) => (
+                <div
+                  key={vendor._id}
+                  className="d-flex justify-content-between align-items-center"
                 >
-                  Add Vendor
-                </Button>
-                <div style={{ width: "10px" }}></div>
-                <Button
-                  className="mt-3"
-                  type="button"
-                  variant="info"
-                  onClick={handleViewVendors}
-                >
-                  View Vendors
-                </Button>
-              </div>
-            </Form.Group>
+                  <div style={{ lineHeight: "45px" }}>{vendor.Vendor_Name}</div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="ml-2"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDeleteVendor(vendor._id)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Modal.Body>
+          </Modal>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form>
+                <Form.Group controlId="event">
+                  <div className="relative">
+                    <label htmlFor="date">Add Events Name:</label>
+
+                    <Form.Control
+                      placeholder="Add Event Name Here..."
+                      value={eventName}
+                      onChange={(e) => setEventName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className=" mt-3 grid gap-2 md:flex">
+                    <Button
+                      className="manager-btn ms-1"
+                      type="submit"
+                      variant="info"
+                      onClick={handleEventSubmit}
+                    >
+                      Add Event
+                    </Button>
+                    <Button
+                      className="manager-btn ms-1"
+                      type="button"
+                      variant="info"
+                      onClick={handleViewEvents}
+                    >
+                      View Events
+                    </Button>
+                  </div>
+                </Form.Group>
+              </Form>
+            </div>
           </div>
+          <Modal show={showEventModal} onHide={handleCloseEventModal}>
+            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+              <Modal.Title>Events List</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <div>Event Name</div>
+                <div>Action</div>
+              </div>
+              {events.map((event) => (
+                <div
+                  key={event._id}
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div style={{ lineHeight: "45px" }}>{event.eventName}</div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="ml-2"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDeleteEvent(event._id)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Modal.Body>
+          </Modal>
         </div>
-        <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
-          <Modal.Header closeButton style={{ marginTop: "30px" }}>
-            <Modal.Title>Vendors List</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>Vendors Name</div>
-              <div>Action</div>
-            </div>
-            {vendors.map((vendor) => (
-              <div
-                key={vendor._id}
-                className="d-flex justify-content-between align-items-center"
-              >
-                <div style={{ lineHeight: "45px" }}>{vendor.Vendor_Name}</div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    className="ml-2"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleDeleteVendor(vendor._id)}
-                  />
-                </div>
-              </div>
-            ))}
-          </Modal.Body>
-        </Modal>
-        <div className="row mb-2">
-          <div className="col px-5">
-        <Form>
-          <Form.Group controlId="event">
-            <h5 className="mt-3">Add Events Name:</h5>
-            <div className="relative">
-              <Form.Control
-                placeholder="Add Event Name Here..."
-                value={eventName}
-                onChange={(e) => setEventName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="d-flex">
-              <Button
-                className="mt-3"
-                type="submit"
-                variant="info"
-                onClick={handleEventSubmit}
-              >
-                Add Event
-              </Button>
-              <div style={{ width: "10px" }}></div>
-              <Button
-                className="mt-3"
-                type="button"
-                variant="info"
-                onClick={handleViewEvents}
-              >
-                View Events
-              </Button>
-            </div>
-          </Form.Group>
-        </Form>
-</div>
-</div>
-        <Modal show={showEventModal} onHide={handleCloseEventModal}>
-          <Modal.Header closeButton style={{ marginTop: "30px" }}>
-            <Modal.Title>Events List</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>Event Name</div>
-              <div>Action</div>
-            </div>
-            {events.map((event) => (
-              <div
-                key={event._id}
-                className="d-flex justify-content-between align-items-center"
-              >
-                <div style={{ lineHeight: "45px" }}>{event.eventName}</div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    className="ml-2"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleDeleteEvent(event._id)}
-                  />
-                </div>
-              </div>
-            ))}
-          </Modal.Body>
-        </Modal>
       </div>
     </>
   );
