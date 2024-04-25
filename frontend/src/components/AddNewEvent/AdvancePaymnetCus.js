@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { json, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Button,Alert, Modal } from "react-bootstrap";
@@ -109,19 +109,18 @@ function AdvancePaymnetCus() {
       payment_date: formattedDate,
       payment_time: currentTime,
       payment_method: paymentMethod,
-      ...(paymentMethod === "cheque" && {
-        cheque_number: chequeNumber,
-        whome_to_submit: submittedTo,
-        utrno_rtgs_id: utrNumber,
-      }),
-      ...(paymentMethod === "cash" && {
-        cash_whome_to_submit: cash,
-      }),
-      ...(paymentMethod === "netbanking" && {
-        transaction_id: transaction,
-      }),
+      customer_name: selectedCustomerDetails.customer_name,
+      contact: selectedCustomerDetails.contact,
+      email: selectedCustomerDetails.email,
+      date: selectedCustomerDetails.date,
+      venue: selectedCustomerDetails.venue,
+      event_name: selectedCustomerDetails.event_name,
+      event_Type: selectedCustomerDetails.event_Type,
+      guest_Number: selectedCustomerDetails.guest_Number,
+      assign_manager_name: "",
+      assign_manager_Id: "",
     };
-  
+
     axios
       .post("http://localhost:5000/api/advpayment", data)
       .then((response) => {
@@ -136,6 +135,7 @@ function AdvancePaymnetCus() {
         setAlertVariant("danger");
       });
   };
+
   const fetchManagers = () => {
     axios
       .get("http://localhost:5000/api/addmanager")
@@ -148,52 +148,48 @@ function AdvancePaymnetCus() {
   };
 
   const handleAssign = () => {
-    const selectedManagerDetails = managers.find(manager => manager._id === selectedManager);
 
-    const data = {
-      _id: "",
-      customer_name: "",
-      contact: "",
-      email: "",
-      date: "",
-      venue: "",
-      event_name: "",
-      event_Type: "",
-      guest_Number: "",
-      assign_manager_name: "",
-      assign_manager_Id: "",
-    };
+    if(selectedManager){
+      const manager = JSON.parse(selectedManager)
+      console.log("manager" , manager)
 
-    if (selectedCustomerDetails) {
-      data.customer_name = selectedCustomerDetails.customer_name || "";
-      data.contact = selectedCustomerDetails.contact || "";
-      data.email = selectedCustomerDetails.email || "";
-      data.date = selectedCustomerDetails.date || "";
-      data.venue = selectedCustomerDetails.venue || "";
-      data.event_name = selectedCustomerDetails.event_name || "";
-      data.event_Type = selectedCustomerDetails.event_Type || "";
-      data.guest_Number = selectedCustomerDetails.guest_Number || "";
+      const transactionData = {
+        date_of_transaction: currentDate.toISOString().split("T")[0],
+      };
+   
+
+      const data = {
+  
+        customer_name: selectedCustomer,
+        contact: selectedCustomerDetails.contact,
+        email: selectedCustomerDetails.email,
+        date: selectedCustomerDetails.event_date,
+        venue: selectedCustomerDetails.venue,
+        event_name: selectedCustomerDetails.eventName,
+        event_Type: selectedCustomerDetails.event_type,
+        guest_Number: selectedCustomerDetails.guest_number,
+        assign_manager_name: manager.fname + " " + manager.lname ,
+        assign_manager_Id: manager._id,
+        transaction_details: transactionData, 
+      };
+  
+      axios
+        .post("http://localhost:5000/api/order", data)
+        .then((response) => {
+          console.log("Data assigned to manager successfully:", response.data);
+          setShowModal(false);
+          alert("Data assigned to manager successfully.");
+          setAlertVariant("success");
+        })
+        .catch((error) => {
+          console.error("Error assigning data to manager:", error);
+          setAlertMessage("Failed to assign data to manager.");
+          setAlertVariant("danger");
+        });
     }
 
-    if (selectedManagerDetails) {
-      data.assign_manager_name = selectedManagerDetails.name || "";
-      data.assign_manager_Id = selectedManager || "";
-    }
-
-    axios
-      .post("http://localhost:5000/api/order", data)
-      .then((response) => {
-        console.log("Data assigned to manager successfully:", response.data);
-        setShowModal(false);
-        setAlertMessage("Data assigned to manager successfully.");
-        setAlertVariant("success");
-      })
-      .catch((error) => {
-        console.error("Error assigning data to manager:", error);
-        setAlertMessage("Failed to assign data to manager.");
-        setAlertVariant("danger");
-      });
-};
+   
+  };
 
   
 
@@ -454,7 +450,7 @@ function AdvancePaymnetCus() {
             >
               <option value="">Select Manager</option>
               {managers.map((manager) => (
-                <option key={manager.manager_Id} value={manager.manager_Id}>
+                <option key={manager.manager_Id} value={JSON.stringify(manager)}>
                   {manager.fname} {manager.lname}
                 </option>
               ))}
