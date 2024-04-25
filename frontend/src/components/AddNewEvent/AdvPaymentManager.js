@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Form } from "react-bootstrap";
+import { Form,Alert } from "react-bootstrap";
 
 const AdvPaymentManager = () => {
   const getCurrentDate = () => {
@@ -32,6 +32,7 @@ const AdvPaymentManager = () => {
 
   const initialFormData = {
     selectedManager: "",
+    selectedManagerId: "", // Added selectedManagerId
     selectedEvent: "",
     fname: "",
     lname: "",
@@ -49,11 +50,13 @@ const AdvPaymentManager = () => {
   const [managers, setManagers] = useState([]);
   const [events, setEvents] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertVariant, setAlertVariant] = useState("");
 
   useEffect(() => {
     const fetchManagers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/addmanager");
+        const response = await axios.get("http://localhost:5000/api/order");
         setManagers(response.data);
       } catch (error) {
         console.error("Error fetching managers:", error);
@@ -68,7 +71,7 @@ const AdvPaymentManager = () => {
       try {
         if (formData.selectedManager) {
           const response = await axios.get(
-            `http://localhost:5000/api/event?eventName=${formData.selectedManager}`
+            `http://localhost:5000/api/order?assign_manager_Id=${formData.selectedManagerId}`
           );
           setEvents(response.data);
         }
@@ -78,7 +81,7 @@ const AdvPaymentManager = () => {
     };
 
     fetchEventsForManager();
-  }, [formData.selectedManager]);
+  }, [formData.selectedManager, formData.selectedManagerId]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -90,9 +93,11 @@ const AdvPaymentManager = () => {
 
   const handleManagerChange = (event) => {
     const { value } = event.target;
+    const selectedManagerData = managers.find(manager => manager.assign_manager_name === value);
     setFormData((prevData) => ({
       ...prevData,
       selectedManager: value,
+      selectedManagerId: selectedManagerData ? selectedManagerData.assign_manager_Id : "",
       selectedEvent: "",
     }));
   };
@@ -107,32 +112,40 @@ const AdvPaymentManager = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/api/advpaymanager",
         {
-          fname: formData.fname,
-          lname: formData.lname,
-          event_name: formData.selectedEvent,
-          date: formData.date,
-          time: formData.time,
-          bankAccount_Name: formData.bankaccount,
-          paid_amt: formData.paid_amt,
-          advance_payment: formData.advance_payment,
-          rem_amt: formData.rem_amt,
+          manager_Name: formData.selectedManager,
+          EventName: formData.selectedEvent,
+          // EventId: formData.selectedEventId,
+          Date: formData.date,
+          Time: formData.time,
+          Bank_Name: formData.bankaccount,
+          paid_Amount: formData.paid_amt,
+          adv_Payment: formData.advance_payment,
+          Pending_Amount: formData.rem_amt,
           description: formData.description,
+          manager_Id: formData.selectedManagerId,
         }
       );
-
+  
       if (response.status === 200) {
         setShowPopup(true);
         setFormData(initialFormData);
       }
+      
+      console.log(response.data); // Output response data to console
+      setAlertMessage("Advance Payment to manager successfully.");
+        setAlertVariant("success");
     } catch (error) {
       console.error("Error saving data:", error);
+      setAlertMessage("Failed to advance payment.");
+      setAlertVariant("danger");
     }
   };
+    
 
   const handleDiscard = () => {
     setFormData(initialFormData);
@@ -160,6 +173,11 @@ const AdvPaymentManager = () => {
       <div className="container">
         <form className="order p-4 " onSubmit={handleSubmit}>
           <h2>Advance Payment to Manager</h2>
+          {alertMessage && (
+          <div>
+            <Alert variant={alertVariant}>{alertMessage}</Alert>
+          </div>
+        )}
           <div className="form-group">
             <Form.Group controlId="SelectManager">
               <Form.Label>Select Manager:</Form.Label>
@@ -173,8 +191,8 @@ const AdvPaymentManager = () => {
                 >
                   <option>Select Manager</option>
                   {managers.map((manager) => (
-                    <option key={manager.manager_Id} value={manager.manager_Id}>
-                      {manager.fname} {manager.lname}
+                    <option key={manager.assign_manager_Id} value={manager.assign_manager_name}>
+                      {manager.assign_manager_name}
                     </option>
                   ))}
                 </Form.Select>
@@ -192,8 +210,8 @@ const AdvPaymentManager = () => {
             >
               <option value="">Select event</option>
               {events.map((event) => (
-                <option key={event.EventId} value={event.EventName}>
-                  {event.EventName}
+                <option key={event.manager_Id} value={event.event_name}>
+                  {event.event_name}
                 </option>
               ))}
             </select>

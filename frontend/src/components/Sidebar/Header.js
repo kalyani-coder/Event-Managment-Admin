@@ -599,7 +599,15 @@ export default function Sidenav() {
                       <span className="icon-text">Advance Payment Manager</span>
                     </Link>
                   </MenuItem>
-
+                  <MenuItem onClick={handleClose}>
+                    {" "}
+                    <Link
+                      to={"/viewadvpaymentmanager"}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <span className="icon-text">View Advance Payment Manager</span>
+                    </Link>
+                  </MenuItem>
 
                 </Menu>
               )}
