@@ -278,13 +278,12 @@ const AddVendor = () => {
                       {profilePicture ? profilePicture.name : "Choose File"}
                     </Form.Label>
                     {profilePicture && (
-                      <button
+                      <Button
                         type="button"
-                        className="btn btn-link btn-sm my-4"
                         onClick={handleRemoveProfilePicture}
                       >
                         Remove
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </Form.Group>

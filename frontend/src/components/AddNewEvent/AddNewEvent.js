@@ -88,17 +88,20 @@ const AddNewEvent = () => {
   return (
     <>
       <Header />
-
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-10">
-            <div className="card-body mt-5">
-              <h2 className="mb-3">Create Event</h2>
+      <div
+        className="w-full  h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
+          {" "}
+          <h2 className="text-[35px]  pl-[1em]">Create Event</h2>
+          <div className="row mb-2">
+            <div className="col px-5">
               <Form.Group controlId="SelectEvent">
                 <Form.Label>Select Event:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                    className="w-full py-2 pl-3 pr-10 border-gray-300  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
                     aria-label="Select Event"
                     name="event"
                     onChange={handleEventChange}
@@ -112,13 +115,14 @@ const AddNewEvent = () => {
                   </Form.Select>
                 </div>
               </Form.Group>
-
+            </div>
+            <div className="col px-5">
               <Form.Group controlId="SelectCustomer">
                 <Form.Label>Select Customer:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                    aria-label="Select Customer"
+                    className="w-full py-2 pl-3 pr-10 border-gray-300  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
+                    aria-label="Select Customer "
                     name="customer"
                     onChange={handleCustomerChange}
                   >
@@ -131,7 +135,10 @@ const AddNewEvent = () => {
                   </Form.Select>
                 </div>
               </Form.Group>
-
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
@@ -143,7 +150,9 @@ const AddNewEvent = () => {
                   readOnly
                 />
               </div>
+            </div>
 
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Contact Number</label>
                 <input
@@ -155,7 +164,10 @@ const AddNewEvent = () => {
                   readOnly
                 />
               </div>
-
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Number Of Guests</label>
                 <input
@@ -168,7 +180,8 @@ const AddNewEvent = () => {
                   id="guest"
                 />
               </div>
-
+            </div>
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Venue</label>
                 <input
@@ -179,7 +192,10 @@ const AddNewEvent = () => {
                   value={selectedCustomer ? selectedCustomer.event_venue : ""}
                 />
               </div>
-
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Address</label>
                 <input
@@ -190,7 +206,8 @@ const AddNewEvent = () => {
                   value={selectedCustomer ? selectedCustomer.address : ""}
                 />
               </div>
-
+            </div>
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="status">status</label>
                 <input
@@ -201,7 +218,10 @@ const AddNewEvent = () => {
                   value={selectedCustomer ? selectedCustomer.status : ""}
                 />
               </div>
-
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="email">Event Date</label>
                 <input
@@ -212,12 +232,13 @@ const AddNewEvent = () => {
                   value={selectedCustomer ? selectedCustomer.event_date : ""}
                 />
               </div>
-
+            </div>
+            <div className="col px-5">
               <Form.Group controlId="SelectEventType">
                 <Form.Label>Event Type:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
                     aria-label="Select EventType"
                     name="eventType"
                     onChange={handleEventTypeChange}
@@ -230,7 +251,10 @@ const AddNewEvent = () => {
                   </Form.Select>
                 </div>
               </Form.Group>
-
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
               <div className="form-group">
                 <label htmlFor="subVenue">Sub Venue</label>
                 <input
@@ -242,7 +266,8 @@ const AddNewEvent = () => {
                   onChange={(e) => setSubVenue(e.target.value)}
                 />
               </div>
-
+            </div>
+            <div className="col px-5">
               {/* Input field for budget */}
               <div className="form-group">
                 <label htmlFor="budget">Budget</label>
@@ -255,8 +280,13 @@ const AddNewEvent = () => {
                   onChange={(e) => setBudget(e.target.value)}
                 />
               </div>
-
-              <Button onClick={handleSubmit}>Save Event</Button>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Button onClick={handleSubmit} className="manager-btn ms-1">
+                Save Event
+              </Button>
             </div>
           </div>
         </div>

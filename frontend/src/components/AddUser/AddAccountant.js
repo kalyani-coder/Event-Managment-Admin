@@ -344,7 +344,7 @@ const AddAccountant = () => {
               <div className="col px-5">
                 <Form.Group controlId="profilePicture">
                   <Form.Label>Profile Picture</Form.Label>
-                  <div className="custom-file flex">
+                  <div className="custom-file ">
                     <Form.Control
                       type="file"
                       className="custom-file-input"
@@ -356,13 +356,12 @@ const AddAccountant = () => {
                     </Form.Label>
                     <div className="">
                       {profilePicture && (
-                        <button
+                        <Button
                           type="button"
-                          className="manager-btn p-1"
                           onClick={handleRemoveProfilePicture}
                         >
                           Remove
-                        </button>
+                        </Button>
                       )}
                     </div>
                   </div>

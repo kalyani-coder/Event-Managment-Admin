@@ -147,198 +147,211 @@ function AddEvent() {
   return (
     <>
       <Header />
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-10">
-            <div className="card-body mt-5">
-              <h2 className="mb-3">Create Event</h2>
-              {/* Form fields */}
-              <div className="form-group">
-                <label htmlFor="eventName">Event Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter event name"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                  id="eventName"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="fname">
-                  Full Name<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Full Name"
-                  value={fname}
-                  onChange={(e) => setfname(e.target.value)}
-                  required
-                  id="fname"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="company_name">Company Name</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  placeholder="Enter Company Name"
-                  value={company_name}
-                  onChange={(e) => setcompany_name(e.target.value)}
-                  id="company_name"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
-                  id="email"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="contact">
-                  Contact Number<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="number"
-                  className="form-control "
-                  placeholder="Enter Contact Number"
-                  value={contact}
-                  onChange={(e) => setcontact(e.target.value)}
-                  required
-                  id="contact"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="event_type">Event Type</label>
-                <select
-                  value={event_type}
-                  onChange={(e) => setevent_type(e.target.value)}
-                  className="form-control"
-                  id="event_type"
-                >
-                  <option value="Family Function">Family Function</option>
-                  <option value="Birthday Party">Birthday Party</option>
-                  <option value="Wedding">Wedding</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="venue">Venue</label>
-                <input
-                  type="text"
-                  value={venue}
-                  onChange={(e) => setvenue(e.target.value)}
-                  className="form-control"
-                  placeholder="Venue"
-                  id="venue"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="subvenue">Sub Venue</label>
-                <input
-                  type="text"
-                  value={subvenue}
-                  onChange={(e) => setsubvenue(e.target.value)}
-                  className="form-control"
-                  placeholder="Sub Venue"
-                  id="subvenue"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="guest_number">Estimate Number of Guests</label>
-                <input
-                  type="number"
-                  value={guest_number}
-                  onChange={(e) => setguest_number(e.target.value)}
-                  className="form-control"
-                  placeholder="Estimate Number of Guests"
-                  id="guest_number"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="budget">Budget</label>
-                <input
-                  type="number"
-                  value={budget}
-                  onChange={(e) => setbudget(e.target.value)}
-                  className="form-control"
-                  placeholder="Budget"
-                  id="budget"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="event_date">Event Date</label>
-                <input
-                  type="date"
-                  value={event_date}
-                  onChange={(e) => setevent_date(e.target.value)}
-                  className="form-control"
-                  placeholder="Event Date"
-                  id="event_date"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="currentTime">Time</label>
-                <input
-                  type="time"
-                  value={currentTime}
-                  onChange={(e) => setCurrentTime(e.target.value)}
-                  className="form-control"
-                  placeholder="Time"
-                  id="currentTime"
-                />
-              </div>
-              {/* Search box for customer names */}
-              <div className="form-group">
-                <label htmlFor="customerNameSearch">Search Customer Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter customer name"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  id="customerNameSearch"
-                />
-              </div>
+      <div
+        className="w-full  h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] ">
+          <div className="row justify-content-center">
+            <div className="col-md-10">
+              <div className="card-body mt-5">
+                <h2 className="text-[35px]">Create Event</h2>
+                {/* Form fields */}
+                <div className="form-group">
+                  <label htmlFor="eventName">Event Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter event name"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
+                    id="eventName"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="fname">
+                    Full Name<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Full Name"
+                    value={fname}
+                    onChange={(e) => setfname(e.target.value)}
+                    required
+                    id="fname"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="company_name">Company Name</label>
+                  <input
+                    type="text"
+                    className="form-control "
+                    placeholder="Enter Company Name"
+                    value={company_name}
+                    onChange={(e) => setcompany_name(e.target.value)}
+                    id="company_name"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="text"
+                    className="form-control "
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
+                    id="email"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="contact">
+                    Contact Number<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control "
+                    placeholder="Enter Contact Number"
+                    value={contact}
+                    onChange={(e) => setcontact(e.target.value)}
+                    required
+                    id="contact"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="event_type">Event Type</label>
+                  <select
+                    value={event_type}
+                    onChange={(e) => setevent_type(e.target.value)}
+                    className="form-control"
+                    id="event_type"
+                  >
+                    <option value="Family Function">Family Function</option>
+                    <option value="Birthday Party">Birthday Party</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="venue">Venue</label>
+                  <input
+                    type="text"
+                    value={venue}
+                    onChange={(e) => setvenue(e.target.value)}
+                    className="form-control"
+                    placeholder="Venue"
+                    id="venue"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="subvenue">Sub Venue</label>
+                  <input
+                    type="text"
+                    value={subvenue}
+                    onChange={(e) => setsubvenue(e.target.value)}
+                    className="form-control"
+                    placeholder="Sub Venue"
+                    id="subvenue"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="guest_number">
+                    Estimate Number of Guests
+                  </label>
+                  <input
+                    type="number"
+                    value={guest_number}
+                    onChange={(e) => setguest_number(e.target.value)}
+                    className="form-control"
+                    placeholder="Estimate Number of Guests"
+                    id="guest_number"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="budget">Budget</label>
+                  <input
+                    type="number"
+                    value={budget}
+                    onChange={(e) => setbudget(e.target.value)}
+                    className="form-control"
+                    placeholder="Budget"
+                    id="budget"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="event_date">Event Date</label>
+                  <input
+                    type="date"
+                    value={event_date}
+                    onChange={(e) => setevent_date(e.target.value)}
+                    className="form-control"
+                    placeholder="Event Date"
+                    id="event_date"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="currentTime">Time</label>
+                  <input
+                    type="time"
+                    value={currentTime}
+                    onChange={(e) => setCurrentTime(e.target.value)}
+                    className="form-control"
+                    placeholder="Time"
+                    id="currentTime"
+                  />
+                </div>
+                {/* Search box for customer names */}
+                <div className="form-group">
+                  <label htmlFor="customerNameSearch">
+                    Search Customer Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter customer name"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    id="customerNameSearch"
+                  />
+                </div>
 
-              {/* Dropdown for matching customer names */}
-              <div className="form-group">
-                <label htmlFor="customerNameSelect">Select Customer</label>
-                <select
-                  className="form-control"
-                  id="customerNameSelect"
-                  value={selectedCustomer?.id || ""}
-                  onChange={handleCustomerSelect}
-                >
-                  <option value="" disabled>
-                    Select a customer
-                  </option>
-                  {searchResults.map((customer) => (
-                    <option key={customer.id} value={customer._id}>
-                      {customer.customer_name}
+                {/* Dropdown for matching customer names */}
+                <div className="form-group">
+                  <label htmlFor="customerNameSelect">Select Customer</label>
+                  <select
+                    className="form-control"
+                    id="customerNameSelect"
+                    value={selectedCustomer?.id || ""}
+                    onChange={handleCustomerSelect}
+                  >
+                    <option value="" disabled>
+                      Select a customer
                     </option>
-                  ))}
-                </select>
-              </div>
+                    {searchResults.map((customer) => (
+                      <option key={customer.id} value={customer._id}>
+                        {customer.customer_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* Buttons for saving and navigating */}
-              <div className="d-flex justify-content-start">
-                <button id="btn" className="btn btn-info" onClick={handleSave}>
-                  Save
-                </button>
-                <button
-                  id="btn"
-                  className="btn btn-info mx-5"
-                  onClick={handleSave}
-                >
-                  Fill Advance Payment Form
-                </button>
+                {/* Buttons for saving and navigating */}
+                <div className="d-flex justify-content-start">
+                  <button
+                    id="btn"
+                    className="btn btn-info"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                  <button
+                    id="btn"
+                    className="btn btn-info mx-5"
+                    onClick={handleSave}
+                  >
+                    Fill Advance Payment Form
+                  </button>
+                </div>
               </div>
             </div>
           </div>

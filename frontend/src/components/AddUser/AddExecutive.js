@@ -313,7 +313,8 @@ const AddExecutive = () => {
               <div className="col px-5">
                 <Form.Group controlId="profilePicture">
                   <Form.Label>Profile Picture</Form.Label>
-                  <div className="custom-file">
+                  <div className="custom-file ">
+                    {" "}
                     <Form.Control
                       type="file"
                       className="custom-file-input"
@@ -323,15 +324,16 @@ const AddExecutive = () => {
                     <Form.Label className="custom-file-label">
                       {profilePicture ? profilePicture.name : "Choose File"}
                     </Form.Label>
-                    {profilePicture && (
-                      <button
-                        type="button"
-                        className="btn btn-link btn-sm"
-                        onClick={handleRemoveProfilePicture}
-                      >
-                        Remove
-                      </button>
-                    )}
+                    <div className="">
+                      {profilePicture && (
+                        <Button
+                          type="button"
+                          onClick={handleRemoveProfilePicture}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </Form.Group>
               </div>

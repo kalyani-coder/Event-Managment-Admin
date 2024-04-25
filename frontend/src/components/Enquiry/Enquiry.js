@@ -127,42 +127,30 @@ export default function Enquiry() {
   return (
     <>
       <Header />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
+          {showSuccessAlert && (
+            <Alert
+              variant="success"
+              onClose={() => setShowSuccessAlert(false)}
+              dismissible
+            >
+              {successMessage}
+            </Alert>
+          )}
+          <div>
+            <h2 className="text-[35px] pl-[1em]">Enquiry</h2>
 
-      <div className="container">
-        <div className="card-1">
-          <div className="row justify-content-center">
-            <div className="col-md-10">
-              <div className="card-body mt-5">
-                <div className="form-group">
-                  <h2>Enquiry</h2>
-                  {showSuccessAlert && (
-                    <Alert
-                      variant="success"
-                      onClose={() => setShowSuccessAlert(false)}
-                      dismissible
-                    >
-                      {successMessage}
-                    </Alert>
-                  )}
-                </div>
-
-                {/* <div className="form-group">
-                <label htmlFor="event_name">Event Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="event_name"
-                  id="event_name"
-                  placeholder="Event name"
-                  value={formData.event_name}
-                  onChange={handleInputChange}
-                />
-              </div> */}
+            <div className="row mb-2">
+              <div className="col px-5">
                 <Form.Group controlId="SelectEvent">
                   <Form.Label>Select Event:</Form.Label>
                   <div className="relative">
                     <Form.Select
-                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
                       aria-label="Select Event"
                       name="event"
                       value={formData.event_name} // Set selected value to formData.event_name
@@ -177,7 +165,8 @@ export default function Enquiry() {
                     </Form.Select>
                   </div>
                 </Form.Group>
-
+              </div>
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="customer_name">
                     Customer Name <span style={{ color: "red" }}>*</span>
@@ -193,7 +182,10 @@ export default function Enquiry() {
                     required
                   />
                 </div>
-
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="email">Customer Email</label>
                   <input
@@ -206,7 +198,9 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
+              </div>
 
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="contact">
                     Contact Number <span style={{ color: "red" }}>*</span>
@@ -223,7 +217,10 @@ export default function Enquiry() {
                     maxLength="10"
                   />
                 </div>
-
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="address">Customer Address</label>
                   <textarea
@@ -235,7 +232,9 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
+              </div>
 
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_date">Event Date</label>
                   <input
@@ -248,7 +247,10 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
-
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="guest_quantity">
                     Estimated Number of Guests
@@ -263,7 +265,9 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
+              </div>
 
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_venue">Event Venue</label>
                   <input
@@ -276,7 +280,10 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
-
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_requirement">
                     Event Management Requirement
@@ -290,30 +297,33 @@ export default function Enquiry() {
                     onChange={handleInputChange}
                   />
                 </div>
-
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
                 <div className="form-group">
-                  <button
-                    id="btn1"
-                    className="btn btn-info"
+                  <Button
+                    variant="info"
+                    className="manager-btn ms-1"
                     onClick={handleSubmit}
                   >
                     Add Enquiry
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Display recent inquiries */}
-        <div className="mt-5">
-          <ul>
-            {recentInquiries.map((inquiry, index) => (
-              <li key={index}>
-                {inquiry.customer_name} - {inquiry.event_name}
-              </li>
-            ))}
-          </ul>
+            {/* Display recent inquiries */}
+            <div className="mt-5">
+              <ul>
+                {recentInquiries.map((inquiry, index) => (
+                  <li key={index}>
+                    {inquiry.customer_name} - {inquiry.event_name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </>
