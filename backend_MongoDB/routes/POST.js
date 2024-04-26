@@ -197,25 +197,50 @@ router.post("/addvendor", async (req, res) => {
 });
 
 // POST route to add QuatationInfo
+// router.post("/quatationinfo", async (req, res) => {
+//   try {
+
+//     const { quatationInfoData } = req.body;
+
+//     // Validate and save each quatationInfoData
+//     const savedQuatationInfos = await Promise.all(
+//       quatationInfoData.map(async (data) => {
+//         const newQuatationInfo = new QuatationInfo(data);
+//         return await newQuatationInfo.save();
+//       })
+//     );
+
+//     res.status(201).json(savedQuatationInfos);
+//   } catch (err) {
+//     console.error("Error creating quatation info:", err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
+
 router.post("/quatationinfo", async (req, res) => {
   try {
+    const { description, amount, transport, days, eventName, cusstomerName, requirements } = req.body;
 
-    const { quatationInfoData } = req.body;
+    const newQuotationInfo = new QuatationInfo({
+      description,
+      amount,
+      transport,
+      days,
+      eventName,
+      cusstomerName,
+      requirements
+    });
 
-    // Validate and save each quatationInfoData
-    const savedQuatationInfos = await Promise.all(
-      quatationInfoData.map(async (data) => {
-        const newQuatationInfo = new QuatationInfo(data);
-        return await newQuatationInfo.save();
-      })
-    );
+    const savedQuotationInfo = await newQuotationInfo.save();
 
-    res.status(201).json(savedQuatationInfos);
+    res.status(201).json(savedQuotationInfo);
   } catch (err) {
-    console.error("Error creating quatation info:", err);
+    console.error("Error creating quotation info:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
 
 
 // POST a new inventory stock

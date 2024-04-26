@@ -322,18 +322,23 @@ const AddVendor = new Schema({
 })
 
 const QuatationInfo = new Schema({
-  title: String,
-  particular: String,
-  description: String,
-  vendor_Name: String,
-  vendor_Stock: String,
-  unit: String,
-  quantity: Number,
-  rateper_Days: Number,
+ 
+  eventName : String,
+  cusstomerName : String,
   days: Number,
+  transport: String,
+  description: String,
   amount: String,
-  name: String,
-  transport: String
+  requirements: [{
+    stockName: String,
+    stockId: String,
+    vendorName: String,
+    vendorId: String,
+    purchaseQuantity: Number,
+    price: Number 
+  }]
+  
+
 })
 
 const InventoryStocks = new Schema({

@@ -7,6 +7,34 @@ const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster,advancePaymantManager } = require("../models/newModels")
 const { ManagerDetails, ManagerTask } = require("../models/newModels");
+const {QuatationInfo} = require("../models/newModels")
+
+
+router.patch("/quatationinfo/:id", async (req, res) => {
+  try {
+    const { id } = req.params; // Get the quotation id from the URL
+    const { requirement } = req.body; // Get the new requirement from the request body
+
+    // Find the existing quotation by its ID
+    const existingQuotation = await QuatationInfo.findById(id);
+
+    if (!existingQuotation) {
+      return res.status(404).json({ message: "Quotation not found" });
+    }
+
+    // Push the new requirement into the existing requirements array
+    existingQuotation.requirements.push(requirement);
+
+    // Save the updated quotation
+    const updatedQuotation = await existingQuotation.save();
+
+    res.status(200).json(updatedQuotation);
+  } catch (err) {
+    console.error("Error adding requirement to quotation:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 // PATCH for managertask api 
 router.patch("/managertask/:id", async (req, res) => {
