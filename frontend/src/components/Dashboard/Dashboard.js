@@ -141,7 +141,7 @@ const Dashboard = () => {
             <div className="activity-card overflow-y-auto h-[23.3em] rounded ">
               <h2 className="activity-title font-bold ">Enquiry</h2>
               <table className="table table-striped">
-                <thead >
+                <thead>
                   <tr>
                     <th>Sr. No.</th>
                     <th>Event Name</th>
@@ -176,7 +176,7 @@ const Dashboard = () => {
               </table>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4  mt-1">
             <div className="card shadow">
               <div className="card-body">
                 <h5 className="card-title">Pie Chart</h5>

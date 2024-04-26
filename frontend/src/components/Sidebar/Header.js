@@ -27,6 +27,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import GridViewIcon from "@mui/icons-material/GridView";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import Tooltip from "@mui/material/Tooltip";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Header.css";
@@ -242,7 +243,7 @@ export default function Sidenav() {
                         px: 2.5,
                       }}
                       className={
-                        activetab === "Event management"
+                        activetab === "DashBoard"
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
@@ -254,10 +255,14 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <GridViewIcon
-                          sx={{ color: "#9b59b6" }}
-                          title="DashBoard"
-                        />{" "}
+                        <Tooltip title="DashBoard">
+                          <span>
+                            <GridViewIcon
+                              sx={{ color: "#9b59b6" }}
+                              title="DashBoard"
+                            />{" "}
+                          </span>
+                        </Tooltip>
                       </ListItemIcon>
                       <ListItemText
                         primary="DashBoard"
@@ -294,7 +299,11 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <PersonAddIcon sx={{ color: "#9b59b6" }} />
+                      <Tooltip title="Add Users">
+                        <span>
+                          <PersonAddIcon sx={{ color: "#9b59b6" }} />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Add Users"
@@ -378,11 +387,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faAddressBook}
-                        size="lg"
-                        color="#9b59b6"
-                      />
+                      <Tooltip title="User Details">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faAddressBook}
+                            size="lg"
+                            color="#9b59b6"
+                          />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary=" User Details"
@@ -463,11 +476,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faCalendar}
-                        size="lg"
-                        color="#9b59b6"
-                      />
+                      <Tooltip title="Event management">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faCalendar}
+                            size="lg"
+                            color="#9b59b6"
+                          />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Event management"
@@ -556,11 +573,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faHandHoldingUsd}
-                        size="lg"
-                        color="#9b59b6"
-                      />
+                      <Tooltip title="Advance Payment">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faHandHoldingUsd}
+                            size="lg"
+                            color="#9b59b6"
+                          />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Advance Payment"
@@ -643,7 +664,11 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <CurrencyRupeeTwoToneIcon sx={{ color: "#9b59b6" }} />{" "}
+                      <Tooltip title="Vendor Payment">
+                        <span>
+                          <CurrencyRupeeTwoToneIcon sx={{ color: "#9b59b6" }} />{" "}
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Vendor Payment"
@@ -708,11 +733,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faMoneyCheck}
-                        size="lg"
-                        color="#9b59b6"
-                      />{" "}
+                      <Tooltip title="Attendance">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faMoneyCheck}
+                            size="lg"
+                            color="#9b59b6"
+                          />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Attendance"
@@ -765,7 +794,11 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />{" "}
+                      <Tooltip title="Update Task">
+                        <span>
+                          <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Update Task"
@@ -827,9 +860,13 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <AccountBalanceWalletTwoToneIcon
-                        sx={{ color: "#9b59b6" }}
-                      />
+                      <Tooltip title="Salary">
+                        <span>
+                          <AccountBalanceWalletTwoToneIcon
+                            sx={{ color: "#9b59b6" }}
+                          />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Salary"
@@ -892,7 +929,11 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <AssignmentIndIcon sx={{ color: "#9b59b6" }} />
+                      <Tooltip title="Master">
+                        <span>
+                          <AssignmentIndIcon sx={{ color: "#9b59b6" }} />
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Master"
@@ -947,11 +988,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faClipboardList}
-                        color="#9b59b6"
-                        size="lg"
-                      />{" "}
+                      <Tooltip title="Inventory Stock">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faClipboardList}
+                            color="#9b59b6"
+                            size="lg"
+                          />{" "}
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Inventory Stock"
@@ -1004,11 +1049,15 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <FontAwesomeIcon
-                        icon={faFileDownload}
-                        size="lg"
-                        color="#9b59b6"
-                      />{" "}
+                      <Tooltip title="Download Report">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faFileDownload}
+                            size="lg"
+                            color="#9b59b6"
+                          />{" "}
+                        </span>
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText
                       primary="Download Report"
@@ -1095,16 +1144,20 @@ export default function Sidenav() {
                       justifyContent: "center",
                     }}
                   >
-                    <LogoutOutlinedIcon
-                      size="lg"
-                      sx={{
-                        color: "red",
-                        "&:hover": {
-                          color: " rgba(201, 141, 141)", // Adjust alpha for desired faintness
-                        },
-                      }}
-                      onClick={handleLogout}
-                    />{" "}
+                    <Tooltip title="Logout">
+                      <span>
+                        <LogoutOutlinedIcon
+                          size="lg"
+                          sx={{
+                            color: "red",
+                            "&:hover": {
+                              color: " rgba(201, 141, 141)", // Adjust alpha for desired faintness
+                            },
+                          }}
+                          onClick={handleLogout}
+                        />{" "}
+                      </span>
+                    </Tooltip>
                   </ListItemIcon>
                   <ListItemText
                     primary={

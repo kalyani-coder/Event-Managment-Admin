@@ -342,7 +342,7 @@ const AddManager = () => {
                 </Button>
                 <Button
                   variant="info"
-                  className="manager-btn ms-4"
+                  className="manager-btn ms-1"
                   onClick={handleDiscard}
                 >
                   Discard

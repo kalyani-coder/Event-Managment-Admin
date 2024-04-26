@@ -23,7 +23,7 @@ const Login = () => {
     if (formData.email === "test@gmail.com" && formData.password === "test") {
       console.log("Login successful");
       // Navigate to addmanager page
-      navigate("/addmanager");
+      navigate("/dashboard");
     } else {
       alert("Email or password is incorrect");
     }

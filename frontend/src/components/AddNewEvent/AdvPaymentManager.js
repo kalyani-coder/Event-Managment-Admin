@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const AdvPaymentManager = () => {
   const getCurrentDate = () => {
@@ -177,7 +178,7 @@ const AdvPaymentManager = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
-          <form className="order p-4 " onSubmit={handleSubmit}>
+          <form className="order  " onSubmit={handleSubmit}>
             <h2 className="text-[35px] pl-[1em]">Advance Payment to Manager</h2>
             {alertMessage && (
               <div>
@@ -330,19 +331,35 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-            <div className="row mb-2">
+            {/* <div className="row mb-2">
               <div className="col px-5">
                 <button
-                  className="manager-btn ms-2 mb-3"
+                  className="manager-btn ms-1 mb-3"
                   type="button"
                   onClick={handleDiscard}
                 >
                   Discard
                 </button>
 
-                <button className="manager-btn ms-2 mb-3" type="submit">
+                <button className="manager-btn ms-1 mb-3" type="submit">
                   Save
                 </button>
+              </div>
+            </div> */}
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Button
+                  className="manager-btn ms-1"
+                  type="button"
+                  onClick={handleDiscard}
+                >
+                  {" "}
+                  Discard
+                </Button>
+
+                <Button className="manager-btn ms-3" type="submit">
+                  Save
+                </Button>
               </div>
             </div>
           </form>

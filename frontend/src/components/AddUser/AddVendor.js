@@ -137,7 +137,7 @@ const AddVendor = () => {
             </Alert>
           )}
           <Form onSubmit={handleSubmit} className="">
-            <h2 className="text-[35px] pl-[1em]">Add Vendor</h2>
+            <h2 className="text-[35px] pl-[1em] ">Add Vendor</h2>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="company_name">
@@ -281,6 +281,7 @@ const AddVendor = () => {
                       <Button
                         type="button"
                         onClick={handleRemoveProfilePicture}
+                        className="manager-btn ms-1"
                       >
                         Remove
                       </Button>
@@ -291,12 +292,16 @@ const AddVendor = () => {
             </div>
             <div className="row mb-2 py-2">
               <div className="col px-5">
-                <Button className="manager-btn " variant="info" type="submit">
+                <Button
+                  className="manager-btn ms-1"
+                  variant="info"
+                  type="submit"
+                >
                   Submit
                 </Button>
                 <Button
                   variant="info"
-                  className="manager-btn ms-4"
+                  className="manager-btn ms-1"
                   onClick={handleDiscard}
                 >
                   Discard
