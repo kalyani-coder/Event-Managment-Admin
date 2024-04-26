@@ -26,6 +26,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import GridViewIcon from "@mui/icons-material/GridView";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Header.css";
@@ -253,7 +254,10 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <GridViewIcon sx={{ color: "#9b59b6" }} />{" "}
+                        <GridViewIcon
+                          sx={{ color: "#9b59b6" }}
+                          title="DashBoard"
+                        />{" "}
                       </ListItemIcon>
                       <ListItemText
                         primary="DashBoard"
@@ -605,10 +609,11 @@ export default function Sidenav() {
                       to={"/viewadvpaymentmanager"}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
-                      <span className="icon-text">View Advance Payment Manager</span>
+                      <span className="icon-text">
+                        View Advance Payment Manager
+                      </span>
                     </Link>
                   </MenuItem>
-
                 </Menu>
               )}
             </List>
@@ -887,9 +892,7 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <AccountBalanceWalletTwoToneIcon
-                        sx={{ color: "#9b59b6" }}
-                      />
+                      <AssignmentIndIcon sx={{ color: "#9b59b6" }} />
                     </ListItemIcon>
                     <ListItemText
                       primary="Master"

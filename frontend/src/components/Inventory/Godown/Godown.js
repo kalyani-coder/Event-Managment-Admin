@@ -231,12 +231,15 @@ const GodownInventory = () => {
   return (
     <>
       <Header />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
+          <h2 className="text-[35px] pl-[1em]">Godown Inventory</h2>
 
-      <div className="container mt-5">
-        <h2>Godown Inventory</h2>
-
-        <div className="d-flex justify-content-between">
-          {/* <div className="dropdown">
+          <div className="d-flex justify-content-between">
+            {/* <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Vendors
                     </button>
@@ -253,197 +256,200 @@ const GodownInventory = () => {
                     </ul>
                 </div> */}
 
-          <Form.Group controlId="SelectVendor">
-            <Form.Label>Select Vendor:</Form.Label>
-            <div className="relative">
-              <Form.Select
-                className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                aria-label="Select Vendor"
-                name="vendor"
-                style={{ width: "50%" }}
-                onChange={(e) => setSelectedGodown(e.target.value)}
-              >
-                <option>Select Vendor</option>
-                {vendors.map((vendor) => (
-                  <option key={vendor._id} value={vendor.Vendor_Name}>
-                    {vendor.Vendor_Name}
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
+            <Form.Group controlId="SelectVendor">
+              <Form.Label>Select Vendor:</Form.Label>
+              <div className="relative">
+                <Form.Select
+                  className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                  aria-label="Select Vendor"
+                  name="vendor"
+                  style={{ width: "50%" }}
+                  onChange={(e) => setSelectedGodown(e.target.value)}
+                >
+                  <option>Select Vendor</option>
+                  {vendors.map((vendor) => (
+                    <option key={vendor._id} value={vendor.Vendor_Name}>
+                      {vendor.Vendor_Name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
+            </Form.Group>
 
-          <div>
-            <h3>Add New Vendor</h3>
-            <div className="d-flex gap-3">
-              <div>
+            <div>
+              <h3>Add New Vendor</h3>
+              <div className="d-flex gap-3">
+                <div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Add Vendors"
+                    value={newGodownName}
+                    onChange={(e) => setNewGodownName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button className="btn btn-success" onClick={handleAddVendor}>
+                    Add Vendor
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <h4>Add Stock</h4>
+            <div className="row">
+              <div className="col-md-4">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Add Vendors"
-                  value={newGodownName}
-                  onChange={(e) => setNewGodownName(e.target.value)}
+                  placeholder="Product Category"
+                  value={newStockCategory}
+                  onChange={(e) => setNewStockCategory(e.target.value)}
                 />
               </div>
-              <div>
-                <button className="btn btn-success" onClick={handleAddVendor}>
-                  Add Vendor
-                </button>
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Item Name"
+                  value={newStockName}
+                  onChange={(e) => setNewStockName(e.target.value)}
+                />
+              </div>
+              <div className="col-md-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Quantity"
+                  value={newStockQuantity}
+                  onChange={(e) => setNewStockQuantity(e.target.value)}
+                />
+              </div>
+              <div className="col-md-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Price/quantity"
+                  value={newStockPrice}
+                  onChange={(e) => setNewStockPrice(e.target.value)}
+                />
+              </div>
+              <div className="col-md-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Vendor Name"
+                  value={selectedGodown ? selectedGodown.Vendor_Name : ""}
+                  readOnly
+                />
               </div>
             </div>
+            <button className="btn btn-primary mt-2" onClick={handleAddStock}>
+              Add Stock
+            </button>
           </div>
-        </div>
 
-        <div className="mb-3">
-          <h4>Add Stock</h4>
-          <div className="row">
-            <div className="col-md-4">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Product Category"
-                value={newStockCategory}
-                onChange={(e) => setNewStockCategory(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Item Name"
-                value={newStockName}
-                onChange={(e) => setNewStockName(e.target.value)}
-              />
-            </div>
-            <div className="col-md-2">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Quantity"
-                value={newStockQuantity}
-                onChange={(e) => setNewStockQuantity(e.target.value)}
-              />
-            </div>
-            <div className="col-md-2">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Price/quantity"
-                value={newStockPrice}
-                onChange={(e) => setNewStockPrice(e.target.value)}
-              />
-            </div>
-            <div className="col-md-2">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Vendor Name"
-                value={selectedGodown ? selectedGodown.Vendor_Name : ""}
-                readOnly
-              />
-            </div>
-          </div>
-          <button className="btn btn-primary mt-2" onClick={handleAddStock}>
-            Add Stock
-          </button>
-        </div>
-
-        {selectedGodown && (
-          <div>
-            <h3>{selectedGodown.Vendor_Name}</h3>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Vendor</th>
-                  {/* <th>Actions</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {selectedVendorStocks.map((stock) => (
-                  <tr key={stock._id} className="godown-td">
-                    <td className="text-dark">{stock.Category}</td>
-                    <td>{stock.Stock_Name}</td>
-                    <td>
-                      {isEditingQuantity && selectedStockId === stock._id ? (
-                        <>
-                          <input
-                            type="number"
-                            value={editedQuantity}
-                            onChange={(e) => setEditedQuantity(e.target.value)}
-                          />
-                          <FontAwesomeIcon
-                            className="edit-correct-icon"
-                            icon={faCheck}
-                            onClick={handleConfirmEditQuantity}
-                          />
-                          <FontAwesomeIcon
-                            className="edit-wrong-icon"
-                            icon={faTimes}
-                            onClick={() => setIsEditingQuantity(false)}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {stock.Stock_Quantity}
-                          <FontAwesomeIcon
-                            className="edit-icon"
-                            icon={faEdit}
-                            onClick={() =>
-                              handleEditQuantity(
-                                stock._id,
-                                stock.Stock_Quantity
-                              )
-                            }
-                          />
-                        </>
-                      )}
-                    </td>
-
-                    <td>
-                      {isEditingPrice && selectedStockId === stock._id ? (
-                        <>
-                          <input
-                            type="number"
-                            value={editedPrice}
-                            onChange={(e) => setEditedPrice(e.target.value)}
-                          />
-                          <FontAwesomeIcon
-                            className="edit-correct-icon"
-                            icon={faCheck}
-                            onClick={handleConfirmEditPrice}
-                          />
-                          <FontAwesomeIcon
-                            className="edit-wrong-icon"
-                            icon={faTimes}
-                            onClick={() => setIsEditingPrice(false)}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {stock.Price}
-                          <FontAwesomeIcon
-                            className="edit-icon"
-                            icon={faEdit}
-                            onClick={() =>
-                              handleEditPrice(stock._id, stock.Price)
-                            }
-                          />
-                        </>
-                      )}
-                    </td>
-
-                    <td>{stock.Vendor_Name}</td>
-                    {/* Add actions buttons as needed */}
+          {selectedGodown && (
+            <div>
+              <h3>{selectedGodown.Vendor_Name}</h3>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Vendor</th>
+                    {/* <th>Actions</th> */}
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {selectedVendorStocks.map((stock) => (
+                    <tr key={stock._id} className="godown-td">
+                      <td className="text-dark">{stock.Category}</td>
+                      <td>{stock.Stock_Name}</td>
+                      <td>
+                        {isEditingQuantity && selectedStockId === stock._id ? (
+                          <>
+                            <input
+                              type="number"
+                              value={editedQuantity}
+                              onChange={(e) =>
+                                setEditedQuantity(e.target.value)
+                              }
+                            />
+                            <FontAwesomeIcon
+                              className="edit-correct-icon"
+                              icon={faCheck}
+                              onClick={handleConfirmEditQuantity}
+                            />
+                            <FontAwesomeIcon
+                              className="edit-wrong-icon"
+                              icon={faTimes}
+                              onClick={() => setIsEditingQuantity(false)}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            {stock.Stock_Quantity}
+                            <FontAwesomeIcon
+                              className="edit-icon"
+                              icon={faEdit}
+                              onClick={() =>
+                                handleEditQuantity(
+                                  stock._id,
+                                  stock.Stock_Quantity
+                                )
+                              }
+                            />
+                          </>
+                        )}
+                      </td>
+
+                      <td>
+                        {isEditingPrice && selectedStockId === stock._id ? (
+                          <>
+                            <input
+                              type="number"
+                              value={editedPrice}
+                              onChange={(e) => setEditedPrice(e.target.value)}
+                            />
+                            <FontAwesomeIcon
+                              className="edit-correct-icon"
+                              icon={faCheck}
+                              onClick={handleConfirmEditPrice}
+                            />
+                            <FontAwesomeIcon
+                              className="edit-wrong-icon"
+                              icon={faTimes}
+                              onClick={() => setIsEditingPrice(false)}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            {stock.Price}
+                            <FontAwesomeIcon
+                              className="edit-icon"
+                              icon={faEdit}
+                              onClick={() =>
+                                handleEditPrice(stock._id, stock.Price)
+                              }
+                            />
+                          </>
+                        )}
+                      </td>
+
+                      <td>{stock.Vendor_Name}</td>
+                      {/* Add actions buttons as needed */}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

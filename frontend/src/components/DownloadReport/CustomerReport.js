@@ -103,82 +103,85 @@ const CustomerReport = () => {
   return (
     <>
       <Header />
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
+          <h2 className="text-[35px] ">Customer Wise Report</h2>
+          <div className="mb-3  align-items-center grid md:flex gap-2">
+            <select
+              className="form-control mr-2"
+              onChange={handleCustomerChange}
+              value={selectedCustomer}
+            >
+              <option value="">Select Customer</option>
+              {events.map((event, index) => (
+                <option key={index} value={event.client_name}>
+                  {event.client_name}
+                </option>
+              ))}
+            </select>
+            <button className="btn btn-success mr-2" onClick={applyFilter}>
+              Apply
+            </button>
+            <button className="btn btn-danger" onClick={clearFilter}>
+              Clear
+            </button>
+          </div>
 
-      <div className="container mt-5">
-        <h2>Customer Wise Report</h2>
-        <div className="mb-3 d-flex align-items-center">
-          <select
-            className="form-control mr-2"
-            onChange={handleCustomerChange}
-            value={selectedCustomer}
-          >
-            <option value="">Select Customer</option>
-            {events.map((event, index) => (
-              <option key={index} value={event.client_name}>
-                {event.client_name}
-              </option>
-            ))}
-          </select>
-          <button className="btn btn-success mr-2" onClick={applyFilter}>
-            Apply
+          <p>
+            Total number of reports for {selectedCustomer}:{" "}
+            {filteredEvents.length}
+          </p>
+          <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+            Export to Excel
           </button>
-          <button className="btn btn-danger" onClick={clearFilter}>
-            Clear
-          </button>
-        </div>
-
-        <p>
-          Total number of reports for {selectedCustomer}:{" "}
-          {filteredEvents.length}
-        </p>
-        <button className="btn btn-primary mb-3" onClick={exportToExcel}>
-          Export to Excel
-        </button>
-        <table
-          className="table table-hover table-sm border border-dark table-responsive-md"
-          style={{ backgroundColor: "white" }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Client Name</th>
-              <th scope="col">Event Name</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Advance Payment</th>
-              <th scope="col">Remaining Payment</th>
-              <th scope="col">Payment Date</th>
-              {/* <th scope="col">Payment Time</th> */}
-              <th scope="col">Payment Method</th>
-              {/* <th scope="col">Cheque Number</th>
+          <div className="overflow-y-auto h-[60vh]  md:mt-0 w-full">
+            <table className="table table-bordered bg-white">
+              <thead className="sticky top-0 bg-white">
+                <tr>
+                  <th scope="col">Client Name</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Advance Payment</th>
+                  <th scope="col">Remaining Payment</th>
+                  <th scope="col">Payment Date</th>
+                  {/* <th scope="col">Payment Time</th> */}
+                  <th scope="col">Payment Method</th>
+                  {/* <th scope="col">Cheque Number</th>
               <th scope="col">Whom To Submit</th>
               <th scope="col">UTR Number/RTGS ID</th> */}
-              <th scope="col">Contact</th>
-              <th scope="col">Guest Number</th>
-              <th scope="col">Venue</th>
-              <th scope="col">Event Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEvents.map((event, index) => (
-              <tr key={index}>
-                <td>{event.client_name}</td>
-                <td>{event.event_name}</td>
-                <td>{event.amount}</td>
-                <td>{event.adv_payment}</td>
-                <td>{event.rem_payment}</td>
-                <td>{event.payment_date}</td>
-                {/* <td>{event.payment_time}</td> */}
-                <td>{event.payment_method}</td>
-                {/* <td>{event.cheque_number}</td>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Guest Number</th>
+                  <th scope="col">Venue</th>
+                  <th scope="col">Event Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredEvents.map((event, index) => (
+                  <tr key={index}>
+                    <td>{event.client_name}</td>
+                    <td>{event.event_name}</td>
+                    <td>{event.amount}</td>
+                    <td>{event.adv_payment}</td>
+                    <td>{event.rem_payment}</td>
+                    <td>{event.payment_date}</td>
+                    {/* <td>{event.payment_time}</td> */}
+                    <td>{event.payment_method}</td>
+                    {/* <td>{event.cheque_number}</td>
                 <td>{event.whome_to_submit}</td>
                 <td>{event.utrno_rtgs_id}</td> */}
-                <td>{event.contact}</td>
-                <td>{event.guest_number}</td>
-                <td>{event.venue}</td>
-                <td>{event.event_date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <td>{event.contact}</td>
+                    <td>{event.guest_number}</td>
+                    <td>{event.venue}</td>
+                    <td>{event.event_date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </>
   );

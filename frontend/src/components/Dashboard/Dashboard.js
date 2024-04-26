@@ -137,11 +137,11 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="col-md-8">
-            <div className="activity-card">
-              <h2 className="activity-title">Enquiry</h2>
+          <div className="col-md-8  ">
+            <div className="activity-card overflow-y-auto h-[23.3em] rounded ">
+              <h2 className="activity-title font-bold ">Enquiry</h2>
               <table className="table table-striped">
-                <thead>
+                <thead >
                   <tr>
                     <th>Sr. No.</th>
                     <th>Event Name</th>

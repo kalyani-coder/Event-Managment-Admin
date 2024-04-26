@@ -326,8 +326,12 @@ const NewGodowns = () => {
       <Header />
 
       {/* <div className='responsive-godown'> */}
-      <div>
-        <div className="container">
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        {" "}
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <Form onSubmit={handleSubmit}>
             {alertMessage && (
               <div>
@@ -335,114 +339,134 @@ const NewGodowns = () => {
               </div>
             )}
           </Form>
-          <h4>Add Stocks</h4>
+          <h4 className="text-[35px] pl-[1em]">Add Stocks</h4>
           <Form onSubmit={handleSubmitformData}>
-            <Form.Group controlId="Category">
-              <Form.Label>Product Category:</Form.Label>
-              <div className="relative">
-                <Form.Control
-                  type="text"
-                  placeholder="Product Category"
-                  name="Category"
-                  value={formData.Category}
-                  onChange={handleInputChange}
-                  required
-                />
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="Category">
+                  <Form.Label>Product Category:</Form.Label>
+                  <div className="relative">
+                    <Form.Control
+                      type="text"
+                      placeholder="Product Category"
+                      name="Category"
+                      value={formData.Category}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </Form.Group>
               </div>
-            </Form.Group>
+              <div className="col px-5">
+                <Form.Group controlId="Stock_Name">
+                  <Form.Label>Product Category:</Form.Label>
+                  <div className="relative">
+                    <Form.Control
+                      type="text"
+                      placeholder="Stock Name"
+                      name="Stock_Name"
+                      value={formData.Stock_Name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="Stock_Quantity">
+                  <Form.Label>Quantity:</Form.Label>
+                  <div className="relative">
+                    <Form.Control
+                      type="number"
+                      placeholder="Add Quantity"
+                      name="Stock_Quantity"
+                      value={formData.Stock_Quantity}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+              </div>
+              <div className="col px-5">
+                <Form.Group controlId="Price">
+                  <Form.Label>Price/Quantity:</Form.Label>
+                  <div className="relative">
+                    <Form.Control
+                      type="number"
+                      placeholder="Price/Quantity"
+                      name="Price"
+                      value={formData.Price}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="SelectVendor">
+                  <Form.Label>
+                    View Vendors : <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="relative">
+                    <Form.Select
+                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                      aria-label="Select Vendor"
+                      name="vendor"
+                      value={selectedVendor}
+                      onChange={handleVendorChange}
+                      required
+                    >
+                      <option value="">Select Vendor</option>
+                      {vendors.map((vendor) => (
+                        <option key={vendor._id} value={vendor.Vendor_Name}>
+                          {vendor.Vendor_Name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </div>
+            </div>
 
-            <Form.Group controlId="Stock_Name">
-              <Form.Label>Product Category:</Form.Label>
-              <div className="relative">
-                <Form.Control
-                  type="text"
-                  placeholder="Stock Name"
-                  name="Stock_Name"
-                  value={formData.Stock_Name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </Form.Group>
-
-            <Form.Group controlId="Stock_Quantity">
-              <Form.Label>Quantity:</Form.Label>
-              <div className="relative">
-                <Form.Control
-                  type="number"
-                  placeholder="Add Quantity"
-                  name="Stock_Quantity"
-                  value={formData.Stock_Quantity}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </Form.Group>
-
-            <Form.Group controlId="Price">
-              <Form.Label>Price/Quantity:</Form.Label>
-              <div className="relative">
-                <Form.Control
-                  type="number"
-                  placeholder="Price/Quantity"
-                  name="Price"
-                  value={formData.Price}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </Form.Group>
-
-            <Form.Group controlId="SelectVendor">
-              <Form.Label>
-                View Vendors : <span className="text-danger">*</span>
-              </Form.Label>
-              <div className="relative">
-                <Form.Select
-                  className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                  aria-label="Select Vendor"
-                  name="vendor"
-                  value={selectedVendor}
-                  onChange={handleVendorChange}
-                  required
-                >
-                  <option value="">Select Vendor</option>
-                  {vendors.map((vendor) => (
-                    <option key={vendor._id} value={vendor.Vendor_Name}>
-                      {vendor.Vendor_Name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-            </Form.Group>
-            <Button className="mt-3" type="submit" variant="info">
-              Add Stock
-            </Button>
+            <div className="col py-2">
+              <Button type="submit" variant="info" className="manager-btn ms-4">
+                Add Stock
+              </Button>
+            </div>
           </Form>
           <hr />
 
           <div className="inventory">
-            <h4 className="mt-3">Godown Inventory By Product</h4>
-            <Form.Group controlId="SelectClient">
-              <Form.Label>Select Product:</Form.Label>
-              <div className="relative">
-                <Form.Select
-                  className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                  aria-label="Select Client"
-                  name="name"
-                  style={{ marginBottom: "70px" }}
-                  onChange={handleSelecteChange}
-                >
-                  <option>Select Product</option>
-                  {product.map((product, index) => (
-                    <option key={index} value={product.Stock_Name}>
-                      {product.Stock_Name}
-                    </option>
-                  ))}
-                </Form.Select>
+            <h4 className="mt-3 text-[35px] pl-[1em]">
+              Godown Inventory By Product
+            </h4>
+            <div className="col px-5">
+              <div className="form-group">
+                <Form.Group controlId="SelectClient">
+                  <Form.Label>Select Product:</Form.Label>
+                  <div className="relative">
+                    <Form.Select
+                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                      aria-label="Select Client"
+                      name="name"
+                      style={{ marginBottom: "70px" }}
+                      onChange={handleSelecteChange}
+                    >
+                      <option>Select Product</option>
+                      {product.map((product, index) => (
+                        <option key={index} value={product.Stock_Name}>
+                          {product.Stock_Name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
               </div>
-            </Form.Group>
-
+            </div>
             {selectedProduct && (
               <Table
                 striped

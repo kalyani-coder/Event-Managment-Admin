@@ -91,73 +91,75 @@ const ManagerReport = () => {
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h2>Manager Report</h2>
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control mr-2" // Added margin to the right
-            placeholder="Search by First Name, Last Name, Address, City, State"
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-            style={{ width: "50%", float: "left" }}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={() => filterEvents(searchQuery)}
-            >
-              Search
-            </button>
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
+          <h2 className="text-[35px] ">Manager Report</h2>
+          <div className="mb-3  align-items-center grid md:flex gap-2">
+            <input
+              type="text"
+              className="form-control mr-2" // Added margin to the right
+              placeholder="Search by First Name, Last Name, Address, City, State"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => filterEvents(searchQuery)}
+              >
+                Search
+              </button>
+            </div>
           </div>
-        </div>
-        <p>Total number of managers: {filteredEvents.length}</p>
-        <button className="btn btn-primary mb-3" onClick={exportToExcel}>
-          Export to Excel
-        </button>
-        <table
-          className="table table-hover table-sm border border-dark table-responsive-md"
-          style={{ backgroundColor: "white" }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Sr. No.</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Contact</th>
-              <th scope="col">Address</th>
-              <th scope="col">City</th>
-              <th scope="col">State</th>
-              {/* <th scope="col">Holder Name</th>
+          <p>Total number of managers: {filteredEvents.length}</p>
+          <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+            Export to Excel
+          </button>
+          <div className="overflow-y-auto h-[60vh]  md:mt-0 w-full">
+            <table className="table table-bordered bg-white">
+              <thead className="sticky top-0 bg-white">
+                <tr>
+                  <th scope="col">Sr. No.</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">City</th>
+                  <th scope="col">State</th>
+                  {/* <th scope="col">Holder Name</th>
             <th scope="col">Account Number</th>
             <th scope="col">IFSC Code</th>
             <th scope="col">Bank Name</th>
             <th scope="col">Branch Name</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEvents.map((event, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{event.fname}</td>
-                <td>{event.lname}</td>
-                <td>{event.email}</td>
-                <td>{event.contact}</td>
-                <td>{event.address}</td>
-                <td>{event.city}</td>
-                <td>{event.state}</td>
-                {/* <td>{event.holder_name}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredEvents.map((event, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{event.fname}</td>
+                    <td>{event.lname}</td>
+                    <td>{event.email}</td>
+                    <td>{event.contact}</td>
+                    <td>{event.address}</td>
+                    <td>{event.city}</td>
+                    <td>{event.state}</td>
+                    {/* <td>{event.holder_name}</td>
               <td>{event.account_number}</td>
               <td>{event.IFSC_code}</td>
               <td>{event.bank_name}</td>
               <td>{event.branch_name}</td> */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </>
   );

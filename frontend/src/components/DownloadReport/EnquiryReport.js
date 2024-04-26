@@ -130,14 +130,17 @@ const EnquiryReport = () => {
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h2>Enquiry Report</h2>
-        <div className="mb-3 mt-3">
-          <div className="input-group-append">
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
+          <h2 className="text-[35px] ">Enquiry Report</h2>
+          <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
+            {" "}
             <div className="dropdown">
               <button
-                className="btn btn-primary dropdown-toggle mr-2"
+                className="btn btn-primary dropdown-toggle mr-2 flex items-center content-center justify-center gap-1"
                 type="button"
                 id="venueFilterDropdown"
                 data-toggle="dropdown"
@@ -174,114 +177,120 @@ const EnquiryReport = () => {
     </button>
             </div> */}
             {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}> */}
-            <label style={{ marginRight: "10px" }}>Start Date:</label>
-            <input
-              type="date"
-              value={dateRange.startDate}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, startDate: e.target.value })
-              }
-              style={{
-                padding: "10px",
-                marginRight: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ddd",
-                fontSize: "16px",
-              }}
-            />
-            <label style={{ marginRight: "10px" }}>End Date:</label>
-            <input
-              type="date"
-              value={dateRange.endDate}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, endDate: e.target.value })
-              }
-              style={{
-                padding: "10px",
-                marginRight: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ddd",
-                fontSize: "16px",
-              }}
-            />
-            <button
-              onClick={handleDateRangeFilter}
-              style={{
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #28A745",
-                backgroundColor: "#28A745",
-                color: "#fff",
-                cursor: "pointer",
-                fontSize: "16px",
-                marginLeft: "10px", // Add left margin for spacing between date inputs and buttons
-              }}
-            >
-              Apply
-            </button>
-            <button
-              onClick={clearFilters}
-              style={{
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #DC3545",
-                backgroundColor: "#DC3545",
-                color: "#fff",
-                cursor: "pointer",
-                fontSize: "16px",
-                marginLeft: "10px", // Add left margin for spacing between buttons
-              }}
-            >
-              Clear
-            </button>
-            {/* </div> */}
+            <div className="grid md:flex items-center">
+              <label style={{ marginRight: "10px" }}>Start Date:</label>
+              <input
+                type="date"
+                value={dateRange.startDate}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, startDate: e.target.value })
+                }
+                style={{
+                  padding: "10px",
+                  marginRight: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                }}
+              />
+            </div>
+            <div className="grid md:flex items-center">
+              <label style={{ marginRight: "10px" }}>End Date:</label>
+              <input
+                type="date"
+                value={dateRange.endDate}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, endDate: e.target.value })
+                }
+                style={{
+                  padding: "10px",
+                  marginRight: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                }}
+              />
+            </div>
+            <div>
+              <button
+                onClick={handleDateRangeFilter}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #28A745",
+                  backgroundColor: "#28A745",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  marginLeft: "10px", // Add left margin for spacing between date inputs and buttons
+                }}
+              >
+                Apply
+              </button>
+              <button
+                onClick={clearFilters}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #DC3545",
+                  backgroundColor: "#DC3545",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  marginLeft: "10px", // Add left margin for spacing between buttons
+                }}
+              >
+                Clear
+              </button>
+            </div>
+            <div>
+              <p>Total number of enquiries: {filteredEnquiries.length}</p>
+              <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+                Export to Excel
+              </button>
+            </div>
+          </div>
+          <div className="overflow-y-auto h-[60vh]  md:mt-0 w-full">
+          <table className="table table-bordered bg-white">
+
+          <thead className="sticky top-0 bg-white">
+                <tr>
+                  <th scope="col">Sr. No.</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col" onClick={toggleSortOrder}>
+                    Event Date{" "}
+                    {sortOrder === "asc" ? (
+                      <FaSortAmountDown />
+                    ) : (
+                      <FaSortAmountUp />
+                    )}
+                  </th>
+                  <th scope="col">Guest Quantity</th>
+                  <th scope="col">Event Venue</th>
+                  <th scope="col">Event Requirement</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredEnquiries.map((enquiry, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{enquiry.event_name}</td>
+                    <td>{enquiry.event_date}</td>
+                    <td>{enquiry.guest_quantity}</td>
+                    <td>{enquiry.event_venue}</td>
+                    <td>{enquiry.event_requirement}</td>
+                    <td>{enquiry.customer_name}</td>
+                    <td>{enquiry.contact}</td>
+                    <td>{enquiry.address}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <p>Total number of enquiries: {filteredEnquiries.length}</p>
-        <button className="btn btn-primary mb-3" onClick={exportToExcel}>
-          Export to Excel
-        </button>
-        <table
-          className="table table-hover table-sm border border-dark table-responsive-md"
-          style={{ backgroundColor: "white" }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Sr. No.</th>
-              <th scope="col">Event Name</th>
-              <th scope="col" onClick={toggleSortOrder}>
-                Event Date{" "}
-                {sortOrder === "asc" ? (
-                  <FaSortAmountDown />
-                ) : (
-                  <FaSortAmountUp />
-                )}
-              </th>
-              <th scope="col">Guest Quantity</th>
-              <th scope="col">Event Venue</th>
-              <th scope="col">Event Requirement</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Contact</th>
-              <th scope="col">Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEnquiries.map((enquiry, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{enquiry.event_name}</td>
-                <td>{enquiry.event_date}</td>
-                <td>{enquiry.guest_quantity}</td>
-                <td>{enquiry.event_venue}</td>
-                <td>{enquiry.event_requirement}</td>
-                <td>{enquiry.customer_name}</td>
-                <td>{enquiry.contact}</td>
-                <td>{enquiry.address}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </>
   );
