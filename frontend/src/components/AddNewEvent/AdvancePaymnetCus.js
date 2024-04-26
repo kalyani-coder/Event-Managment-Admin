@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { json, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Form, Button,Alert, Modal } from "react-bootstrap";
+import { Form, Button, Alert, Modal } from "react-bootstrap";
 
 function AdvancePaymnetCus() {
   const navigate = useNavigate("");
@@ -148,18 +148,15 @@ function AdvancePaymnetCus() {
   };
 
   const handleAssign = () => {
-
-    if(selectedManager){
-      const manager = JSON.parse(selectedManager)
-      console.log("manager" , manager)
+    if (selectedManager) {
+      const manager = JSON.parse(selectedManager);
+      console.log("manager", manager);
 
       const transactionData = {
         date_of_transaction: currentDate.toISOString().split("T")[0],
       };
-   
 
       const data = {
-  
         customer_name: selectedCustomer,
         contact: selectedCustomerDetails.contact,
         email: selectedCustomerDetails.email,
@@ -168,11 +165,11 @@ function AdvancePaymnetCus() {
         event_name: selectedCustomerDetails.eventName,
         event_Type: selectedCustomerDetails.event_type,
         guest_Number: selectedCustomerDetails.guest_number,
-        assign_manager_name: manager.fname + " " + manager.lname ,
+        assign_manager_name: manager.fname + " " + manager.lname,
         assign_manager_Id: manager._id,
-        transaction_details: transactionData, 
+        transaction_details: transactionData,
       };
-  
+
       axios
         .post("http://localhost:5000/api/order", data)
         .then((response) => {
@@ -187,100 +184,117 @@ function AdvancePaymnetCus() {
           setAlertVariant("danger");
         });
     }
-
-   
   };
 
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h2 className="mb-4">Advance Payment Form</h2>
-        {alertMessage && (
-          <div>
-            <Alert variant={alertVariant}>{alertMessage}</Alert>
+      <div
+        className="w-full h-screen
+        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+      >
+        <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
+          <h2 className="text-[35px] pl-[1em]">Advance Payment Form</h2>
+          {alertMessage && (
+            <div>
+              <Alert variant={alertVariant}>{alertMessage}</Alert>
+            </div>
+          )}
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form.Group controlId="SelectCustomer">
+                <Form.Label>Select Customers:</Form.Label>
+                <div className="relative">
+                  <Form.Select
+                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                    aria-label="Select Customer"
+                    name="customer"
+                    onChange={handleCustomerSelect}
+                  >
+                    <option>Select Customer</option>
+                    {cusName.map((cus) => (
+                      <option key={cus._id} value={cus.fname}>
+                        {cus.fname}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+              </Form.Group>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Event Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.eventName || ""}
+                  readOnly
+                />
+              </div>
+            </div>
           </div>
-        )}
-        <Form.Group controlId="SelectCustomer">
-          <Form.Label>Select Customers:</Form.Label>
-          <div className="relative">
-            <Form.Select
-              className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-              aria-label="Select Customer"
-              name="customer"
-              onChange={handleCustomerSelect}
-            >
-              <option>Select Customer</option>
-              {cusName.map((cus) => (
-                <option key={cus._id} value={cus.fname}>
-                  {cus.fname}
-                </option>
-              ))}
-            </Form.Select>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Contact</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.contact || ""}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Event Type</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.event_type || ""}
+                  readOnly
+                />
+              </div>
+            </div>
           </div>
-        </Form.Group>
-
-        <div className="mb-3">
-          <label className="form-label">Event Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.eventName || ""}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Contact</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.contact || ""}
-            readOnly
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Event Type</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.event_type || ""}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Guest Number</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.guest_number || ""}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Venue</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.venue || ""}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Event Date</label>
-          <input
-            type="text"
-            className="form-control"
-            value={selectedCustomerDetails.event_date || ""}
-            readOnly
-          />
-        </div>
-
-        {/* <Form.Group controlId="SelectEvent">
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Guest Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.guest_number || ""}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Venue</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.venue || ""}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Event Date</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedCustomerDetails.event_date || ""}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div className="col px-5">
+              {/* <Form.Group controlId="SelectEvent">
                     <Form.Label>Events:</Form.Label>
                     <div className="relative">
                         <Form.Select
@@ -295,174 +309,189 @@ function AdvancePaymnetCus() {
                     </div>
                 </Form.Group> */}
 
-        <div className="mb-3">
-          <label className="form-label">Total Amount:</label>
-          <input
-            type="number"
-            className="form-control"
-            value={totalAmount}
-            onChange={handleTotalAmountChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Advance Payment:</label>
-          <input
-            type="number"
-            className="form-control"
-            value={advancePayment}
-            onChange={handleAdvancePaymentChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Remaining Amount:</label>
-          <input
-            type="number"
-            className="form-control"
-            value={remainingAmount}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Payment Method:</label>
-          <select
-            className="form-control"
-            value={paymentMethod}
-            onChange={handlePaymentMethodChange}
-          >
-            <option value="">Select Payment Method</option>
-            <option value="cheque">Cheque</option>
-            <option value="cash">Cash</option>
-            <option value="netbanking">Net Banking</option>
-          </select>
-        </div>
-
-        {paymentMethod === "cheque" && (
-          <>
-            <div className="mb-3">
               <div className="mb-3">
-                <label className="form-label">Cheque Number:</label>
+                <label className="form-label">Total Amount:</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
-                  value={chequeNumber}
-                  onChange={(e) => setChequeNumber(e.target.value)}
+                  value={totalAmount}
+                  onChange={handleTotalAmountChange}
                 />
               </div>
-
-              <div className="mb-3">
-                <label className="form-label">
-                  Name to Whom Submitted cheque:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={submittedTo}
-                  onChange={(e) => setSubmittedTo(e.target.value)}
-                />
-              </div>
-
-              <label className="form-label">UTR Number / RTGS ID:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={utrNumber}
-                onChange={(e) => setUtrNumber(e.target.value)}
-              />
-            </div>
-          </>
-        )}
-
-        {paymentMethod === "cash" && (
-          <>
-            <div className="mb-3">
-              <div className="mb-3">
-                <label className="form-label">
-                  Name to Whom Submitted cheque:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={cash}
-                  onChange={(e) => setCash(e.target.value)}
-                />
-              </div>
-            </div>
-          </>
-        )}
-
-        {paymentMethod === "netbanking" && (
-          <>
-            <div className="mb-3">
-              <div className="mb-3">
-                <label className="form-label">Transaction Id:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={transaction}
-                  onChange={(e) => setTransaction(e.target.value)}
-                />
-              </div>
-            </div>
-          </>
-        )}
-
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">Transaction Details</h5>
-            <div className="mb-3">
-              <label className="form-label">Date of Transaction:</label>
-              <input
-                type="date"
-                className="form-control"
-                value={currentDate.toISOString().split("T")[0]}
-                readOnly
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Time of Transaction:</label>
-              <input
-                type="time"
-                className="form-control"
-                value={currentTime}
-                readOnly
-              />
             </div>
           </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Advance Payment:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={advancePayment}
+                  onChange={handleAdvancePaymentChange}
+                />
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Remaining Amount:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={remainingAmount}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Payment Method:</label>
+                <select
+                  className="form-control"
+                  value={paymentMethod}
+                  onChange={handlePaymentMethodChange}
+                >
+                  <option value="">Select Payment Method</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="cash">Cash</option>
+                  <option value="netbanking">Net Banking</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {paymentMethod === "cheque" && (
+            <>
+              <div className="mb-3">
+                <div className="mb-3">
+                  <label className="form-label">Cheque Number:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={chequeNumber}
+                    onChange={(e) => setChequeNumber(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Name to Whom Submitted cheque:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={submittedTo}
+                    onChange={(e) => setSubmittedTo(e.target.value)}
+                  />
+                </div>
+
+                <label className="form-label">UTR Number / RTGS ID:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={utrNumber}
+                  onChange={(e) => setUtrNumber(e.target.value)}
+                />
+              </div>
+            </>
+          )}
+
+          {paymentMethod === "cash" && (
+            <>
+              <div className="mb-3">
+                <div className="mb-3">
+                  <label className="form-label">
+                    Name to Whom Submitted cheque:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={cash}
+                    onChange={(e) => setCash(e.target.value)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {paymentMethod === "netbanking" && (
+            <>
+              <div className="mb-3">
+                <div className="mb-3">
+                  <label className="form-label">Transaction Id:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={transaction}
+                    onChange={(e) => setTransaction(e.target.value)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          <h5 className="card-title pl-[1.5em]">Transaction Details</h5>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Date of Transaction:</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  value={currentDate.toISOString().split("T")[0]}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Time of Transaction:</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  value={currentTime}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+
+          <button className="manager-btn ms-4 mb-3" onClick={handleSave}>
+            Save & Assign To Manager
+          </button>
+
+          <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+              <Modal.Title>Assign to Manager</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Select
+                value={selectedManager}
+                onChange={(e) => setSelectedManager(e.target.value)}
+              >
+                <option value="">Select Manager</option>
+                {managers.map((manager) => (
+                  <option
+                    key={manager.manager_Id}
+                    value={JSON.stringify(manager)}
+                  >
+                    {manager.fname} {manager.lname}
+                  </option>
+                ))}
+              </Form.Select>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleAssign}>
+                Assign
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
-
-        <button className="btn btn-success mx-2 mt-3" onClick={handleSave}>
-          Save & Assign To Manager
-        </button>
-
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton style={{ marginTop: "30px" }}>
-            <Modal.Title>Assign to Manager</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Select
-              value={selectedManager}
-              onChange={(e) => setSelectedManager(e.target.value)}
-            >
-              <option value="">Select Manager</option>
-              {managers.map((manager) => (
-                <option key={manager.manager_Id} value={JSON.stringify(manager)}>
-                  {manager.fname} {manager.lname}
-                </option>
-              ))}
-            </Form.Select>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleAssign}>
-              Assign
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </div>
     </>
   );

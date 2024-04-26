@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import Header from "../../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
-
+import "./ViewEnquiry.css";
 import "../Quotation/ViewEnquiry.css";
 
 const ViewInquiryPage = ({ enquiry }) => {
@@ -261,7 +261,7 @@ const ViewInquiryPage = ({ enquiry }) => {
           ))}
         </div> */}
 
-          <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
+          <div className="table-responsive  md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
               <thead className=" sticky top-0 bg-white">
                 <tr>
@@ -296,56 +296,57 @@ const ViewInquiryPage = ({ enquiry }) => {
               </tbody>
             </table>
           </div>
-
-          {selectedInquiry && (
-            <Modal
-              show={showModal}
-              onHide={closePopup}
-              dialogClassName="modal-dialog-centered modal-dialog-responsive"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Inquiry Details</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {selectedInquiry && (
-                  <div>
-                    <h2>{selectedInquiry.title}</h2>
-                    <p style={{ lineHeight: "35px" }}>
-                      Event Name: {selectedInquiry.event_name || ""}
-                      <br />
-                      Event Date:{" "}
-                      {selectedInquiry.event_date
-                        ? format(
-                            new Date(selectedInquiry.event_date),
-                            "dd/MM/yyyy"
-                          )
-                        : ""}
-                      <br />
-                      Number of Estimated Guests:{" "}
-                      {selectedInquiry.guest_quantity}
-                      <br />
-                      Event Venue: {selectedInquiry.event_venue}
-                      <br />
-                      Event Requirement: {selectedInquiry.event_requirement}
-                      <br />
-                      Customer Name: {selectedInquiry.customer_name}
-                      <br />
-                      Customer Email: {selectedInquiry.email}
-                      <br />
-                      Contact Number: {selectedInquiry.contact}
-                      <br />
-                      Customer Address: {selectedInquiry.address}
-                    </p>
-                  </div>
-                )}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={closePopup}>
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          )}
+          <div>
+            {selectedInquiry && (
+              <Modal
+                show={showModal}
+                onHide={closePopup}
+                dialogClassName="modal-dialog-centered modal-dialog-responsive "
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Inquiry Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {selectedInquiry && (
+                    <div>
+                      <h2>{selectedInquiry.title}</h2>
+                      <p style={{ lineHeight: "35px" }}>
+                        Event Name: {selectedInquiry.event_name || ""}
+                        <br />
+                        Event Date:{" "}
+                        {selectedInquiry.event_date
+                          ? format(
+                              new Date(selectedInquiry.event_date),
+                              "dd/MM/yyyy"
+                            )
+                          : ""}
+                        <br />
+                        Number of Estimated Guests:{" "}
+                        {selectedInquiry.guest_quantity}
+                        <br />
+                        Event Venue: {selectedInquiry.event_venue}
+                        <br />
+                        Event Requirement: {selectedInquiry.event_requirement}
+                        <br />
+                        Customer Name: {selectedInquiry.customer_name}
+                        <br />
+                        Customer Email: {selectedInquiry.email}
+                        <br />
+                        Contact Number: {selectedInquiry.contact}
+                        <br />
+                        Customer Address: {selectedInquiry.address}
+                      </p>
+                    </div>
+                  )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closePopup}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
+          </div>
         </div>
       </div>
     </>
