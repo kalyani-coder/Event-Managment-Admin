@@ -14,8 +14,23 @@ const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
-const { QuatationInfo, advancePaymantManager, ManagerTask } = require('../models/newModels')
+const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper } = require('../models/newModels')
 
+
+
+// bank Transper post route 
+router.post("/banktransper" , async(req, res) => {
+  const newBanktransper = new bankTransper(req.body)
+  try{
+
+    const addTransper = await newBanktransper.save()
+    res.status(201).json({message : "Bank Transper successfully"})
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+
+  }
+})
 
 // manager task api post route 
 router.post('/managertask', async (req, res) => {

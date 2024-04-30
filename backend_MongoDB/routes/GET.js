@@ -6,10 +6,22 @@ const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
 const { QuatationInfo } = require("../models/newModels");
-const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask} = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+// Bank Transfer api 
+router.get("/banktransper" , async(req, res) => {
+  try{
+
+    const BankTransper = await bankTransper.find()
+    res.status(201).json(BankTransper)
+    
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
 
 // manager task api get route 
 router.get("/managertask", async (req, res) => {

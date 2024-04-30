@@ -106,7 +106,7 @@ const EventReport = () => {
 
   const fetchData = async () => {
     try {
-      let url = "https://eventmanagement-admin-hocm.onrender.com/api/event";
+      let url = "http://localhost:5000/api/event";
       if (selectedStatus !== "All") {
         url += `/status/${selectedStatus}`;
       }

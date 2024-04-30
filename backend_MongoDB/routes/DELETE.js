@@ -5,9 +5,24 @@ const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
 const {AddEventMaster,advancePaymantManager} =  require('../models/newModels')
-const { ManagerDetails , ManagerTask,QuatationInfo} = require("../models/newModels");
+const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper} = require("../models/newModels");
 
+router.delete('/banktransper/:id', async (req, res) => {
+  const deletedManagerId = req.params.id;
 
+  try {
+    const deletedManager = await bankTransper.findByIdAndDelete(deletedManagerId);
+
+    if (!deletedManager) {
+      return res.status(404).json({message: 'banktransper not found'});
+    }
+
+    res.status(200).json({ message: 'banktransper deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
 
 router.delete('/quatationinfo/:id', async (req, res) => {
   const deletedManagerId = req.params.id;

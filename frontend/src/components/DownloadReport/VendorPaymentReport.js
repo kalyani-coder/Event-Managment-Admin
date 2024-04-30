@@ -24,7 +24,7 @@ const VendorPaymentReport = () => {
   const fetchPaymentData = async () => {
     try {
       const response = await fetch(
-        "https://eventmanagement-admin-hocm.onrender.com/api/vendorpayment"
+        "http://localhost:5000/api/vendorpayment"
       );
       const paymentData = await response.json();
       setPayments(paymentData);

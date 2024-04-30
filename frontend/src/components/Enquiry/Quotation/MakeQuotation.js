@@ -164,55 +164,8 @@ function QuotationForm() {
     setSections(newSections);
   };
 
-  const handleAddSection = () => {
-    const newSRNumber = sections.length + 1;
-    setSections([
-      ...sections,
-      {
-        srNumber: newSRNumber,
-        title: "",
-        particular: "",
-        transport: "",
-        description: "",
-        entity: "",
-        unit: "",
-        rate: "",
-        days: "",
-        amount: "",
-      },
-    ]);
-  };
 
-  const handleSave = async () => {
-    try {
-      // Prepare the data in the required format
-      const quatationInfoData = sections.map((section) => ({
-        title: section.title,
-        particular: section.particular,
-        transport: section.transport,
-        description: section.description,
-        vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
-        vendor_Stock: newSelectedStock,
-        unit: section.unit,
-        quantity: parseFloat(updateQuantity),
-        rateper_Days: parseFloat(newSelectedStockPriceValue),
-        days: parseFloat(section.days),
-        amount: section.amount,
-        name: enquiry.customer_name,
-      }));
-
-      // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("http://localhost:5000/api/quatationinfo", {
-        quatationInfoData,
-      });
-
-      alert("Quotation saved successfully!");
-    } catch (error) {
-      console.error("Error saving quotation:", error);
-      alert("Error saving quotation. Please try again.");
-    }
-  };
-
+ 
   const handlePrint = () => {
     const doc = new jsPDF();
 
@@ -400,7 +353,7 @@ function QuotationForm() {
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
           <h1 className="text-[35px] pl-[1em]">
             Quotation Form Of
-            <span className="text-dark"> {enquiry.customer_name}</span>
+            <span className="text-dark fs-1"> {enquiry.customer_name}</span>
           </h1>
 
           {sections.map((section, index) => (
@@ -499,6 +452,9 @@ function QuotationForm() {
                 </button>
                 <button className="manager-btn ms-4">Add Stocks</button>
               </div>
+
+
+              
               <div className="row mb-2">
                 <div className="col px-5">
                   <div className="form-group">
@@ -512,36 +468,10 @@ function QuotationForm() {
                       value={sections[index].days}
                       onChange={(e) => handleChange(e, index)}
                     />
-
-                    {/* in second chnages need to remove this input  */}
-                    {/* <label htmlFor={`title${index}`}>
-              Title:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`title${index}`}
-              name="title"
-              value={section.title}
-              onChange={(e) => handleChange(e, index)}
-            /> */}
                   </div>
                 </div>
                 <div className="col px-5">
-                  {/* in second chnages need to remove this input  */}
-                  {/* <div className="form-group">
-            <label htmlFor={`particular${index}`}>
-              Particular:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`particular${index}`}
-              name="particular"
-              value={section.particular}
-              onChange={(e) => handleChange(e, index)}
-            />
-          </div> */}
+                 
 
                   <div className="form-group">
                     <label htmlFor={`transport${index}`}>Transport:</label>
@@ -588,12 +518,12 @@ function QuotationForm() {
             </div>
           ))}
 
-          <button className="manager-btn ms-4" onClick={handleAddSection}>
+          {/* <button className="manager-btn ms-4" onClick={handleAddSection}>
             Add Item
-          </button>
-          <button className="manager-btn ms-4" onClick={handleSave}>
+          </button> */}
+          {/* <button className="manager-btn ms-4" onClick={handleSave}>
             View & Save
-          </button>
+          </button> */}
           <button className="manager-btn ms-4" onClick={handlePrint}>
             Print
           </button>

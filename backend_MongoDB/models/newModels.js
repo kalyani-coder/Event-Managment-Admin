@@ -408,9 +408,22 @@ const managerTask = new Schema({
 
 })
 
+
+const bankTransper = new Schema({
+
+  type : {type : String},
+  name : {type : String},
+  Id : {type : String},
+  bankName : {type : String},
+  amount : {type : Number},
+  
+})
+
+
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
+  bankTransper : mongoose.model("BankTransfer", bankTransper),
   ManagerTask : mongoose.model("ManagerTask", managerTask),
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),
