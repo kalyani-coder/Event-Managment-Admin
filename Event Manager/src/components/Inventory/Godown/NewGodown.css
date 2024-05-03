@@ -1,0 +1,16 @@
+@media (max-width: 768px){
+.responsive-godown {
+    width: 182%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+.form.Group{
+    width: 182%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+}

@@ -1,0 +1,60 @@
+.text-yellow {
+    color: rgba(250, 250, 28, 0.694);
+  }
+  
+  .text-red {
+    color: red;
+  }
+  
+  .text-green {
+    color: green;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  @media (max-width: 768px) {
+    .table th:nth-child(2), .table td:nth-child(2) {
+      display: none; /* Hide Event Date column */
+    }
+  
+    .table th:nth-child(4), .table td:nth-child(4) {
+      display: none; /* Hide Contact No. column */
+    }
+  }
+
+
+  @media (max-width: 576px) {
+    .modal-dialog-responsive {
+      max-width: 40% !important;
+      margin: auto !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .modal-dialog-responsive {
+      max-width: 50% !important;
+      margin: auto !important;
+    }
+    .modal-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 62%;
+      top: -7px;
+  }
+}
+  @media (max-width: 992px) {
+    .modal-dialog-responsive {
+      max-width: 80% !important;
+      margin: auto !important;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .modal-dialog-responsive {
+      max-width: 90% !important;
+      margin: auto !important;
+    }
+  }
+  
