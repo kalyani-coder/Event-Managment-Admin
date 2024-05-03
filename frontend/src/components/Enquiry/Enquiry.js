@@ -341,7 +341,7 @@ export default function Enquiry() {
       </div>
        {/* Assign Manager Modal */}
        <Modal show={showAssignManagerModal} onHide={() => setShowAssignManagerModal(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton style={{ marginTop: "30px" }}>
           <Modal.Title>Assign Manager</Modal.Title>
         </Modal.Header>
         <Modal.Body>
