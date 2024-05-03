@@ -582,15 +582,17 @@ export default function Sidebar() {
                     Download Report
                   </a>
                 </li> */}
-
+                
+                <Link to={"/"}> 
                   <li>
-                    <button
+                  <button
                       className="btn btn-danger mt-5 ml-5"
                       onClick={handleLogout}
                     >
                       Logout
                     </button>
-                  </li>
+                     </li>
+                   </Link>
                   {/* Add similar customization for other menu items */}
                 </ul>
               </div>

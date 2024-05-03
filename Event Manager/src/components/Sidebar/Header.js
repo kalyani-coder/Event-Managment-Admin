@@ -162,6 +162,7 @@ export default function Sidenav() {
   };
   const handleLogout = () => {
     // window.location.href = 'https://eventmanagement-qaii.onrender.com';
+    localStorage.clear();
     navigate("/");
   };
 
@@ -225,7 +226,7 @@ export default function Sidenav() {
             </DrawerHeader>
 
             <Divider />
-            <List>
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -272,8 +273,8 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-            </List>
-            <List>
+            </List> */}
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -449,7 +450,7 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
+            </List> */}
             <List>
               <ListItem
                 disablePadding
@@ -707,7 +708,7 @@ export default function Sidenav() {
               )}
             </List>
 
-            <List>
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -1123,7 +1124,7 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
+            </List> */}
             <List>
               <ListItem
                 disablePadding

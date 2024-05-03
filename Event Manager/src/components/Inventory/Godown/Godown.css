@@ -1,0 +1,36 @@
+ /* Form input and select styles */
+ .form-control-cust-inq-input {
+    width: 80%;
+    height: 43px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  .cust-inq-input{
+    width: 235px;
+    /* height: 40px; */
+  }
+  .edit-icon{
+    margin-left: 40px;
+    color: rgb(245, 237, 237);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .edit-correct-icon{
+    margin-left: 40px;
+    color: rgb(22, 21, 21);
+    font-size: 30px;
+    cursor: pointer;
+  }
+  .edit-wrong-icon{
+    margin-left: 40px;
+    color: rgb(22, 21, 21);
+    font-size: 30px;
+    cursor: pointer;
+  }
+  .godown-td td {
+    color: rgb(12, 12, 12);
+    font-weight: bold;
+    font-size: large;
+  }
