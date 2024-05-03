@@ -7,6 +7,9 @@ import { Form, Button, Modal, Table } from "react-bootstrap";
 export default function Enquiry() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showAssignManagerModal, setShowAssignManagerModal] = useState(false);
+  const [assignManagerId, setAssignManagerId] = useState("");
+  const [assignManagerName, setAssignManagerName] = useState("");
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -307,7 +310,7 @@ export default function Enquiry() {
                     className="manager-btn ms-1"
                     onClick={handleSubmit}
                   >
-                    Add Enquiry
+                    Add Enquiry & Assign to Manager
                   </Button>
                 </div>
               </div>
@@ -326,6 +329,40 @@ export default function Enquiry() {
           </div>
         </div>
       </div>
+       {/* Assign Manager Modal */}
+       <Modal show={showAssignManagerModal} onHide={() => setShowAssignManagerModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Manager</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="assignManagerId">
+            <Form.Label>Manager ID:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Manager ID"
+              value={assignManagerId}
+              onChange={(e) => setAssignManagerId(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="assignManagerName">
+            <Form.Label>Manager Name:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Manager Name"
+              value={assignManagerName}
+              onChange={(e) => setAssignManagerName(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignManagerModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleAssignManager}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

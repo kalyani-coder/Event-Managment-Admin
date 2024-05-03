@@ -902,7 +902,64 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Internal Transfer")}
+              >
+                <div className="menuitems-of-header ">
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                    className={
+                      activetab === "Internal Transfer"
+                        ? "menuitems-of-header active"
+                        : "menuitems-of-header"
+                    }
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="Internal Transfer">
+                        <span>
+                          <AssignmentIndIcon sx={{ color: "#9b59b6" }} />
+                        </span>
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Internal Transfer"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </div>
+              </ListItem>
 
+              {activetab == "Internal Transfer" && (
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to={"/internaltransferfrombank"}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <span className="icon-text">Internal Transfer</span>
+                    </Link>{" "}
+                  </MenuItem>
+                </Menu>
+              )}
+            </List>
             <List>
               <ListItem
                 disablePadding
