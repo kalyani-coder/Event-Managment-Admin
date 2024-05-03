@@ -6,11 +6,38 @@ const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
 const { QuatationInfo } = require("../models/newModels");
-const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper} = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
 
+
+// get api by manager id 
+router.get("/:table/:assign_manager_Id", async (req, res) => {
+  const { table, assign_manager_Id } = req.params;
+
+  // Check if the table is valid
+  if (
+    table.toLowerCase() !== "enquiry" &&
+    table.toLowerCase() !== "enquiries" // Add other valid table names if needed
+  ) {
+    return res.status(400).send("Bad Request");
+  }
+
+  try {
+    // Find enquiries with the specified assign_manager_Id in the Enquiry model
+    const enquiries = await Enquiry.find({ assign_manager_Id: assign_manager_Id });
+
+    if (enquiries.length === 0) {
+      return res.status(404).json({ message: "No enquiries found for this manager ID" });
+    }
+
+    res.status(200).json(enquiries);
+  } catch (err) {
+    console.error("Error fetching enquiries by manager ID:", err);
+    res.status(500).json({ message: "Internal server error", error: err });
+  }
+});
 // Bank Transfer api 
 router.get("/banktransper" , async(req, res) => {
   try{
