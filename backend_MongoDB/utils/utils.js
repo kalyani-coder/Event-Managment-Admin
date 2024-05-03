@@ -93,6 +93,8 @@ const FilterBodyByTable = ({ req, table }) => {
         address,
         status,
         hot_input_value,
+        assign_manager_name,
+        assign_manager_Id
       } = req.body;
       return {
         enquiry_id,
@@ -107,6 +109,8 @@ const FilterBodyByTable = ({ req, table }) => {
         address,
         status,
         hot_input_value,
+        assign_manager_Id,
+        assign_manager_name,
       };
     } else if (table === "executivetask") {
       const { Task, exe_id, Date, Time, Status, EventId } = req.body;

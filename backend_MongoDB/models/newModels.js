@@ -20,6 +20,8 @@ const EnquirySchema = new Schema({
     type: String,
     default: ""
   },
+  assign_manager_Id : {type : String, required : false},
+  assign_manager_name : {type : String, required : false}
 });
 
 const QuotationSchema = new Schema({
