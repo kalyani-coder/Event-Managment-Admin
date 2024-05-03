@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import Header from "../Sidebar/Header";
-import { Form, Button, Modal, Table } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 
 export default function Enquiry() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -10,6 +10,7 @@ export default function Enquiry() {
   const [showAssignManagerModal, setShowAssignManagerModal] = useState(false);
   const [assignManagerId, setAssignManagerId] = useState("");
   const [assignManagerName, setAssignManagerName] = useState("");
+  const [managerData, setManagerData] = useState([]);
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -64,6 +65,7 @@ export default function Enquiry() {
           event_venue: "",
           event_requirement: "",
         });
+        setShowAssignManagerModal(true);
       } else {
         alert("Something went wrong");
       }
@@ -72,16 +74,11 @@ export default function Enquiry() {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Check required fields
-    if (!formData.customer_name || !formData.contact) {
-      alert("Customer Name and Contact Number are required fields");
-      return;
-    }
-
-    submitForm();
+  const handleAssignManager = async () => {
+    // Here you would typically make an API call to assign the manager to the enquiry
+    // For now, just show an alert with the selected manager name
+    alert(`Assigned Manager Successfully`);
+    setShowAssignManagerModal(false);
   };
 
   // Fetch and display recent inquiries
@@ -126,6 +123,19 @@ export default function Enquiry() {
       event_name: eventName,
     }));
   };
+
+  useEffect(() => {
+    const fetchManagerData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/addmanager");
+        setManagerData(response.data);
+      } catch (error) {
+        console.error("Error fetching manager data:", error);
+      }
+    };
+
+    fetchManagerData();
+  }, []);
 
   return (
     <>
@@ -308,7 +318,7 @@ export default function Enquiry() {
                   <Button
                     variant="info"
                     className="manager-btn ms-1"
-                    onClick={handleSubmit}
+                    onClick={submitForm}
                   >
                     Add Enquiry & Assign to Manager
                   </Button>
@@ -335,23 +345,20 @@ export default function Enquiry() {
           <Modal.Title>Assign Manager</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group controlId="assignManagerId">
-            <Form.Label>Manager ID:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Manager ID"
-              value={assignManagerId}
-              onChange={(e) => setAssignManagerId(e.target.value)}
-            />
-          </Form.Group>
           <Form.Group controlId="assignManagerName">
             <Form.Label>Manager Name:</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter Manager Name"
+              as="select"
               value={assignManagerName}
               onChange={(e) => setAssignManagerName(e.target.value)}
-            />
+            >
+              <option value="">Select Manager Name</option>
+              {managerData.map((manager) => (
+                <option key={manager._id} value={`${manager.fname} ${manager.lname}`}>
+                  {`${manager.fname} ${manager.lname}`}
+                </option>
+              ))}
+            </Form.Control>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
