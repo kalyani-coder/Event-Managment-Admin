@@ -226,22 +226,22 @@ export default function Sidenav() {
             </DrawerHeader>
 
             <Divider />
-            {/* <List>
+            <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "DashBoard")}
+                onClick={(event) => handleClick(event, "Enquiry")}
               >
                 <div className="menuitems-of-header ">
                   <Link
-                    to="/dashboard"
+                    to="/quotation"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton
                       sx={{
                         minHeight: 48,
                         justifyContent: open ? "initial" : "center",
-                        px: 2.5,
+                        px: 2.5
                       }}
                       className={
                         activetab === "DashBoard"
@@ -260,20 +260,117 @@ export default function Sidenav() {
                           <span>
                             <GridViewIcon
                               sx={{ color: "#9b59b6" }}
-                              title="DashBoard"
+                              title="Enquiry"
                             />{" "}
                           </span>
                         </Tooltip>
                       </ListItemIcon>
                       <ListItemText
-                        primary="DashBoard"
+                        primary="Enquiry"
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
                   </Link>
                 </div>
               </ListItem>
-            </List> */}
+            </List> 
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Enquiry")}
+              >
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/advpaymentcus"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5
+                      }}
+                      className={
+                        activetab === "DashBoard"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Tooltip title="DashBoard">
+                          <span>
+                            <GridViewIcon
+                              sx={{ color: "#9b59b6" }}
+                              title="Advance Payment"
+                            />{" "}
+                          </span>
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Advance Payment"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List> 
+
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Vendor Payment")}
+              >
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/vendorpayment"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5
+                      }}
+                      className={
+                        activetab === "DashBoard"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Tooltip title="DashBoard">
+                          <span>
+                            <GridViewIcon
+                              sx={{ color: "#9b59b6" }}
+                              title="Enquiry"
+                            />{" "}
+                          </span>
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Vendor Payment"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List> 
             {/* <List>
               <ListItem
                 disablePadding
@@ -451,13 +548,15 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List> */}
-            <List>
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Event management")}
+                onClick={(event) => handleClick(event, " Enquiry")}
               >
+              
                 <div className="menuitems-of-header ">
+               
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -465,7 +564,7 @@ export default function Sidenav() {
                       px: 2.5,
                     }}
                     className={
-                      activetab === "Event management"
+                      activetab === "Enquiry"
                         ? "menuitems-of-header active"
                         : "menuitems-of-header"
                     }
@@ -477,7 +576,7 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <Tooltip title="Event management">
+                      <Tooltip title="Enquiry ">
                         <span>
                           <FontAwesomeIcon
                             icon={faCalendar}
@@ -488,28 +587,29 @@ export default function Sidenav() {
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
-                      primary="Event management"
+                      primary="Enquiry "
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
-                </div>
+                 </div>
+                
               </ListItem>
-              {activetab == "Event management" && (
+              {activetab == "Enquiry" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
+                > */}
+                  {/* <MenuItem onClick={handleClose}>
                     <Link
                       to={"/addenquiry"}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <span className="icon-text">Add Enquiry</span>
                     </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  </MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>
                     {" "}
                     <Link
                       to={"/quotation"}
@@ -517,8 +617,8 @@ export default function Sidenav() {
                     >
                       <span className="icon-text">View Enquiry</span>
                     </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  </MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>
                     {" "}
                     <Link
                       to={"/createquotation"}
@@ -526,8 +626,8 @@ export default function Sidenav() {
                     >
                       <span className="icon-text">proposal</span>
                     </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  </MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>
                     {" "}
                     <Link
                       to={"/followupstatus"}
@@ -535,20 +635,19 @@ export default function Sidenav() {
                     >
                       <span className="icon-text"> FolloUp Status</span>
                     </Link>
-                  </MenuItem>
-
-                  <MenuItem onClick={handleClose}>
+                  </MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>
                     <Link
                       to={"/addnewevent"}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <span className="icon-text"> AddEvent</span>
                     </Link>
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-            <List>
+                  </MenuItem> */}
+                {/* </Menu> */}
+              {/* )} */}
+            {/* </List> */}
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -638,8 +737,8 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
-            <List>
+            </List> */}
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -706,7 +805,7 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
+            </List> */}
 
             {/* <List>
               <ListItem

@@ -3,6 +3,7 @@ import { json, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 function AdvancePaymnetCus() {
   const navigate = useNavigate("");
@@ -194,7 +195,21 @@ function AdvancePaymnetCus() {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
-          <h2 className="text-[35px] pl-[1em]">Advance Payment Form</h2>
+        <div className="flex">
+          <Link to={'/advpaymentcus'}>
+          <button className="btn btn-primary mr-4 mb-4">Customer Payment</button>
+          </Link>
+          <Link to={'/costingform'}>
+          <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
+          </Link>
+          <Link to={'/advpaymentmanager'}>
+          <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
+          </Link>
+          <Link to={'/viewadvpaymentmanager'}>
+          <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
+          </Link>
+        </div>
+          <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (
             <div>
               <Alert variant={alertVariant}>{alertMessage}</Alert>

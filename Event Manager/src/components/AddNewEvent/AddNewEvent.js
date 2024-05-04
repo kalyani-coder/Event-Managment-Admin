@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const AddNewEvent = () => {
   const [events, setEvents] = useState([]);
@@ -93,8 +94,22 @@ const AddNewEvent = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
+        <div className="flex">
+          <Link to={'/quotation'}>
+          <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+          </Link>
+          <Link to={'/createquotation'}>
+          <button className="btn btn-primary mr-4 mb-4">Proposal</button>
+          </Link>
+          <Link to={'/followupstatus'}>
+          <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+          </Link>
+          <Link to={'/addnewevent'}>
+          <button className="btn btn-primary mr-4 mb-4">Add Event</button>
+          </Link>
+        </div>
           {" "}
-          <h2 className="text-[35px]  pl-[1em]">Create Event</h2>
+          <h2 className="text-[30px]  pl-[1em]">Create Event</h2>
           <div className="row mb-2">
             <div className="col px-5">
               <Form.Group controlId="SelectEvent">

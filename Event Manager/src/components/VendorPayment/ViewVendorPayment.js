@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
 import { Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const VendorPaymentView = () => {
   const [vendorPayments, setVendorPayments] = useState([]);
@@ -70,7 +71,16 @@ const VendorPaymentView = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-          <h2 className="text-[35px]">Vendor Payment Details</h2>
+        <div className="flex">
+          <Link to={'/vendorpayment'}>
+          <button className="btn btn-primary mr-4 mb-4">Add Vendor Payment</button>
+          </Link>
+          <Link to={'/viewvendorpayment'}>
+          <button className="btn btn-primary mr-4 mb-4">View Vendor Payment Details</button>
+          </Link>
+         
+          </div>
+          <h2 className="text-[30px]">Vendor Payment Details</h2>
           <div className="overflow-y-auto h-[70vh]  md:mt-0 w-full">
             <table className="table table-bordered bg-white">
               <thead className="sticky top-0 bg-white">

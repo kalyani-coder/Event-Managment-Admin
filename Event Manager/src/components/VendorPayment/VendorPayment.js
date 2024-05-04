@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const VendorPayment = () => {
   const getCurrentDate = () => {
@@ -160,7 +161,16 @@ const VendorPayment = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <Form className=" " onSubmit={handleSubmit}>
-            <h2 className="text-[35px]  pl-[1em]">Vendor Payment</h2>
+          <div className="flex">
+          <Link to={'/vendorpayment'}>
+          <button className="btn btn-primary mr-4 mb-4">Add Vendor Payment</button>
+          </Link>
+          <Link to={'/viewvendorpayment'}>
+          <button className="btn btn-primary mr-4 mb-4">View Vendor Payment Details</button>
+          </Link>
+         
+          </div>
+            <h2 className="text-[30px]  pl-[1em]">Vendor Payment</h2>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">

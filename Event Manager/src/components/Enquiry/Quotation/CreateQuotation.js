@@ -345,6 +345,8 @@
 
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
+import { Link } from 'react-router-dom';
+
 import Header from "../../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import "./ViewEnquiry.css";
@@ -443,9 +445,23 @@ const CreateQuotation = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+        <div className="flex">
+          <Link to={'/quotation'}>
+          <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+          </Link>
+          <Link to={'/createquotation'}>
+          <button className="btn btn-primary mr-4 mb-4">Proposal</button>
+          </Link>
+          <Link to={'/followupstatus'}>
+          <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+          </Link>
+          <Link to={'/addnewevent'}>
+          <button className="btn btn-primary mr-4 mb-4">Add Event</button>
+          </Link>
+        </div>
           <div className="d-flex flex-wrap align-items-center">
-            <h2 className="text-[35px]">Proposal</h2>
-            <div className="w-full relative">
+            <h2 className="text-[30px]">Proposal</h2>
+            {/* <div className="w-full relative">
               <input
                 type="text"
                 placeholder="Search by Event, Company, or Customer Name"
@@ -473,8 +489,8 @@ const CreateQuotation = () => {
               >
                 Search
               </button>
-            </div>
-            <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
+            </div> */}
+            {/* <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
               <div className="grid md:flex items-center">
                 <label className="mr-1">Start Date:</label>
                 <input
@@ -541,7 +557,7 @@ const CreateQuotation = () => {
                   Clear
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">

@@ -394,6 +394,8 @@ import Header from "../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import "../Enquiry/Quotation/ViewEnquiry.css";
+import { Link } from 'react-router-dom';
+
 
 const FollowUpStatus = () => {
   const [inquiries, setInquiries] = useState([]);
@@ -543,8 +545,22 @@ const FollowUpStatus = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-          <h2 className="text-[35px]">Follow Up Status</h2>
-          <div className="d-flex flex-wrap align-items-center">
+        <div className="flex">
+          <Link to={'/quotation'}>
+          <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+          </Link>
+          <Link to={'/createquotation'}>
+          <button className="btn btn-primary mr-4 mb-4">Proposal</button>
+          </Link>
+          <Link to={'/followupstatus'}>
+          <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+          </Link>
+          <Link to={'/addnewevent'}>
+          <button className="btn btn-primary mr-4 mb-4">Add Event</button>
+          </Link>
+        </div>
+          <h2 className="text-[30px]">Follow Up Status</h2>
+          {/* <div className="d-flex flex-wrap align-items-center">
             <div className="w-full relative">
               <input
                 type="text"
@@ -643,7 +659,7 @@ const FollowUpStatus = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
               <thead className="sticky top-0 bg-white">
