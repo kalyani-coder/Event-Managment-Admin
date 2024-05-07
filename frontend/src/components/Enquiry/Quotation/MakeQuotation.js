@@ -164,8 +164,55 @@ function QuotationForm() {
     setSections(newSections);
   };
 
+  const handleAddSection = () => {
+    const newSRNumber = sections.length + 1;
+    setSections([
+      ...sections,
+      {
+        srNumber: newSRNumber,
+        title: "",
+        particular: "",
+        transport: "",
+        description: "",
+        entity: "",
+        unit: "",
+        rate: "",
+        days: "",
+        amount: "",
+      },
+    ]);
+  };
 
- 
+  const handleSave = async () => {
+    try {
+      // Prepare the data in the required format
+      const quatationInfoData = sections.map((section) => ({
+        title: section.title,
+        particular: section.particular,
+        transport: section.transport,
+        description: section.description,
+        vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
+        vendor_Stock: newSelectedStock,
+        unit: section.unit,
+        quantity: parseFloat(updateQuantity),
+        rateper_Days: parseFloat(newSelectedStockPriceValue),
+        days: parseFloat(section.days),
+        amount: section.amount,
+        name: enquiry.customer_name,
+      }));
+
+      // Send a POST request to the new API endpoint with the quatationInfoData
+      await axios.post("http://localhost:5000/api/quatationinfo", {
+        quatationInfoData,
+      });
+
+      alert("Quotation saved successfully!");
+    } catch (error) {
+      console.error("Error saving quotation:", error);
+      alert("Error saving quotation. Please try again.");
+    }
+  };
+
   const handlePrint = () => {
     const doc = new jsPDF();
 
@@ -346,188 +393,187 @@ function QuotationForm() {
   return (
     <>
       <Header />
-      <div
-        className="w-full h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
-      >
-        <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
-          <h1 className="text-[35px] pl-[1em]">
-            Quotation Form Of
-            <span className="text-dark fs-1"> {enquiry.customer_name}</span>
-          </h1>
 
-          {sections.map((section, index) => (
-            <div key={index} className="mb-4">
-              <div className="form-row">
-                <div className="entity"></div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label htmlFor="quantity">Select Stockname </label>
-                  <select
-                    className="form-control"
-                    id="stockName"
-                    onChange={newhandleStockChange}
-                  >
-                    <option value="">Select Stock</option>
-                    {stockNames.map((stockName) => (
-                      <option key={stockName} value={stockName}>
-                        {stockName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="vendorName">Vendor Names </label>
-                  <select
-                    className="form-control"
-                    id="vendorName"
-                    onChange={newhandleVendorChange}
-                  >
-                    <option value="">Select Vendor</option>
-                    {vendorNames.map((vendor) => (
-                      <option key={vendor} value={vendor}>
-                        {vendor}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label htmlFor="price">Rate/Days </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="price"
-                    value={newSelectedStockPriceValue}
-                    readOnly
-                  />
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="quantity">Quantity </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="quantity"
-                    value={newSelectedStockQuantityValue}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label>
-                    Unit:<span style={{ color: "red" }}></span>
-                  </label>
-                  <div style={{ position: "relative" }}>
-                    <input
-                      className="form-control"
-                      value={section.unit || ""}
-                      name="unit"
-                      type="text"
-                      placeholder="Enter value"
-                      style={{ paddingRight: "50px" }}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="updateQuantity">Update Quantity</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="updateQuantity"
-                    value={updateQuantity}
-                    onChange={(e) => setUpdateQuantity(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="form-group row-md-3 mt-3 ">
-                <button
-                  className="manager-btn ms-4"
-                  onClick={handleNewUpdateQuantity}
-                >
-                  Update Quantity
-                </button>
-                <button className="manager-btn ms-4">Add Stocks</button>
-              </div>
+      <div className="container mt-5">
+        <h1 className="mb-4">
+          Quotation Form Of
+          <span className="text-dark"> {enquiry.customer_name}</span>
+        </h1>
 
-
-              
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`days${index}`}>Days:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Total days"
-                      id={`days${index}`}
-                      name="days"
-                      value={sections[index].days}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                 
-
-                  <div className="form-group">
-                    <label htmlFor={`transport${index}`}>Transport:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`transport${index}`}
-                      name="transport"
-                      value={section.transport}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`description${index}`}>Description:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`description${index}`}
-                      name="description"
-                      value={section.description}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`amount${index}`}>Amount:</label>
-                    <input
-                      type="text"
-                      placeholder="Total Amount"
-                      className="form-control"
-                      id={`amount${index}`}
-                      name="amount"
-                      value={sections[index].amount}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-              </div>
+        {sections.map((section, index) => (
+          <div key={index} className="mb-4">
+            <div className="form-row">
+              <div className="entity"></div>
             </div>
-          ))}
 
-          {/* <button className="manager-btn ms-4" onClick={handleAddSection}>
-            Add Item
-          </button> */}
-          {/* <button className="manager-btn ms-4" onClick={handleSave}>
-            View & Save
-          </button> */}
-          <button className="manager-btn ms-4" onClick={handlePrint}>
-            Print
-          </button>
-        </div>
+            <label htmlFor="quantity">Select Stockname </label>
+            <select
+              className="form-control"
+              id="stockName"
+              onChange={newhandleStockChange}
+            >
+              <option value="">Select Stock</option>
+              {stockNames.map((stockName) => (
+                <option key={stockName} value={stockName}>
+                  {stockName}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="vendorName">Vendor Names </label>
+            <select
+              className="form-control"
+              id="vendorName"
+              onChange={newhandleVendorChange}
+            >
+              <option value="">Select Vendor</option>
+              {vendorNames.map((vendor) => (
+                <option key={vendor} value={vendor}>
+                  {vendor}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="price">Rate/Days </label>
+            <input
+              type="text"
+              className="form-control"
+              id="price"
+              value={newSelectedStockPriceValue}
+              readOnly
+            />
+
+            <label htmlFor="quantity">Quantity </label>
+            <input
+              type="text"
+              className="form-control"
+              id="quantity"
+              value={newSelectedStockQuantityValue}
+              readOnly
+            />
+
+            <label>
+              Unit:<span style={{ color: "red" }}></span>
+            </label>
+            <div style={{ position: "relative" }}>
+              <input
+                className="form-control"
+                value={section.unit || ""}
+                name="unit"
+                type="text"
+                placeholder="Enter value"
+                style={{ paddingRight: "50px" }}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+
+            <label htmlFor="updateQuantity">Update Quantity</label>
+            <input
+              type="number"
+              className="form-control"
+              id="updateQuantity"
+              value={updateQuantity}
+              onChange={(e) => setUpdateQuantity(e.target.value)}
+            />
+
+            <div className="form-group row-md-3 mt-3 ">
+              <button
+                className="btn btn-primary "
+                onClick={handleNewUpdateQuantity}
+              >
+                Update Quantity
+              </button>
+              <button className="btn btn-primary ms-3">Add Stocks</button>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor={`days${index}`}>Days:</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Total days"
+                id={`days${index}`}
+                name="days"
+                value={sections[index].days}
+                onChange={(e) => handleChange(e, index)}
+              />
+
+              {/* in second chnages need to remove this input  */}
+              {/* <label htmlFor={`title${index}`}>
+              Title:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`title${index}`}
+              name="title"
+              value={section.title}
+              onChange={(e) => handleChange(e, index)}
+            /> */}
+            </div>
+
+            {/* in second chnages need to remove this input  */}
+            {/* <div className="form-group">
+            <label htmlFor={`particular${index}`}>
+              Particular:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`particular${index}`}
+              name="particular"
+              value={section.particular}
+              onChange={(e) => handleChange(e, index)}
+            />
+          </div> */}
+
+            <div className="form-group">
+              <label htmlFor={`transport${index}`}>Transport:</label>
+              <input
+                type="text"
+                className="form-control"
+                id={`transport${index}`}
+                name="transport"
+                value={section.transport}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`description${index}`}>Description:</label>
+              <input
+                type="text"
+                className="form-control"
+                id={`description${index}`}
+                name="description"
+                value={section.description}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor={`amount${index}`}>Amount:</label>
+              <input
+                type="text"
+                placeholder="Total Amount"
+                className="form-control"
+                id={`amount${index}`}
+                name="amount"
+                value={sections[index].amount}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+          </div>
+        ))}
+
+        <button className="btn btn-primary" onClick={handleAddSection}>
+          Add Item
+        </button>
+        <button className="btn btn-success mx-2" onClick={handleSave}>
+          View & Save
+        </button>
+        <button className="btn btn-success mx-2" onClick={handlePrint}>
+          Print
+        </button>
       </div>
     </>
   );
