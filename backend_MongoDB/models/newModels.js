@@ -421,11 +421,18 @@ const bankTransper = new Schema({
   
 })
 
+const allBanksAccounts = new Schema({
+  Bank_Name : { type : String , required : true},
+  Balance : {type : Number}
+
+})
+
 
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   bankTransper : mongoose.model("BankTransfer", bankTransper),
+  allBanks : mongoose.model("AllBanks" , allBanksAccounts),
   ManagerTask : mongoose.model("ManagerTask", managerTask),
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),
