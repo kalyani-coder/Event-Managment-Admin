@@ -103,6 +103,7 @@ const AdvPaymentSchema = new Schema({
   guest_number: String,
   venue: String,
   event_date: String,
+  Bank_Name :String,
 });
 
 const EventSchema = new Schema({

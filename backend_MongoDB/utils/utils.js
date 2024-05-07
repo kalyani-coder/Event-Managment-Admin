@@ -172,6 +172,7 @@ const FilterBodyByTable = ({ req, table }) => {
         guest_number,
         venue,
         event_date,
+        Bank_Name,
       } = req.body;
       return {
         id,
@@ -195,6 +196,7 @@ const FilterBodyByTable = ({ req, table }) => {
         guest_number,
         venue,
         event_date,
+        Bank_Name,
       };
     } else if (table == "event") {
       const {
