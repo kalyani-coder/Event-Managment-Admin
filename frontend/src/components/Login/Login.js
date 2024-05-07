@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const Login = () => {
         <div className="screen">
           <div className="screen__content">
             <form className="login" onSubmit={handleSubmit}>
-              <h3 className="fw-bold">Login</h3>
+              <h3 className="fw-bold">Admin Login</h3>
               <div className="login__field">
                 <i className="login__icon fas fa-user"></i>
                 <input
@@ -63,6 +63,10 @@ const Login = () => {
                 <i className="button__icon fas fa-chevron-right"></i>
               </button>
             </form>
+            <Link to="/">
+
+          <h1 className="arrow"><span className="fs-5 fw-bold ">←</span>Back</h1>
+            </Link>
           </div>
           <div className="screen__background">
             <span className="screen__background__shape screen__background__shape4"></span>

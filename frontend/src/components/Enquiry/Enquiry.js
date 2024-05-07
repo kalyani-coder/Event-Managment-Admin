@@ -1,159 +1,90 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-bootstrap";
 import Header from "../Sidebar/Header";
 import { Form, Button, Modal } from "react-bootstrap";
-
+import "./Enquiry.css"
 export default function Enquiry() {
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [showAssignManagerModal, setShowAssignManagerModal] = useState(false);
-  const [assignManagerId, setAssignManagerId] = useState("");
-  const [assignManagerName, setAssignManagerName] = useState("");
-  const [managerData, setManagerData] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [address, setAddress] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [guestQuantity, setGuestQuantity] = useState("");
+  const [eventVenue, setEventVenue] = useState("");
+  const [eventRequirement, setEventRequirement] = useState("");
+  const [managers, setManagers] = useState([]);
+  const [selectedManagerId, setSelectedManagerId] = useState("");
+  const [selectedManagerName, setSelectedManagerName] = useState("");
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
-    const yyyy = today.getFullYear();
-    return `${yyyy}-${mm}-${dd}`;
-  };
+  useEffect(() => {
+    fetchEvents();
+    fetchManagers();
+  }, []);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    event_name: "",
-    customer_name: "",
-    email: "",
-    contact: "",
-    address: "",
-    event_date: getCurrentDate(),
-    guest_quantity: "",
-    event_venue: "",
-    event_requirement: "",
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const submitForm = async () => {
+  const fetchEvents = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/enquiry",
-        formData
-      );
-      if (res.status === 200) {
-        // Show success message
-        setSuccessMessage("Enquiry Added successfully!");
-        setShowSuccessAlert(true);
-        // Reset the form after successful submission
-        setFormData({
-          title: "",
-          event_name: "",
-          customer_name: "",
-          email: "",
-          contact: "",
-          address: "",
-          event_date: getCurrentDate(),
-          guest_quantity: "",
-          event_venue: "",
-          event_requirement: "",
-        });
-        setShowAssignManagerModal(true);
-      } else {
-        alert("Something went wrong");
-      }
-    } catch (e) {
-      alert(`Error: ${e}`);
+      const response = await axios.get("http://localhost:5000/api/addeventmaster");
+      setEvents(response.data);
+    } catch (error) {
+      console.error("Error fetching events:", error);
     }
   };
 
-  const handleAssignManager = async () => {
-    // Here you would typically make an API call to assign the manager to the enquiry
-    // For now, just show an alert with the selected manager name
-    alert(`Assigned Manager Successfully`);
-    setShowAssignManagerModal(false);
+  const fetchManagers = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/addmanager");
+      setManagers(response.data);
+    } catch (error) {
+      console.error("Error fetching managers:", error);
+    }
   };
 
-  // Fetch and display recent inquiries
-  const [recentInquiries, setRecentInquiries] = useState([]);
-
-  useEffect(() => {
-    const fetchRecentInquiries = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/api/recent-inquiries"
-        );
-        setRecentInquiries(res.data);
-      } catch (e) {
-        console.error(`Error fetching recent inquiries: ${e}`);
-      }
-    };
-
-    fetchRecentInquiries();
-  }, []);
-
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/addeventmaster"
-        );
-        setEvents(response.data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  const handleEventChange = (e) => {
-    const eventName = e.target.value;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      event_name: eventName,
-    }));
+  const handleAddEnquiry = () => {
+    setShowModal(true);
   };
 
-  useEffect(() => {
-    const fetchManagerData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/addmanager");
-        setManagerData(response.data);
-      } catch (error) {
-        console.error("Error fetching manager data:", error);
-      }
-    };
-
-    fetchManagerData();
-  }, []);
+  const handleSubmit = async () => {
+    if (!customerName || !customerEmail) {
+      alert("Customer name and email are required.");
+      return;
+    }
+  
+    if (!selectedManagerId) {
+      alert("Please select a manager.");
+      return; 
+    }
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/enquiry", {
+        event_name: selectedEvent,
+        customer_name: customerName,
+        email: customerEmail,
+        contact: contact,
+        address: address,
+        event_date: eventDate,
+        guest_quantity: guestQuantity,
+        event_venue: eventVenue,
+        event_requirement: eventRequirement,
+        assign_manager_Id: selectedManagerId,
+        assign_manager_name: selectedManagerName,
+      });
+      alert("Enquiry added & assign to manager successfully");
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error adding enquiry:", error);
+    }
+  };
+  
+  
 
   return (
     <>
       <Header />
-      <div
-        className="w-full h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
-      >
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
-          {showSuccessAlert && (
-            <Alert
-              variant="success"
-              onClose={() => setShowSuccessAlert(false)}
-              dismissible
-            >
-              {successMessage}
-            </Alert>
-          )}
           <div>
             <h2 className="text-[35px] pl-[1em]">Enquiry</h2>
 
@@ -166,12 +97,12 @@ export default function Enquiry() {
                       className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
                       aria-label="Select Event"
                       name="event"
-                      value={formData.event_name} // Set selected value to formData.event_name
-                      onChange={handleEventChange}
+                      value={selectedEvent}
+                      onChange={(e) => setSelectedEvent(e.target.value)}
                     >
-                      <option>Select Event</option>
-                      {events.map((event, index) => (
-                        <option key={index} value={event.eventName}>
+                      <option value="">Select Event</option>
+                      {events.map((event) => (
+                        <option key={event._id} value={event.eventName}>
                           {event.eventName}
                         </option>
                       ))}
@@ -190,8 +121,8 @@ export default function Enquiry() {
                     name="customer_name"
                     id="customer_name"
                     placeholder="Customer Name"
-                    value={formData.customer_name}
-                    onChange={handleInputChange}
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
                     required
                   />
                 </div>
@@ -207,8 +138,8 @@ export default function Enquiry() {
                     name="email"
                     id="email"
                     placeholder="Customer Email"
-                    value={formData.email}
-                    onChange={handleInputChange}
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -224,8 +155,8 @@ export default function Enquiry() {
                     name="contact"
                     id="contact"
                     placeholder="Contact Number"
-                    value={formData.contact}
-                    onChange={handleInputChange}
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
                     required
                     maxLength="10"
                   />
@@ -241,8 +172,8 @@ export default function Enquiry() {
                     name="address"
                     id="address"
                     placeholder="Customer Address"
-                    value={formData.address}
-                    onChange={handleInputChange}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
               </div>
@@ -256,8 +187,8 @@ export default function Enquiry() {
                     name="event_date"
                     id="event_date"
                     placeholder="Event date"
-                    value={formData.event_date}
-                    onChange={handleInputChange}
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
                   />
                 </div>
               </div>
@@ -274,8 +205,8 @@ export default function Enquiry() {
                     name="guest_quantity"
                     id="guest_quantity"
                     placeholder=" Estimated Number of Guests"
-                    value={formData.guest_quantity}
-                    onChange={handleInputChange}
+                    value={guestQuantity}
+                    onChange={(e) => setGuestQuantity(e.target.value)}
                   />
                 </div>
               </div>
@@ -289,8 +220,8 @@ export default function Enquiry() {
                     name="event_venue"
                     id="event_venue"
                     placeholder="Event Venue"
-                    value={formData.event_venue}
-                    onChange={handleInputChange}
+                    value={eventVenue}
+                    onChange={(e) => setEventVenue(e.target.value)}
                   />
                 </div>
               </div>
@@ -306,8 +237,8 @@ export default function Enquiry() {
                     name="event_requirement"
                     id="event_requirement"
                     placeholder="Event management requirement"
-                    value={formData.event_requirement}
-                    onChange={handleInputChange}
+                    value={eventRequirement}
+                    onChange={(e) => setEventRequirement(e.target.value)}
                   />
                 </div>
               </div>
@@ -318,7 +249,7 @@ export default function Enquiry() {
                   <Button
                     variant="info"
                     className="manager-btn ms-1"
-                    onClick={submitForm}
+                    onClick={handleAddEnquiry}
                   >
                     Add Enquiry & Assign to Manager
                   </Button>
@@ -326,46 +257,40 @@ export default function Enquiry() {
               </div>
             </div>
 
-            {/* Display recent inquiries */}
             <div className="mt-5">
-              <ul>
-                {recentInquiries.map((inquiry, index) => (
-                  <li key={index}>
-                    {inquiry.customer_name} - {inquiry.event_name}
-                  </li>
-                ))}
-              </ul>
+              <ul></ul>
             </div>
           </div>
         </div>
       </div>
-       {/* Assign Manager Modal */}
-       <Modal show={showAssignManagerModal} onHide={() => setShowAssignManagerModal(false)}>
-        <Modal.Header closeButton style={{ marginTop: "30px" }}>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
           <Modal.Title>Assign Manager</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group controlId="assignManagerName">
             <Form.Label>Manager Name:</Form.Label>
-            <Form.Control
-              as="select"
-              value={assignManagerName}
-              onChange={(e) => setAssignManagerName(e.target.value)}
+            <Form.Select
+              value={selectedManagerId}
+              onChange={(e) => {
+                setSelectedManagerId(e.target.value);
+                setSelectedManagerName(e.target.options[e.target.selectedIndex].text);
+              }}
             >
               <option value="">Select Manager Name</option>
-              {managerData.map((manager) => (
-                <option key={manager._id} value={`${manager.fname} ${manager.lname}`}>
-                  {`${manager.fname} ${manager.lname}`}
+              {managers.map((manager) => (
+                <option key={manager._id} value={manager._id}>
+                  {manager.fname} {manager.lname}
                 </option>
               ))}
-            </Form.Control>
+            </Form.Select>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAssignManagerModal(false)}>
+          <Button className="btn btn-primary assign-btn" onClick={() => setShowModal(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAssignManager}>
+          <Button className="btn btn-secondary assign-btn" onClick={handleSubmit}>
             Assign
           </Button>
         </Modal.Footer>

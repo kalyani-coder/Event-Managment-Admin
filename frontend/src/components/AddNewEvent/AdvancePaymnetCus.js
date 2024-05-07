@@ -95,6 +95,20 @@ function AdvancePaymnetCus() {
   const formattedDate = `${day}/${month}/${year}`;
 
   const handleSave = () => {
+    const additionalPaymentDetails = {
+      ...(paymentMethod === "cheque" && {
+        cheque_number: chequeNumber,
+        whome_to_submit: submittedTo,
+        utrno_rtgs_id: utrNumber,
+      }),
+      ...(paymentMethod === "cash" && {
+        cash_whome_to_submit: cash,
+      }),
+      ...(paymentMethod === "netbanking" && {
+        transaction_id: transaction,
+      }),
+    };
+  
     const data = {
       client_name: selectedCustomer,
       event_name: selectedCustomerDetails.eventName,
@@ -109,32 +123,33 @@ function AdvancePaymnetCus() {
       payment_date: formattedDate,
       payment_time: currentTime,
       payment_method: paymentMethod,
-      ...(paymentMethod === "cheque" && {
-        cheque_number: chequeNumber,
-        whome_to_submit: submittedTo,
-        utrno_rtgs_id: utrNumber,
-      }),
-      ...(paymentMethod === "cash" && {
-        cash_whome_to_submit: cash,
-      }),
-      ...(paymentMethod === "netbanking" && {
-        transaction_id: transaction,
-      }),
+      customer_name: selectedCustomerDetails.customer_name,
+      contact: selectedCustomerDetails.contact,
+      email: selectedCustomerDetails.email,
+      date: selectedCustomerDetails.date,
+      venue: selectedCustomerDetails.venue,
+      event_name: selectedCustomerDetails.event_name,
+      event_Type: selectedCustomerDetails.event_Type,
+      guest_Number: selectedCustomerDetails.guest_Number,
+      assign_manager_name: "",
+      assign_manager_Id: "",
+      ...additionalPaymentDetails, // Include additional payment details
     };
-
+  
     axios
       .post("http://localhost:5000/api/advpayment", data)
       .then((response) => {
-        console.log("Data saved successfully:", response.data);
-        alert("Advance payment successfull");
-        navigate("/assignmanager");
+        // Display alert box after successfully saving data
+        alert("Customer payment successfully saved.");
+        setShowModal(true);
+        fetchManagers();
       })
       .catch((error) => {
         console.error("Error saving data:", error);
-        // Optionally, handle error or display error message to the user
+        setAlertMessage("Failed to save customer payment.");
+        setAlertVariant("danger");
       });
   };
-
   const fetchManagers = () => {
     axios
       .get("http://localhost:5000/api/addmanager")

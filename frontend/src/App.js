@@ -61,7 +61,7 @@ import Master from "./components/master/Master";
 import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
 import ViewAdvPaymentManager from "./components/AddNewEvent/ViewAdvPaymentManager";
 import InternalTrasferBank from "./components/InternalTransfer/InternalTrasferBank";
-
+import LandingPage from "./components/LandingPage/LandingPage";
 function App() {
   return (
     <>
@@ -70,7 +70,9 @@ function App() {
           {/*      <Header />
            */}
           <Routes>
-            <Route path="/" element={<Login />} />
+
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
             {/* <Route path="/" element={<AddManager />} /> */}
             <Route path="/dashboard" element={<Dashboard />} />
 
