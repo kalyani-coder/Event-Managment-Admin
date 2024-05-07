@@ -112,7 +112,7 @@ function AdvancePaymnetCus() {
         transaction_id: transaction,
       }),
     };
-  
+
     const data = {
       client_name: selectedCustomer,
       event_name: selectedCustomerDetails.eventName,
@@ -140,7 +140,7 @@ function AdvancePaymnetCus() {
       Bank_Name: selectedBank,
       ...additionalPaymentDetails, // Include additional payment details
     };
-  
+
 
     axios
       .post("http://localhost:5000/api/advpayment", data)
@@ -207,8 +207,7 @@ function AdvancePaymnetCus() {
         });
     }
   };
- 
-  
+
   useEffect(() => {
     const fetchBanks = async () => {
       try {
@@ -218,10 +217,10 @@ function AdvancePaymnetCus() {
         console.error("Error fetching banks:", error);
       }
     };
-  
+
     fetchBanks();
   }, []);
-  
+
   const handleBankSelect = (event) => {
     setSelectedBank(event.target.value);
   };
@@ -235,20 +234,20 @@ function AdvancePaymnetCus() {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
-        <div className="flex">
-          <Link to={'/advpaymentcus'}>
-          <button className="btn btn-primary mr-4 mb-4">Customer Payment</button>
-          </Link>
-          <Link to={'/costingform'}>
-          <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
-          </Link>
-          {/* <Link to={'/advpaymentmanager'}>
+          <div className="flex">
+            <Link to={'/advpaymentcus'}>
+              <button className="btn btn-primary mr-4 mb-4">Customer Payment</button>
+            </Link>
+            <Link to={'/costingform'}>
+              <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
+            </Link>
+            {/* <Link to={'/advpaymentmanager'}>
           <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
           </Link>
           <Link to={'/viewadvpaymentmanager'}>
           <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
           </Link> */}
-        </div>
+          </div>
           <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (
             <div>
@@ -417,79 +416,79 @@ function AdvancePaymnetCus() {
             </div>
             <div className="col px-5">
               <div className="mb-3">
-              {paymentMethod === "cheque" && (
-            <>
-              <div className="mb-3">
-                <div className="mb-3">
-                  <label className="form-label">Cheque Number:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={chequeNumber}
-                    onChange={(e) => setChequeNumber(e.target.value)}
-                  />
-                </div>
-              </div>
-            </>
-          )}
+                {paymentMethod === "cheque" && (
+                  <>
+                    <div className="mb-3">
+                      <div className="mb-3">
+                        <label className="form-label">Cheque Number:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={chequeNumber}
+                          onChange={(e) => setChequeNumber(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
-          {paymentMethod === "cash" && (
-            <>
-              <div className="mb-3">
-                <div className="mb-3">
-                  <label className="form-label">
-                    Name to Whom Submitted cheque:
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={cash}
-                    onChange={(e) => setCash(e.target.value)}
-                  />
-                </div>
-              </div>
-             
-            </>
-          )}
+                {paymentMethod === "cash" && (
+                  <>
+                    <div className="mb-3">
+                      <div className="mb-3">
+                        <label className="form-label">
+                          Name to Whom Submitted cheque:
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={cash}
+                          onChange={(e) => setCash(e.target.value)}
+                        />
+                      </div>
+                    </div>
 
-          {paymentMethod === "netbanking" && (
-            <>
-              <div className="mb-3">
-                <div className="mb-3">
-                  <label className="form-label">Transaction Id:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={transaction}
-                    onChange={(e) => setTransaction(e.target.value)}
-                  />
-                </div>
-              </div>
-             
-            
-            
-            </>
-          )}
+                  </>
+                )}
+
+                {paymentMethod === "netbanking" && (
+                  <>
+                    <div className="mb-3">
+                      <div className="mb-3">
+                        <label className="form-label">Transaction Id:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={transaction}
+                          onChange={(e) => setTransaction(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+
+
+                  </>
+                )}
               </div>
             </div>
           </div>
 
-         
+
           <div className="mb-3 px-5">
-  <label className="form-label">Select Bank:</label>
-  <select
-    className="form-control"
-    value={selectedBank}
-    onChange={handleBankSelect}
-  >
-    <option value="">Select Bank</option>
-    {bankNames.map((bank) => (
-      <option key={bank._id} value={bank.Bank_Name}>
-        {bank.Bank_Name}
-      </option>
-    ))}
-  </select>
-</div>
+            <label className="form-label">Select Bank:</label>
+            <select
+              className="form-control"
+              value={selectedBank}
+              onChange={handleBankSelect}
+            >
+              <option value="">Select Bank</option>
+              {bankNames.map((bank) => (
+                <option key={bank._id} value={bank.Bank_Name}>
+                  {bank.Bank_Name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <h5 className="card-title pl-[1.5em]">Transaction Details</h5>
           <div className="row mb-2">
@@ -504,7 +503,7 @@ function AdvancePaymnetCus() {
                 />
               </div>
             </div>
-             <div className="col px-5">
+            <div className="col px-5">
               <div className="mb-3">
                 <label className="form-label">Time of Transaction:</label>
                 <input
@@ -518,7 +517,7 @@ function AdvancePaymnetCus() {
           </div>
 
           <button className="manager-btn ms-4 mb-3" onClick={handleSave}>
-            Save 
+            Save
           </button>
 
           {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
