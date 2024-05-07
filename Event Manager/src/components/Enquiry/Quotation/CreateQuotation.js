@@ -361,20 +361,15 @@ const CreateQuotation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Retrieve user login ID from local storage
-        const userId = localStorage.getItem("userId");
+        // Retrieve manager ID from localStorage
+        const managerId = localStorage.getItem("managerId");
 
-        // Fetch enquiries based on user login ID
-        const response = await fetch(`http://localhost:5000/api/enquiry/user/${userId}`);
+        // Fetch inquiries associated with manager ID
+        const response = await fetch(`http://localhost:5000/api/enquiry/${managerId}`);
         const data = await response.json();
 
-        // Sort inquiries based on event date in descending order
-        const sortedInquiries = data.sort(
-          (a, b) => new Date(b.event_date) - new Date(a.event_date)
-        );
-
-        setInquiries(sortedInquiries);
-        setFilteredInquiries(sortedInquiries);
+        setInquiries(data);
+        setFilteredInquiries(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -587,7 +582,7 @@ const CreateQuotation = () => {
                         className="btn btn-primary"
                         onClick={() => openPopup(enquiry)}
                       >
-                        Make Quotation
+                        View More
                       </button>
                     </td>
                   </tr>
