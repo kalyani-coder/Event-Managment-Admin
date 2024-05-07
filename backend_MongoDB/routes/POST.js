@@ -14,8 +14,27 @@ const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
-const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper } = require('../models/newModels')
+const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper,allBanks } = require('../models/newModels')
 
+
+
+// all Bank accounts post route 
+router.post("/allbanks" , async(req, res) => {
+  const newBank = new allBanks(req.body);
+  try {
+    // Check if a bank with the same name already exists
+    const existingBank = await allBanks.findOne({ Bank_Name: req.body.Bank_Name });
+
+    if (existingBank) {
+      return res.status(400).json({ message: "Bank with this name already exists" });
+    }
+
+    const addTransper = await newBank.save();
+    res.status(201).json({ message: "Bank Added successfully" });
+  } catch(e) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 // bank Transper post route 

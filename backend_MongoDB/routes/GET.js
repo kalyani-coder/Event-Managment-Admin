@@ -6,11 +6,22 @@ const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
 const { QuatationInfo } = require("../models/newModels");
-const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry} = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry,allBanks} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
 
+// All Banks accounts get route 
+router.get("/allbanks" , async(req, res) => {
+  try{
+
+    const banks = await allBanks.find()
+    res.status(201).json(banks)
+    
+  }catch(e){
+    res.status(500).json({message : "Internal Server error"})
+  }
+})
 
 // get api by manager id 
 router.get("/:table/:assign_manager_Id", async (req, res) => {
