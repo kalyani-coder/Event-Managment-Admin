@@ -191,6 +191,7 @@ function AdvancePaymnetCus() {
         transaction_details: transactionData,
       };
 
+    
       axios
         .post("http://localhost:5000/api/order", data)
         .then((response) => {
@@ -207,6 +208,7 @@ function AdvancePaymnetCus() {
     }
   };
  
+  
   useEffect(() => {
     const fetchBanks = async () => {
       try {
@@ -223,6 +225,7 @@ function AdvancePaymnetCus() {
   const handleBankSelect = (event) => {
     setSelectedBank(event.target.value);
   };
+  
 
   return (
     <>
