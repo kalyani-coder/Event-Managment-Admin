@@ -7,8 +7,30 @@ const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster,advancePaymantManager } = require("../models/newModels")
 const { ManagerDetails, ManagerTask } = require("../models/newModels");
-const {QuatationInfo} = require("../models/newModels")
+const {QuatationInfo,allBanks} = require("../models/newModels")
 
+
+
+router.patch("/allbanks/:id", async (req, res) => {
+  try {
+    const advpaymanagerId = req.params.id;
+    const updatedData = req.body;
+
+    const updateEvent = await allBanks.findByIdAndUpdate(
+      advpaymanagerId,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updateEvent) {
+      return res.status(404).json({ message: "Bank not Found" });
+    }
+
+    res.status(200).json(updateEvent);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to update Bank" });
+  }
+});
 
 router.patch("/quatationinfo/:id", async (req, res) => {
   try {

@@ -1,401 +1,10 @@
-// import React, { useState, useEffect } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { format } from "date-fns";
-// import Header from "../Sidebar/Header";
-// import { Button, Modal } from "react-bootstrap";
-// import axios from "axios";
-// import "../Enquiry/Quotation/ViewEnquiry.css";
-
-// const FollowUpStatus = ({ enquiry }) => {
-//   const [inquiries, setInquiries] = useState([]);
-//   const [filteredInquiries, setFilteredInquiries] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState("");
-//   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch("http://localhost:5000/api/enquiry");
-//         const data = await response.json();
-
-//         // Sort inquiries based on event date in descending order
-//         const sortedInquiries = data.sort(
-//           (a, b) => new Date(b.event_date) - new Date(a.event_date)
-//         );
-//         if (sortedInquiries.length > 0) {
-//           // Set the ID of the first Enquiry in the sorted list
-//           setEnquiryId(sortedInquiries[0]._id);
-//         }
-
-//         setInquiries(sortedInquiries);
-//         setFilteredInquiries(sortedInquiries);
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const handleSearch = () => {
-//     const filtered = inquiries.filter((enquiry) => {
-//       const eventName = enquiry.event_name
-//         ? enquiry.event_name.toLowerCase()
-//         : "";
-//       const companyName = enquiry.company_name
-//         ? enquiry.company_name.toLowerCase()
-//         : "";
-//       const customerName = enquiry.customer_name
-//         ? enquiry.customer_name.toLowerCase()
-//         : "";
-
-//       return (
-//         eventName.includes(searchTerm.toLowerCase()) ||
-//         companyName.includes(searchTerm.toLowerCase()) ||
-//         customerName.includes(searchTerm.toLowerCase())
-//       );
-//     });
-
-//     setFilteredInquiries(filtered);
-//   };
-
-//   const handleDateRangeFilter = () => {
-//     const filtered = inquiries.filter((enquiry) => {
-//       const eventDate = new Date(enquiry.event_date);
-//       const startDate = dateRange.startDate
-//         ? new Date(dateRange.startDate)
-//         : null;
-//       const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
-
-//       return (
-//         (!startDate || eventDate >= startDate) &&
-//         (!endDate || eventDate <= endDate)
-//       );
-//     });
-
-//     setFilteredInquiries(filtered);
-//   };
-
-//   const clearFilters = () => {
-//     setFilteredInquiries(inquiries);
-//     setSearchTerm("");
-//     setDateRange({ startDate: "", endDate: "" });
-//   };
-
-//   const [showModal, setShowModal] = useState(false);
-//   const [selectedStatus, setSelectedStatus] = useState("");
-
-//   const handleShowModal = (enquiryId) => {
-//     setEnquiryId(enquiryId);
-//     setShowModal(true);
-//   };
-
-//   const handleCloseModal = () => setShowModal(false);
-
-//   const handleStatusChange = (event) => setSelectedStatus(event.target.value);
-
-//   const handleStatusUpdate = () => {
-//     console.log("Selected Status:", selectedStatus);
-//     handleCloseModal();
-//   };
-
-//   const [enquiryId, setEnquiryId] = useState("");
-
-//   const [hotInputValue, setHotInputValue] = useState("");
-//   const handleHotInputChange = (event) => {
-//     setHotInputValue(event.target.value);
-//   };
-
-//   const handleUpdateStatus = async () => {
-//     try {
-//       if (!enquiryId) {
-//         console.error("No Enquiry ID available");
-//         return;
-//       }
-
-//       let requestBody = { status: selectedStatus };
-
-//       // If 'Hot' is selected, include hotInputValue in the request body
-//       if (selectedStatus === "Hot") {
-//         requestBody.hot_input_value = hotInputValue;
-//       }
-
-//       const response = await axios.patch(
-//         `http://localhost:5000/api/enquiry/${enquiryId}`,
-//         requestBody
-//       );
-
-//       console.log("Status updated successfully:", response.data);
-
-//       // Set success message and show alert
-//       alert("Status updated successfully!");
-//       setShowModal(false); // Hide the popup/modal
-//     } catch (error) {
-//       console.error("Error updating status:", error);
-//     }
-//   };
-
-//   const getStatusColor = (status) => {
-//     switch (status) {
-//       case "Ongoing":
-//         return "text-yellow";
-//       case "Hot":
-//         return "text-red";
-//       case "Conform":
-//         return "text-green";
-//       default:
-//         return ""; // default color
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Header />
-//       <div
-//         className="w-full  h-screen
-//         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
-//       >
-//         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-//           {" "}
-//           <h2 className="text-[35px]">Follow Up Status</h2>
-//           <div className="d-flex flex-wrap align-items-center">
-//             <div className="w-full relative">
-//               <input
-//                 type="text"
-//                 placeholder="Search by Event, Company, or Customer Name"
-//                 value={searchTerm}
-//                 onChange={(e) => setSearchTerm(e.target.value)}
-//                 style={{
-//                   width: "100%",
-//                   padding: "8px",
-//                   borderRadius: "5px",
-//                   border: "1px solid #ccc",
-//                 }}
-//               />
-//               <button
-//                 onClick={handleSearch}
-//                 style={{
-//                   position: "absolute",
-//                   top: 0,
-//                   right: 0,
-//                   padding: "8px 16px",
-//                   borderRadius: "0 5px 5px 0",
-//                   border: "1px solid #ccc",
-//                   backgroundColor: "#f0f0f0",
-//                   cursor: "pointer",
-//                 }}
-//               >
-//                 Search
-//               </button>
-//             </div>
-
-//             <div className=" flex items-center justify-between w-full p-2 flex-wrap gap-2">
-//               <div className="grid md:flex items-center">
-//                 <label className="mr-1">Start Date:</label>
-//                 <input
-//                   type="date"
-//                   value={dateRange.startDate}
-//                   onChange={(e) =>
-//                     setDateRange({ ...dateRange, startDate: e.target.value })
-//                   }
-//                   style={{
-//                     padding: "10px",
-//                     marginRight: "10px",
-//                     borderRadius: "5px",
-//                     border: "1px solid #ddd",
-//                     fontSize: "16px",
-//                   }}
-//                 />
-//               </div>
-//               <div className="grid md:flex items-center">
-//                 <label className="mr-1">End Date:</label>
-//                 <input
-//                   type="date"
-//                   value={dateRange.endDate}
-//                   onChange={(e) =>
-//                     setDateRange({ ...dateRange, endDate: e.target.value })
-//                   }
-//                   style={{
-//                     padding: "10px",
-//                     marginRight: "10px",
-//                     borderRadius: "5px",
-//                     border: "1px solid #ddd",
-//                     fontSize: "16px",
-//                   }}
-//                 />
-//               </div>
-//               <div>
-//                 <button
-//                   onClick={handleDateRangeFilter}
-//                   style={{
-//                     padding: "10px",
-//                     borderRadius: "5px",
-//                     border: "1px solid #28A745",
-//                     backgroundColor: "#28A745",
-//                     color: "#fff",
-//                     cursor: "pointer",
-//                     fontSize: "16px",
-//                     marginLeft: "10px",
-//                   }}
-//                 >
-//                   Apply
-//                 </button>
-//                 <button
-//                   onClick={clearFilters}
-//                   style={{
-//                     padding: "10px",
-//                     borderRadius: "5px",
-//                     border: "1px solid #DC3545",
-//                     backgroundColor: "#DC3545",
-//                     color: "#fff",
-//                     cursor: "pointer",
-//                     fontSize: "16px",
-//                     marginLeft: "10px", // Add left margin for spacing between buttons
-//                   }}
-//                 >
-//                   Clear
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
-//             <table className="table">
-//               <thead className="sticky top-0 bg-white">
-//                 <tr>
-//                   <th scope="col">Event Name</th>
-//                   <th scope="col">Event Date</th>
-//                   <th scope="col"> Name</th>
-//                   <th scope="col"> Number</th>
-//                   <th scope="col">Status</th>
-//                   <th scope="col">Actions</th>
-//                 </tr>
-//               </thead>
-//               <tbody style={{ background: "white", borderRadius: "10px" }}>
-//                 {filteredInquiries.map((enquiry) => (
-//                   <tr key={enquiry._id}>
-//                     <td>{enquiry.event_name || ""}</td>
-//                     <td>
-//                       {enquiry.event_date
-//                         ? format(new Date(enquiry.event_date), "dd/MM/yyyy")
-//                         : ""}
-//                     </td>
-//                     <td>{enquiry.customer_name}</td>
-//                     <td>{enquiry.contact}</td>
-//                     <td className={`fw-bold ${getStatusColor(enquiry.status)}`}>
-//                       {enquiry.status}
-//                     </td>
-//                     <td>
-//                       <button
-//                         className="btn btn-primary"
-//                         onClick={() => handleShowModal(enquiry._id)}
-//                       >
-//                         Update Status
-//                       </button>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//           <div className="">
-//             <Modal
-//               show={showModal}
-//               onHide={handleCloseModal}
-//               dialogClassName="modal-dialog-centered modal-dialog-responsive  "
-//             >
-//               <Modal.Header closeButton>
-//                 <Modal.Title>Update Status</Modal.Title>
-//               </Modal.Header>
-//               <Modal.Body>
-//                 <div className="form-check">
-//                   <input
-//                     className="form-check-input"
-//                     type="radio"
-//                     name="statusOptions"
-//                     id="statusOngoing"
-//                     value="Ongoing"
-//                     checked={selectedStatus === "Ongoing"}
-//                     onChange={handleStatusChange}
-//                   />
-//                   <label className="form-check-label" htmlFor="statusOngoing">
-//                     Ongoing
-//                   </label>
-//                 </div>
-//                 <div className="form-check">
-//                   <input
-//                     className="form-check-input"
-//                     type="radio"
-//                     name="statusOptions"
-//                     id="statusHot"
-//                     value="Hot"
-//                     checked={selectedStatus === "Hot"}
-//                     onChange={handleStatusChange}
-//                   />
-//                   <label className="form-check-label" htmlFor="statusHot">
-//                     Hot
-//                   </label>
-//                   {selectedStatus === "Hot" && (
-//                     <input
-//                       type="text"
-//                       value={hotInputValue}
-//                       onChange={handleHotInputChange}
-//                       placeholder="Enter here..."
-//                       style={{
-//                         padding: "8px",
-//                         marginTop: "8px",
-//                         border: "1px solid #ccc",
-//                         borderRadius: "4px",
-//                         width: "100%",
-//                         boxSizing: "border-box",
-//                       }}
-//                     />
-//                   )}
-//                 </div>
-//                 <div className="form-check">
-//                   <input
-//                     className="form-check-input"
-//                     type="radio"
-//                     name="statusOptions"
-//                     id="statusConform"
-//                     value="Conform"
-//                     checked={selectedStatus === "Conform"}
-//                     onChange={handleStatusChange}
-//                   />
-//                   <label className="form-check-label" htmlFor="statusConform">
-//                     Conform
-//                   </label>
-//                 </div>
-//               </Modal.Body>
-//               <Modal.Footer>
-//                 <Button variant="secondary" onClick={handleCloseModal}>
-//                   Close
-//                 </Button>
-//                 <button
-//                   className="btn btn-primary ml-2"
-//                   onClick={handleUpdateStatus}
-//                 >
-//                   Save
-//                 </button>
-//               </Modal.Footer>
-//             </Modal>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default FollowUpStatus;
-
-
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import Header from "../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
-import "../Enquiry/Quotation/ViewEnquiry.css";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import "./FollowUpStatus.css";
 
 const FollowUpStatus = () => {
   const [inquiries, setInquiries] = useState([]);
@@ -406,27 +15,30 @@ const FollowUpStatus = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [enquiryId, setEnquiryId] = useState("");
   const [hotInputValue, setHotInputValue] = useState("");
+  const [checkBoxValues, setCheckBoxValues] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Retrieve user ID from local storage
-        const userId = localStorage.getItem("userId");
-        if (!userId) {
-          console.error("User ID not found in local storage");
+        const managerId = localStorage.getItem("managerId");
+        if (!managerId) {
+          console.error("Manager ID not found");
           return;
         }
 
-        // Fetch inquiries based on user ID
-        const response = await axios.get(`http://localhost:5000/api/enquiry/user/${userId}`);
+        const response = await axios.get(`http://localhost:5000/api/enquiry/${managerId}`);
         const data = response.data;
 
-        // Sort inquiries based on event date in descending order
         const sortedInquiries = data.sort(
           (a, b) => new Date(b.event_date) - new Date(a.event_date)
         );
         if (sortedInquiries.length > 0) {
-          // Set the ID of the first Enquiry in the sorted list
           setEnquiryId(sortedInquiries[0]._id);
         }
 
@@ -440,17 +52,34 @@ const FollowUpStatus = () => {
     fetchData();
   }, []);
 
-  const handleSearch = () => {
-    const filtered = inquiries.filter((enquiry) => {
-      const eventName = enquiry.event_name
-        ? enquiry.event_name.toLowerCase()
-        : "";
-      const companyName = enquiry.company_name
-        ? enquiry.company_name.toLowerCase()
-        : "";
-      const customerName = enquiry.customer_name
-        ? enquiry.customer_name.toLowerCase()
-        : "";
+  const handleCheckBoxChange = (event) => {
+    const { id, checked } = event.target;
+    setCheckBoxValues((prevCheckBoxValues) => ({
+      ...prevCheckBoxValues,
+      [id]: checked
+    }));
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+    filterData();
+  };
+
+  const handleStartDateChange = (event) => {
+    setDateRange({ ...dateRange, startDate: event.target.value });
+    filterData();
+  };
+
+  const handleEndDateChange = (event) => {
+    setDateRange({ ...dateRange, endDate: event.target.value });
+    filterData();
+  };
+
+  const filterData = () => {
+    let filtered = inquiries.filter((enquiry) => {
+      const eventName = enquiry.event_name ? enquiry.event_name.toLowerCase() : "";
+      const companyName = enquiry.company_name ? enquiry.company_name.toLowerCase() : "";
+      const customerName = enquiry.customer_name ? enquiry.customer_name.toLowerCase() : "";
 
       return (
         eventName.includes(searchTerm.toLowerCase()) ||
@@ -459,30 +88,17 @@ const FollowUpStatus = () => {
       );
     });
 
-    setFilteredInquiries(filtered);
-  };
+    if (dateRange.startDate && dateRange.endDate) {
+      filtered = filtered.filter((enquiry) => {
+        const eventDate = new Date(enquiry.event_date);
+        const startDate = new Date(dateRange.startDate);
+        const endDate = new Date(dateRange.endDate);
 
-  const handleDateRangeFilter = () => {
-    const filtered = inquiries.filter((enquiry) => {
-      const eventDate = new Date(enquiry.event_date);
-      const startDate = dateRange.startDate
-        ? new Date(dateRange.startDate)
-        : null;
-      const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
-
-      return (
-        (!startDate || eventDate >= startDate) &&
-        (!endDate || eventDate <= endDate)
-      );
-    });
+        return eventDate >= startDate && eventDate <= endDate;
+      });
+    }
 
     setFilteredInquiries(filtered);
-  };
-
-  const clearFilters = () => {
-    setFilteredInquiries(inquiries);
-    setSearchTerm("");
-    setDateRange({ startDate: "", endDate: "" });
   };
 
   const handleShowModal = (enquiryId) => {
@@ -504,24 +120,29 @@ const FollowUpStatus = () => {
         console.error("No Enquiry ID available");
         return;
       }
-
+  
       let requestBody = { status: selectedStatus };
-
-      // If 'Hot' is selected, include hotInputValue in the request body
+  
       if (selectedStatus === "Hot") {
         requestBody.hot_input_value = hotInputValue;
+        requestBody.checkbox_values = checkBoxValues;
       }
-
+  
       const response = await axios.patch(
         `http://localhost:5000/api/enquiry/${enquiryId}`,
         requestBody
       );
-
+  
       console.log("Status updated successfully:", response.data);
-
-      // Set success message and show alert
+  
       alert("Status updated successfully!");
-      setShowModal(false); // Hide the popup/modal
+  
+      if (selectedStatus === "Confirm") {
+        // Navigate only if the selected status is "Confirm"
+        navigate('/advpaymentcus');
+      }
+  
+      setShowModal(false);
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -533,7 +154,7 @@ const FollowUpStatus = () => {
         return "text-yellow";
       case "Hot":
         return "text-red";
-      case "Conform":
+      case "Confirm":
         return "text-green";
       default:
         return ""; // default color
@@ -545,12 +166,10 @@ const FollowUpStatus = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+       
         <div className="flex">
           <Link to={'/quotation'}>
           <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
-          </Link>
-          <Link to={'/createquotation'}>
-          <button className="btn btn-primary mr-4 mb-4">Proposal</button>
           </Link>
           <Link to={'/followupstatus'}>
           <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
@@ -559,107 +178,12 @@ const FollowUpStatus = () => {
           <button className="btn btn-primary mr-4 mb-4">Add Event</button>
           </Link>
         </div>
+        <div className="filter-container">
+          <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
+          <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+          <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+        </div>
           <h2 className="text-[30px]">Follow Up Status</h2>
-          {/* <div className="d-flex flex-wrap align-items-center">
-            <div className="w-full relative">
-              <input
-                type="text"
-                placeholder="Search by Event, Company, or Customer Name"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  borderRadius: "5px",
-                  border: "1px solid #ccc",
-                }}
-              />
-              <button
-                onClick={handleSearch}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  padding: "8px 16px",
-                  borderRadius: "0 5px 5px 0",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f0f0f0",
-                  cursor: "pointer",
-                }}
-              >
-                Search
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
-              <div className="grid md:flex items-center">
-                <label className="mr-1">Start Date:</label>
-                <input
-                  type="date"
-                  value={dateRange.startDate}
-                  onChange={(e) =>
-                    setDateRange({ ...dateRange, startDate: e.target.value })
-                  }
-                  style={{
-                    padding: "10px",
-                    marginRight: "10px",
-                    borderRadius: "5px",
-                    border: "1px solid #ddd",
-                    fontSize: "16px",
-                  }}
-                />
-              </div>
-              <div className="grid md:flex items-center">
-                <label className="mr-1">End Date:</label>
-                <input
-                  type="date"
-                  value={dateRange.endDate}
-                  onChange={(e) =>
-                    setDateRange({ ...dateRange, endDate: e.target.value })
-                  }
-                  style={{
-                    padding: "10px",
-                    marginRight: "10px",
-                    borderRadius: "5px",
-                    border: "1px solid #ddd",
-                    fontSize: "16px",
-                  }}
-                />
-              </div>
-              <div>
-                <button
-                  onClick={handleDateRangeFilter}
-                  style={{
-                    padding: "10px",
-                    borderRadius: "5px",
-                    border: "1px solid #28A745",
-                    backgroundColor: "#28A745",
-                    color: "#fff",
-                    cursor: "pointer",
-                    fontSize: "16px",
-                    marginLeft: "10px",
-                  }}
-                >
-                  Apply
-                </button>
-                <button
-                  onClick={clearFilters}
-                  style={{
-                    padding: "10px",
-                    borderRadius: "5px",
-                    border: "1px solid #DC3545",
-                    backgroundColor: "#DC3545",
-                    color: "#fff",
-                    cursor: "pointer",
-                    fontSize: "16px",
-                    marginLeft: "10px", // Add left margin for spacing between buttons
-                  }}
-                >
-                  Clear
-                </button>
-              </div>
-            </div>
-          </div> */}
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
               <thead className="sticky top-0 bg-white">
@@ -670,6 +194,7 @@ const FollowUpStatus = () => {
                   <th scope="col"> Number</th>
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
+                  
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -734,23 +259,73 @@ const FollowUpStatus = () => {
                     onChange={handleStatusChange}
                   />
                   <label className="form-check-label" htmlFor="statusHot">
-                    Hot
+                    Work Not Received
                   </label>
                   {selectedStatus === "Hot" && (
-                    <input
-                      type="text"
-                      value={hotInputValue}
-                      onChange={handleHotInputChange}
-                      placeholder="Enter here..."
-                      style={{
-                        padding: "8px",
-                        marginTop: "8px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                        width: "100%",
-                        boxSizing: "border-box",
-                      }}
-                    />
+                    <>
+                      <div className="form-check mt-2">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="checkbox1"
+                          checked={checkBoxValues.checkbox1}
+                          onChange={handleCheckBoxChange}
+                        />
+                        <label className="form-check-label" htmlFor="checkbox1">
+                          No Follow-Up
+                        </label>
+                      </div>
+
+                      <div className="form-check mt-2">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="checkbox2"
+                          checked={checkBoxValues.checkbox2}
+                          onChange={handleCheckBoxChange}
+                        />
+                        <label className="form-check-label" htmlFor="checkbox2">
+                          High Budget
+                        </label>
+                      </div>
+
+                      <div className="form-check mt-2">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="checkbox3"
+                          checked={checkBoxValues.checkbox3}
+                          onChange={handleCheckBoxChange}
+                        />
+                        <label className="form-check-label" htmlFor="checkbox3">
+                          Checkbox 3
+                        </label>
+                      </div>
+
+                      <div className="form-check mt-2">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="checkbox4"
+                          checked={checkBoxValues.checkbox4}
+                          onChange={handleCheckBoxChange}
+                        />
+                        <label className="form-check-label" htmlFor="checkbox4">
+                          Checkbox 4
+                        </label>
+                      </div>
+                      <div className="form-group mt-2">
+                        <label htmlFor="hotInput">Other:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="hotInput"
+                          placeholder="Enter other hot option"
+                          value={hotInputValue}
+                          onChange={handleHotInputChange}
+                        />
+                      </div>
+                    </>
                   )}
                 </div>
                 <div className="form-check">
@@ -758,13 +333,13 @@ const FollowUpStatus = () => {
                     className="form-check-input"
                     type="radio"
                     name="statusOptions"
-                    id="statusConform"
-                    value="Conform"
-                    checked={selectedStatus === "Conform"}
+                    id="statusConfirm"
+                    value="Confirm"
+                    checked={selectedStatus === "Confirm"}
                     onChange={handleStatusChange}
                   />
-                  <label className="form-check-label" htmlFor="statusConform">
-                    Conform
+                  <label className="form-check-label" htmlFor="statusConfirm">
+                    Confirm
                   </label>
                 </div>
               </Modal.Body>
@@ -788,5 +363,3 @@ const FollowUpStatus = () => {
 };
 
 export default FollowUpStatus;
-
-

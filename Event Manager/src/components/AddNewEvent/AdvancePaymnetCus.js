@@ -202,12 +202,12 @@ function AdvancePaymnetCus() {
           <Link to={'/costingform'}>
           <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
           </Link>
-          <Link to={'/advpaymentmanager'}>
+          {/* <Link to={'/advpaymentmanager'}>
           <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
           </Link>
           <Link to={'/viewadvpaymentmanager'}>
           <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
-          </Link>
+          </Link> */}
         </div>
           <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (

@@ -98,9 +98,9 @@ const AddNewEvent = () => {
           <Link to={'/quotation'}>
           <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
           </Link>
-          <Link to={'/createquotation'}>
+          {/* <Link to={'/createquotation'}>
           <button className="btn btn-primary mr-4 mb-4">Proposal</button>
-          </Link>
+          </Link> */}
           <Link to={'/followupstatus'}>
           <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
           </Link>
