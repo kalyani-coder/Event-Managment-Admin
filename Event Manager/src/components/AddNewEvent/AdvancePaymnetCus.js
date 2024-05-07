@@ -16,6 +16,9 @@ function AdvancePaymnetCus() {
   const [selectedCustomerDetails, setSelectedCustomerDetails] = useState({});
   const [alertMessage, setAlertMessage] = useState("");
   const [alertVariant, setAlertVariant] = useState("");
+  const [bankNames, setBankNames] = useState([]);
+  const [selectedBank, setSelectedBank] = useState("");
+
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -96,6 +99,20 @@ function AdvancePaymnetCus() {
   const formattedDate = `${day}/${month}/${year}`;
 
   const handleSave = () => {
+    const additionalPaymentDetails = {
+      ...(paymentMethod === "cheque" && {
+        cheque_number: chequeNumber,
+        whome_to_submit: submittedTo,
+        utrno_rtgs_id: utrNumber,
+      }),
+      ...(paymentMethod === "cash" && {
+        cash_whome_to_submit: cash,
+      }),
+      ...(paymentMethod === "netbanking" && {
+        transaction_id: transaction,
+      }),
+    };
+  
     const data = {
       client_name: selectedCustomer,
       event_name: selectedCustomerDetails.eventName,
@@ -120,7 +137,10 @@ function AdvancePaymnetCus() {
       guest_Number: selectedCustomerDetails.guest_Number,
       assign_manager_name: "",
       assign_manager_Id: "",
+      Bank_Name: selectedBank,
+      ...additionalPaymentDetails, // Include additional payment details
     };
+  
 
     axios
       .post("http://localhost:5000/api/advpayment", data)
@@ -185,6 +205,23 @@ function AdvancePaymnetCus() {
           setAlertVariant("danger");
         });
     }
+  };
+ 
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/allbanks");
+        setBankNames(response.data);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    };
+  
+    fetchBanks();
+  }, []);
+  
+  const handleBankSelect = (event) => {
+    setSelectedBank(event.target.value);
   };
 
   return (
@@ -375,9 +412,9 @@ function AdvancePaymnetCus() {
                 </select>
               </div>
             </div>
-          </div>
-
-          {paymentMethod === "cheque" && (
+            <div className="col px-5">
+              <div className="mb-3">
+              {paymentMethod === "cheque" && (
             <>
               <div className="mb-3">
                 <div className="mb-3">
@@ -389,26 +426,6 @@ function AdvancePaymnetCus() {
                     onChange={(e) => setChequeNumber(e.target.value)}
                   />
                 </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Name to Whom Submitted cheque:
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={submittedTo}
-                    onChange={(e) => setSubmittedTo(e.target.value)}
-                  />
-                </div>
-
-                <label className="form-label">UTR Number / RTGS ID:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={utrNumber}
-                  onChange={(e) => setUtrNumber(e.target.value)}
-                />
               </div>
             </>
           )}
@@ -428,6 +445,7 @@ function AdvancePaymnetCus() {
                   />
                 </div>
               </div>
+             
             </>
           )}
 
@@ -444,8 +462,31 @@ function AdvancePaymnetCus() {
                   />
                 </div>
               </div>
+             
+            
+            
             </>
           )}
+              </div>
+            </div>
+          </div>
+
+         
+          <div className="mb-3 px-5">
+  <label className="form-label">Select Bank:</label>
+  <select
+    className="form-control"
+    value={selectedBank}
+    onChange={handleBankSelect}
+  >
+    <option value="">Select Bank</option>
+    {bankNames.map((bank) => (
+      <option key={bank._id} value={bank.Bank_Name}>
+        {bank.Bank_Name}
+      </option>
+    ))}
+  </select>
+</div>
 
           <h5 className="card-title pl-[1.5em]">Transaction Details</h5>
           <div className="row mb-2">
@@ -460,7 +501,7 @@ function AdvancePaymnetCus() {
                 />
               </div>
             </div>
-            <div className="col px-5">
+             <div className="col px-5">
               <div className="mb-3">
                 <label className="form-label">Time of Transaction:</label>
                 <input
@@ -474,10 +515,10 @@ function AdvancePaymnetCus() {
           </div>
 
           <button className="manager-btn ms-4 mb-3" onClick={handleSave}>
-            Save & Assign To Manager
+            Save 
           </button>
 
-          <Modal show={showModal} onHide={() => setShowModal(false)}>
+          {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
             <Modal.Header closeButton style={{ marginTop: "30px" }}>
               <Modal.Title>Assign to Manager</Modal.Title>
             </Modal.Header>
@@ -505,7 +546,7 @@ function AdvancePaymnetCus() {
                 Assign
               </Button>
             </Modal.Footer>
-          </Modal>
+          </Modal> */}
         </div>
       </div>
     </>

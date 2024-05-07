@@ -7,16 +7,20 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const Master = () => {
   const [vendorName, setVendorName] = useState("");
   const [eventName, setEventName] = useState("");
+  const [bankName, setBankName] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertVariant, setAlertVariant] = useState("");
   const [showVendorModal, setShowVendorModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showBankModal, setShowBankModal] = useState(false);
   const [vendors, setVendors] = useState([]);
   const [events, setEvents] = useState([]);
+  const [banks, setBanks] = useState([]);
 
   useEffect(() => {
     fetchVendors();
     fetchEvents();
+    fetchBanks();
   }, []);
 
   const fetchVendors = async () => {
@@ -36,6 +40,16 @@ const Master = () => {
       setEvents(data);
     } catch (error) {
       console.error("Error fetching events:", error);
+    }
+  };
+
+  const fetchBanks = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/allbanks");
+      const data = await response.json();
+      setBanks(data);
+    } catch (error) {
+      console.error("Error fetching banks:", error);
     }
   };
 
@@ -171,14 +185,76 @@ const Master = () => {
     setShowEventModal(false);
   };
 
+  const handleBankSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/api/allbanks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Bank_Name: bankName }),
+      });
+
+      if (response.ok) {
+        setAlertMessage("Bank added successfully.");
+        setAlertVariant("success");
+        setBankName("");
+        fetchBanks();
+      } else {
+        setAlertMessage("Failed to add bank.");
+        setAlertVariant("danger");
+      }
+    } catch (error) {
+      console.error("Error adding bank:", error);
+      setAlertMessage("Failed to add bank. Please try again later.");
+      setAlertVariant("danger");
+    }
+  };
+
+  const handleViewBanks = () => {
+    setShowBankModal(true);
+  };
+
+  const handleDeleteBank = async (bankId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this bank?"
+    );
+    if (confirmDelete) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/allbanks/${bankId}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (response.ok) {
+          setAlertMessage("Bank deleted successfully.");
+          setAlertVariant("success");
+          fetchBanks();
+        } else {
+          setAlertMessage("Failed to delete bank.");
+          setAlertVariant("danger");
+        }
+      } catch (error) {
+        console.error("Error deleting bank:", error);
+        setAlertMessage("Failed to delete bank. Please try again later.");
+        setAlertVariant("danger");
+      }
+    }
+  };
+
+  const handleCloseBankModal = () => {
+    setShowBankModal(false);
+  };
+
   return (
     <>
       <Header />
-      <div
-        className="w-full h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
-      >
-        <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[30%] ">
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[30%]">
           <h2 className="text-[35px] pl-[1em]">Master</h2>
           {alertMessage && (
             <div>
@@ -187,36 +263,38 @@ const Master = () => {
           )}
           <div className="row mb-2">
             <div className="col px-5">
-              <Form.Group controlId="addvendor">
-                <div className="relative">
-                  <label htmlFor="date">Add Vendors:</label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Add Vendor"
-                    value={vendorName}
-                    onChange={(e) => setVendorName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className=" mt-3 grid gap-2 md:flex">
-                  <Button
-                    className="manager-btn ms-1"
-                    type="submit"
-                    variant="info"
-                    onClick={handleVendorSubmit}
-                  >
-                    Add Vendor
-                  </Button>
-                  <Button
-                    className="manager-btn ms-1"
-                    type="button"
-                    variant="info"
-                    onClick={handleViewVendors}
-                  >
-                    View Vendors
-                  </Button>
-                </div>
-              </Form.Group>
+              <Form>
+                <Form.Group controlId="addvendor">
+                  <div className="relative">
+                    <label htmlFor="date">Add Vendors:</label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Add Vendor"
+                      value={vendorName}
+                      onChange={(e) => setVendorName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className=" mt-3 grid gap-2 md:flex">
+                    <Button
+                      className="manager-btn ms-1"
+                      type="submit"
+                      variant="info"
+                      onClick={handleVendorSubmit}
+                    >
+                      Add Vendor
+                    </Button>
+                    <Button
+                      className="manager-btn ms-1"
+                      type="button"
+                      variant="info"
+                      onClick={handleViewVendors}
+                    >
+                      View Vendors
+                    </Button>
+                  </div>
+                </Form.Group>
+              </Form>
             </div>
           </div>
           <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
@@ -303,6 +381,69 @@ const Master = () => {
                       className="ml-2"
                       style={{ cursor: "pointer" }}
                       onClick={() => handleDeleteEvent(event._id)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Modal.Body>
+          </Modal>
+
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form>
+                <Form.Group controlId="bank">
+                  <div className="relative">
+                    <label htmlFor="date">Add Banks Name:</label>
+                    <Form.Control
+                      placeholder="Add Bank Name Here..."
+                      value={bankName}
+                      onChange={(e) => setBankName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className=" mt-3 grid gap-2 md:flex">
+                    <Button
+                      className="manager-btn ms-1"
+                      type="submit"
+                      variant="info"
+                      onClick={handleBankSubmit}
+                    >
+                      Add Bank
+                    </Button>
+                    <Button
+                      className="manager-btn ms-1"
+                      type="button"
+                      variant="info"
+                      onClick={handleViewBanks}
+                    >
+                      View Banks
+                    </Button>
+                  </div>
+                </Form.Group>
+              </Form>
+            </div>
+          </div>
+          <Modal show={showBankModal} onHide={handleCloseBankModal}>
+            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+              <Modal.Title>Bank List</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <div>Bank Name</div>
+                <div>Action</div>
+              </div>
+              {banks.map((bank) => (
+                <div
+                  key={bank._id}
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div style={{ lineHeight: "45px" }}>{bank.Bank_Name}</div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="ml-2"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDeleteBank(bank._id)}
                     />
                   </div>
                 </div>

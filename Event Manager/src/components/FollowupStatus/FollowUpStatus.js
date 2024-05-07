@@ -54,10 +54,17 @@ const FollowUpStatus = () => {
 
   const handleCheckBoxChange = (event) => {
     const { id, checked } = event.target;
-    setCheckBoxValues((prevCheckBoxValues) => ({
-      ...prevCheckBoxValues,
-      [id]: checked
-    }));
+    setCheckBoxValues((prevCheckBoxValues) => {
+      const updatedCheckBoxValues = { ...prevCheckBoxValues };
+      // Uncheck all checkboxes except the one that is currently checked
+      for (const checkbox in updatedCheckBoxValues) {
+        if (checkbox !== id) {
+          updatedCheckBoxValues[checkbox] = false;
+        }
+      }
+      updatedCheckBoxValues[id] = checked;
+      return updatedCheckBoxValues;
+    });
   };
 
   const handleSearchInputChange = (event) => {
@@ -120,28 +127,38 @@ const FollowUpStatus = () => {
         console.error("No Enquiry ID available");
         return;
       }
-  
+
       let requestBody = { status: selectedStatus };
-  
-      if (selectedStatus === "Hot") {
-        requestBody.hot_input_value = hotInputValue;
-        requestBody.checkbox_values = checkBoxValues;
+
+      if (selectedStatus === "Work Not Received") {
+        // Check if hotInputValue is filled, if not, check checkbox values
+        if (hotInputValue.trim() !== "") {
+          requestBody.hot_input_value = hotInputValue;
+        } else {
+          // If hotInputValue is not filled, check which checkbox is checked
+          for (const checkbox in checkBoxValues) {
+            if (checkBoxValues[checkbox]) {
+              requestBody.hot_input_value = checkbox;
+              break; // Exit loop if a checkbox is found checked
+            }
+          }
+        }
       }
-  
+
       const response = await axios.patch(
         `http://localhost:5000/api/enquiry/${enquiryId}`,
         requestBody
       );
-  
+
       console.log("Status updated successfully:", response.data);
-  
+
       alert("Status updated successfully!");
-  
+
       if (selectedStatus === "Confirm") {
         // Navigate only if the selected status is "Confirm"
         navigate('/advpaymentcus');
       }
-  
+
       setShowModal(false);
     } catch (error) {
       console.error("Error updating status:", error);
@@ -152,7 +169,7 @@ const FollowUpStatus = () => {
     switch (status) {
       case "Ongoing":
         return "text-yellow";
-      case "Hot":
+      case "Work Not Received":
         return "text-red";
       case "Confirm":
         return "text-green";
@@ -166,23 +183,22 @@ const FollowUpStatus = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-       
-        <div className="flex">
-          <Link to={'/quotation'}>
-          <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
-          </Link>
-          <Link to={'/followupstatus'}>
-          <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
-          </Link>
-          <Link to={'/addnewevent'}>
-          <button className="btn btn-primary mr-4 mb-4">Add Event</button>
-          </Link>
-        </div>
-        <div className="filter-container">
-          <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
-          <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-          <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
-        </div>
+          <div className="flex">
+            <Link to={'/quotation'}>
+              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+            </Link>
+            <Link to={'/followupstatus'}>
+              <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+            </Link>
+            <Link to={'/addnewevent'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Event</button>
+            </Link>
+          </div>
+          <div className="filter-container">
+            <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
+            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+          </div>
           <h2 className="text-[30px]">Follow Up Status</h2>
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
@@ -194,7 +210,6 @@ const FollowUpStatus = () => {
                   <th scope="col"> Number</th>
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
-                  
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -254,14 +269,14 @@ const FollowUpStatus = () => {
                     type="radio"
                     name="statusOptions"
                     id="statusHot"
-                    value="Hot"
-                    checked={selectedStatus === "Hot"}
+                    value="Work Not Received"
+                    checked={selectedStatus === "Work Not Received"}
                     onChange={handleStatusChange}
                   />
                   <label className="form-check-label" htmlFor="statusHot">
                     Work Not Received
                   </label>
-                  {selectedStatus === "Hot" && (
+                  {selectedStatus === "Work Not Received" && (
                     <>
                       <div className="form-check mt-2">
                         <input
