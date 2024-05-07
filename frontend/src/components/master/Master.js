@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Sidebar/Header";
-import { Form, Button, Alert, Modal } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,8 +8,6 @@ const Master = () => {
   const [vendorName, setVendorName] = useState("");
   const [eventName, setEventName] = useState("");
   const [bankName, setBankName] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertVariant, setAlertVariant] = useState("");
   const [showVendorModal, setShowVendorModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showBankModal, setShowBankModal] = useState(false);
@@ -68,18 +66,18 @@ const Master = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setAlertMessage("Vendor added successfully.");
-        setAlertVariant("success");
+        alert("Vendor added successfully.");
+        
         setVendorName("");
         fetchVendors();
       } else {
-        setAlertMessage("Failed to add vendor.");
-        setAlertVariant("danger");
+        alert("Failed to add vendor.");
+        
       }
     } catch (error) {
       console.error("Error adding vendor:", error);
-      setAlertMessage("Failed to add vendor. Please try again later.");
-      setAlertVariant("danger");
+      alert("Failed to add vendor. Please try again later.");
+      
     }
   };
 
@@ -101,17 +99,17 @@ const Master = () => {
         );
 
         if (response.ok) {
-          setAlertMessage("Vendor deleted successfully.");
-          setAlertVariant("success");
+          alert("Vendor deleted successfully.");
+          
           fetchVendors();
         } else {
-          setAlertMessage("Failed to delete vendor.");
-          setAlertVariant("danger");
+          alert("Failed to delete vendor.");
+          
         }
       } catch (error) {
         console.error("Error deleting vendor:", error);
-        setAlertMessage("Failed to delete vendor. Please try again later.");
-        setAlertVariant("danger");
+        alert("Failed to delete vendor. Please try again later.");
+        
       }
     }
   };
@@ -133,18 +131,18 @@ const Master = () => {
       });
 
       if (response.ok) {
-        setAlertMessage("Event added successfully.");
-        setAlertVariant("success");
+        alert("Event added successfully.");
+        
         setEventName("");
         fetchEvents();
       } else {
-        setAlertMessage("Failed to add event.");
-        setAlertVariant("danger");
+        alert("Failed to add event.");
+        
       }
     } catch (error) {
       console.error("Error adding event:", error);
-      setAlertMessage("Failed to add event. Please try again later.");
-      setAlertVariant("danger");
+      alert("Failed to add event. Please try again later.");
+      
     }
   };
 
@@ -166,17 +164,17 @@ const Master = () => {
         );
 
         if (response.ok) {
-          setAlertMessage("Event deleted successfully.");
-          setAlertVariant("success");
+          alert("Event deleted successfully.");
+          
           fetchEvents();
         } else {
-          setAlertMessage("Failed to delete event.");
-          setAlertVariant("danger");
+          alert("Failed to delete event.");
+          
         }
       } catch (error) {
         console.error("Error deleting event:", error);
-        setAlertMessage("Failed to delete event. Please try again later.");
-        setAlertVariant("danger");
+        alert("Failed to delete event. Please try again later.");
+        
       }
     }
   };
@@ -198,18 +196,18 @@ const Master = () => {
       });
 
       if (response.ok) {
-        setAlertMessage("Bank added successfully.");
-        setAlertVariant("success");
+        alert("Bank added successfully.");
+        
         setBankName("");
         fetchBanks();
       } else {
-        setAlertMessage("Failed to add bank.");
-        setAlertVariant("danger");
+        alert("Failed to add bank.");
+        
       }
     } catch (error) {
       console.error("Error adding bank:", error);
-      setAlertMessage("Failed to add bank. Please try again later.");
-      setAlertVariant("danger");
+      alert("Failed to add bank. Please try again later.");
+      
     }
   };
 
@@ -231,17 +229,17 @@ const Master = () => {
         );
 
         if (response.ok) {
-          setAlertMessage("Bank deleted successfully.");
-          setAlertVariant("success");
+          alert("Bank deleted successfully.");
+          
           fetchBanks();
         } else {
-          setAlertMessage("Failed to delete bank.");
-          setAlertVariant("danger");
+          alert("Failed to delete bank.");
+          
         }
       } catch (error) {
         console.error("Error deleting bank:", error);
-        setAlertMessage("Failed to delete bank. Please try again later.");
-        setAlertVariant("danger");
+        alert("Failed to delete bank. Please try again later.");
+        
       }
     }
   };
@@ -256,11 +254,7 @@ const Master = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[30%]">
           <h2 className="text-[35px] pl-[1em]">Master</h2>
-          {alertMessage && (
-            <div>
-              <Alert variant={alertVariant}>{alertMessage}</Alert>
-            </div>
-          )}
+        
           <div className="row mb-2">
             <div className="col px-5">
               <Form>

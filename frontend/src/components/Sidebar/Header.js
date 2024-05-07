@@ -450,7 +450,9 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
-            <List>
+
+
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -546,7 +548,9 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
+            </List> */}
+
+
             <List>
               <ListItem
                 disablePadding
@@ -597,15 +601,15 @@ export default function Sidenav() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>
+                  {/* <MenuItem onClick={handleClose}>
                     <Link
                       to={"/advpaymentcus"}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <span className="icon-text">Customer Payment</span>
                     </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  </MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>
                     {" "}
                     <Link
                       to={"/costingform"}
@@ -613,7 +617,7 @@ export default function Sidenav() {
                     >
                       <span className="icon-text">Costing Form</span>
                     </Link>
-                  </MenuItem>
+                  </MenuItem> */}
 
                   <MenuItem onClick={handleClose}>
                     {" "}
@@ -638,7 +642,8 @@ export default function Sidenav() {
                 </Menu>
               )}
             </List>
-            <List>
+
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -705,7 +710,7 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List>
+            </List> */}
 
             <List>
               <ListItem

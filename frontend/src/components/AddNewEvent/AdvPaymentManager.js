@@ -51,8 +51,28 @@ const AdvPaymentManager = () => {
   const [managers, setManagers] = useState([]);
   const [events, setEvents] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertVariant, setAlertVariant] = useState("");
+
+
+
+  const [selectedBank, setSelectedBank] = useState('');
+
+  const handleBankSelect = (event) => {
+    setSelectedBank(event.target.value);
+  };
+  
+    useEffect(() => {
+      const fetchBanks = async () => {
+        try {
+          const response = await axios.get("http://localhost:5000/api/allbanks");
+          setBankNames(response.data);
+        } catch (error) {
+          console.error("Error fetching banks:", error);
+        }
+      };
+  
+      fetchBanks();
+    }, []);
+
 
   useEffect(() => {
     const fetchManagers = async () => {
@@ -114,20 +134,18 @@ const AdvPaymentManager = () => {
       selectedEvent: value,
     }));
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/api/advpaymanager",
         {
           manager_Name: formData.selectedManager,
           EventName: formData.selectedEvent,
-          // EventId: formData.selectedEventId,
           Date: formData.date,
           Time: formData.time,
-          Bank_Name: formData.bankaccount,
+          Bank_Name: selectedBank,
           paid_Amount: formData.paid_amt,
           adv_Payment: formData.advance_payment,
           Pending_Amount: formData.rem_amt,
@@ -135,21 +153,22 @@ const AdvPaymentManager = () => {
           manager_Id: formData.selectedManagerId,
         }
       );
-
+  
       if (response.status === 200) {
         setShowPopup(true);
         setFormData(initialFormData);
       }
-
+  
       console.log(response.data); // Output response data to console
-      setAlertMessage("Advance Payment to manager successfully.");
-      setAlertVariant("success");
+      alert("Advance Payment to manager successfully.");
+      
     } catch (error) {
       console.error("Error saving data:", error);
-      setAlertMessage("Failed to advance payment.");
-      setAlertVariant("danger");
+      alert("Failed to advance payment.");
+      
     }
   };
+  
 
   const handleDiscard = () => {
     setFormData(initialFormData);
@@ -169,6 +188,11 @@ const AdvPaymentManager = () => {
       }));
     }
   };
+  const [bankNames, setBankNames] = useState([]);
+ 
+
+
+
 
   return (
     <>
@@ -180,11 +204,7 @@ const AdvPaymentManager = () => {
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
           <form className="order  " onSubmit={handleSubmit}>
             <h2 className="text-[35px] pl-[1em]">Advance Payment to Manager</h2>
-            {alertMessage && (
-              <div>
-                <Alert variant={alertVariant}>{alertMessage}</Alert>
-              </div>
-            )}
+           
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
@@ -197,6 +217,7 @@ const AdvPaymentManager = () => {
                         name="selectedManager"
                         onChange={handleManagerChange}
                         value={formData.selectedManager}
+                        placeholder="Select Manager"
                       >
                         <option>Select Manager</option>
                         {managers.map((manager) => (
@@ -262,7 +283,7 @@ const AdvPaymentManager = () => {
             </div>
             <div className="row mb-2">
               <div className="col px-5">
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="bankaccount">Bank Account</label>
                   <input
                     className="form-control mb-2"
@@ -272,6 +293,24 @@ const AdvPaymentManager = () => {
                     onChange={handleChange}
                     value={formData.bankaccount}
                   />
+                </div> */}
+
+                <div className="form-group">
+                  <label htmlFor="selectedBank">Select Bank</label>
+                  <select
+                    className="form-control mb-2"
+                    name="Selectedbank"
+                    value={selectedBank}
+                    onChange={handleBankSelect}
+                    required
+                  >
+                    <option value="">Select Bank</option>
+                    {bankNames.map((bank) => (
+                      <option key={bank._id} value={bank.Bank_Name}>
+                        {bank.Bank_Name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="col px-5">
