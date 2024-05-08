@@ -16,8 +16,8 @@ const FollowUpStatus = () => {
   const [enquiryId, setEnquiryId] = useState("");
   const [hotInputValue, setHotInputValue] = useState("");
   const [checkBoxValues, setCheckBoxValues] = useState({
-    checkbox1: false,
-    checkbox2: false,
+    nofollowup: false,
+    highbudget: false,
     checkbox3: false,
     checkbox4: false
   });
@@ -268,12 +268,12 @@ const FollowUpStatus = () => {
                     className="form-check-input"
                     type="radio"
                     name="statusOptions"
-                    id="statusHot"
+                    id="WorkNotReceived"
                     value="Work Not Received"
                     checked={selectedStatus === "Work Not Received"}
                     onChange={handleStatusChange}
                   />
-                  <label className="form-check-label" htmlFor="statusHot">
+                  <label className="form-check-label" htmlFor="statusWorkNotReceived">
                     Work Not Received
                   </label>
                   {selectedStatus === "Work Not Received" && (
@@ -282,11 +282,11 @@ const FollowUpStatus = () => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="checkbox1"
+                          id="nofollowup"
                           checked={checkBoxValues.checkbox1}
                           onChange={handleCheckBoxChange}
                         />
-                        <label className="form-check-label" htmlFor="checkbox1">
+                        <label className="form-check-label" htmlFor="nofollowup">
                           No Follow-Up
                         </label>
                       </div>
@@ -295,11 +295,11 @@ const FollowUpStatus = () => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="checkbox2"
-                          checked={checkBoxValues.checkbox2}
+                          id="highbudget"
+                          checked={checkBoxValues.highbudget}
                           onChange={handleCheckBoxChange}
                         />
-                        <label className="form-check-label" htmlFor="checkbox2">
+                        <label className="form-check-label" htmlFor="highbudget">
                           High Budget
                         </label>
                       </div>
