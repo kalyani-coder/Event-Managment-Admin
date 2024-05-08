@@ -41,7 +41,21 @@ const ExecutiveDetails = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-          <h2 className="text-[35px]">Executive Details</h2>
+        <div className="flex">
+            <Link to={'/managerdetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Manager Details</button>
+            </Link>
+            <Link to={'/accountantdetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Accountant Details</button>
+            </Link>
+            <Link to={'/executicedetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Executive Details</button>
+            </Link>
+            <Link to={'/vendordetails'}>
+              <button className="btn btn-primary mr-4 mb-4"> Vendor Details</button>
+            </Link>
+          </div>
+          <h2 className="text-[30px]">Executive Details</h2>
           <div className="mb-4">
             <div className="input-group">
               <input

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
 
 const ManagerReport = () => {
   const [events, setEvents] = useState([]);
@@ -96,7 +97,7 @@ const ManagerReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-          <h2 className="text-[35px] ">Manager Report</h2>
+          <h2 className="text-[30px] ">Manager Report</h2>
           <div className="mb-3  align-items-center grid md:flex gap-2">
             <input
               type="text"

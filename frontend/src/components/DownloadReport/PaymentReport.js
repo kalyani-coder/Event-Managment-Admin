@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
 
 const PaymentReport = () => {
   const [salaryData, setSalaryData] = useState([]);

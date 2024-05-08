@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
 
 const UpdateTaskPage = () => {
   const getCurrentDate = () => {
@@ -102,7 +103,15 @@ const UpdateTaskPage = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-96 min-w-8 mx-4 ">
           {" "}
-          <h1 className="text-[35px]">Update Task</h1>
+          <div className="flex">
+            <Link to={'/updatetask'}>
+              <button className="btn btn-primary mr-4 mb-4">Update Task</button>
+            </Link>
+            <Link to={'/viewtask'}>
+              <button className="btn btn-primary mr-4 mb-4">View Update Tasks</button>
+            </Link>
+          </div>
+          <h1 className="text-[30px]">Update Task</h1>
           <form onSubmit={handleSubmit} id="updateTaskForm">
             <div className="mb-3">
               <label htmlFor="Task" className="form-label">

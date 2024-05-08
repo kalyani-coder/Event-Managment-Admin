@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "../Sidebar/Header";
 import { format } from "date-fns";
 import "./AdvPaymentManager.css";
+import { Link} from 'react-router-dom';
 
 const ViewAdvPaymentManager = () => {
   const [payments, setPayments] = useState([]);
@@ -72,7 +73,16 @@ const ViewAdvPaymentManager = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-          <h2 className="text-[35px]">Advance Payment Manager Details</h2>
+        <div className="flex">
+            <Link to={'/advpaymentmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
+            </Link>
+            <Link to={'/viewadvpaymentmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
+            </Link>
+            
+          </div>
+          <h2 className="text-[30px]">Advance Payment Manager Details</h2>
           <div className="d-flex flex-wrap align-items-center">
             <div className="w-full relative mb-3">
               <input

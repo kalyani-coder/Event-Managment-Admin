@@ -86,7 +86,7 @@ export default function Enquiry() {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
-            <h2 className="text-[35px] pl-[1em]">Enquiry</h2>
+            <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">
               <div className="col px-5">

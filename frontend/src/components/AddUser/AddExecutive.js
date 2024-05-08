@@ -3,6 +3,8 @@ import { Form, Button, Alert } from "react-bootstrap";
 import "./AddExecutive.css";
 import axios from "axios";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
+
 
 const AddExecutive = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -148,7 +150,21 @@ const AddExecutive = () => {
             </Alert>
           )}
           <Form onSubmit={handleSubmit} className="">
-            <h2 className="text-[35px] pl-[1em] ">Add Executive</h2>
+          <div className="flex">
+            <Link to={'/addmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
+            </Link>
+            <Link to={'/addaccountant'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
+            </Link>
+            <Link to={'/addexecutive'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
+            </Link>
+            <Link to={'/addvendor'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
+            </Link>
+          </div>
+            <h2 className="text-[30px] pl-[1em] ">Add Executive</h2>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="fname">

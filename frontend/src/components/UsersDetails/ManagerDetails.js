@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 
+
 const ManagerDetails = () => {
   const [managerData, setManagerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +46,21 @@ const ManagerDetails = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div>
-            <h2 className="text-[35px]">Manager Details</h2>
+          <div className="flex">
+            <Link to={'/managerdetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Manager Details</button>
+            </Link>
+            <Link to={'/accountantdetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Accountant Details</button>
+            </Link>
+            <Link to={'/executicedetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Executive Details</button>
+            </Link>
+            <Link to={'/vendordetails'}>
+              <button className="btn btn-primary mr-4 mb-4"> Vendor Details</button>
+            </Link>
+          </div>
+            <h2 className="text-[30px]">Manager Details</h2>
             <div className="mb-4">
               <div className="input-group">
                 <input

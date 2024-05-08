@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { Link} from 'react-router-dom';
 
 const AdvPaymentManager = () => {
   const getCurrentDate = () => {
@@ -203,7 +204,16 @@ const AdvPaymentManager = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
           <form className="order  " onSubmit={handleSubmit}>
-            <h2 className="text-[35px] pl-[1em]">Advance Payment to Manager</h2>
+          <div className="flex">
+            <Link to={'/advpaymentmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
+            </Link>
+            <Link to={'/viewadvpaymentmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
+            </Link>
+            
+          </div>
+            <h2 className="text-[30px] pl-[1em]">Advance Payment to Manager</h2>
            
             <div className="row mb-2">
               <div className="col px-5">

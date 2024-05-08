@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../../Sidebar/Header";
+import { Link} from 'react-router-dom';
 
 const ViewSalary = () => {
   const [salaryData, setSalaryData] = useState([]);
@@ -41,7 +42,15 @@ const ViewSalary = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
           {" "}
-          <h2 className="text-[35px]">View Salary</h2>
+          <div className="flex">
+            <Link to={'/addsalary'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Salary</button>
+            </Link>
+            <Link to={'/viewsalary'}>
+              <button className="btn btn-primary mr-4 mb-4">View Salary</button>
+            </Link>
+          </div>
+          <h2 className="text-[30px]">View Salary</h2>
           <div className="form-group">
             <input
               type="text"

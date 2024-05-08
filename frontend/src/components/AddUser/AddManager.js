@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
 import "./AddManager.css";
 
 const AddManager = () => {
@@ -136,6 +137,7 @@ const AddManager = () => {
     <>
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
+       
         <div className="md:h-[80vh] h-[80vh] ">
           {showSuccessAlert && (
             <Alert
@@ -148,7 +150,21 @@ const AddManager = () => {
           )}
 
           <Form onSubmit={handleSubmit} className="">
-            <h2 className="text-[35px] pl-[1em] ">Add Manager</h2>
+          <div className="flex">
+            <Link to={'/addmanager'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
+            </Link>
+            <Link to={'/addaccountant'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
+            </Link>
+            <Link to={'/addexecutive'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
+            </Link>
+            <Link to={'/addvendor'}>
+              <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
+            </Link>
+          </div>
+            <h2 className="text-[30px] pl-[1em] ">Add Manager</h2>
 
             <div className="row mb-2">
               <div className="col px-5">

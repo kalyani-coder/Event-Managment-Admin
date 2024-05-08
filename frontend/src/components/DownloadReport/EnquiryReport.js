@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
+import { Link} from 'react-router-dom';
 import {
   FaSortAmountDown,
   FaSortAmountUp,
@@ -135,7 +136,7 @@ const EnquiryReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-          <h2 className="text-[35px] ">Enquiry Report</h2>
+          <h2 className="text-[30px] ">Enquiry Report</h2>
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}
             <div className="dropdown">

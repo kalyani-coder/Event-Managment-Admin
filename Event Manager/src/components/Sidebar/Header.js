@@ -16,36 +16,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import CurrencyRupeeTwoToneIcon from "@mui/icons-material/CurrencyRupeeTwoTone";
-import TaskTwoToneIcon from "@mui/icons-material/TaskTwoTone";
 import AccountBalanceWalletTwoToneIcon from "@mui/icons-material/AccountBalanceWalletTwoTone";
+import TaskTwoToneIcon from "@mui/icons-material/TaskTwoTone";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Scrollbars from "react-custom-scrollbars";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
-import GridViewIcon from "@mui/icons-material/GridView";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Tooltip from "@mui/material/Tooltip";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./Header.css";
-
-import {
-  faUserPlus,
-  faAddressBook,
-  faCalendar,
-  faMoneyBill,
-  faHandHoldingUsd,
-  faMoneyCheck,
-  faClipboardList,
-  faFileDownload,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
+import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-import Dashboard from "./../Dashboard/Dashboard";
+
+import "./Header.css";
 
 const drawerWidth = 240;
 
@@ -113,6 +92,7 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
+
 const CustomScrollbars = styled(Scrollbars)`
   /* Add your custom scrollbar styles here */
   width: 100%;
@@ -147,21 +127,13 @@ export default function Sidenav() {
     setOpen(false);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [activetab, setActivetab] = React.useState();
   const navigate = useNavigate();
   const handleClick = (event, tab) => {
-    // Pass tab as argument
-    setAnchorEl(event.currentTarget);
-    setActivetab(tab); // Update active tab state
+    setActivetab(tab);
   };
 
-  // Function to handle closing menu
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleLogout = () => {
-    // window.location.href = 'https://eventmanagement-qaii.onrender.com';
     localStorage.clear();
     navigate("/");
   };
@@ -213,7 +185,7 @@ export default function Sidenav() {
                 sx={{
                   color: "black",
                   "&:hover": {
-                    backgroundColor: "#ffccf6", // Adjust alpha for desired faintness
+                    backgroundColor: "#ffccf6",
                   },
                 }}
               >
@@ -241,10 +213,10 @@ export default function Sidenav() {
                       sx={{
                         minHeight: 48,
                         justifyContent: open ? "initial" : "center",
-                        px: 2.5
+                        px: 2.5,
                       }}
                       className={
-                        activetab === "DashBoard"
+                        activetab === "Enquiry"
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
@@ -256,12 +228,12 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <Tooltip title="DashBoard">
+                        <Tooltip title="Enquiry">
                           <span>
-                            <GridViewIcon
+                            <TaskTwoToneIcon
                               sx={{ color: "#9b59b6" }}
                               title="Enquiry"
-                            />{" "}
+                            />
                           </span>
                         </Tooltip>
                       </ListItemIcon>
@@ -273,12 +245,13 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-            </List> 
+            </List>
+
             <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Enquiry")}
+                onClick={(event) => handleClick(event, "Advance Payment")}
               >
                 <div className="menuitems-of-header ">
                   <Link
@@ -289,10 +262,10 @@ export default function Sidenav() {
                       sx={{
                         minHeight: 48,
                         justifyContent: open ? "initial" : "center",
-                        px: 2.5
+                        px: 2.5,
                       }}
                       className={
-                        activetab === "DashBoard"
+                        activetab === "Advance Payment"
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
@@ -304,12 +277,12 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <Tooltip title="DashBoard">
+                        <Tooltip title="Advance Payment">
                           <span>
-                            <GridViewIcon
+                            <AccountBalanceWalletTwoToneIcon
                               sx={{ color: "#9b59b6" }}
                               title="Advance Payment"
-                            />{" "}
+                            />
                           </span>
                         </Tooltip>
                       </ListItemIcon>
@@ -321,7 +294,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-            </List> 
+            </List>
 
             <List>
               <ListItem
@@ -338,10 +311,10 @@ export default function Sidenav() {
                       sx={{
                         minHeight: 48,
                         justifyContent: open ? "initial" : "center",
-                        px: 2.5
+                        px: 2.5,
                       }}
                       className={
-                        activetab === "DashBoard"
+                        activetab === "Vendor Payment"
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
@@ -353,12 +326,12 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <Tooltip title="DashBoard">
+                        <Tooltip title="Vendor Payment">
                           <span>
-                            <GridViewIcon
+                            <TaskTwoToneIcon
                               sx={{ color: "#9b59b6" }}
-                              title="Enquiry"
-                            />{" "}
+                              title="Vendor Payment"
+                            />
                           </span>
                         </Tooltip>
                       </ListItemIcon>
@@ -370,860 +343,8 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-            </List> 
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Add Users")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    className={
-                      activetab === "Add Users"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Add Users">
-                        <span>
-                          <PersonAddIcon sx={{ color: "#9b59b6" }} />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Add Users"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              <div className="Menu-items-styling">
-                {activetab == "Add Users" && (
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleClose}>
-                      <Link
-                        to={"/addmanager"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Manager</span>
-                      </Link>
-                    </MenuItem>
-
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addaccountant"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Accountant</span>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addexecutive"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Executive</span>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addvendor"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Vendor</span>
-                      </Link>
-                    </MenuItem>
-                  </Menu>
-                )}
-              </div>
             </List>
 
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "User Details")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    className={
-                      activetab === "User Details"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="User Details">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faAddressBook}
-                            size="lg"
-                            color="#9b59b6"
-                          />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary=" User Details"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "User Details" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/managerdetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      {" "}
-                      <span className="icon-text">Manager Details</span>{" "}
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/accountantdetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Accountant Details</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/executicedetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Executive Details</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/vendordetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Vendor Details</span>
-                    </Link>
-                  </MenuItem>
-                </Menu>
-              )}
-            </List> */}
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, " Enquiry")}
-              >
-              
-                <div className="menuitems-of-header ">
-               
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Enquiry"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Enquiry ">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faCalendar}
-                            size="lg"
-                            color="#9b59b6"
-                          />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Enquiry "
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                 </div>
-                
-              </ListItem>
-              {activetab == "Enquiry" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                > */}
-                  {/* <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addenquiry"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Add Enquiry</span>
-                    </Link>
-                  </MenuItem> */}
-                  {/* <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/quotation"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">View Enquiry</span>
-                    </Link>
-                  </MenuItem> */}
-                  {/* <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/createquotation"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">proposal</span>
-                    </Link>
-                  </MenuItem> */}
-                  {/* <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/followupstatus"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> FolloUp Status</span>
-                    </Link>
-                  </MenuItem> */}
-                  {/* <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addnewevent"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> AddEvent</span>
-                    </Link>
-                  </MenuItem> */}
-                {/* </Menu> */}
-              {/* )} */}
-            {/* </List> */}
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Advance Payment")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Advance Payment"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Advance Payment">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faHandHoldingUsd}
-                            size="lg"
-                            color="#9b59b6"
-                          />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Advance Payment"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Advance Payment" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/advpaymentcus"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Customer Payment</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/costingform"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Costing Form</span>
-                    </Link>
-                  </MenuItem>
-
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/advpaymentmanager"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Advance Payment Manager</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/viewadvpaymentmanager"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">
-                        View Advance Payment Manager
-                      </span>
-                    </Link>
-                  </MenuItem>
-                </Menu>
-              )}
-            </List> */}
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Vendor Payment")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Vendor Payment"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Vendor Payment">
-                        <span>
-                          <CurrencyRupeeTwoToneIcon sx={{ color: "#9b59b6" }} />{" "}
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Vendor Payment"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Vendor Payment" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/vendorpayment"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Add Vendor Payment</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/viewvendorpayment"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">
-                        View Vendor Payment Details
-                      </span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List> */}
-
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Attendance")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Attendance"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Attendance">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faMoneyCheck}
-                            size="lg"
-                            color="#9b59b6"
-                          />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Attendance"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Attendance" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/attendance"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Mark Attendance</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Update Task")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Update Task"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Update Task">
-                        <span>
-                          <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Update Task"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Update Task" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/updatetask"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Task</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/viewtask"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> View Task</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Salary")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Salary"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Salary">
-                        <span>
-                          <AccountBalanceWalletTwoToneIcon
-                            sx={{ color: "#9b59b6" }}
-                          />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Salary"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-
-              {activetab == "Salary" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addsalary"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Add Salary</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/viewsalary"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> View Salary</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Master")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Master"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Master">
-                        <span>
-                          <AssignmentIndIcon sx={{ color: "#9b59b6" }} />
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Master"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-
-              {activetab == "Master" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/master"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Master</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Inventory Stock")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Inventory Stock"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Inventory Stock">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faClipboardList}
-                            color="#9b59b6"
-                            size="lg"
-                          />{" "}
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Inventory Stock"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Inventory Stock" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/newgodown"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Godowns</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List>
-            <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Download Report")}
-              >
-                <div className="menuitems-of-header">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Download Report"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Download Report">
-                        <span>
-                          <FontAwesomeIcon
-                            icon={faFileDownload}
-                            size="lg"
-                            color="#9b59b6"
-                          />{" "}
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Download Report"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Download Report" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/eventreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Event Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/enquiryreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Enquiry Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/customerreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Customer Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/managerreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Advance Manager Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/paymentreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Payment Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/vendorpaymentreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Vendor Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List> */}
             <List>
               <ListItem
                 disablePadding
@@ -1251,11 +372,11 @@ export default function Sidenav() {
                           sx={{
                             color: "red",
                             "&:hover": {
-                              color: " rgba(201, 141, 141)", // Adjust alpha for desired faintness
+                              color: " rgba(201, 141, 141)",
                             },
                           }}
                           onClick={handleLogout}
-                        />{" "}
+                        />
                       </span>
                     </Tooltip>
                   </ListItemIcon>
@@ -1269,7 +390,7 @@ export default function Sidenav() {
                           color: "white",
                           backgroundColor: "red",
                           "&:hover": {
-                            backgroundColor: "rgba(201, 141, 141)", // Adjust alpha for desired faintness
+                            backgroundColor: "rgba(201, 141, 141)",
                           },
                         }}
                       >
@@ -1286,10 +407,6 @@ export default function Sidenav() {
           </div>
         </Scrollbars>
       </Drawer>
-
-      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-      </Box> */}
     </Box>
   );
 }
