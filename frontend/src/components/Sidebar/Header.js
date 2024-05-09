@@ -452,7 +452,7 @@ export default function Sidenav() {
             </List>
 
 
-            {/* <List>
+            <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -548,7 +548,7 @@ export default function Sidenav() {
                   </MenuItem>
                 </Menu>
               )}
-            </List> */}
+            </List>
 
 
             <List>

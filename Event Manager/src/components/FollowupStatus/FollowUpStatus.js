@@ -304,7 +304,7 @@ const FollowUpStatus = () => {
                         </label>
                       </div>
 
-                      <div className="form-check mt-2">
+                      {/* <div className="form-check mt-2">
                         <input
                           className="form-check-input"
                           type="checkbox"
@@ -328,14 +328,14 @@ const FollowUpStatus = () => {
                         <label className="form-check-label" htmlFor="checkbox4">
                           Checkbox 4
                         </label>
-                      </div>
+                      </div> */}
                       <div className="form-group mt-2">
-                        <label htmlFor="hotInput">Other:</label>
+                        <label htmlFor="hotInput">Type Reason:</label>
                         <input
                           type="text"
                           className="form-control"
                           id="hotInput"
-                          placeholder="Enter other hot option"
+                          placeholder="Type your reason here..."
                           value={hotInputValue}
                           onChange={handleHotInputChange}
                         />
