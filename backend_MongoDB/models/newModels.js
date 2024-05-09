@@ -424,7 +424,7 @@ const bankTransper = new Schema({
 
 const allBanksAccounts = new Schema({
   Bank_Name : { type : String , required : true},
-  Balance : {type : Number}
+  Account_Number : {type : Number}
 
 })
 
