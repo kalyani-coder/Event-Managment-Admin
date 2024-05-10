@@ -263,7 +263,13 @@ const Master = () => {
 
   const handleVenueSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Check if the venue name already exists
+    if (venues.some((v) => v.venue === venue)) {
+      alert("Venue name already exists. Please enter a unique venue name.");
+      return;
+    }
+  
     try {
       const response = await fetch("http://localhost:5000/api/venue", {
         method: "POST",
@@ -272,7 +278,7 @@ const Master = () => {
         },
         body: JSON.stringify({ venue }),
       });
-
+  
       if (response.ok) {
         alert("Venue added successfully.");
         setVenue("");
@@ -285,7 +291,6 @@ const Master = () => {
       alert("Failed to add venue. Please try again later.");
     }
   };
-
   const handleViewVenues = () => {
     setShowVenueModal(true);
   };

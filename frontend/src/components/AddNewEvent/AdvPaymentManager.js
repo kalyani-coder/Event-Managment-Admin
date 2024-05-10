@@ -75,18 +75,26 @@ const AdvPaymentManager = () => {
     fetchBanks();
   }, []);
 
-  const handleBankSelect = async (event) => {
-    const selectedBankId = event.target.value;
-    setSelectedBank(selectedBankId);
-    try {
-      const response = await axios.get(`http://localhost:5000/api/bank/${selectedBankId}`);
-      setAccountNumber(response.data.accountNumber);
-    } catch (error) {
-      console.error("Error fetching account number:", error);
+  // const handleBankSelect = (event) => {
+  //   setSelectedBank(event.target.value);
+  // };
+
+
+  
+  const handleBankSelect = (event) => {
+    const selectedBankName = event.target.value;
+    setSelectedBank(selectedBankName);
+
+    // Find the selected bank object from the bankNames array
+    const selectedBankObj = bankNames.find(bank => bank.Bank_Name === selectedBankName);
+
+    // Set the account number based on the selected bank
+    if (selectedBankObj) {
+      setAccountNumber(selectedBankObj.Account_Number);
+    } else {
+      setAccountNumber('');
     }
   };
-
-
 
   useEffect(() => {
     const fetchManagers = async () => {

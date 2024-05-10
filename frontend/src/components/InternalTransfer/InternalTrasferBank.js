@@ -13,20 +13,6 @@ const InternalTransferFromBank = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/managerdetails")
-      .then((response) => response.json())
-      .then((data) => setManagerOptions(data));
-
-    fetch("http://localhost:5000/api/accountant")
-      .then((response) => response.json())
-      .then((data) => setAccountantOptions(data));
-
-    fetch("http://localhost:5000/api/executive")
-      .then((response) => response.json())
-      .then((data) => setExecutiveOptions(data));
-  }, []); // Empty dependency array to run only once when component mounts
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
