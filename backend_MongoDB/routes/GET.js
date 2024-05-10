@@ -34,6 +34,20 @@ router.get("/allbanks" , async(req, res) => {
   }
 })
 
+router.get("/allbanks/:id" , async(req, res) => {
+
+  const bankId = req.params.id
+  try{
+
+    const getDataById = await allBanks.findById(bankId)
+    res.status(201).json(getDataById)
+
+  }catch(e){
+    res.status(500).json({message : "Internal server Error"})
+  }
+})
+
+
 // get api by manager id 
 router.get("/:table/:assign_manager_Id", async (req, res) => {
   const { table, assign_manager_Id } = req.params;
