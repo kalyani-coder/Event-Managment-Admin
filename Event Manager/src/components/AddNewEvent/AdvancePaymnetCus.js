@@ -194,7 +194,6 @@ function AdvancePaymnetCus() {
               <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
             </Link>
 
-            
           </div>
           <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (
@@ -297,7 +296,6 @@ function AdvancePaymnetCus() {
             </div>
             <div className="col px-5">
 
-             
 
               <div className="mb-3">
                 <label className="form-label">Total Amount:</label>
