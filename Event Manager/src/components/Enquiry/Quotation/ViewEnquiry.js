@@ -130,7 +130,8 @@ const ViewInquiryPage = () => {
                   <th scope="col">Customer Name</th>
                   <th scope="col">Contact No.</th>
                   <th scope="col">Action</th>
-                  <th scope="col">Make Quotation</th>
+                  <th scope="col">Internal Costing</th>
+                  <th scope="col"> Quotation</th>
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -155,13 +156,22 @@ const ViewInquiryPage = () => {
                     <td>
                       <button
                         className="btn btn-primary"
+                      
+                      >
+                        Internal Costing
+                      </button>
+                    </td>
+
+                    <td>
+                      <button
+                        className="btn btn-primary"
                         onClick={() =>
                           navigate("/quotationform", {
                             state: { enquiry: enquiry },
                           })
                         }
                       >
-                        Make Quotation
+                       Quotation
                       </button>
                     </td>
                   </tr>
