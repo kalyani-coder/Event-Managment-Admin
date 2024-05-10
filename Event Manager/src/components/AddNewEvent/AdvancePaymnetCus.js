@@ -30,7 +30,7 @@ function AdvancePaymnetCus() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertVariant, setAlertVariant] = useState("");
   const [bankNames, setBankNames] = useState([]);
-  const [selectedBank, setSelectedBank] = useState("");
+  // const [selectedBank, setSelectedBank] = useState("");
 
 
 
@@ -173,8 +173,27 @@ function AdvancePaymnetCus() {
     fetchBanks();
   }, []);
 
+  // const handleBankSelect = (event) => {
+  //   setSelectedBank(event.target.value);
+  // };
+
+
+  const [selectedBank, setSelectedBank] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+
   const handleBankSelect = (event) => {
-    setSelectedBank(event.target.value);
+    const selectedBankName = event.target.value;
+    setSelectedBank(selectedBankName);
+
+    // Find the selected bank object from the bankNames array
+    const selectedBankObj = bankNames.find(bank => bank.Bank_Name === selectedBankName);
+
+    // Set the account number based on the selected bank
+    if (selectedBankObj) {
+      setAccountNumber(selectedBankObj.Account_Number);
+    } else {
+      setAccountNumber('');
+    }
   };
 
   
@@ -312,6 +331,9 @@ function AdvancePaymnetCus() {
               </div>
             </div>
           </div>
+
+
+
           <div className="row mb-2">
             <div className="col px-5">
               <div className="mb-3">
@@ -336,6 +358,8 @@ function AdvancePaymnetCus() {
               </div>
             </div>
           </div>
+
+
           <div className="row mb-2">
             <div className="col px-5">
               <div className="mb-3">
@@ -409,23 +433,37 @@ function AdvancePaymnetCus() {
           </div>
 
 
-          <div className="mb-3 px-5">
-            <label className="form-label">Select Bank:</label>
-            <select
-              className="form-control"
-              value={selectedBank}
-              onChange={handleBankSelect}
-            >
-              <option value="">Select Bank</option>
-              {bankNames.map((bank) => (
-                <option key={bank._id} value={bank.Bank_Name}>
-                  {bank.Bank_Name}
-                </option>
-              ))}
-            </select>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Select Bank:</label>
+                <select
+                  className="form-control"
+                  value={selectedBank}
+                  onChange={handleBankSelect}
+                >
+                  <option value="">Select Bank</option>
+                  {bankNames.map((bank) => (
+                    <option key={bank._id} value={bank.Bank_Name}>
+                      {bank.Bank_Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Account Number:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={accountNumber}
+                  onChange={(event) => setAccountNumber(event.target.value)}
+                />
+              </div>
+            </div>
           </div>
 
-          <h5 className="card-title pl-[1.5em]">Transaction Details</h5>
           <div className="row mb-2">
             <div className="col px-5">
               <div className="mb-3">
