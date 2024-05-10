@@ -9,17 +9,21 @@ const Master = () => {
   const [eventName, setEventName] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [venue, setVenue] = useState("");
   const [showVendorModal, setShowVendorModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showBankModal, setShowBankModal] = useState(false);
+  const [showVenueModal, setShowVenueModal] = useState(false);
   const [vendors, setVendors] = useState([]);
   const [events, setEvents] = useState([]);
   const [banks, setBanks] = useState([]);
+  const [venues, setVenues] = useState([]);
 
   useEffect(() => {
     fetchVendors();
     fetchEvents();
     fetchBanks();
+    fetchVenues();
   }, []);
 
   const fetchVendors = async () => {
@@ -49,6 +53,16 @@ const Master = () => {
       setBanks(data);
     } catch (error) {
       console.error("Error fetching banks:", error);
+    }
+  };
+
+  const fetchVenues = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/venue");
+      const data = await response.json();
+      setVenues(data);
+    } catch (error) {
+      console.error("Error fetching venues:", error);
     }
   };
 
@@ -247,6 +261,65 @@ const Master = () => {
     setShowBankModal(false);
   };
 
+  const handleVenueSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/api/venue", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ venue }),
+      });
+
+      if (response.ok) {
+        alert("Venue added successfully.");
+        setVenue("");
+        fetchVenues();
+      } else {
+        alert("Failed to add venue.");
+      }
+    } catch (error) {
+      console.error("Error adding venue:", error);
+      alert("Failed to add venue. Please try again later.");
+    }
+  };
+
+  const handleViewVenues = () => {
+    setShowVenueModal(true);
+  };
+
+  const handleCloseVenueModal = () => {
+    setShowVenueModal(false);
+  };
+
+  const handleDeleteVenue = async (venueId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this venue?"
+    );
+    if (confirmDelete) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/venue/${venueId}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (response.ok) {
+          alert("Venue deleted successfully.");
+          fetchVenues();
+        } else {
+          alert("Failed to delete venue.");
+        }
+      } catch (error) {
+        console.error("Error deleting venue:", error);
+        alert("Failed to delete venue. Please try again later.");
+      }
+    }
+  };
+
   return (
     <>
       <Header />
@@ -316,6 +389,7 @@ const Master = () => {
               ))}
             </Modal.Body>
           </Modal>
+
           <div className="row mb-2">
             <div className="col px-5">
               <Form>
@@ -450,6 +524,70 @@ const Master = () => {
               ))}
             </Modal.Body>
           </Modal>
+
+          <div className="row mb-2">
+            <div className="col px-5">
+              <Form>
+                <Form.Group controlId="venue">
+                  <div className="relative">
+                    <label htmlFor="date">Add Venue Name:</label>
+                    <Form.Control
+                      placeholder="Add Venue Name Here..."
+                      value={venue}
+                      onChange={(e) => setVenue(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className=" mt-3 grid gap-2 md:flex">
+                    <Button
+                      className="manager-btn ms-1"
+                      type="submit"
+                      variant="info"
+                      onClick={handleVenueSubmit}
+                    >
+                      Add Venue
+                    </Button>
+                    <Button
+                      className="manager-btn ms-1"
+                      type="button"
+                      variant="info"
+                      onClick={handleViewVenues}
+                    >
+                      View Venues
+                    </Button>
+                  </div>
+                </Form.Group>
+              </Form>
+            </div>
+          </div>
+          <Modal show={showVenueModal} onHide={handleCloseVenueModal}>
+            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+              <Modal.Title>Venue List</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <div>Venue Name</div>
+                <div>Action</div>
+              </div>
+              {venues.map((venue) => (
+                <div
+                  key={venue._id}
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div style={{ lineHeight: "45px" }}>{venue.venue}</div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="ml-2"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDeleteVenue(venue._id)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Modal.Body>
+          </Modal>
+          
         </div>
       </div>
     </>

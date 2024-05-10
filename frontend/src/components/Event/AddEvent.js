@@ -4,21 +4,6 @@ import axios from "axios";
 import Header from "../Sidebar/Header";
 
 function AddEvent() {
-  const getCurrentDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
-    const yyyy = today.getFullYear();
-    return `${yyyy}-${mm}-${dd}`;
-  };
-
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, "0");
-    const mm = String(now.getMinutes()).padStart(2, "0");
-    return `${hh}:${mm}`;
-  };
-
   // State variables for form fields
   const [eventName, setEventName] = useState("");
   const [fname, setfname] = useState("");
@@ -40,6 +25,9 @@ function AddEvent() {
 
   // State for the selected customer
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // State variable to hold the list of venues
+  const [venues, setVenues] = useState([]);
 
   // Navigation hook
   const navigate = useNavigate();
@@ -70,6 +58,20 @@ function AddEvent() {
     setCurrentDateTime(formattedDate);
   }, [searchQuery]);
 
+  // Fetch venues when the component mounts
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/venue");
+        setVenues(response.data);
+      } catch (error) {
+        console.error("Error fetching venues:", error);
+      }
+    };
+
+    fetchVenues();
+  }, []);
+
   // Function to handle customer selection
   const handleCustomerSelect = (event) => {
     // Get the selected customer from the event
@@ -84,14 +86,14 @@ function AddEvent() {
     // Automatically fill in the form fields with the customer details
     setEventName(selectedCustomer?.event_name || "");
     setfname(selectedCustomer?.customer_name || "");
-    // setcompany_name(selectedCustomer?.company_name || "");
+    setcompany_name(selectedCustomer?.company_name || "");
     setemail(selectedCustomer?.email || "");
     setcontact(selectedCustomer?.contact || "");
     setevent_type(selectedCustomer?.event_type || "Family Function");
     setvenue(selectedCustomer?.event_venue || "");
     setsubvenue(selectedCustomer?.subvenue || "");
     setguest_number(selectedCustomer?.guest_quantity || "");
-    // setbudget(selectedCustomer?.budget || "");
+    setbudget(selectedCustomer?.budget || "");
     setevent_date(selectedCustomer?.event_date || "");
     setCurrentTime(selectedCustomer?.currentTime || "");
   };
@@ -110,8 +112,8 @@ function AddEvent() {
       subvenue,
       guest_number,
       budget,
-      event_date: getCurrentDate(),
-      currentTime: getCurrentTime(),
+      event_date,
+      currentTime,
     };
 
     try {
@@ -234,25 +236,19 @@ function AddEvent() {
                 </div>
                 <div className="form-group">
                   <label htmlFor="venue">Venue</label>
-                  <input
-                    type="text"
+                  <select
                     value={venue}
                     onChange={(e) => setvenue(e.target.value)}
                     className="form-control"
-                    placeholder="Venue"
                     id="venue"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="subvenue">Sub Venue</label>
-                  <input
-                    type="text"
-                    value={subvenue}
-                    onChange={(e) => setsubvenue(e.target.value)}
-                    className="form-control"
-                    placeholder="Sub Venue"
-                    id="subvenue"
-                  />
+                  >
+                    <option value="">Select Venue</option>
+                    {venues.map((venue) => (
+                      <option key={venue._id} value={venue._id}>
+                        {venue.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="form-group">
                   <label htmlFor="guest_number">

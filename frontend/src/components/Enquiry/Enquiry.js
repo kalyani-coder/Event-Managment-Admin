@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Sidebar/Header";
 import { Form, Button, Modal } from "react-bootstrap";
-import "./Enquiry.css"
+import "./Enquiry.css";
+
 export default function Enquiry() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -18,10 +19,12 @@ export default function Enquiry() {
   const [managers, setManagers] = useState([]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
   const [selectedManagerName, setSelectedManagerName] = useState("");
+  const [venues, setVenues] = useState([]);
 
   useEffect(() => {
     fetchEvents();
     fetchManagers();
+    fetchVenues();
   }, []);
 
   const fetchEvents = async () => {
@@ -39,6 +42,15 @@ export default function Enquiry() {
       setManagers(response.data);
     } catch (error) {
       console.error("Error fetching managers:", error);
+    }
+  };
+
+  const fetchVenues = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/venue");
+      setVenues(response.data);
+    } catch (error) {
+      console.error("Error fetching venues:", error);
     }
   };
 
@@ -212,17 +224,25 @@ export default function Enquiry() {
               </div>
 
               <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="event_venue">Event Venue</label>
-                  <input
-                    type="text"
+              <div className="form-group">
+                  <label htmlFor="event_venue">
+                    Select Venue <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <Form.Select
                     className="form-control"
                     name="event_venue"
                     id="event_venue"
-                    placeholder="Event Venue"
                     value={eventVenue}
                     onChange={(e) => setEventVenue(e.target.value)}
-                  />
+                    required
+                  >
+                    <option value="">Select Venue</option>
+                    {venues.map((venue) => (
+                      <option key={venue._id} value={venue.venue}>
+                        {venue.venue}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </div>
               </div>
             </div>
