@@ -52,27 +52,40 @@ const AdvPaymentManager = () => {
   const [managers, setManagers] = useState([]);
   const [events, setEvents] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-
+  const [accountNumber, setAccountNumber] = useState('');
+  console.log(accountNumber)
 
 
   const [selectedBank, setSelectedBank] = useState('');
 
-  const handleBankSelect = (event) => {
-    setSelectedBank(event.target.value);
+  // const handleBankSelect = (event) => {
+  //   setSelectedBank(event.target.value);
+  // };
+  
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/allbanks");
+        setBankNames(response.data);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    };
+
+    fetchBanks();
+  }, []);
+
+  const handleBankSelect = async (event) => {
+    const selectedBankId = event.target.value;
+    setSelectedBank(selectedBankId);
+    try {
+      const response = await axios.get(`http://localhost:5000/api/bank/${selectedBankId}`);
+      setAccountNumber(response.data.accountNumber);
+    } catch (error) {
+      console.error("Error fetching account number:", error);
+    }
   };
-  
-    useEffect(() => {
-      const fetchBanks = async () => {
-        try {
-          const response = await axios.get("http://localhost:5000/api/allbanks");
-          setBankNames(response.data);
-        } catch (error) {
-          console.error("Error fetching banks:", error);
-        }
-      };
-  
-      fetchBanks();
-    }, []);
+
 
 
   useEffect(() => {
@@ -291,20 +304,8 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-            <div className="row mb-2">
+             <div className="row mb-2">
               <div className="col px-5">
-                {/* <div className="form-group">
-                  <label htmlFor="bankaccount">Bank Account</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="bankaccount"
-                    placeholder="Bank Account"
-                    onChange={handleChange}
-                    value={formData.bankaccount}
-                  />
-                </div> */}
-
                 <div className="form-group">
                   <label htmlFor="selectedBank">Select Bank</label>
                   <select
@@ -323,19 +324,19 @@ const AdvPaymentManager = () => {
                   </select>
                 </div>
               </div>
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="paid_amt">Paid Amount</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="paid_amt"
-                    placeholder="Paid Amount"
-                    onChange={handleChange}
-                    value={formData.paid_amt}
-                  />
+              {selectedBank && (
+                <div className="col px-5">
+                  <div className="form-group">
+                    <label htmlFor="accountNumber">Account Number</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={accountNumber}
+                      readOnly
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="row mb-2">
               <div className="col px-5">

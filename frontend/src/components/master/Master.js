@@ -8,6 +8,7 @@ const Master = () => {
   const [vendorName, setVendorName] = useState("");
   const [eventName, setEventName] = useState("");
   const [bankName, setBankName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [showVendorModal, setShowVendorModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showBankModal, setShowBankModal] = useState(false);
@@ -67,17 +68,14 @@ const Master = () => {
 
       if (response.ok) {
         alert("Vendor added successfully.");
-        
         setVendorName("");
         fetchVendors();
       } else {
         alert("Failed to add vendor.");
-        
       }
     } catch (error) {
       console.error("Error adding vendor:", error);
       alert("Failed to add vendor. Please try again later.");
-      
     }
   };
 
@@ -100,16 +98,13 @@ const Master = () => {
 
         if (response.ok) {
           alert("Vendor deleted successfully.");
-          
           fetchVendors();
         } else {
           alert("Failed to delete vendor.");
-          
         }
       } catch (error) {
         console.error("Error deleting vendor:", error);
         alert("Failed to delete vendor. Please try again later.");
-        
       }
     }
   };
@@ -132,17 +127,14 @@ const Master = () => {
 
       if (response.ok) {
         alert("Event added successfully.");
-        
         setEventName("");
         fetchEvents();
       } else {
         alert("Failed to add event.");
-        
       }
     } catch (error) {
       console.error("Error adding event:", error);
       alert("Failed to add event. Please try again later.");
-      
     }
   };
 
@@ -165,16 +157,13 @@ const Master = () => {
 
         if (response.ok) {
           alert("Event deleted successfully.");
-          
           fetchEvents();
         } else {
           alert("Failed to delete event.");
-          
         }
       } catch (error) {
         console.error("Error deleting event:", error);
         alert("Failed to delete event. Please try again later.");
-        
       }
     }
   };
@@ -186,28 +175,41 @@ const Master = () => {
   const handleBankSubmit = async (e) => {
     e.preventDefault();
 
+    if (!accountNumber || isNaN(accountNumber)) {
+      alert("Please enter a valid account number.");
+      return;
+    }
+
+    if (accountNumber.length > 17) {
+      alert("Account number should be up to 17 digits.");
+      return;
+    }
+
+    if (banks.some(bank => bank.Account_Number === accountNumber)) {
+      alert("Account number already exists. Please enter a unique account number.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:5000/api/allbanks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ Bank_Name: bankName }),
+        body: JSON.stringify({ Bank_Name: bankName, Account_Number: accountNumber }),
       });
 
       if (response.ok) {
         alert("Bank added successfully.");
-        
         setBankName("");
+        setAccountNumber("");
         fetchBanks();
       } else {
         alert("Failed to add bank.");
-        
       }
     } catch (error) {
       console.error("Error adding bank:", error);
       alert("Failed to add bank. Please try again later.");
-      
     }
   };
 
@@ -230,16 +232,13 @@ const Master = () => {
 
         if (response.ok) {
           alert("Bank deleted successfully.");
-          
           fetchBanks();
         } else {
           alert("Failed to delete bank.");
-          
         }
       } catch (error) {
         console.error("Error deleting bank:", error);
         alert("Failed to delete bank. Please try again later.");
-        
       }
     }
   };
@@ -254,7 +253,6 @@ const Master = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[30%]">
           <h2 className="text-[35px] pl-[1em]">Master</h2>
-        
           <div className="row mb-2">
             <div className="col px-5">
               <Form>
@@ -324,7 +322,6 @@ const Master = () => {
                 <Form.Group controlId="event">
                   <div className="relative">
                     <label htmlFor="date">Add Events Name:</label>
-
                     <Form.Control
                       placeholder="Add Event Name Here..."
                       value={eventName}
@@ -392,6 +389,15 @@ const Master = () => {
                       placeholder="Add Bank Name Here..."
                       value={bankName}
                       onChange={(e) => setBankName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="relative">
+                    <label htmlFor="date">Add Account Number:</label>
+                    <Form.Control
+                      placeholder="Add Account Number Here..."
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
                       required
                     />
                   </div>

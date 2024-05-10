@@ -238,15 +238,7 @@ function AdvancePaymnetCus() {
             <Link to={'/advpaymentcus'}>
               <button className="btn btn-primary mr-4 mb-4">Customer Payment</button>
             </Link>
-            <Link to={'/costingform'}>
-              <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
-            </Link>
-            {/* <Link to={'/advpaymentmanager'}>
-          <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
-          </Link>
-          <Link to={'/viewadvpaymentmanager'}>
-          <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
-          </Link> */}
+            
           </div>
           <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (
@@ -348,20 +340,7 @@ function AdvancePaymnetCus() {
               </div>
             </div>
             <div className="col px-5">
-              {/* <Form.Group controlId="SelectEvent">
-                    <Form.Label>Events:</Form.Label>
-                    <div className="relative">
-                        <Form.Select
-                            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                            aria-label="Select Event"
-                            name="event"
-                            value={selectedEvent}
-                            disabled={!selectedCustomer}
-                        >
-                            <option>{selectedEvent || 'Event Name'}</option>
-                        </Form.Select>
-                    </div>
-                </Form.Group> */}
+             
 
               <div className="mb-3">
                 <label className="form-label">Total Amount:</label>

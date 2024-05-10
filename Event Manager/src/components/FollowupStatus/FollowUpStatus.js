@@ -206,7 +206,7 @@ const FollowUpStatus = () => {
                 <tr>
                   <th scope="col">Event Name</th>
                   <th scope="col">Event Date</th>
-                  <th scope="col"> Name</th>
+                  <th scope="col"> Customer Name</th>
                   <th scope="col"> Number</th>
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
@@ -283,7 +283,7 @@ const FollowUpStatus = () => {
                           className="form-check-input"
                           type="checkbox"
                           id="nofollowup"
-                          checked={checkBoxValues.checkbox1}
+                          checked={checkBoxValues.nofollowup}
                           onChange={handleCheckBoxChange}
                         />
                         <label className="form-check-label" htmlFor="nofollowup">
@@ -304,31 +304,6 @@ const FollowUpStatus = () => {
                         </label>
                       </div>
 
-                      {/* <div className="form-check mt-2">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="checkbox3"
-                          checked={checkBoxValues.checkbox3}
-                          onChange={handleCheckBoxChange}
-                        />
-                        <label className="form-check-label" htmlFor="checkbox3">
-                          Checkbox 3
-                        </label>
-                      </div>
-
-                      <div className="form-check mt-2">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="checkbox4"
-                          checked={checkBoxValues.checkbox4}
-                          onChange={handleCheckBoxChange}
-                        />
-                        <label className="form-check-label" htmlFor="checkbox4">
-                          Checkbox 4
-                        </label>
-                      </div> */}
                       <div className="form-group mt-2">
                         <label htmlFor="hotInput">Type Reason:</label>
                         <input
