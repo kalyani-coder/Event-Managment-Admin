@@ -121,15 +121,61 @@ const FollowUpStatus = () => {
     setHotInputValue(event.target.value);
   };
 
+  // const handleUpdateStatus = async () => {
+  //   try {
+  //     if (!enquiryId) {
+  //       console.error("No Enquiry ID available");
+  //       return;
+  //     }
+
+  //     let requestBody = { status: selectedStatus };
+
+  //     if (selectedStatus === "Work Not Received") {
+  //       // Check if hotInputValue is filled, if not, check checkbox values
+  //       if (hotInputValue.trim() !== "") {
+  //         requestBody.hot_input_value = hotInputValue;
+  //       } else {
+  //         // If hotInputValue is not filled, check which checkbox is checked
+  //         for (const checkbox in checkBoxValues) {
+  //           if (checkBoxValues[checkbox]) {
+  //             requestBody.hot_input_value = checkbox;
+  //             break; // Exit loop if a checkbox is found checked
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     const response = await axios.patch(
+  //       `http://localhost:5000/api/enquiry/${enquiryId}`,
+  //       requestBody
+  //     );
+
+  //     console.log("Status updated successfully:", response.data);
+
+  //     alert("Status updated successfully!");
+
+  //     if (selectedStatus === "Confirm") {
+  //       // Navigate only if the selected status is "Confirm"
+  //       navigate('/advpaymentcus');
+  //     }
+
+  //     setShowModal(false);
+  //   } catch (error) {
+  //     console.error("Error updating status:", error);
+  //   }
+  // };
+
+
+
   const handleUpdateStatus = async () => {
     try {
       if (!enquiryId) {
         console.error("No Enquiry ID available");
         return;
       }
-
+  
       let requestBody = { status: selectedStatus };
-
+  
       if (selectedStatus === "Work Not Received") {
         // Check if hotInputValue is filled, if not, check checkbox values
         if (hotInputValue.trim() !== "") {
@@ -144,26 +190,39 @@ const FollowUpStatus = () => {
           }
         }
       }
-
+  
       const response = await axios.patch(
         `http://localhost:5000/api/enquiry/${enquiryId}`,
         requestBody
       );
-
+  
       console.log("Status updated successfully:", response.data);
-
+  
       alert("Status updated successfully!");
-
       if (selectedStatus === "Confirm") {
-        // Navigate only if the selected status is "Confirm"
-        navigate('/advpaymentcus');
+        // Construct the URL with inquiry data as parameters
+        const inquiryDataParams = new URLSearchParams({
+          id: enquiryId,
+          event_name: filteredInquiries.event_name || "",
+          event_date: filteredInquiries.event_date ? format(new Date(filteredInquiries.event_date), "dd/MM/yyyy") : "",
+          customer_name: filteredInquiries.customer_name,
+          contact: filteredInquiries.contact,
+          status: filteredInquiries.status,
+          inquiryData: JSON.stringify(response.data) // Convert response.data to JSON string
+        });
+      
+        // Navigate to the new page with the constructed URL
+        navigate(`/advpaymentcus?${inquiryDataParams.toString()}`);
       }
-
+  
       setShowModal(false);
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
+
+
+
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -310,7 +369,7 @@ const FollowUpStatus = () => {
                           type="text"
                           className="form-control"
                           id="hotInput"
-                          placeholder="Type your reason here..."
+                          placeholder="Type here reason"
                           value={hotInputValue}
                           onChange={handleHotInputChange}
                         />
