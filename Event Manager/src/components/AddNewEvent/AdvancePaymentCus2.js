@@ -5,20 +5,8 @@ import Header from "../Sidebar/Header";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
-function AdvancePaymnetCus() {
-  const location = useLocation();
-
-  const { search } = location;
-  const queryParams = new URLSearchParams(search);
-  const inquiryData = JSON.parse(queryParams.get("inquiryData"));
-
-
-  useEffect(() => {
-    if (inquiryData) {
-      console.log("Inquiry data received:", inquiryData);
-
-    }
-  }, [inquiryData]);
+function AdvancePaymentCus2() {
+  
 
 
   const navigate = useNavigate("");
@@ -89,63 +77,63 @@ function AdvancePaymnetCus() {
   const managerId = localStorage.getItem('managerId')
 
   
-  const handleSave = () => {
-    const additionalPaymentDetails = {
-      ...(paymentMethod === "cheque" && {
-        cheque_number: chequeNumber,
-        whome_to_submit: submittedTo,
-        utrno_rtgs_id: utrNumber,
-      }),
-      ...(paymentMethod === "cash" && {
-        cash_whome_to_submit: cash,
-      }),
-      ...(paymentMethod === "netbanking" && {
-        transaction_id: transaction,
-      }),
-    };
+//   const handleSave = () => {
+//     const additionalPaymentDetails = {
+//       ...(paymentMethod === "cheque" && {
+//         cheque_number: chequeNumber,
+//         whome_to_submit: submittedTo,
+//         utrno_rtgs_id: utrNumber,
+//       }),
+//       ...(paymentMethod === "cash" && {
+//         cash_whome_to_submit: cash,
+//       }),
+//       ...(paymentMethod === "netbanking" && {
+//         transaction_id: transaction,
+//       }),
+//     };
     
 
-    const { customer_name, contact, event_name,event_date ,guest_quantity,event_venue,event_requirement,
+//     const { customer_name, contact, event_name,event_date ,guest_quantity,event_venue,event_requirement,
 
-    } = inquiryData;
-    const data = {
-      managerId : managerId,
-      clientId :inquiryData._id,
-      client_name: customer_name || '',
-      contact: contact || '',
-      event_name: event_name || '',
-      event_date : event_date || '' ,
-      venue : event_venue || '' ,
-      guest_number : guest_quantity || '' ,
-      event_requirement : event_requirement || '' ,
-      amount: totalAmount,
-      adv_payment: advancePayment,
-      rem_payment: remainingAmount,
-      payment_method: paymentMethod,
-      Bank_Name : selectedBank,
-      bank_Account_Number : accountNumber,
-      payment_date: formattedDate,
-      payment_time: currentTime,
-      ...additionalPaymentDetails,
+//     } = inquiryData;
+//     const data = {
+//       managerId : managerId,
+//       clientId :inquiryData._id,
+//       client_name: customer_name || '',
+//       contact: contact || '',
+//       event_name: event_name || '',
+//       event_date : event_date || '' ,
+//       venue : event_venue || '' ,
+//       guest_number : guest_quantity || '' ,
+//       event_requirement : event_requirement || '' ,
+//       amount: totalAmount,
+//       adv_payment: advancePayment,
+//       rem_payment: remainingAmount,
+//       payment_method: paymentMethod,
+//       Bank_Name : selectedBank,
+//       bank_Account_Number : accountNumber,
+//       payment_date: formattedDate,
+//       payment_time: currentTime,
+//       ...additionalPaymentDetails,
 
      
-    };
+//     };
 
 
-    axios
-      .post("http://localhost:5000/api/advpayment", data)
-      .then((response) => {
-        // Display alert box after successfully saving data
-        alert("Customer payment successfully.");
-        setShowModal(true);
-        fetchManagers();
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-        setAlertMessage("Failed to save customer payment.");
-        setAlertVariant("danger");
-      });
-  };
+//     axios
+//       .post("http://localhost:5000/api/advpayment", data)
+//       .then((response) => {
+//         // Display alert box after successfully saving data
+//         alert("Customer payment successfully.");
+//         setShowModal(true);
+//         fetchManagers();
+//       })
+//       .catch((error) => {
+//         console.error("Error saving data:", error);
+//         setAlertMessage("Failed to save customer payment.");
+//         setAlertVariant("danger");
+//       });
+//   };
 
 
 
@@ -197,6 +185,9 @@ function AdvancePaymnetCus() {
     }
   };
 
+const showMessage = () => {
+    alert("please make payment from followup status tab")
+}
 
   return (
     <>
@@ -229,7 +220,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.customer_name || ''}
 
                 />
               </div>
@@ -241,7 +231,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.contact || ''}
 
                 />
               </div>
@@ -255,7 +244,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.event_name || ''}
 
                 />
               </div>
@@ -267,7 +255,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.event_date || ''}
 
                 />
               </div>
@@ -281,7 +268,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.event_venue || ''}
 
 
                 />
@@ -294,7 +280,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.guest_quantity || ''}
 
 
                 />
@@ -308,7 +293,6 @@ function AdvancePaymnetCus() {
                 <input
                   type="text"
                   className="form-control"
-                  value={inquiryData.event_requirement || ''}
 
 
                 />
@@ -486,7 +470,7 @@ function AdvancePaymnetCus() {
             </div>
           </div>
 
-          <button className="manager-btn ms-4 mb-3" onClick={handleSave}>
+          <button className="manager-btn ms-4 mb-3" onClick={showMessage}>
             Save
           </button>
         </div>
@@ -495,4 +479,4 @@ function AdvancePaymnetCus() {
   );
 }
 
-export default AdvancePaymnetCus;
+export default AdvancePaymentCus2;

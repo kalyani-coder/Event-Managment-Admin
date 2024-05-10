@@ -253,9 +253,9 @@ export default function Sidenav() {
                 sx={{ display: "block" }}
                 onClick={(event) => handleClick(event, "Advance Payment")}
               >
-                <div className="menuitems-of-header ">
+                <div className="menuitems-of-header">
                   <Link
-                    to="/advpaymentcus"
+                    to="/advpaycus"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton

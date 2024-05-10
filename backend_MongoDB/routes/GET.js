@@ -75,7 +75,7 @@ router.get("/:table/:assign_manager_Id", async (req, res) => {
   }
 });
 // Bank Transfer api 
-router.get("/banktransper" , async(req, res) => {
+router.get("/banktransfer" , async(req, res) => {
   try{
 
     const BankTransper = await bankTransper.find()

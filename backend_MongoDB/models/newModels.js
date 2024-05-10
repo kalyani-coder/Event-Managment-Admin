@@ -59,13 +59,30 @@ const AdvPaymentSchema = new Schema({
   // UPI_id: String,
   // transaction_id: String,
 
+  clientId : {type :String},
+  managerId : {type : String},
+
   client_name: {
     type: String,
   },
+  contact: {type : String},
+
   event_name: {
     type: String,
   },
 
+  event_date: {
+    type :String
+  },
+  venue:{ 
+    type : String
+  },
+  guest_number: { 
+    type : String
+  },
+  event_requirement : {
+    type : String
+  },
   amount: {
     type: Number,
   },
@@ -75,36 +92,36 @@ const AdvPaymentSchema = new Schema({
   rem_payment: {
     type: Number,
   },
-  payment_date: {
-    type: String,
-  },
-  payment_time: {
-    type: String,
-  },
   payment_method: {
     type: String,
   },
   cheque_number: {
     type: String
   },
-  whome_to_submit: {
-    type: String
+
+  cash_whome_to_submit: {
+    type : String
   },
-  utrno_rtgs_id: {
-    type: String
+  transaction_id: {
+    type : String
   },
-  details: {
-    type: String
+
+  payment_date: {
+    type: String,
   },
-  cash_whome_to_submit: String,
-  transaction_id: String,
-  contact: String,
-  event_Type: String,
-  guest_number: String,
-  venue: String,
-  event_date: String,
-  Bank_Name :String,
+  payment_time: {
+    type: String,
+  },
+  Bank_Name :{
+    type : String
+
+  },
+  bank_Account_Number : {
+    type : String
+  },
+  
 });
+
 
 const EventSchema = new Schema({
   eventName: String,
@@ -414,11 +431,12 @@ const managerTask = new Schema({
 
 const bankTransper = new Schema({
 
-  type : {type : String},
-  name : {type : String},
-  Id : {type : String},
-  bankName : {type : String},
+  from_bank : {type : String},
+  from_bank_accountNu : {type : Number},
+  to_bank : {type : String},
+  to_bank_accountNu : {type : Number},
   amount : {type : Number},
+  date: { type: String, default: () => new Date().toLocaleDateString() }
   
 })
 

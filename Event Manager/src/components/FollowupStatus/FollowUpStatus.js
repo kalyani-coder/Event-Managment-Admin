@@ -265,7 +265,7 @@ const FollowUpStatus = () => {
                 <tr>
                   <th scope="col">Event Name</th>
                   <th scope="col">Event Date</th>
-                  <th scope="col"> Customer Name</th>
+                  <th scope="col"> Name</th>
                   <th scope="col"> Number</th>
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
@@ -342,7 +342,7 @@ const FollowUpStatus = () => {
                           className="form-check-input"
                           type="checkbox"
                           id="nofollowup"
-                          checked={checkBoxValues.nofollowup}
+                          checked={checkBoxValues.checkbox1}
                           onChange={handleCheckBoxChange}
                         />
                         <label className="form-check-label" htmlFor="nofollowup">
@@ -363,6 +363,9 @@ const FollowUpStatus = () => {
                         </label>
                       </div>
 
+                     
+
+                      
                       <div className="form-group mt-2">
                         <label htmlFor="hotInput">Type Reason:</label>
                         <input

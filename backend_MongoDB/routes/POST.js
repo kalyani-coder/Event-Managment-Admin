@@ -56,19 +56,22 @@ router.post("/allbanks" , async(req, res) => {
 
 
 // bank Transper post route 
-router.post("/banktransper" , async(req, res) => {
-  const newBanktransper = new bankTransper(req.body)
-  try{
+router.post("/banktransfer", async (req, res) => {
+  const newBanktransper = new bankTransper({
+    from_bank: req.body.from_bank,
+    from_bank_accountNu: req.body.from_bank_accountNu,
+    to_bank: req.body.to_bank,
+    to_bank_accountNu: req.body.to_bank_accountNu,
+    amount: req.body.amount
+  });
 
-    const addTransper = await newBanktransper.save()
-    res.status(201).json({message : "Bank Transper successfully"})
-
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
-
+  try {
+    const addTransper = await newBanktransper.save();
+    res.status(201).json({ message: "Bank Transfer successful" });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" });
   }
-})
-
+});
 // manager task api post route 
 router.post('/managertask', async (req, res) => {
   try {
