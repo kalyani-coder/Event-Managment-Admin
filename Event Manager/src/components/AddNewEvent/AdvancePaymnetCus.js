@@ -6,10 +6,23 @@ import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
 function AdvancePaymnetCus() {
+  const location = useLocation();
+
+  const { search } = location;
+  const queryParams = new URLSearchParams(search);
+  const inquiryData = JSON.parse(queryParams.get("inquiryData"));
+
+
+  useEffect(() => {
+    if (inquiryData) {
+      console.log("Inquiry data received:", inquiryData);
+
+    }
+  }, [inquiryData]);
+
+
   const navigate = useNavigate("");
-  const [cusName, setCusName] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
-  const [selectedEvent, setSelectedEvent] = useState("");
   const [totalAmount, setTotalAmount] = useState(null);
   const [advancePayment, setAdvancePayment] = useState(null);
   const [remainingAmount, setRemainingAmount] = useState(null);
@@ -20,31 +33,6 @@ function AdvancePaymnetCus() {
   const [selectedBank, setSelectedBank] = useState("");
 
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/event");
-        setCusName(response.data);
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-      }
-    };
-
-    fetchCustomers();
-  }, []);
-
-  const handleCustomerSelect = (e) => {
-    setSelectedCustomer(e.target.value);
-
-    const customerDetails = cusName.find(
-      (item) => item.fname === e.target.value
-    );
-    if (customerDetails) {
-      setSelectedCustomerDetails(customerDetails);
-    } else {
-      setSelectedCustomerDetails({});
-    }
-  };
 
   const handleTotalAmountChange = (event) => {
     setTotalAmount(parseFloat(event.target.value));
@@ -113,28 +101,29 @@ function AdvancePaymnetCus() {
       }),
     };
 
+    const { customer_name, contact, event_name } = inquiryData;
     const data = {
-      client_name: selectedCustomer,
-      event_name: selectedCustomerDetails.eventName,
-      contact: selectedCustomerDetails.contact,
-      event_Type: selectedCustomerDetails.event_Type,
-      guest_number: selectedCustomerDetails.guest_number,
-      venue: selectedCustomerDetails.venue,
-      event_date: selectedCustomerDetails.event_date,
+      client_name: customer_name || '',
+      event_name: event_name || '',
+      contact: contact || '',
+      // event_Type: selectedCustomerDetails.event_Type,
+      // guest_number: selectedCustomerDetails.guest_number,
+      // venue: selectedCustomerDetails.venue,
+      // event_date: selectedCustomerDetails.event_date,
       amount: totalAmount,
       adv_payment: advancePayment,
       rem_payment: remainingAmount,
       payment_date: formattedDate,
       payment_time: currentTime,
       payment_method: paymentMethod,
-      customer_name: selectedCustomerDetails.customer_name,
-      contact: selectedCustomerDetails.contact,
-      email: selectedCustomerDetails.email,
-      date: selectedCustomerDetails.date,
-      venue: selectedCustomerDetails.venue,
-      event_name: selectedCustomerDetails.event_name,
-      event_Type: selectedCustomerDetails.event_Type,
-      guest_Number: selectedCustomerDetails.guest_Number,
+      // customer_name: selectedCustomerDetails.customer_name,
+      // contact: selectedCustomerDetails.contact,
+      // email: selectedCustomerDetails.email,
+      // date: selectedCustomerDetails.date,
+      // venue: selectedCustomerDetails.venue,
+      // event_name: selectedCustomerDetails.event_name,
+      // event_Type: selectedCustomerDetails.event_Type,
+      // guest_Number: selectedCustomerDetails.guest_Number,
       assign_manager_name: "",
       assign_manager_Id: "",
       Bank_Name: selectedBank,
@@ -157,6 +146,8 @@ function AdvancePaymnetCus() {
       });
   };
 
+
+
   const fetchManagers = () => {
     axios
       .get("http://localhost:5000/api/addmanager")
@@ -168,45 +159,6 @@ function AdvancePaymnetCus() {
       });
   };
 
-  const handleAssign = () => {
-    if (selectedManager) {
-      const manager = JSON.parse(selectedManager);
-      console.log("manager", manager);
-
-      const transactionData = {
-        date_of_transaction: currentDate.toISOString().split("T")[0],
-      };
-
-      const data = {
-        customer_name: selectedCustomer,
-        contact: selectedCustomerDetails.contact,
-        email: selectedCustomerDetails.email,
-        date: selectedCustomerDetails.event_date,
-        venue: selectedCustomerDetails.venue,
-        event_name: selectedCustomerDetails.eventName,
-        event_Type: selectedCustomerDetails.event_type,
-        guest_Number: selectedCustomerDetails.guest_number,
-        assign_manager_name: manager.fname + " " + manager.lname,
-        assign_manager_Id: manager._id,
-        transaction_details: transactionData,
-      };
-
-    
-      axios
-        .post("http://localhost:5000/api/order", data)
-        .then((response) => {
-          console.log("Data assigned to manager successfully:", response.data);
-          setShowModal(false);
-          alert("Data assigned to manager successfully.");
-          setAlertVariant("success");
-        })
-        .catch((error) => {
-          console.error("Error assigning data to manager:", error);
-          setAlertMessage("Failed to assign data to manager.");
-          setAlertVariant("danger");
-        });
-    }
-  };
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -224,7 +176,7 @@ function AdvancePaymnetCus() {
   const handleBankSelect = (event) => {
     setSelectedBank(event.target.value);
   };
-  
+
 
   return (
     <>
@@ -241,12 +193,7 @@ function AdvancePaymnetCus() {
             <Link to={'/costingform'}>
               <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
             </Link>
-            {/* <Link to={'/advpaymentmanager'}>
-          <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
-          </Link>
-          <Link to={'/viewadvpaymentmanager'}>
-          <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
-          </Link> */}
+
           </div>
           <h2 className="text-[30px] pl-[1em]">Advance Payment Form</h2>
           {alertMessage && (
@@ -254,114 +201,101 @@ function AdvancePaymnetCus() {
               <Alert variant={alertVariant}>{alertMessage}</Alert>
             </div>
           )}
+
           <div className="row mb-2">
             <div className="col px-5">
-              <Form.Group controlId="SelectCustomer">
-                <Form.Label>Select Customers:</Form.Label>
-                <div className="relative">
-                  <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                    aria-label="Select Customer"
-                    name="customer"
-                    onChange={handleCustomerSelect}
-                  >
-                    <option>Select Customer</option>
-                    {cusName.map((cus) => (
-                      <option key={cus._id} value={cus.fname}>
-                        {cus.fname}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </div>
-              </Form.Group>
-            </div>
-            <div className="col px-5">
               <div className="mb-3">
-                <label className="form-label">Event Name</label>
+                <label className="form-label">Customer Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={selectedCustomerDetails.eventName || ""}
-                  readOnly
+                  value={inquiryData.customer_name || ''}
+
                 />
               </div>
             </div>
-          </div>
-          <div className="row mb-2">
+
             <div className="col px-5">
               <div className="mb-3">
                 <label className="form-label">Contact</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={selectedCustomerDetails.contact || ""}
-                  readOnly
+                  value={inquiryData.contact || ''}
+
                 />
               </div>
             </div>
-            <div className="col px-5">
-              <div className="mb-3">
-                <label className="form-label">Event Type</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={selectedCustomerDetails.event_type || ""}
-                  readOnly
-                />
-              </div>
-            </div>
+
           </div>
           <div className="row mb-2">
             <div className="col px-5">
               <div className="mb-3">
-                <label className="form-label">Guest Number</label>
+                <label className="form-label">Event Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={selectedCustomerDetails.guest_number || ""}
-                  readOnly
+                  value={inquiryData.event_name || ''}
+
                 />
               </div>
             </div>
-            <div className="col px-5">
-              <div className="mb-3">
-                <label className="form-label">Venue</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={selectedCustomerDetails.venue || ""}
-                  readOnly
-                />
-              </div>
-            </div>
-          </div>
-          <div className="row mb-2">
+
             <div className="col px-5">
               <div className="mb-3">
                 <label className="form-label">Event Date</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={selectedCustomerDetails.event_date || ""}
-                  readOnly
+                  value={inquiryData.event_date || ''}
+
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Venue</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={inquiryData.event_venue || ''}
+
+
+                />
+              </div>
+            </div>
+
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Guest Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={inquiryData.guest_quantity || ''}
+
+
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Event Requirements</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={inquiryData.event_requirement || ''}
+
+
                 />
               </div>
             </div>
             <div className="col px-5">
-              {/* <Form.Group controlId="SelectEvent">
-                    <Form.Label>Events:</Form.Label>
-                    <div className="relative">
-                        <Form.Select
-                            className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-                            aria-label="Select Event"
-                            name="event"
-                            value={selectedEvent}
-                            disabled={!selectedCustomer}
-                        >
-                            <option>{selectedEvent || 'Event Name'}</option>
-                        </Form.Select>
-                    </div>
-                </Form.Group> */}
+
 
               <div className="mb-3">
                 <label className="form-label">Total Amount:</label>
@@ -464,9 +398,6 @@ function AdvancePaymnetCus() {
                         />
                       </div>
                     </div>
-
-
-
                   </>
                 )}
               </div>
@@ -519,36 +450,6 @@ function AdvancePaymnetCus() {
           <button className="manager-btn ms-4 mb-3" onClick={handleSave}>
             Save
           </button>
-
-          {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
-            <Modal.Header closeButton style={{ marginTop: "30px" }}>
-              <Modal.Title>Assign to Manager</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Select
-                value={selectedManager}
-                onChange={(e) => setSelectedManager(e.target.value)}
-              >
-                <option value="">Select Manager</option>
-                {managers.map((manager) => (
-                  <option
-                    key={manager.manager_Id}
-                    value={JSON.stringify(manager)}
-                  >
-                    {manager.fname} {manager.lname}
-                  </option>
-                ))}
-              </Form.Select>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleAssign}>
-                Assign
-              </Button>
-            </Modal.Footer>
-          </Modal> */}
         </div>
       </div>
     </>

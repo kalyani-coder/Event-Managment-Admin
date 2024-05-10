@@ -428,10 +428,16 @@ const allBanksAccounts = new Schema({
 
 })
 
+const venueSchema = new Schema({
+  venue : {type : String, required : true},
+
+})
+
 
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
+  venue : mongoose.model("allvenue" ,venueSchema),
   bankTransper : mongoose.model("BankTransfer", bankTransper),
   allBanks : mongoose.model("AllBanks" , allBanksAccounts),
   ManagerTask : mongoose.model("ManagerTask", managerTask),

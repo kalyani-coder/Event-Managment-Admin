@@ -5,9 +5,22 @@ const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks} =  require('../models/newModels')
 const {AddEventMaster,advancePaymantManager} =  require('../models/newModels')
-const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper, allBanks} = require("../models/newModels");
+const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper, allBanks, venue} = require("../models/newModels");
 
 
+// delete route for venue 
+router.delete("/venue/:id" , async(req, res) => {
+
+  const venueId = req.params.id
+  try{
+
+    const deletedVenue = await venue.findByIdAndDelete(venueId)
+    res.status(201).json({message : "Venue Deleted successfully"})
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
 // delete route for all bank accounts 
 router.delete("/allbanks/:id" , async( req, res) => {
   const bankId = req.params.id
