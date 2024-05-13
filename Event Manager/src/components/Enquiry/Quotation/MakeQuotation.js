@@ -1,275 +1,50 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
 import myImage from "./logo.png";
 import Header from "../../Sidebar/Header";
 
 function QuotationForm() {
-  const [vendorNames, setVendorNames] = useState([]);
-  const [selectedVendor, setSelectedVendor] = useState("");
-  const [vendorPrices, setVendorPrices] = useState({});
-  const [selectedStockPrice, setSelectedStockPrice] = useState(null);
-  const [selectedStock, setSelectedStock] = useState("");
-  const [selectedStockInfo, setSelectedStockInfo] = useState(null);
-  const [selectedVendorName, setSelectedVendorName] = useState("");
-
-  const [stockList, setStockList] = useState([]);
+  const [rows, setRows] = useState([{ id: 0, qty: 0, price: 0, total: 0 }]);
+  const [tax, setTax] = useState(0);
+  const [cgstChecked, setCgstChecked] = useState(false);
+  const [sgstChecked, setSgstChecked] = useState(false);
+  const [cgst, setCgst] = useState(0);
+  const [sgst, setSgst] = useState(0);
+  const Stock_Quantity = 100;
+  const [TransportTypeValue, setTransportTypeValue] = useState("");
+  const [transportValue, setTransportValue] = useState("");
+  const [descriptionValue, setDescriptionValue] = useState("");
+  const [vendorData, setVendorData] = useState([]);
+  const [stockData, setStockData] = useState([]);
   const [vendorList, setVendorList] = useState([]);
+  const [selectedVendor, setSelectedVendor] = useState("");
+  const [selectedVendorName, setSelectedVendorName] = useState("");
+  const [selectedStock, setSelectedStock] = useState("");
+  const [selectedStockPrice, setSelectedStockPrice] = useState(null);
+  const [stockList, setStockList] = useState([]);
 
-  const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
-
-  const location = useLocation();
-
-  const { enquiry } = location.state || {};
-
-  // new
-
-  useEffect(() => {
-    // Fetch the list of vendors from the first API
-    fetch("http://localhost:5000/api/addvendor")
-      .then((response) => response.json())
-      .then((data) => setVendorList(data))
-      .catch((error) => console.error("Error fetching vendors:", error));
-  }, []);
-
-  useEffect(() => {
-    // Fetch the stock list based on the selected vendor
-    if (selectedVendor) {
-      fetch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`
-      )
-        .then((response) => response.json())
-        .then((data) => setStockList(data))
-        .catch((error) => console.error("Error fetching stock list:", error));
-    }
-  }, [selectedVendor]);
-
-  const handleVendorChange = (e) => {
-    const selectedVendorId = e.target.value;
-    const selectedVendor = vendorList.find(
-      (vendor) => vendor._id === selectedVendorId
-    );
-
-    setSelectedVendor(selectedVendorId);
-    setSelectedVendorName(selectedVendor ? selectedVendor.Vendor_Name : "");
-
-    // Reset selected stock and price when the vendor changes
-    setSelectedStock("");
-    setSelectedStockPrice(null);
-  };
-
-  const handleStockChange = (e) => {
-    const selectedStock = e.target.value;
-    setSelectedStock(selectedStock);
-
-    // Find the selected stock in the stock list and set its price
-    const selectedStockInfo = stockList.find(
-      (stock) => stock.Stock_Name === selectedStock
-    );
-    if (selectedStockInfo) {
-      setSelectedStockPrice(selectedStockInfo.Price);
-    } else {
-      setSelectedStockPrice(null); // Reset if the selected stock is not found
-    }
-  };
-
-  useEffect(() => {
-    if (selectedVendor && selectedStock) {
-      // Find the selected stock in the stock list
-      const stockInfo = stockList.find(
-        (stock) => stock.Stock_Name === selectedStock
-      );
-      if (stockInfo) {
-        setSelectedStockInfo(stockInfo);
-      }
-    }
-  }, [selectedVendor, selectedStock, stockList]);
-
-  const handleUpdateQuantity = async (index) => {
-    try {
-      // Ensure that both the vendor and stock are selected
-      if (!selectedVendor || !selectedStockInfo) {
-        alert("Please select a vendor and stock before updating quantity.");
-        return;
-      }
-
-      // Get the vendor and stock IDs
-      const vendorId = selectedVendor;
-      const stockName = selectedStock;
-
-      // Prepare the data for the PATCH request
-      const updatedQuantity = sections[index].quantity;
-
-      // Send a PATCH request to update stock quantity
-      await axios.patch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`,
-        {
-          quantity: updatedQuantity,
-        }
-      );
-
-      alert("Quantity updated successfully!");
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      alert("Error updating quantity. Please try again.");
-    }
-  };
-
-  // old code start here
-  useEffect(() => {
-    console.log("Location state:", location.state);
-    console.log("Enquiry data:", enquiry);
-  }, [location.state, enquiry]);
-  // const eventName = enquiry.event_name || "";
-
-  const [sections, setSections] = useState([
-    {
-      srNumber: 1,
-      title: "",
-      particular: "",
-      transport: "",
-      description: "",
-      entity: "",
-      unit: "",
-      rate: "",
-      days: "",
-      amount: "",
-    },
-  ]);
-
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    const newSections = [...sections];
-
-    // Update the corresponding field in the section
-    newSections[index] = {
-      ...newSections[index],
-      [name]: value,
-    };
-
-    // Calculate the amount if both "Rate/Days" and "Days" fields are filled
-    if (name === "days") {
-      const ratePerDays = parseFloat(newSelectedStockPriceValue);
-      const days = parseFloat(value);
-      if (!isNaN(ratePerDays) && !isNaN(days)) {
-        newSections[index].amount = (ratePerDays * days).toFixed(2);
-      } else {
-        newSections[index].amount = "";
-      }
-    }
-
-    // Update the state with the modified sections
-    setSections(newSections);
-  };
-
-
- 
-  const handlePrint = () => {
-    const doc = new jsPDF();
-
-    doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
-
-    // Print Customer Data
-    const customerData = [
-      ["Customer Name", enquiry.customer_name || "-"],
-      ["Customer Address", enquiry.address || "-"],
-      ["Event Date", enquiry.event_date || "-"],
-      ["Event Venue", enquiry.event_venue || "-"],
-    ];
-
-    const companyData = [
-      ["Company Name", "Tutons Events LLP"],
-      [
-        "Company Address",
-        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
-      ],
-      ["Company Phone", "9225522123 / 9226061234"],
-      ["Company Email", "tutonsevents@gmail.com"],
-    ];
-
-    const customerTableX = 30;
-    const customerTableY = 40;
-
-    const companyTableX = 105;
-    const companyTableY = 40;
-
-    const pageWidth = doc.internal.pageSize.width;
-    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
-
-    doc.autoTable({
-      body: customerData,
-      startY: customerTableY,
-      theme: "grid",
-      margin: { right: companyData },
-    });
-
-    const imageWidth = 40;
-    const imageHeight = 30;
-    const imageX = 120;
-    const imageY = 10;
-    doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
-
-    doc.autoTable({
-      body: companyData,
-      startY: companyTableY,
-      theme: "grid",
-      margin: { left: companyTableX },
-    });
-
-    // Print Sections Data
-    const tableData = sections.map((section, index) => [
-      section.srNumber,
-      section.title,
-      section.particular,
-      section.description,
-      section.unit,
-      section.rateper_Days,
-      section.days,
-      section.amount,
-    ]);
-
-    doc.autoTable({
-      head: [
-        [
-          "SR Number",
-          "Title of Section",
-          "Particular",
-          "Description",
-          "Unit",
-          "Rate",
-          "Days",
-          "Amount",
-        ],
-      ],
-      body: tableData,
-      startY: 110,
-    });
-
-    doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-    alert("PDF file generated");
-  };
-
-  // new
+  //*css*/`
   const [stockNames, setStockNames] = useState([]);
-  const [newSelectedStock, setNewSelectedStock] = useState("");
-  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] =
-    useState("");
-  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] =
-    useState("");
+  const [vendorNames, setVendorNames] = useState([]);
   const [newstocksData, setNewStocksData] = useState([]);
-  const [newselectedVendor, setNewSelectedVendor] = useState("");
+  const [newSelectedStock, setNewSelectedStock] = useState("");
+  const [newSelectedVendor, setNewSelectedVendor] = useState("");
+  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] = useState("");
+  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] = useState("");
+  
 
+  //
   useEffect(() => {
-    fetch("http://localhost:5000/api/inventory-stocks")
-      .then((response) => response.json())
-      .then((data) => {
-        const names = data.map((stock) => stock.Stock_Name);
+    axios.get("http://localhost:5000/api/inventory-stocks")
+      .then(response => {
+        const data = response.data;
+        const names = data.map(stock => stock.Stock_Name);
         setStockNames(names);
         setNewStocksData(data);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch(error => console.error("Error fetching data:", error));
   }, []);
 
   const newhandleStockChange = (e) => {
@@ -277,17 +52,10 @@ function QuotationForm() {
     setNewSelectedStock(selectedStockName);
 
     // Filter vendors associated with the selected stock
-    const selectedStockData = newstocksData.find(
-      (stock) => stock.Stock_Name === selectedStockName
-    );
-    if (selectedStockData) {
-      const vendors = newstocksData
-        .filter((stock) => stock.Stock_Name === selectedStockName)
-        .map((stock) => stock.Vendor_Name);
-      setVendorNames(vendors);
-    } else {
-      setVendorNames([]);
-    }
+    const vendors = newstocksData
+      .filter(stock => stock.Stock_Name === selectedStockName)
+      .map(stock => stock.Vendor_Name);
+    setVendorNames(vendors);
   };
 
   const newhandleVendorChange = (e) => {
@@ -296,7 +64,7 @@ function QuotationForm() {
 
     // Find the selected vendor's data
     const selectedVendorData = newstocksData.find(
-      (stock) =>
+      stock =>
         stock.Vendor_Name === selectedVendorName &&
         stock.Stock_Name === newSelectedStock
     );
@@ -309,224 +77,337 @@ function QuotationForm() {
     }
   };
 
-  const [updateQuantity, setUpdateQuantity] = useState("");
+  const handleAddRow = () => {
+    const newRow = { id: rows.length, qty: 0, price: 0, total: 0 };
+    setRows([...rows, newRow]);
+  };
 
-  const handleNewUpdateQuantity = async (e) => {
-    e.preventDefault();
-    try {
-      const vendorId = document.getElementById("vendorName").value;
-      const quantity = document.getElementById("updateQuantity").value;
-
-      // Send PATCH request to update stock quantity
-      const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ quantity }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to update stock quantity");
-      }
-
-      // Optionally, you can handle the response here
-      const data = await response.json();
-      console.log("Stock quantity updated successfully:", data);
-      alert("Stock quantity updated successfully:", data);
-
-      // Clear input field after successful update
-    } catch (error) {
-      console.error("Error updating stock quantity:", error);
-      // Handle error as needed
+  const handleDeleteRow = () => {
+    if (rows.length > 1) {
+      setRows(rows.slice(0, -1));
     }
   };
+
+  const calcTotal = () => {
+    return rows.reduce((acc, row) => acc + row.total, 0);
+  };
+
+  const calcTaxAmount = () => {
+    return calcTotal() * (tax / 100);
+  };
+
+  const calcGrandTotal = () => {
+    return calcTotal() + calcTaxAmount();
+  };
+  const handleChange = () => {
+    
+  }
+
   return (
     <>
       <Header />
       <div
-        className="w-full h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+        className="w-full  h-screen
+        flex items-center justify-center  overflow-y-auto"
       >
-        <div className="md:h-[80vh] h-[80vh] md:w-[50%] ">
-          <h1 className="text-[35px] pl-[1em]">
-            Quotation Form Of
-            <span className="text-dark fs-1"> {enquiry.customer_name}</span>
-          </h1>
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <h2 className="text-[35px]">Quotation Form</h2>
+          <div className="row clearfix">
+            <div className="col-md-12 mt-6">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic"
+              >
+                <thead>
+                  <tr>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Stockname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Vendorname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "10%" }}>
+                      {" "}
+                      Qty{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Unit{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Rate{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Days{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "10%" }}>
+                      {" "}
+                      Amount{" "}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, index) => (
+                    <tr key={row.id}>
+                      <td style={{ width: "15%" }}>
+                        <select
+                          className="form-control"
+                          id="stockName"
+                          onChange={newhandleStockChange}
+                          value={newSelectedStock} // Ensure selected value is managed
+                        >
+                          <option value="">Select Stock</option>
+                          {stockNames.map((stockName) => (
+                            <option key={stockName} value={stockName}>
+                              {stockName}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td style={{ width: "10%" }}>
+                        <select
+                          className="form-control"
+                          id="vendorName"
+                          onChange={newhandleVendorChange}
+                          value={newSelectedVendor} // Ensure selected value is managed
+                        >
+                          <option value="">Select Vendor</option>
+                          {vendorNames.map((vendor) => (
+                            <option key={vendor} value={vendor}>
+                              {vendor}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.unit}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "unit",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control unit"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
 
-          {sections.map((section, index) => (
-            <div key={index} className="mb-4">
-              <div className="form-row">
-                <div className="entity"></div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label htmlFor="quantity">Select Stockname </label>
-                  <select
-                    className="form-control"
-                    id="stockName"
-                    onChange={newhandleStockChange}
-                  >
-                    <option value="">Select Stock</option>
-                    {stockNames.map((stockName) => (
-                      <option key={stockName} value={stockName}>
-                        {stockName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="vendorName">Vendor Names </label>
-                  <select
-                    className="form-control"
-                    id="vendorName"
-                    onChange={newhandleVendorChange}
-                  >
-                    <option value="">Select Vendor</option>
-                    {vendorNames.map((vendor) => (
-                      <option key={vendor} value={vendor}>
-                        {vendor}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label htmlFor="price">Rate/Days </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="price"
-                    value={newSelectedStockPriceValue}
-                    readOnly
-                  />
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="quantity">Quantity </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="quantity"
-                    value={newSelectedStockQuantityValue}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <label>
-                    Unit:<span style={{ color: "red" }}></span>
-                  </label>
-                  <div style={{ position: "relative" }}>
-                    <input
-                      className="form-control"
-                      value={section.unit || ""}
-                      name="unit"
-                      type="text"
-                      placeholder="Enter value"
-                      style={{ paddingRight: "50px" }}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                  <label htmlFor="updateQuantity">Update Quantity</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="updateQuantity"
-                    value={updateQuantity}
-                    onChange={(e) => setUpdateQuantity(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="form-group row-md-3 mt-3 ">
-                <button
-                  className="manager-btn ms-4"
-                  onClick={handleNewUpdateQuantity}
-                >
-                  Update Quantity
-                </button>
-                <button className="manager-btn ms-4">Add Stocks</button>
-              </div>
-
-
-              
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`days${index}`}>Days:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Total days"
-                      id={`days${index}`}
-                      name="days"
-                      value={sections[index].days}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                 
-
-                  <div className="form-group">
-                    <label htmlFor={`transport${index}`}>Transport:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`transport${index}`}
-                      name="transport"
-                      value={section.transport}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`description${index}`}>Description:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`description${index}`}
-                      name="description"
-                      value={section.description}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor={`amount${index}`}>Amount:</label>
-                    <input
-                      type="text"
-                      placeholder="Total Amount"
-                      className="form-control"
-                      id={`amount${index}`}
-                      name="amount"
-                      value={sections[index].amount}
-                      onChange={(e) => handleChange(e, index)}
-                    />
-                  </div>
-                </div>
-              </div>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.rate}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "rate",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control rate"
+                          step="0"
+                          min="0"
+                        />
+                        <div style={{ color: "green" }}>
+                          Price: {Stock_Quantity}
+                        </div>
+                      </td>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.days}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "days",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control days"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
+                      <td style={{ width: "10%" }}>
+                        <input
+                          type="number"
+                          value={row.total}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "total",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control total"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          ))}
+          </div>
+          <div className="row clearfix">
+            <div className="col-md-12">
+              <button
+                onClick={handleAddRow}
+                className="btn btn-default pull-left"
+              >
+                Add Stock
+              </button>
+              {/* <button
+                onClick={handleDeleteRow}
+                className="pull-right btn btn-default"
+              >
+                Delete Row
+              </button> */}
+            </div>
+          </div>
+          <div className="row clearfix" style={{ marginTop: "20px" }}>
+            <div className="col-md-6">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic_total"
+              >
+                <tbody>
+                  <tr>
+                    <th className="text-center">Transport Type</th>
+                    <td className="text-center">
+                      <input
+                        type="number"
+                        value={TransportTypeValue}
+                        onChange={(e) =>
+                          setTransportTypeValue(parseInt(e.target.value))
+                        }
+                        className="form-control"
+                        placeholder="Enter Transport"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Transport Charges</th>
+                    <td className="text-center">
+                      <input
+                        type="number"
+                        value={transportValue}
+                        onChange={(e) => setTransportValue(e.target.value)}
+                        className="form-control"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Description</th>
+                    <td className="text-center">
+                      <input
+                        type="text"
+                        value={descriptionValue}
+                        onChange={(e) => setDescriptionValue(e.target.value)}
+                        className="form-control"
+                        placeholder="Description"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="col-md-2"></div>
+            <div className="col-md-4">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic_total"
+              >
+                <tbody>
+                  <tr>
+                    <th className="text-center">Sub Total</th>
+                    <td className="text-center">{calcTotal()}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">GST</th>
+                    <td className="text-center">
+                      <input
+                        type="checkbox"
+                        id="cgstCheckbox"
+                        checked={cgstChecked}
+                        onChange={(e) => setCgstChecked(e.target.checked)}
+                      />
+                      <label htmlFor="cgstCheckbox">CGST</label>
 
-          {/* <button className="manager-btn ms-4" onClick={handleAddSection}>
-            Add Item
-          </button> */}
-          {/* <button className="manager-btn ms-4" onClick={handleSave}>
-            View & Save
-          </button> */}
-          <button className="manager-btn ms-4" onClick={handlePrint}>
-            Print
-          </button>
+                      <input
+                        type="checkbox"
+                        id="sgstCheckbox"
+                        checked={sgstChecked}
+                        onChange={(e) => setSgstChecked(e.target.checked)}
+                        style={{ marginLeft: "10px" }}
+                      />
+                      <label htmlFor="sgstCheckbox">SGST</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">CGST</th>
+                    <td className="text-center">
+                      {cgstChecked && (
+                        <input
+                          type="number"
+                          value={cgst}
+                          onChange={(e) => setCgst(parseInt(e.target.value))}
+                          className="form-control"
+                          placeholder="0"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">SGST</th>
+                    <td className="text-center">
+                      {sgstChecked && (
+                        <input
+                          type="number"
+                          value={sgst}
+                          onChange={(e) => setSgst(parseInt(e.target.value))}
+                          className="form-control"
+                          placeholder="0"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Total Amount</th>
+                    <td className="text-center">{calcTaxAmount()}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="row clearfix" style={{ marginTop: "20px" }}>
+            <div className="col-md-12">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  // Logic to view the quotation
+                }}
+              >
+                View & Save
+              </button>
+              <button
+                className="btn btn-success ml-2"
+                onClick={() => {
+                  // Logic to save and print the quotation
+                }}
+              >
+                Print
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>

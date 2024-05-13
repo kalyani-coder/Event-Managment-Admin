@@ -1,0 +1,44 @@
+#tab_logic .form-control[readonly],#tab_logic_total .form-control[readonly] {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0 10px;
+    /* font-size: 15px; */
+}
+.title {
+    text-align: center;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .trash-icon {
+    width: 5%;
+  }
+  
+  .avia-qty,
+  .price-info {
+    color: green;
+  }
+  
+  .row {
+    margin-top: 20px;
+  }
+  
+  .btn-default {
+    margin-right: 10px;
+  }
+  

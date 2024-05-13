@@ -1,579 +1,447 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
 import myImage from "./logo.png";
 import Header from "../../Sidebar/Header";
 
 function QuotationForm() {
-  const [vendorNames, setVendorNames] = useState([]);
-  const [selectedVendor, setSelectedVendor] = useState("");
-  const [vendorPrices, setVendorPrices] = useState({});
-  const [selectedStockPrice, setSelectedStockPrice] = useState(null);
-  const [selectedStock, setSelectedStock] = useState("");
-  const [selectedStockInfo, setSelectedStockInfo] = useState(null);
-  const [selectedVendorName, setSelectedVendorName] = useState("");
-
-  const [stockList, setStockList] = useState([]);
+  const [rows, setRows] = useState([{ id: 0, qty: 0, price: 0, total: 0 }]);
+  const [tax, setTax] = useState(0);
+  const [cgstChecked, setCgstChecked] = useState(false);
+  const [sgstChecked, setSgstChecked] = useState(false);
+  const [cgst, setCgst] = useState(0);
+  const [sgst, setSgst] = useState(0);
+  const Stock_Quantity = 100;
+  const [TransportTypeValue, setTransportTypeValue] = useState("");
+  const [transportValue, setTransportValue] = useState("");
+  const [descriptionValue, setDescriptionValue] = useState("");
+  const [vendorData, setVendorData] = useState([]);
+  const [stockData, setStockData] = useState([]);
   const [vendorList, setVendorList] = useState([]);
+const [selectedVendor, setSelectedVendor] = useState("");
+const [selectedVendorName, setSelectedVendorName] = useState("");
+const [selectedStock, setSelectedStock] = useState("");
+const [selectedStockPrice, setSelectedStockPrice] = useState(null);
+const [stockList, setStockList] = useState([]);
 
-  const unitOptions = ["sqft", "number", "kg", "meter", "liter", "other"];
-
-  const location = useLocation();
-
-  const { enquiry } = location.state || {};
-
-  // new
-
-  useEffect(() => {
-    // Fetch the list of vendors from the first API
-    fetch("http://localhost:5000/api/addvendor")
-      .then((response) => response.json())
-      .then((data) => setVendorList(data))
-      .catch((error) => console.error("Error fetching vendors:", error));
-  }, []);
-
-  useEffect(() => {
-    // Fetch the stock list based on the selected vendor
-    if (selectedVendor) {
-      fetch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${selectedVendor}`
-      )
-        .then((response) => response.json())
-        .then((data) => setStockList(data))
-        .catch((error) => console.error("Error fetching stock list:", error));
-    }
-  }, [selectedVendor]);
-
-  const handleVendorChange = (e) => {
-    const selectedVendorId = e.target.value;
-    const selectedVendor = vendorList.find(
-      (vendor) => vendor._id === selectedVendorId
-    );
-
-    setSelectedVendor(selectedVendorId);
-    setSelectedVendorName(selectedVendor ? selectedVendor.Vendor_Name : "");
-
-    // Reset selected stock and price when the vendor changes
-    setSelectedStock("");
-    setSelectedStockPrice(null);
-  };
-
-  const handleStockChange = (e) => {
-    const selectedStock = e.target.value;
-    setSelectedStock(selectedStock);
-
-    // Find the selected stock in the stock list and set its price
-    const selectedStockInfo = stockList.find(
-      (stock) => stock.Stock_Name === selectedStock
-    );
-    if (selectedStockInfo) {
-      setSelectedStockPrice(selectedStockInfo.Price);
-    } else {
-      setSelectedStockPrice(null); // Reset if the selected stock is not found
-    }
-  };
-
-  useEffect(() => {
-    if (selectedVendor && selectedStock) {
-      // Find the selected stock in the stock list
-      const stockInfo = stockList.find(
-        (stock) => stock.Stock_Name === selectedStock
-      );
-      if (stockInfo) {
-        setSelectedStockInfo(stockInfo);
-      }
-    }
-  }, [selectedVendor, selectedStock, stockList]);
-
-  const handleUpdateQuantity = async (index) => {
-    try {
-      // Ensure that both the vendor and stock are selected
-      if (!selectedVendor || !selectedStockInfo) {
-        alert("Please select a vendor and stock before updating quantity.");
-        return;
-      }
-
-      // Get the vendor and stock IDs
-      const vendorId = selectedVendor;
-      const stockName = selectedStock;
-
-      // Prepare the data for the PATCH request
-      const updatedQuantity = sections[index].quantity;
-
-      // Send a PATCH request to update stock quantity
-      await axios.patch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${vendorId}/stock/${stockName}`,
-        {
-          quantity: updatedQuantity,
-        }
-      );
-
-      alert("Quantity updated successfully!");
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      alert("Error updating quantity. Please try again.");
-    }
-  };
-
-  // old code start here
-  useEffect(() => {
-    console.log("Location state:", location.state);
-    console.log("Enquiry data:", enquiry);
-  }, [location.state, enquiry]);
-  // const eventName = enquiry.event_name || "";
-
-  const [sections, setSections] = useState([
-    {
-      srNumber: 1,
-      title: "",
-      particular: "",
-      transport: "",
-      description: "",
-      entity: "",
-      unit: "",
-      rate: "",
-      days: "",
-      amount: "",
-    },
-  ]);
-
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    const newSections = [...sections];
-
-    // Update the corresponding field in the section
-    newSections[index] = {
-      ...newSections[index],
-      [name]: value,
-    };
-
-    // Calculate the amount if both "Rate/Days" and "Days" fields are filled
-    if (name === "days") {
-      const ratePerDays = parseFloat(newSelectedStockPriceValue);
-      const days = parseFloat(value);
-      if (!isNaN(ratePerDays) && !isNaN(days)) {
-        newSections[index].amount = (ratePerDays * days).toFixed(2);
-      } else {
-        newSections[index].amount = "";
-      }
-    }
-
-    // Update the state with the modified sections
-    setSections(newSections);
-  };
-
-  const handleAddSection = () => {
-    const newSRNumber = sections.length + 1;
-    setSections([
-      ...sections,
-      {
-        srNumber: newSRNumber,
-        title: "",
-        particular: "",
-        transport: "",
-        description: "",
-        entity: "",
-        unit: "",
-        rate: "",
-        days: "",
-        amount: "",
-      },
-    ]);
-  };
-
-  const handleSave = async () => {
-    try {
-      // Prepare the data in the required format
-      const quatationInfoData = sections.map((section) => ({
-        title: section.title,
-        particular: section.particular,
-        transport: section.transport,
-        description: section.description,
-        vendor_Name: newselectedVendor, // Assuming you want to associate all sections with the selected vendor
-        vendor_Stock: newSelectedStock,
-        unit: section.unit,
-        quantity: parseFloat(updateQuantity),
-        rateper_Days: parseFloat(newSelectedStockPriceValue),
-        days: parseFloat(section.days),
-        amount: section.amount,
-        name: enquiry.customer_name,
-      }));
-
-      // Send a POST request to the new API endpoint with the quatationInfoData
-      await axios.post("http://localhost:5000/api/quatationinfo", {
-        quatationInfoData,
-      });
-
-      alert("Quotation saved successfully!");
-    } catch (error) {
-      console.error("Error saving quotation:", error);
-      alert("Error saving quotation. Please try again.");
-    }
-  };
-
-  const handlePrint = () => {
-    const doc = new jsPDF();
-
-    doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
-
-    // Print Customer Data
-    const customerData = [
-      ["Customer Name", enquiry.customer_name || "-"],
-      ["Customer Address", enquiry.address || "-"],
-      ["Event Date", enquiry.event_date || "-"],
-      ["Event Venue", enquiry.event_venue || "-"],
-    ];
-
-    const companyData = [
-      ["Company Name", "Tutons Events LLP"],
-      [
-        "Company Address",
-        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
-      ],
-      ["Company Phone", "9225522123 / 9226061234"],
-      ["Company Email", "tutonsevents@gmail.com"],
-    ];
-
-    const customerTableX = 30;
-    const customerTableY = 40;
-
-    const companyTableX = 105;
-    const companyTableY = 40;
-
-    const pageWidth = doc.internal.pageSize.width;
-    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
-
-    doc.autoTable({
-      body: customerData,
-      startY: customerTableY,
-      theme: "grid",
-      margin: { right: companyData },
+  // 
+  // Fetch data for stock names and vendor names
+useEffect(() => {
+  // Fetch stock data
+  axios.get("http://localhost:5000/api/inventory-stocks")
+    .then(response => {
+      setStockData(response.data);
+    })
+    .catch(error => {
+      console.error("Error fetching stock data:", error);
     });
 
-    const imageWidth = 40;
-    const imageHeight = 30;
-    const imageX = 120;
-    const imageY = 10;
-    doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
-
-    doc.autoTable({
-      body: companyData,
-      startY: companyTableY,
-      theme: "grid",
-      margin: { left: companyTableX },
+  // Fetch vendor data
+  axios.get("http://localhost:5000/api/addvendor")
+    .then(response => {
+      setVendorData(response.data);
+    })
+    .catch(error => {
+      console.error("Error fetching vendor data:", error);
     });
+}, []);
+  
+  // 
 
-    // Print Sections Data
-    const tableData = sections.map((section, index) => [
-      section.srNumber,
-      section.title,
-      section.particular,
-      section.description,
-      section.unit,
-      section.rateper_Days,
-      section.days,
-      section.amount,
-    ]);
+  const handleChange = (index, field, value) => {
+    const updatedRows = [...rows];
+    updatedRows[index][field] = value;
+  
+    if (field === "stock") {
+      const selectedStockName = value.Stock_Name;
+      // Fetch vendor data
+      axios
+        .get("http://localhost:5000/api/addvendor")
+        .then((response) => {
+          const vendorData = response.data;
+          // Fetch stock data
+          axios
+            .get("http://localhost:5000/api/inventory-stocks")
+            .then((response) => {
+              const stockData = response.data;
+              // Filter stock data based on the selected stock name
+              const selectedStock = stockData.find(stock => stock.Stock_Name === selectedStockName);
+              if (selectedStock) {
+                // Find the vendor for the selected stock
+                const selectedVendor = vendorData.find(vendor => vendor.Vendor_Id === selectedStock.Vendor_Id);
+                if (selectedVendor) {
+                  // Update the vendor data for the specific row
+                  updatedRows[index]["vendor"] = selectedVendor;
+                  // Update the state with the updated rows
+                  setRows(updatedRows);
+                } else {
+                  console.error("Vendor not found for the selected stock.");
+                }
+              } else {
+                console.error("Selected stock not found.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching stock data:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error fetching vendor data:", error);
+        });
+    } else if (field === "vendor") {
+      // For other fields, update the state with the updated rows directly
+      setRows(updatedRows);
+    }
+  };
+  
+  
 
-    doc.autoTable({
-      head: [
-        [
-          "SR Number",
-          "Title of Section",
-          "Particular",
-          "Description",
-          "Unit",
-          "Rate",
-          "Days",
-          "Amount",
-        ],
-      ],
-      body: tableData,
-      startY: 110,
-    });
-
-    doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-    alert("PDF file generated");
+  const handleAddRow = () => {
+    const newRow = { id: rows.length, qty: 0, price: 0, total: 0 };
+    setRows([...rows, newRow]);
   };
 
-  // new
-  const [stockNames, setStockNames] = useState([]);
-  const [newSelectedStock, setNewSelectedStock] = useState("");
-  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] =
-    useState("");
-  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] =
-    useState("");
-  const [newstocksData, setNewStocksData] = useState([]);
-  const [newselectedVendor, setNewSelectedVendor] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/inventory-stocks")
-      .then((response) => response.json())
-      .then((data) => {
-        const names = data.map((stock) => stock.Stock_Name);
-        setStockNames(names);
-        setNewStocksData(data);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
-
-  const newhandleStockChange = (e) => {
-    const selectedStockName = e.target.value;
-    setNewSelectedStock(selectedStockName);
-
-    // Filter vendors associated with the selected stock
-    const selectedStockData = newstocksData.find(
-      (stock) => stock.Stock_Name === selectedStockName
-    );
-    if (selectedStockData) {
-      const vendors = newstocksData
-        .filter((stock) => stock.Stock_Name === selectedStockName)
-        .map((stock) => stock.Vendor_Name);
-      setVendorNames(vendors);
-    } else {
-      setVendorNames([]);
+  const handleDeleteRow = () => {
+    if (rows.length > 1) {
+      setRows(rows.slice(0, -1));
     }
   };
 
-  const newhandleVendorChange = (e) => {
-    const selectedVendorName = e.target.value;
-    setNewSelectedVendor(selectedVendorName);
-
-    // Find the selected vendor's data
-    const selectedVendorData = newstocksData.find(
-      (stock) =>
-        stock.Vendor_Name === selectedVendorName &&
-        stock.Stock_Name === newSelectedStock
-    );
-    if (selectedVendorData) {
-      setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
-      setNewSelectedStockPriceValue(selectedVendorData.Price);
-    } else {
-      setNewSelectedStockQuantityValue("");
-      setNewSelectedStockPriceValue("");
-    }
+  const calcTotal = () => {
+    return rows.reduce((acc, row) => acc + row.total, 0);
   };
 
-  const [updateQuantity, setUpdateQuantity] = useState("");
-
-  const handleNewUpdateQuantity = async (e) => {
-    e.preventDefault();
-    try {
-      const vendorId = document.getElementById("vendorName").value;
-      const quantity = document.getElementById("updateQuantity").value;
-
-      // Send PATCH request to update stock quantity
-      const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ quantity }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to update stock quantity");
-      }
-
-      // Optionally, you can handle the response here
-      const data = await response.json();
-      console.log("Stock quantity updated successfully:", data);
-      alert("Stock quantity updated successfully:", data);
-
-      // Clear input field after successful update
-    } catch (error) {
-      console.error("Error updating stock quantity:", error);
-      // Handle error as needed
-    }
+  const calcTaxAmount = () => {
+    return calcTotal() * (tax / 100);
   };
+
+  const calcGrandTotal = () => {
+    return calcTotal() + calcTaxAmount();
+  };
+
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h1 className="mb-4">
-          Quotation Form Of
-          <span className="text-dark"> {enquiry.customer_name}</span>
-        </h1>
-
-        {sections.map((section, index) => (
-          <div key={index} className="mb-4">
-            <div className="form-row">
-              <div className="entity"></div>
-            </div>
-
-            <label htmlFor="quantity">Select Stockname </label>
-            <select
-              className="form-control"
-              id="stockName"
-              onChange={newhandleStockChange}
-            >
-              <option value="">Select Stock</option>
-              {stockNames.map((stockName) => (
-                <option key={stockName} value={stockName}>
-                  {stockName}
-                </option>
-              ))}
-            </select>
-
-            <label htmlFor="vendorName">Vendor Names </label>
-            <select
-              className="form-control"
-              id="vendorName"
-              onChange={newhandleVendorChange}
-            >
-              <option value="">Select Vendor</option>
-              {vendorNames.map((vendor) => (
-                <option key={vendor} value={vendor}>
-                  {vendor}
-                </option>
-              ))}
-            </select>
-
-            <label htmlFor="price">Rate/Days </label>
-            <input
-              type="text"
-              className="form-control"
-              id="price"
-              value={newSelectedStockPriceValue}
-              readOnly
-            />
-
-            <label htmlFor="quantity">Quantity </label>
-            <input
-              type="text"
-              className="form-control"
-              id="quantity"
-              value={newSelectedStockQuantityValue}
-              readOnly
-            />
-
-            <label>
-              Unit:<span style={{ color: "red" }}></span>
-            </label>
-            <div style={{ position: "relative" }}>
-              <input
-                className="form-control"
-                value={section.unit || ""}
-                name="unit"
-                type="text"
-                placeholder="Enter value"
-                style={{ paddingRight: "50px" }}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-
-            <label htmlFor="updateQuantity">Update Quantity</label>
-            <input
-              type="number"
-              className="form-control"
-              id="updateQuantity"
-              value={updateQuantity}
-              onChange={(e) => setUpdateQuantity(e.target.value)}
-            />
-
-            <div className="form-group row-md-3 mt-3 ">
-              <button
-                className="btn btn-primary "
-                onClick={handleNewUpdateQuantity}
+      <div
+        className="w-full  h-screen
+        flex items-center justify-center  overflow-y-auto"
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <h2 className="text-[35px]">Quotation Form</h2>
+          <div className="row clearfix">
+            <div className="col-md-12 mt-6">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic"
               >
-                Update Quantity
-              </button>
-              <button className="btn btn-primary ms-3">Add Stocks</button>
-            </div>
+                <thead>
+                  <tr>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Stockname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Vendorname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "10%" }}>
+                      {" "}
+                      Qty{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Unit{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Rate{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Days{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "10%" }}>
+                      {" "}
+                      Amount{" "}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                {rows.map((row, index) => (
+  <tr key={row.id}>
+    <td style={{ width: "15%" }}>
+      <select
+        className="form-control"
+        value={row.stock} // Set the selected value
+        onChange={(e) =>
+          handleChange(
+            index,
+            "stock",
+            JSON.parse(e.target.value)
+          )
+        }
+      >
+        <option value="">Select Stock Name</option>
+        {stockData.map((stock) => (
+          <option
+            key={stock.Stock_Id}
+            value={JSON.stringify(stock)}
+          >
+            {stock.Stock_Name}
+          </option>
+        ))}
+      </select>
+    </td>
+    <td style={{ width: "10%" }}>
+      <select
+        className="form-control"
+        value={row.vendor} // Set the selected value
+        onChange={(e) =>
+          handleChange(
+            index,
+            "vendor",
+            JSON.parse(e.target.value)
+          )
+        }
+      >
+        <option value="">Select Vendor Name</option>
+        {vendorData.map((vendor) => (
+          <option
+            key={vendor.Vendor_Id}
+            value={JSON.stringify(vendor)}
+          >
+            {vendor.Vendor_Name}
+          </option>
+        ))}
+      </select>
+    </td>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.unit}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "unit",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control unit"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
 
-            <div className="form-group">
-              <label htmlFor={`days${index}`}>Days:</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Total days"
-                id={`days${index}`}
-                name="days"
-                value={sections[index].days}
-                onChange={(e) => handleChange(e, index)}
-              />
-
-              {/* in second chnages need to remove this input  */}
-              {/* <label htmlFor={`title${index}`}>
-              Title:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`title${index}`}
-              name="title"
-              value={section.title}
-              onChange={(e) => handleChange(e, index)}
-            /> */}
-            </div>
-
-            {/* in second chnages need to remove this input  */}
-            {/* <div className="form-group">
-            <label htmlFor={`particular${index}`}>
-              Particular:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={`particular${index}`}
-              name="particular"
-              value={section.particular}
-              onChange={(e) => handleChange(e, index)}
-            />
-          </div> */}
-
-            <div className="form-group">
-              <label htmlFor={`transport${index}`}>Transport:</label>
-              <input
-                type="text"
-                className="form-control"
-                id={`transport${index}`}
-                name="transport"
-                value={section.transport}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`description${index}`}>Description:</label>
-              <input
-                type="text"
-                className="form-control"
-                id={`description${index}`}
-                name="description"
-                value={section.description}
-                onChange={(e) => handleChange(e, index)}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor={`amount${index}`}>Amount:</label>
-              <input
-                type="text"
-                placeholder="Total Amount"
-                className="form-control"
-                id={`amount${index}`}
-                name="amount"
-                value={sections[index].amount}
-                onChange={(e) => handleChange(e, index)}
-              />
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.rate}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "rate",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control rate"
+                          step="0"
+                          min="0"
+                        />
+                        <div style={{ color: "green" }}>
+                          Price: {Stock_Quantity}
+                        </div>
+                      </td>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.days}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "days",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control days"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
+                      <td style={{ width: "10%" }}>
+                        <input
+                          type="number"
+                          value={row.total}
+                          onChange={(e) =>
+                            handleChange(
+                              index,
+                              "total",
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="form-control total"
+                          step="0"
+                          min="0"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        ))}
+          {/* <div className="row clearfix">
+            <div className="col-md-12">
+              <button
+                onClick={handleAddRow}
+                className="btn btn-default pull-left"
+              >
+                Add Row
+              </button>
+              <button
+                onClick={handleDeleteRow}
+                className="pull-right btn btn-default"
+              >
+                Delete Row
+              </button>
+            </div>
+          </div> */}
+          <div className="row clearfix" style={{ marginTop: "20px" }}>
+            <div className="col-md-6">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic_total"
+              >
+                <tbody>
+                  <tr>
+                    <th className="text-center">Transport Type</th>
+                    <td className="text-center">
+                      <input
+                        type="number"
+                        value={TransportTypeValue}
+                        onChange={(e) =>
+                          setTransportTypeValue(parseInt(e.target.value))
+                        }
+                        className="form-control"
+                        placeholder="Enter Transport"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Transport Charges</th>
+                    <td className="text-center">
+                      <input
+                        type="number"
+                        value={transportValue}
+                        onChange={(e) => setTransportValue(e.target.value)}
+                        className="form-control"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Description</th>
+                    <td className="text-center">
+                      <input
+                        type="text"
+                        value={descriptionValue}
+                        onChange={(e) => setDescriptionValue(e.target.value)}
+                        className="form-control"
+                        placeholder="Description"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="col-md-2"></div>
+            <div className="col-md-4">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic_total"
+              >
+                <tbody>
+                  <tr>
+                    <th className="text-center">Sub Total</th>
+                    <td className="text-center">{calcTotal()}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">GST</th>
+                    <td className="text-center">
+                      <input
+                        type="checkbox"
+                        id="cgstCheckbox"
+                        checked={cgstChecked}
+                        onChange={(e) => setCgstChecked(e.target.checked)}
+                      />
+                      <label htmlFor="cgstCheckbox">CGST</label>
 
-        <button className="btn btn-primary" onClick={handleAddSection}>
-          Add Item
-        </button>
-        <button className="btn btn-success mx-2" onClick={handleSave}>
-          View & Save
-        </button>
-        <button className="btn btn-success mx-2" onClick={handlePrint}>
-          Print
-        </button>
+                      <input
+                        type="checkbox"
+                        id="sgstCheckbox"
+                        checked={sgstChecked}
+                        onChange={(e) => setSgstChecked(e.target.checked)}
+                        style={{ marginLeft: "10px" }}
+                      />
+                      <label htmlFor="sgstCheckbox">SGST</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">CGST</th>
+                    <td className="text-center">
+                      {cgstChecked && (
+                        <input
+                          type="number"
+                          value={cgst}
+                          onChange={(e) => setCgst(parseInt(e.target.value))}
+                          className="form-control"
+                          placeholder="0"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">SGST</th>
+                    <td className="text-center">
+                      {sgstChecked && (
+                        <input
+                          type="number"
+                          value={sgst}
+                          onChange={(e) => setSgst(parseInt(e.target.value))}
+                          className="form-control"
+                          placeholder="0"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center">Total Amount</th>
+                    <td className="text-center">{calcTaxAmount()}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="row clearfix" style={{ marginTop: "20px" }}>
+            <div className="col-md-12">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  // Logic to view the quotation
+                }}
+              >
+                View & Save
+              </button>
+              <button
+                className="btn btn-success ml-2"
+                onClick={() => {
+                  // Logic to save and print the quotation
+                }}
+              >
+                Print
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
