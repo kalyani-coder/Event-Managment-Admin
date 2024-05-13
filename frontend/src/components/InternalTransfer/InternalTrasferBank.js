@@ -1,31 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import Header from "../Sidebar/Header";
 import { Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 
 const InternalTransferFromBank = () => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [salaryType, setSalaryType] = useState("");
-  const [managerOptions, setManagerOptions] = useState([]);
-  const [accountantOptions, setAccountantOptions] = useState([]);
-  const [executiveOptions, setExecutiveOptions] = useState([]);
-  const [bankName, setBankName] = useState("");
-  const [amount, setAmount] = useState("");
+  const [fromBank, setFromBank] = useState('');
+  const [fromAccountNumber, setFromAccountNumber] = useState('');
+  const [toBank, setToBank] = useState('');
+  const [toAccountNumber, setToAccountNumber] = useState('');
+  const [amount, setAmount] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState('');
+  const [bankNames, setBankNames] = useState([]);
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/allbanks");
+        const data = await response.json();
+        setBankNames(data);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    };
+
+    fetchBanks();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = {
-      type: selectedOption,
-      name: salaryType,
-      Id: "test", // You may adjust this value as per your requirement
-      bankName: bankName,
-      amount: parseFloat(amount) // Convert amount to float
+      from_bank: fromBank,
+      from_bank_accountNu: fromAccountNumber,
+      to_bank: toBank,
+      to_bank_accountNu: toAccountNumber,
+      amount: parseFloat(amount)
     };
 
-    // POST request to the API endpoint
-    fetch("http://localhost:5000/api/banktransper", {
+    fetch("http://localhost:5000/api/banktransfer", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,15 +48,39 @@ const InternalTransferFromBank = () => {
     })
     .then(response => response.json())
     .then(data => {
-      setSuccessMessage("Data Saved Successfully!");
-      setShowSuccessAlert(true);
+      // setSuccessMessage("Data Saved Successfully!");
+      // setShowSuccessAlert(true);
       console.log(data);
-      // Reset amount and bankName after successful submission
-      
-    setAmount("");
-    setBankName("");
+      setAmount("");
+      setFromBank("");
+      setFromAccountNumber("");
+      setToBank("");
+      setToAccountNumber("");
+      window.alert("Data Saved Successfully!");
     })
     .catch(error => console.error('Error:', error));
+  };
+
+  const handleFromBankSelect = (event) => {
+    const selectedBankName = event.target.value;
+    setFromBank(selectedBankName);
+    const selectedBankObj = bankNames.find(bank => bank.Bank_Name === selectedBankName);
+    if (selectedBankObj) {
+      setFromAccountNumber(selectedBankObj.Account_Number);
+    } else {
+      setFromAccountNumber('');
+    }
+  };
+
+  const handleToBankSelect = (event) => {
+    const selectedBankName = event.target.value;
+    setToBank(selectedBankName);
+    const selectedBankObj = bankNames.find(bank => bank.Bank_Name === selectedBankName);
+    if (selectedBankObj) {
+      setToAccountNumber(selectedBankObj.Account_Number);
+    } else {
+      setToAccountNumber('');
+    }
   };
 
   return (
@@ -51,93 +89,91 @@ const InternalTransferFromBank = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
-          {showSuccessAlert && (
-            <Alert
-              variant="success"
-              onClose={() => setShowSuccessAlert(false)}
-              dismissible
-            >
-              {successMessage}
-            </Alert>
-          )}
-            <h2 className="text-[35px] pl-[1em]">Internal Transfer From Bank</h2>
+            {showSuccessAlert && (
+              <Alert
+                variant="success"
+                onClose={() => setShowSuccessAlert(false)}
+                dismissible
+              >
+                {successMessage}
+              </Alert>
+            )}
+            <Link to={'/viewinternaltransfer'}>
+              <button className="btn btn-primary mr-4 mb-4">View Transfer</button>
+            </Link>
+            <h2 className="text-[30px] pl-[1em]">Internal Transfer From Bank</h2>
             <form onSubmit={handleSubmit}>
               <div className="row mb-2">
                 <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor="typeOfSalary">Add Salary</label>
+                  <div className="mb-3">
+                    <label className="form-label">From Select Bank:</label>
                     <select
                       className="form-control"
-                      value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                      required
+                      value={fromBank}
+                      onChange={handleFromBankSelect}
                     >
-                      <option value="">Select</option>
-                      <option value="manager">Manager</option>
-                      <option value="accountant">Accountant</option>
-                      <option value="executive">Executive</option>
+                      <option value="">Select Bank</option>
+                      {bankNames.map((bank) => (
+                        <option key={bank._id} value={bank.Bank_Name}>
+                          {bank.Bank_Name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
-
                 <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor="salaryType">Select Salary Type</label>
-                    <select
+                  <div className="mb-3">
+                    <label className="form-label">From Account Number:</label>
+                    <input
+                      type="number"
                       className="form-control"
-                      value={salaryType}
-                      onChange={(e) => setSalaryType(e.target.value)}
-                      required
-                    >
-                      <option value="">Select</option>
-                      {selectedOption === "manager" &&
-                        managerOptions.map((manager) => (
-                          <option key={manager._id} value={manager.fname}>
-                            {manager.fname}
-                          </option>
-                        ))}
-                      {selectedOption === "accountant" &&
-                        accountantOptions.map((accountant) => (
-                          <option key={accountant._id} value={accountant.fname}>
-                            {accountant.fname}
-                          </option>
-                        ))}
-                      {selectedOption === "executive" &&
-                        executiveOptions.map((executive) => (
-                          <option key={executive._id} value={executive.fname}>
-                            {executive.fname}
-                          </option>
-                        ))}
-                    </select>
+                      value={fromAccountNumber}
+                      onChange={(event) => setFromAccountNumber(event.target.value)}
+                    />
                   </div>
                 </div>
               </div>
               <div className="row mb-2">
                 <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor="bankName">Bank Name</label>
-                    <input
-                      type="text"
+                  <div className="mb-3">
+                    <label className="form-label">To Select Bank:</label>
+                    <select
                       className="form-control"
-                      placeholder="Bank Name"
-                      value={bankName}
-                      onChange={(e) => setBankName(e.target.value)}
-                      required
-                    />
+                      value={toBank}
+                      onChange={handleToBankSelect}
+                    >
+                      <option value="">Select Bank</option>
+                      {bankNames.map((bank) => (
+                        <option key={bank._id} value={bank.Bank_Name}>
+                          {bank.Bank_Name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor="amount">Amount</label>
+                  <div className="mb-3">
+                    <label className="form-label">To Account Number:</label>
                     <input
                       type="number"
                       className="form-control"
-                      placeholder="Amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      required
+                      value={toAccountNumber}
+                      onChange={(event) => setToAccountNumber(event.target.value)}
                     />
                   </div>
+                </div>
+              </div>
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="amount">Amount</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
               <div className="row mb-2">

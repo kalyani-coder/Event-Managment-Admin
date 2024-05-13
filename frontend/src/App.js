@@ -6,7 +6,7 @@ import AddExecutive from "./components/AddUser/AddExecutive";
 import AddVendor from "./components/AddUser/AddVendor";
 import AccountantDetails from "./components/UsersDetails/AccountantDetails";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import ViewInternalTransfer from "./components/InternalTransfer/ViewInternalTransfer";
 import ManagerDetails from "./components/UsersDetails/ManagerDetails";
 import Enquiry from "./components/Enquiry/Enquiry";
 import AddEvent from "./components/Event/AddEvent";
@@ -138,6 +138,7 @@ function App() {
             <Route path="/advpaymentmanager" element={<AdvPaymentManager />} />
             <Route path="/viewadvpaymentmanager" element={<ViewAdvPaymentManager />} />
             <Route path="/internaltransferfrombank" element={<InternalTrasferBank />} />
+            <Route path="/viewinternaltransfer" element={<ViewInternalTransfer/>} />
             {/* **************** */}
           </Routes>
         </Router>

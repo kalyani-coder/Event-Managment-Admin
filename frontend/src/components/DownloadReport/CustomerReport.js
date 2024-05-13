@@ -109,7 +109,7 @@ const CustomerReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-          <h2 className="text-[35px] ">Customer Wise Report</h2>
+          <h2 className="text-[30px] ">Customer Wise Report</h2>
           <div className="mb-3  align-items-center grid md:flex gap-2">
             <select
               className="form-control mr-2"

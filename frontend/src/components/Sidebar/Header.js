@@ -225,7 +225,7 @@ export default function Sidenav() {
             </DrawerHeader>
 
             <Divider />
-            <List>
+            {/* <List>
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
@@ -272,7 +272,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-            </List>
+            </List> */}
             <List>
               <ListItem
                 disablePadding
@@ -280,6 +280,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Add Users")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/addmanager"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     className={
                       activetab === "Add Users"
@@ -299,7 +303,7 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <Tooltip title="Add Users">
+                      <Tooltip title=" ">
                         <span>
                           <PersonAddIcon sx={{ color: "#9b59b6" }} />
                         </span>
@@ -310,55 +314,10 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              <div className="Menu-items-styling">
-                {activetab == "Add Users" && (
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleClose}>
-                      <Link
-                        to={"/addmanager"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Manager</span>
-                      </Link>
-                    </MenuItem>
-
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addaccountant"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Accountant</span>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addexecutive"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Executive</span>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <Link
-                        to={"/addvendor"}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <span className="icon-text">Add Vendor</span>
-                      </Link>
-                    </MenuItem>
-                  </Menu>
-                )}
-              </div>
+              
             </List>
 
             <List>
@@ -368,6 +327,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "User Details")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     className={
                       activetab === "User Details"
@@ -402,53 +365,9 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              {activetab == "User Details" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/managerdetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      {" "}
-                      <span className="icon-text">Manager Details</span>{" "}
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/accountantdetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Accountant Details</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/executicedetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Executive Details</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/vendordetails"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Vendor Details</span>
-                    </Link>
-                  </MenuItem>
-                </Menu>
-              )}
             </List>
 
 
@@ -456,9 +375,13 @@ export default function Sidenav() {
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Event management")}
+                onClick={(event) => handleClick(event, "Enquiry")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -466,7 +389,7 @@ export default function Sidenav() {
                       px: 2.5,
                     }}
                     className={
-                      activetab === "Event management"
+                      activetab === "Enquiry"
                         ? "menuitems-of-header active"
                         : "menuitems-of-header"
                     }
@@ -478,7 +401,7 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <Tooltip title="Event management">
+                      <Tooltip title="Enquiry">
                         <span>
                           <FontAwesomeIcon
                             icon={faCalendar}
@@ -489,13 +412,14 @@ export default function Sidenav() {
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
-                      primary="Event management"
+                      primary="Enquiry"
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              {activetab == "Event management" && (
+              {/* {activetab == "Enquiry" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -547,7 +471,7 @@ export default function Sidenav() {
                     </Link>
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
 
 
@@ -558,6 +482,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Advance Payment")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -592,15 +520,16 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              {activetab == "Advance Payment" && (
+              {/* {activetab == "Advance Payment" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
-                >
+                > */}
                   {/* <MenuItem onClick={handleClose}>
                     <Link
                       to={"/advpaymentcus"}
@@ -619,7 +548,7 @@ export default function Sidenav() {
                     </Link>
                   </MenuItem> */}
 
-                  <MenuItem onClick={handleClose}>
+                  {/* <MenuItem onClick={handleClose}>
                     {" "}
                     <Link
                       to={"/advpaymentmanager"}
@@ -640,7 +569,7 @@ export default function Sidenav() {
                     </Link>
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
 
             {/* <List>
@@ -719,6 +648,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Attendance")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -753,6 +686,7 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
               {activetab == "Attendance" && (
@@ -780,6 +714,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Update Task")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -810,9 +748,10 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              {activetab == "Update Task" && (
+              {/* {activetab == "Update Task" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -836,7 +775,7 @@ export default function Sidenav() {
                     </Link>{" "}
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
 
             <List>
@@ -846,6 +785,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Salary")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -878,10 +821,11 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
 
-              {activetab == "Salary" && (
+              {/* {activetab == "Salary" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -905,7 +849,7 @@ export default function Sidenav() {
                     </Link>{" "}
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
             <List>
               <ListItem
@@ -914,6 +858,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Internal Transfer")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -944,10 +892,11 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
 
-              {activetab == "Internal Transfer" && (
+              {/* {activetab == "Internal Transfer" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -963,7 +912,7 @@ export default function Sidenav() {
                     </Link>{" "}
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
             <List>
               <ListItem
@@ -972,6 +921,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Master")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -1002,10 +955,11 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
 
-              {activetab == "Master" && (
+              {/* {activetab == "Master" && (
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -1021,7 +975,7 @@ export default function Sidenav() {
                     </Link>{" "}
                   </MenuItem>
                 </Menu>
-              )}
+              )} */}
             </List>
 
             <List>
@@ -1031,6 +985,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Inventory Stock")}
               >
                 <div className="menuitems-of-header ">
+                <Link
+                    to="/managerdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -1065,6 +1023,7 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
               {activetab == "Inventory Stock" && (
