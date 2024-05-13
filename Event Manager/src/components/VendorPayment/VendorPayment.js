@@ -38,7 +38,7 @@ const VendorPayment = () => {
     event_name: "",
     date: getCurrentDate(),
     time: getCurrentTime(),
-    bankaccount: "",
+    bankAccount_Name: "selectedBank",
     paid_amt: "",
     advance_payment: "",
     rem_amt: 0,
@@ -48,8 +48,9 @@ const VendorPayment = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [vendors, setVendors] = useState([]);
   const [events, setEvents] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false); // State to control success message display
+  const [bankNames, setBankNames] = useState([]);
+  
   useEffect(() => {
     const fetchVendors = async () => {
       try {
@@ -116,7 +117,8 @@ const VendorPayment = () => {
           event_name: formData.selectedEvent,
           date: formData.date,
           time: formData.time,
-          bankAccount_Name: formData.bankaccount,
+          bankAccount_Name: selectedBank,
+          bank_Account_Number : accountNumber,
           paid_amt: formData.paid_amt,
           advance_payment: formData.advance_payment,
           rem_amt: formData.rem_amt,
@@ -125,7 +127,7 @@ const VendorPayment = () => {
       );
 
       if (response.status === 200) {
-        setShowPopup(true);
+        alert("Data saved successfully!"); // Display success message using alert
         setFormData(initialFormData);
       }
     } catch (error) {
@@ -138,7 +140,7 @@ const VendorPayment = () => {
   };
 
   const handlePopupClose = () => {
-    setShowPopup(false);
+    setShowSuccessAlert(false);
   };
 
   const handleAdvancePaymentChange = (event) => {
@@ -152,11 +154,42 @@ const VendorPayment = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/allbanks");
+        setBankNames(response.data);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    };
+
+    fetchBanks();
+  }, []);
+
+  const [selectedBank, setSelectedBank] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+
+  const handleBankSelect = (event) => {
+    const selectedBankName = event.target.value;
+    setSelectedBank(selectedBankName);
+
+    // Find the selected bank object from the bankNames array
+    const selectedBankObj = bankNames.find(bank => bank.Bank_Name === selectedBankName);
+
+    // Set the account number based on the selected bank
+    if (selectedBankObj) {
+      setAccountNumber(selectedBankObj.Account_Number);
+    } else {
+      setAccountNumber('');
+    }
+  };
+
   return (
     <>
       <Header />
       <div
-        className="w-full  h-screen
+        className="w-full h-screen
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
@@ -246,19 +279,8 @@ const VendorPayment = () => {
               </div>
             </div>
             <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="bankaccount">Bank Account</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="bankaccount"
-                    placeholder="Bank Account"
-                    onChange={handleChange}
-                    value={formData.bankaccount}
-                  />
-                </div>
-              </div>
+            
+              
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="paid_amt">Paid Amount</label>
@@ -272,6 +294,36 @@ const VendorPayment = () => {
                   />
                 </div>
               </div>
+              <div className="row mb-2">
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label">Select Bank:</label>
+                <select
+                  className="form-control"
+                  value={selectedBank}
+                  onChange={handleBankSelect}
+                >
+                  <option value="">Select Bank</option>
+                  {bankNames.map((bank) => (
+                    <option key={bank._id} value={bank.Bank_Name}>
+                      {bank.Bank_Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col px-5">
+              <div className="mb-3">
+                <label className="form-label ml-3">Account Number:</label>
+                <input
+                  type="number"
+                  className="form-control ml-3"
+                  value={accountNumber}
+                  onChange={(event) => setAccountNumber(event.target.value)}
+                />
+              </div>
+            </div>
+          </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
@@ -333,7 +385,7 @@ const VendorPayment = () => {
               </div>
             </div>
           </Form>
-          {showPopup && (
+          {showSuccessAlert && (
             <div className="alert alert-success mt-3">
               Data saved successfully!
               <button

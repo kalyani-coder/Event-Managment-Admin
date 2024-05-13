@@ -225,54 +225,7 @@ export default function Sidenav() {
             </DrawerHeader>
 
             <Divider />
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "DashBoard")}
-              >
-                <div className="menuitems-of-header ">
-                  <Link
-                    to="/dashboard"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <ListItemButton
-                      sx={{
-                        minHeight: 48,
-                        justifyContent: open ? "initial" : "center",
-                        px: 2.5,
-                      }}
-                      className={
-                        activetab === "DashBoard"
-                          ? "menuitems-of-header active"
-                          : "menuitems-of-header"
-                      }
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : "auto",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Tooltip title="DashBoard">
-                          <span>
-                            <GridViewIcon
-                              sx={{ color: "#9b59b6" }}
-                              title="DashBoard"
-                            />{" "}
-                          </span>
-                        </Tooltip>
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="DashBoard"
-                        sx={{ opacity: open ? 1 : 0 }}
-                      />
-                    </ListItemButton>
-                  </Link>
-                </div>
-              </ListItem>
-            </List> */}
+           
             <List>
               <ListItem
                 disablePadding
@@ -379,7 +332,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/addenquiry"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -419,59 +372,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-              {/* {activetab == "Enquiry" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addenquiry"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Add Enquiry</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/quotation"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">View Enquiry</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/createquotation"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">proposal</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/followupstatus"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> FolloUp Status</span>
-                    </Link>
-                  </MenuItem>
-
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addnewevent"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> AddEvent</span>
-                    </Link>
-                  </MenuItem>
-                </Menu>
-              )} */}
+             
             </List>
 
 
@@ -483,7 +384,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/advpaymentmanager"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -523,124 +424,10 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-              {/* {activetab == "Advance Payment" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                > */}
-                  {/* <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/advpaymentcus"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Customer Payment</span>
-                    </Link>
-                  </MenuItem> */}
-                  {/* <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/costingform"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Costing Form</span>
-                    </Link>
-                  </MenuItem> */}
-
-                  {/* <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/advpaymentmanager"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Advance Payment Manager</span>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/viewadvpaymentmanager"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">
-                        View Advance Payment Manager
-                      </span>
-                    </Link>
-                  </MenuItem>
-                </Menu>
-              )} */}
+             
             </List>
 
-            {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Vendor Payment")}
-              >
-                <div className="menuitems-of-header ">
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                    className={
-                      activetab === "Vendor Payment"
-                        ? "menuitems-of-header active"
-                        : "menuitems-of-header"
-                    }
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Tooltip title="Vendor Payment">
-                        <span>
-                          <CurrencyRupeeTwoToneIcon sx={{ color: "#9b59b6" }} />{" "}
-                        </span>
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Vendor Payment"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </div>
-              </ListItem>
-              {activetab == "Vendor Payment" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/vendorpayment"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Add Vendor Payment</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    {" "}
-                    <Link
-                      to={"/viewvendorpayment"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">
-                        View Vendor Payment Details
-                      </span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
-            </List> */}
-
+           
             <List>
               <ListItem
                 disablePadding
@@ -649,7 +436,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/attendance"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -689,23 +476,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-              {activetab == "Attendance" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/attendance"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Mark Attendance</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
+              
             </List>
             <List>
               <ListItem
@@ -715,7 +486,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/updatetask"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -751,31 +522,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-              {/* {activetab == "Update Task" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/updatetask"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Task</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/viewtask"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> View Task</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )} */}
+              
             </List>
 
             <List>
@@ -786,7 +533,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/addsalary"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -825,31 +572,7 @@ export default function Sidenav() {
                 </div>
               </ListItem>
 
-              {/* {activetab == "Salary" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/addsalary"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Add Salary</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/viewsalary"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> View Salary</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )} */}
+             
             </List>
             <List>
               <ListItem
@@ -859,7 +582,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/internaltransferfrombank"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -896,23 +619,7 @@ export default function Sidenav() {
                 </div>
               </ListItem>
 
-              {/* {activetab == "Internal Transfer" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/internaltransferfrombank"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Internal Transfer</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )} */}
+             
             </List>
             <List>
               <ListItem
@@ -922,7 +629,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/master"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -959,23 +666,7 @@ export default function Sidenav() {
                 </div>
               </ListItem>
 
-              {/* {activetab == "Master" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/master"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Master</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )} */}
+             
             </List>
 
             <List>
@@ -986,7 +677,7 @@ export default function Sidenav() {
               >
                 <div className="menuitems-of-header ">
                 <Link
-                    to="/managerdetails"
+                    to="/newgodown"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                   <ListItemButton
@@ -1026,23 +717,7 @@ export default function Sidenav() {
                   </Link>
                 </div>
               </ListItem>
-              {activetab == "Inventory Stock" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/newgodown"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Godowns</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
+             
             </List>
             <List>
               <ListItem
@@ -1051,6 +726,10 @@ export default function Sidenav() {
                 onClick={(event) => handleClick(event, "Download Report")}
               >
                 <div className="menuitems-of-header">
+                <Link
+                    to="/eventreport"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
@@ -1085,65 +764,10 @@ export default function Sidenav() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
+                  </Link>
                 </div>
               </ListItem>
-              {activetab == "Download Report" && (
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/eventreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Event Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/enquiryreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Enquiry Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/customerreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Customer Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/managerreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text">Advance Manager Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/paymentreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Payment Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={"/vendorpaymentreport"}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <span className="icon-text"> Vendor Report</span>
-                    </Link>{" "}
-                  </MenuItem>
-                </Menu>
-              )}
+             
             </List>
             <List>
               <ListItem
@@ -1208,9 +832,7 @@ export default function Sidenav() {
         </Scrollbars>
       </Drawer>
 
-      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-      </Box> */}
+     
     </Box>
   );
 }
