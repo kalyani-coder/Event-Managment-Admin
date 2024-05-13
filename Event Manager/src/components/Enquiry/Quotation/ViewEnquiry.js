@@ -154,12 +154,19 @@ const ViewInquiryPage = () => {
                       </button>
                     </td>
                     <td>
+                    
+
                       <button
                         className="btn btn-primary"
-                      
+                        onClick={() =>
+                          navigate("/internalcosting", {
+                            state: { enquiry: enquiry },
+                          })
+                        }
                       >
                         Internal Costing
                       </button>
+                  
                     </td>
 
                     <td>
