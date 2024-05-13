@@ -3,7 +3,7 @@ import axios from "axios";
 import Header from "../../Sidebar/Header";
 
 function QuotationForm() {
-  const [rows, setRows] = useState([{ id: 0, qty: 0, price: 0, total: 0 }]);
+  const [rows, setRows] = useState([{ id: null, qty: null,unit:null, price: null, total: null }]);
   const [TransportTypeValue, setTransportTypeValue] = useState("");
   const [transportValue, setTransportValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
@@ -86,12 +86,16 @@ function QuotationForm() {
     }
   };
 
-  const handleChange = (index, field, value) => {
-    const newRows = [...rows];
-    newRows[index][field] = value;
-    newRows[index].total = newRows[index].qty * newRows[index].price;
-    setRows(newRows);
-  };
+  // Inside handleChange function
+const handleChange = (index, field, value) => {
+  const newRows = [...rows];
+  newRows[index][field] = value;
+  if (field === "qty" || field === "price" || field === "rateperdays") {
+    newRows[index].total = newRows[index].qty * newRows[index].price * newRows[index].rateperdays;
+  }
+  setRows(newRows);
+};
+
 
   const calcTotal = () => {
     return rows.reduce((acc, row) => acc + row.total, 0);
@@ -205,7 +209,6 @@ function QuotationForm() {
                       <td style={{ width: "15%" }}>
                         <input
                           type="text"
-                          value={row.unit}
                           onChange={(e) =>
                             handleChange(
                               index,
@@ -238,18 +241,18 @@ function QuotationForm() {
                           Price: {newSelectedStockPriceValue}
                         </div>
                       </td>
-                      <td style={{ width: "15%" }}>
+                      <td style={{ width: "10%" }}>
                         <input
                           type="number"
-                          value={row.days}
+                          value={row.rateperdays}
                           onChange={(e) =>
                             handleChange(
                               index,
-                              "days",
+                              "rateperdays",
                               parseInt(e.target.value)
                             )
                           }
-                          className="form-control days"
+                          className="form-control rateperdays"
                           step="0"
                           min="0"
                         />
