@@ -272,26 +272,33 @@ router.post("/addvendor", async (req, res) => {
 //   }
 // });
 
-router.post("/quatationinfo", async (req, res) => {
+// this is add one stock in api with user id and othe are empty fileds
+router.post('/quatationinfo', async (req, res) => {
   try {
-    const { description, amount, transport, days, eventName, cusstomerName, requirements } = req.body;
+    // Extract the requirements array from the request body
+    const { requirements, customer_Id, customerName } = req.body;
 
+    // Create the initial quotation information object with requirements and customer details
     const newQuotationInfo = new QuatationInfo({
-      description,
-      amount,
-      transport,
-      days,
-      eventName,
-      cusstomerName,
-      requirements
+      requirements,
+      customer_Id,
+      customerName,
+      eventName: "",
+      total_days: 0, 
+      transport: "", 
+      transport_amount: 0, 
+      description: "", 
+      grand_total: "" 
     });
 
-    const savedQuotationInfo = await newQuotationInfo.save();
+    // Save the new quotation information to the database
+    const createdQuotationInfo = await newQuotationInfo.save();
 
-    res.status(201).json(savedQuotationInfo);
-  } catch (err) {
-    console.error("Error creating quotation info:", err);
-    res.status(500).json({ message: "Internal server error" });
+    // Respond with the created quotation information object
+    res.status(201).json(createdQuotationInfo);
+  } catch (error) {
+    console.error("Error creating quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

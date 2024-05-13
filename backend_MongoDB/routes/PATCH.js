@@ -32,30 +32,116 @@ router.patch("/allbanks/:id", async (req, res) => {
   }
 });
 
-router.patch("/quatationinfo/:id", async (req, res) => {
+// router.patch("/quatationinfo/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params; // Get the quotation id from the URL
+//     const { requirement } = req.body; // Get the new requirement from the request body
+
+//     // Find the existing quotation by its ID
+//     const existingQuotation = await QuatationInfo.findById(id);
+
+//     if (!existingQuotation) {
+//       return res.status(404).json({ message: "Quotation not found" });
+//     }
+
+//     // Push the new requirement into the existing requirements array
+//     existingQuotation.requirements.push(requirement);
+
+//     // Save the updated quotation
+//     const updatedQuotation = await existingQuotation.save();
+
+//     res.status(200).json(updatedQuotation);
+//   } catch (err) {
+//     console.error("Error adding requirement to quotation:", err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
+
+
+
+// this is patch route for add only stock multiple in api by student id 
+
+router.patch('/quatationinfo/:studentId', async (req, res) => {
   try {
-    const { id } = req.params; // Get the quotation id from the URL
-    const { requirement } = req.body; // Get the new requirement from the request body
+    // Extract the studentId from the request parameters
+    const { studentId } = req.params;
 
-    // Find the existing quotation by its ID
-    const existingQuotation = await QuatationInfo.findById(id);
+    // Find the existing quotation information object based on the studentId
+    let existingQuotationInfo = await QuatationInfo.findOne({ customer_Id: studentId });
 
-    if (!existingQuotation) {
-      return res.status(404).json({ message: "Quotation not found" });
+    if (!existingQuotationInfo) {
+      return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    // Push the new requirement into the existing requirements array
-    existingQuotation.requirements.push(requirement);
+    // Extract the new stock information from the request body
+    const { newStock } = req.body;
 
-    // Save the updated quotation
-    const updatedQuotation = await existingQuotation.save();
+    // Calculate the price for the new stock
+    const calculatePrice = (ratePerDays, purchaseQuantity, days) => {
+      return ratePerDays * purchaseQuantity * days;
+    };
 
-    res.status(200).json(updatedQuotation);
-  } catch (err) {
-    console.error("Error adding requirement to quotation:", err);
-    res.status(500).json({ message: "Internal server error" });
+    const { rate_per_days, purchaseQuantity, days } = newStock;
+    const price = calculatePrice(rate_per_days, purchaseQuantity, days);
+
+    // Add the new stock information to the existing requirements array
+    existingQuotationInfo.requirements.push({ ...newStock, price });
+
+    // Update the total price for the quotation
+    const totalPrice = existingQuotationInfo.requirements.reduce((total, stock) => {
+      return total + stock.price;
+    }, 0);
+
+    // Update the total price in the quotation information object
+    existingQuotationInfo.grand_total = totalPrice.toString();
+
+    // Save the updated quotation information to the database
+    existingQuotationInfo = await existingQuotationInfo.save();
+
+    // Respond with the updated quotation information object
+    res.json(existingQuotationInfo);
+  } catch (error) {
+    console.error("Error adding more stock:", error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
+
+
+// final data to patch perticular and description in api by userid 
+router.patch('/savedquotation/:userId', async (req, res) => {
+  try {
+    // Extract the userId from the request parameters
+    const { userId } = req.params;
+
+    // Find the existing quotation information object based on the userId
+    let existingQuotationInfo = await QuatationInfo.findOne({ customer_Id: userId });
+
+    if (!existingQuotationInfo) {
+      return res.status(404).json({ error: 'Quotation information not found' });
+    }
+
+    // Extract the updated fields from the request body
+    const { transport, transport_amount, description } = req.body;
+
+    // Update the fields in the existing quotation information object
+    existingQuotationInfo.transport = transport;
+    existingQuotationInfo.transport_amount = transport_amount;
+    existingQuotationInfo.description = description;
+
+    // Save the updated quotation information to the database
+    existingQuotationInfo = await existingQuotationInfo.save();
+
+    // Respond with the updated quotation information object
+    res.json(existingQuotationInfo);
+  } catch (error) {
+    console.error("Error updating quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+
 
 
 // PATCH for managertask api 

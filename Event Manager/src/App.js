@@ -61,6 +61,7 @@ import Master from "./components/master/Master";
 import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
 import ViewAdvPaymentManager from "./components/AddNewEvent/ViewAdvPaymentManager"
 import AdvancePaymentCus2 from "./components/AddNewEvent/AdvancePaymentCus2";
+import InternalCosting from "./components/InternalCosting/InternalCosting";
 
 function App() {
   return (
@@ -136,6 +137,7 @@ function App() {
             <Route path="/advpaymentmanager" element={<AdvPaymentManager />} />
             <Route path="/advpaycus" element={<AdvancePaymentCus2 />} />
             <Route path="/viewadvpaymentmanager" element={<ViewAdvPaymentManager />} />
+            <Route path="/internalcosting" element={<InternalCosting />} />
 
             {/* **************** */}
           </Routes>
