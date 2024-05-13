@@ -1,73 +1,70 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import myImage from "./logo.png";
 import Header from "../../Sidebar/Header";
 
 function QuotationForm() {
   const [rows, setRows] = useState([{ id: 0, qty: 0, price: 0, total: 0 }]);
-  const [tax, setTax] = useState(0);
-  const [cgstChecked, setCgstChecked] = useState(false);
-  const [sgstChecked, setSgstChecked] = useState(false);
-  const [cgst, setCgst] = useState(0);
-  const [sgst, setSgst] = useState(0);
-  const Stock_Quantity = 100;
   const [TransportTypeValue, setTransportTypeValue] = useState("");
   const [transportValue, setTransportValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
-  const [vendorData, setVendorData] = useState([]);
-  const [stockData, setStockData] = useState([]);
-  const [vendorList, setVendorList] = useState([]);
-  const [selectedVendor, setSelectedVendor] = useState("");
-  const [selectedVendorName, setSelectedVendorName] = useState("");
-  const [selectedStock, setSelectedStock] = useState("");
-  const [selectedStockPrice, setSelectedStockPrice] = useState(null);
-  const [stockList, setStockList] = useState([]);
 
-  //*css*/`
   const [stockNames, setStockNames] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
   const [newstocksData, setNewStocksData] = useState([]);
   const [newSelectedStock, setNewSelectedStock] = useState("");
   const [newSelectedVendor, setNewSelectedVendor] = useState("");
-  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] = useState("");
-  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] = useState("");
-  
+  const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] =
+    useState("");
+  const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] =
+    useState("");
+  const [selectedStockQuantity, setSelectedStockQuantity] = useState(0);
 
-  //
+  // Define tax state
+  const [tax, setTax] = useState(0);
+
+  // Define CGST and SGST states
+  const [cgstChecked, setCgstChecked] = useState(false);
+  const [sgstChecked, setSgstChecked] = useState(false);
+  const [cgst, setCgst] = useState(0);
+  const [sgst, setSgst] = useState(0);
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/inventory-stocks")
-      .then(response => {
+    axios
+      .get("http://localhost:5000/api/inventory-stocks")
+      .then((response) => {
         const data = response.data;
-        const names = data.map(stock => stock.Stock_Name);
+        const names = data.map((stock) => stock.Stock_Name);
         setStockNames(names);
         setNewStocksData(data);
       })
-      .catch(error => console.error("Error fetching data:", error));
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   const newhandleStockChange = (e) => {
     const selectedStockName = e.target.value;
     setNewSelectedStock(selectedStockName);
 
-    // Filter vendors associated with the selected stock
     const vendors = newstocksData
-      .filter(stock => stock.Stock_Name === selectedStockName)
-      .map(stock => stock.Vendor_Name);
+      .filter((stock) => stock.Stock_Name === selectedStockName)
+      .map((stock) => stock.Vendor_Name);
     setVendorNames(vendors);
+
+    // Reset selected vendor and quantities when stock changes
+    setNewSelectedVendor("");
+    setNewSelectedStockQuantityValue("");
+    setNewSelectedStockPriceValue("");
   };
 
-  const newhandleVendorChange = (e) => {
+  const newhandleVendorChange = async (e) => {
     const selectedVendorName = e.target.value;
     setNewSelectedVendor(selectedVendorName);
 
-    // Find the selected vendor's data
     const selectedVendorData = newstocksData.find(
-      stock =>
+      (stock) =>
         stock.Vendor_Name === selectedVendorName &&
         stock.Stock_Name === newSelectedStock
     );
+
     if (selectedVendorData) {
       setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
       setNewSelectedStockPriceValue(selectedVendorData.Price);
@@ -75,17 +72,25 @@ function QuotationForm() {
       setNewSelectedStockQuantityValue("");
       setNewSelectedStockPriceValue("");
     }
-  };
 
-  const handleAddRow = () => {
-    const newRow = { id: rows.length, qty: 0, price: 0, total: 0 };
-    setRows([...rows, newRow]);
-  };
-
-  const handleDeleteRow = () => {
-    if (rows.length > 1) {
-      setRows(rows.slice(0, -1));
+    // Fetch Stock Quantity and Price based on selected vendor
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
+      );
+      const { Stock_Quantity, Price } = response.data;
+      setNewSelectedStockQuantityValue(Stock_Quantity);
+      setNewSelectedStockPriceValue(Price);
+    } catch (error) {
+      console.error("Error fetching stock details:", error);
     }
+  };
+
+  const handleChange = (index, field, value) => {
+    const newRows = [...rows];
+    newRows[index][field] = value;
+    newRows[index].total = newRows[index].qty * newRows[index].price;
+    setRows(newRows);
   };
 
   const calcTotal = () => {
@@ -96,12 +101,10 @@ function QuotationForm() {
     return calcTotal() * (tax / 100);
   };
 
-  const calcGrandTotal = () => {
-    return calcTotal() + calcTaxAmount();
+  const handleAddRow = () => {
+    const newRow = { id: rows.length, qty: 0, price: 0, total: 0 };
+    setRows([...rows, newRow]);
   };
-  const handleChange = () => {
-    
-  }
 
   return (
     <>
@@ -144,7 +147,7 @@ function QuotationForm() {
                       {" "}
                       Days{" "}
                     </th>
-                    <th className="text-center" style={{ width: "10%" }}>
+                    <th className="text-center" style={{ width: "15%" }}>
                       {" "}
                       Amount{" "}
                     </th>
@@ -186,6 +189,22 @@ function QuotationForm() {
                       <td style={{ width: "15%" }}>
                         <input
                           type="number"
+                          value={row.qty}
+                          onChange={(e) =>
+                            handleChange(index, "qty", parseInt(e.target.value))
+                          }
+                          className="form-control qty"
+                          step="0"
+                          min="0"
+                        />
+                        <div style={{ color: "green" }}>
+                          Avai Qty: {newSelectedStockQuantityValue}
+                        </div>
+                      </td>
+
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="text"
                           value={row.unit}
                           onChange={(e) =>
                             handleChange(
@@ -195,28 +214,28 @@ function QuotationForm() {
                             )
                           }
                           className="form-control unit"
+                          placeholder="Enter Unit"
                           step="0"
                           min="0"
                         />
                       </td>
-
-                      <td style={{ width: "15%" }}>
+                      <td style={{ width: "10%" }}>
                         <input
                           type="number"
-                          value={row.rate}
+                          value={row.price}
                           onChange={(e) =>
                             handleChange(
                               index,
-                              "rate",
+                              "price",
                               parseInt(e.target.value)
                             )
                           }
-                          className="form-control rate"
+                          className="form-control price"
                           step="0"
                           min="0"
                         />
                         <div style={{ color: "green" }}>
-                          Price: {Stock_Quantity}
+                          Price: {newSelectedStockPriceValue}
                         </div>
                       </td>
                       <td style={{ width: "15%" }}>
@@ -284,7 +303,7 @@ function QuotationForm() {
                     <th className="text-center">Transport Type</th>
                     <td className="text-center">
                       <input
-                        type="number"
+                        type="text"
                         value={TransportTypeValue}
                         onChange={(e) =>
                           setTransportTypeValue(parseInt(e.target.value))
