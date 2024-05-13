@@ -155,10 +155,14 @@ function InternalCosting() {
             days: row.rateperdays,
         }));
     
+        const { enquiry } = location.state || {};
+        const customerId = enquiry ? enquiry._id : undefined;
+        const customerName = enquiry ? enquiry.customer_name : undefined;
+      
         const data = {
-            requirements: requirementsData,
-            customer_Id: enquiry.customerId,
-            customerName: enquiry.customerName
+          requirements: requirementsData,
+          customer_Id: customerId,
+          customerName: customerName
         };
     
         // Make a POST request to your API endpoint
