@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { useLocation } from "react-router-dom";
+import { Form, Button, Alert, Modal } from "react-bootstrap";
+
 
 function InternalCosting() {
     const location = useLocation()
     const { enquiry } = location.state || {}
     console.log("vedant", enquiry)
-    const [rows, setRows] = useState([{ id: null, qty: null, unit: null, price: null, total: null }]);
+    const [rows, setRows] = useState([
+        {
+            id: 1, stockName: '', vendorName: '', qty: 0, unit: '', price: 0, rateperdays: 0, total: 0
+        }
+    ]);
     const [TransportTypeValue, setTransportTypeValue] = useState("");
     const [transportValue, setTransportValue] = useState("");
     const [descriptionValue, setDescriptionValue] = useState("");
@@ -34,6 +40,21 @@ function InternalCosting() {
 
     const [newSelectedStockId, setNewSelectedStockId] = useState("");
     const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
+
+    const [modalShow, setModalShow] = useState(false);
+    const [quotationData, setQuotationData] = useState(null);
+
+    const handleViewQuotation = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/quotationinfo/${enquiry._id}`);
+            setQuotationData(response.data);
+            setModalShow(true);
+        } catch (error) {
+            console.error('Failed to fetch quotation info:', error);
+        }
+    };
+
+    const handleClose = () => setModalShow(false);
 
     useEffect(() => {
         axios
@@ -110,16 +131,14 @@ function InternalCosting() {
     // };
 
 
+    const [isFirstSubmission, setIsFirstSubmission] = useState(true);
+    const [subtotal, setSubtotal] = useState(0);
+
     const handleChange = (index, field, value) => {
         const newRows = [...rows];
         newRows[index][field] = value;
 
-        // Update stockName and vendorName fields when the user selects a stock and vendor
-        if (field === "stockName" || field === "vendorName") {
-            newRows[index][field] = value; // Update the selected stock or vendor name
-        }
-
-        if (field === "qty" || field === "price" || field === "rateperdays") {
+        if (field === 'qty' || field === 'price' || field === 'rateperdays') {
             newRows[index].total = newRows[index].qty * newRows[index].price * newRows[index].rateperdays;
         }
 
@@ -127,79 +146,33 @@ function InternalCosting() {
     };
 
 
-
-
     const calcTotal = () => {
         return rows.reduce((acc, row) => acc + row.total, 0);
     };
 
     const calcTaxAmount = () => {
-        return calcTotal() * (tax / 100);
+        return subtotal * (tax / 100);
+    };
+    const calcFinalSubtotal = () => {
+        return subtotal + transportCharges;
     };
 
     //   const handleAddRow = () => {
     //     const newRow = { id: rows.length, qty: 0, price: 0, total: 0 };
     //     setRows([...rows, newRow]);
     //   };
+    const [stockName, setStockName] = useState('');
+    const [stockId, setStockId] = useState('');
+    const [vendorName, setVendorName] = useState('');
+    const [vendorId, setVendorId] = useState('');
+    const [purchaseQuantity, setPurchaseQuantity] = useState(0);
+    const [ratePerDays, setRatePerDays] = useState(0);
+    const [days, setDays] = useState(0);
+    const [transportCharges, setTransportCharges] = useState(0);
 
-    const handleStockOperation = () => {
-        const customerId = enquiry.customerId;
-    
-        if (customerId) {
-            // If customerId exists, perform the "addMoreStocks" operation (PATCH request)
-            const patchData = {
-                newStock: {
-                    stockName: newSelectedStock,
-                    stockId: newSelectedStockId,
-                    vendorName: newSelectedVendor,
-                    vendorId: newSelectedVendorId,
-                    // Add other properties as needed
-                }
-            };
-    
-            axios.patch(`http://localhost:5000/api/quatationinfo/${customerId}`, patchData)
-                .then(patchResponse => {
-                    // Handle success response if needed
-                    alert("Stocks added successfully:", patchResponse.data);
-                    resetFormFields();
-                })
-                .catch(patchError => {
-                    // Handle error response if needed
-                    console.error("Error adding stocks:", patchError);
-                });
-        } else {
-            // If customerId does not exist, perform the "addStock" operation (POST request)
-            const requirementsData = rows.map(row => ({
-                stockName: newSelectedStock,
-                stockId: newSelectedStockId,
-                vendorName: newSelectedVendor,
-                vendorId: newSelectedVendorId,
-                purchaseQuantity: row.qty,
-                unit: row.unit,
-                price: row.total,
-                rate_per_days: row.price,
-                days: row.rateperdays,
-            }));
-    
-            const data = {
-                requirements: requirementsData,
-                customer_Id: enquiry._id,
-                customerName: enquiry.customer_name
-            };
-    
-            axios.post("http://localhost:5000/api/quatationinfo", data)
-                .then(response => {
-                    // Handle success response if needed
-                    alert("Stock added successfully:", response.data);
-                    resetFormFields();
-                })
-                .catch(error => {
-                    // Handle error response if needed
-                    console.error("Error adding stock:", error);
-                });
-        }
-    };
-    
+
+
+
     const resetFormFields = () => {
         // Reset form fields
         setRows([{ id: null, qty: null, unit: null, price: null, total: null }]);
@@ -215,9 +188,49 @@ function InternalCosting() {
         setCgst(0);
         setSgst(0);
     };
-    
-  
-    
+
+
+    const handleAddRequirement = async () => {
+        const requirements = rows.map(row => ({
+            stockName: newSelectedStock,
+            stockId: newSelectedStock,  // Assuming stockId is the same as stockName for now
+            vendorName: newSelectedVendor,
+            vendorId: newSelectedVendor, // Assuming vendorId is the same as vendorName for now
+            purchaseQuantity: row.qty,
+            rate_per_days: row.price,
+            days: row.rateperdays,
+            price: row.total
+        }));
+
+        const data = {
+            requirements,
+            customer_Id: enquiry._id,
+            customerName: enquiry.customer_name
+        };
+
+        try {
+            if (isFirstSubmission) {
+                const response = await axios.post('http://localhost:5000/api/quotationinfo', data);
+                alert('Stock added successfully');
+                setIsFirstSubmission(false);
+                setSubtotal(subtotal + calcTotal());
+
+
+            } else {
+                const response = await axios.patch(`http://localhost:5000/api/quotationinfo/${enquiry._id}`, data);
+                alert('Stock updated successfully');
+                setSubtotal(subtotal + calcTotal());
+            }
+            // Clear inputs after successful submission
+            setRows([{
+                id: 1, stockName: '', vendorName: '', qty: 0, unit: '', price: 0, rateperdays: 0, total: 0
+            }]);
+        } catch (error) {
+            console.error('Error adding/updating stock', error);
+            alert('Error adding/updating stock');
+        }
+    };
+
     return (
         <>
             <Header />
@@ -390,10 +403,11 @@ function InternalCosting() {
                     <div className="row clearfix">
                         <div className="col-md-12">
                             <button
-                                onClick={handleStockOperation}
+                                type="button"
                                 className="btn btn-primary pull-left"
+                                onClick={handleAddRequirement}
                             >
-                                {enquiry.customerId ? "Add More Stocks" : "Add Stock"}
+                                {isFirstSubmission ? 'Add Stock' : 'Add More Stocks'}
                             </button>
 
 
@@ -412,12 +426,10 @@ function InternalCosting() {
                                         <td className="text-center">
                                             <input
                                                 type="text"
-                                                value={TransportTypeValue}
-                                                onChange={(e) =>
-                                                    setTransportTypeValue(parseInt(e.target.value))
-                                                }
+
+
                                                 className="form-control"
-                                                placeholder="Enter Transport"
+                                                placeholder="Enter Transport Type..."
                                             />
                                         </td>
                                     </tr>
@@ -426,9 +438,9 @@ function InternalCosting() {
                                         <td className="text-center">
                                             <input
                                                 type="number"
-                                                value={transportValue}
-                                                onChange={(e) => setTransportValue(e.target.value)}
                                                 className="form-control"
+                                                value={transportCharges}
+                                                onChange={(e) => setTransportCharges(parseFloat(e.target.value) || 0)} // Update transport charges state
                                             />
                                         </td>
                                     </tr>
@@ -456,7 +468,7 @@ function InternalCosting() {
                                 <tbody>
                                     <tr>
                                         <th className="text-center">Sub Total</th>
-                                        <td className="text-center">{calcTotal()}</td>
+                                        <td className="text-center">{subtotal}</td>
                                     </tr>
                                     <tr>
                                         <th className="text-center">GST</th>
@@ -517,14 +529,9 @@ function InternalCosting() {
                     </div>
                     <div className="row clearfix" style={{ marginTop: "20px" }}>
                         <div className="col-md-12">
-                            <button
-                                className="btn btn-primary"
-                                onClick={() => {
-                                    // Logic to view the quotation
-                                }}
-                            >
-                                View & Save
-                            </button>
+                            <Button variant="primary" onClick={handleViewQuotation}>
+                                View
+                            </Button>
                             <button
                                 className="btn btn-success ml-2"
                                 onClick={() => {
@@ -537,8 +544,74 @@ function InternalCosting() {
                     </div>
                 </div>
             </div>
+
+            <Modal show={modalShow} onHide={handleClose}>
+                <Modal.Header closeButton style={{ marginTop: "30px" }}>
+                    <Modal.Title>Quotation Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+                    {quotationData ? (
+                        <>
+                            <div style={{ marginBottom: "20px" }}>
+                                {/* <div><strong>Date:</strong> {currentDate}</div> */}
+                                <div><strong>Customer Name:</strong> {enquiry.customer_name}</div>
+                                <div><strong>Event Name:</strong> {enquiry.event_name}</div>
+                                <div><strong>Event Date:</strong> {enquiry.event_date}</div>
+                            </div>
+                           
+                            <div>
+                                <strong>Requirements:</strong>
+                                {quotationData.requirements.map((req, index) => (
+                                    <div key={req._id} style={{ marginBottom: "10px" }}>
+                                        <div><strong>Stock {index + 1}:</strong></div>
+                                        <div><strong>Stock Name:</strong> {req.stockName}</div>
+                                        <div><strong>Vendor Name:</strong> {req.vendorName}</div>
+                                        <div><strong>Purchase Quantity:</strong> {req.purchaseQuantity}</div>
+                                        <div><strong>Rate per Days:</strong> {req.rate_per_days}</div>
+                                        <div><strong>Days:</strong> {req.days}</div>
+                                        <div><strong>Price:</strong> {req.price}</div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div>
+                                <strong>Transport:</strong> {quotationData.transport}
+                            </div>
+                            <div>
+                                <strong>Transport Amount:</strong> {quotationData.transport_amount}
+                            </div>
+                            <div>
+                                <strong>Description:</strong> {quotationData.description}
+                            </div>
+                            <div>
+                                <strong>Grand Total:</strong> {quotationData.grand_total}
+                            </div>
+
+                            <div style={{ marginTop: "20px" }}>
+                                <div><strong>Sub Total:</strong> {quotationData.sub_total}</div>
+                                <div><strong>CGST:</strong> {quotationData.cgst}</div>
+                                <div><strong>SGST:</strong> {quotationData.sgst}</div>
+                                <div><strong>Grand Total:</strong> {quotationData.grand_total}</div>
+                            </div>
+                        </>
+                    ) : (
+                        <div>Loading...</div>
+                    )}
+                </Modal.Body>
+            </Modal>
         </>
     );
 }
 
 export default InternalCosting;
+
+
+
+
+
+
+
+
+
+
+

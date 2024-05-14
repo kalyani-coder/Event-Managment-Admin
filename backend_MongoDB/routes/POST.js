@@ -273,7 +273,7 @@ router.post("/addvendor", async (req, res) => {
 // });
 
 // this is add one stock in api with user id and othe are empty fileds
-router.post('/quatationinfo', async (req, res) => {
+router.post('/quotationinfo', async (req, res) => {
   try {
     // Extract the requirements array from the request body
     const { requirements, customer_Id, customerName } = req.body;
@@ -288,7 +288,7 @@ router.post('/quatationinfo', async (req, res) => {
       transport: "", 
       transport_amount: 0, 
       description: "", 
-      grand_total: "" 
+      sub_total: "" 
     });
 
     // Save the new quotation information to the database

@@ -12,17 +12,7 @@ const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , ban
 const { FindTable } = require("../utils/utils");
 
 
-router.get("/quotationinfo/:id" , async(req, res) => {
-  const quotationId = req.params.id
-  try{
 
-    const GetById = await QuatationInfo.findById(quotationId)
-    res.status(201).json(GetById)
-
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
-  }
-})
 router.get('/quotationinfo/:customerId', async (req, res) => {
   try {
     // Extract the customerId from the request parameters
