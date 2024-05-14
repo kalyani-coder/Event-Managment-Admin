@@ -11,6 +11,39 @@ const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , ban
 
 const { FindTable } = require("../utils/utils");
 
+
+router.get("/quotationinfo/:id" , async(req, res) => {
+  const quotationId = req.params.id
+  try{
+
+    const GetById = await QuatationInfo.findById(quotationId)
+    res.status(201).json(GetById)
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+router.get('/quotationinfo/:customerId', async (req, res) => {
+  try {
+    // Extract the customerId from the request parameters
+    const { customerId } = req.params;
+
+    // Find the existing quotation information object based on the customerId
+    const quotationInfo = await QuatationInfo.findOne({ customer_Id: customerId });
+
+    // If no quotation information is found, return a 404 error
+    if (!quotationInfo) {
+      return res.status(404).json({ error: 'Quotation information not found' });
+    }
+
+    // Respond with the found quotation information object
+    res.json(quotationInfo);
+  } catch (error) {
+    console.error("Error fetching quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // venue get route 
 router.get("/venue" , async(req, res) => {
   try{
@@ -208,7 +241,7 @@ router.get('/inventory-stocks/vendor/:vendorId', async (req, res) => {
 
 
 // get quatationonfo 
-router.get("/quatationinfo", async (req, res) => {
+router.get("/quotationinfo", async (req, res) => {
   try {
     const allQuatationInfo = await QuatationInfo.find();
     res.status(200).json(allQuatationInfo);

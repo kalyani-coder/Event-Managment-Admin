@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 function InternalCosting() {
     const location = useLocation()
     const { enquiry } = location.state || {}
+    console.log("vedant", enquiry)
     const [rows, setRows] = useState([{ id: null, qty: null, unit: null, price: null, total: null }]);
     const [TransportTypeValue, setTransportTypeValue] = useState("");
     const [transportValue, setTransportValue] = useState("");
@@ -31,7 +32,7 @@ function InternalCosting() {
     const [cgst, setCgst] = useState(0);
     const [sgst, setSgst] = useState(0);
 
-      const [newSelectedStockId, setNewSelectedStockId] = useState("");
+    const [newSelectedStockId, setNewSelectedStockId] = useState("");
     const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
 
     useEffect(() => {
@@ -69,7 +70,7 @@ function InternalCosting() {
         setNewSelectedVendor(selectedVendorName);
 
         const selectedVendorId = e.target.value; // Assuming the value contains the ID of the selected vendor
-        setNewSelectedVendorId(selectedVendorId); 
+        setNewSelectedVendorId(selectedVendorId);
 
         const selectedVendorData = newstocksData.find(
             (stock) =>
@@ -141,58 +142,82 @@ function InternalCosting() {
     //     setRows([...rows, newRow]);
     //   };
 
-    const addStock = () => {
-        // Construct the data object to post
-        const requirementsData = rows.map(row => ({
-            stockName: newSelectedStock,
-            stockId: newSelectedStockId, // Use the selected stock ID from the state
-            vendorName: newSelectedVendor,
-            vendorId: newSelectedVendorId, // Use the selected vendor ID from the state
-            purchaseQuantity: row.qty,
-            unit: row.unit,
-            price: row.total,
-            rate_per_days: row.price,
-            days: row.rateperdays,
-        }));
+    const handleStockOperation = () => {
+        const customerId = enquiry.customerId;
     
-        const { enquiry } = location.state || {};
-        const customerId = enquiry ? enquiry._id : undefined;
-        const customerName = enquiry ? enquiry.customer_name : undefined;
-      
-        const data = {
-          requirements: requirementsData,
-          customer_Id: customerId,
-          customerName: customerName
-        };
+        if (customerId) {
+            // If customerId exists, perform the "addMoreStocks" operation (PATCH request)
+            const patchData = {
+                newStock: {
+                    stockName: newSelectedStock,
+                    stockId: newSelectedStockId,
+                    vendorName: newSelectedVendor,
+                    vendorId: newSelectedVendorId,
+                    // Add other properties as needed
+                }
+            };
     
-        // Make a POST request to your API endpoint
-        axios.post("http://localhost:5000/api/quatationinfo", data)
-            .then(response => {
-                // Handle success response if needed
-                alert("Stock added successfully:", response.data);
-                
-                // Reset form fields
-                setRows([{ id: null, qty: null, unit: null, price: null, total: null }]);
-                setTransportTypeValue("");
-                setTransportValue("");
-                setDescriptionValue("");
-                setNewSelectedStock("");
-                setNewSelectedStockId("");
-                setNewSelectedVendor("");
-                setNewSelectedVendorId("");
-                setCgstChecked(false);
-                setSgstChecked(false);
-                setCgst(0);
-                setSgst(0);
-            })
-            .catch(error => {
-                // Handle error response if needed
-                console.error("Error adding stock:", error);
-            });
+            axios.patch(`http://localhost:5000/api/quatationinfo/${customerId}`, patchData)
+                .then(patchResponse => {
+                    // Handle success response if needed
+                    alert("Stocks added successfully:", patchResponse.data);
+                    resetFormFields();
+                })
+                .catch(patchError => {
+                    // Handle error response if needed
+                    console.error("Error adding stocks:", patchError);
+                });
+        } else {
+            // If customerId does not exist, perform the "addStock" operation (POST request)
+            const requirementsData = rows.map(row => ({
+                stockName: newSelectedStock,
+                stockId: newSelectedStockId,
+                vendorName: newSelectedVendor,
+                vendorId: newSelectedVendorId,
+                purchaseQuantity: row.qty,
+                unit: row.unit,
+                price: row.total,
+                rate_per_days: row.price,
+                days: row.rateperdays,
+            }));
+    
+            const data = {
+                requirements: requirementsData,
+                customer_Id: enquiry._id,
+                customerName: enquiry.customer_name
+            };
+    
+            axios.post("http://localhost:5000/api/quatationinfo", data)
+                .then(response => {
+                    // Handle success response if needed
+                    alert("Stock added successfully:", response.data);
+                    resetFormFields();
+                })
+                .catch(error => {
+                    // Handle error response if needed
+                    console.error("Error adding stock:", error);
+                });
+        }
     };
     
+    const resetFormFields = () => {
+        // Reset form fields
+        setRows([{ id: null, qty: null, unit: null, price: null, total: null }]);
+        setTransportTypeValue("");
+        setTransportValue("");
+        setDescriptionValue("");
+        setNewSelectedStock("");
+        setNewSelectedStockId("");
+        setNewSelectedVendor("");
+        setNewSelectedVendorId("");
+        setCgstChecked(false);
+        setSgstChecked(false);
+        setCgst(0);
+        setSgst(0);
+    };
     
-
+  
+    
     return (
         <>
             <Header />
@@ -365,17 +390,14 @@ function InternalCosting() {
                     <div className="row clearfix">
                         <div className="col-md-12">
                             <button
-                                onClick={addStock}
+                                onClick={handleStockOperation}
                                 className="btn btn-primary pull-left"
                             >
-                                Add Stock
+                                {enquiry.customerId ? "Add More Stocks" : "Add Stock"}
                             </button>
-                            {/* <button
-                onClick={handleDeleteRow}
-                className="pull-right btn btn-default"
-              >
-                Delete Row
-              </button> */}
+
+
+
                         </div>
                     </div>
                     <div className="row clearfix" style={{ marginTop: "20px" }}>
