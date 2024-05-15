@@ -19,6 +19,7 @@ const ViewInquiryPage = () => {
       try {
         // Retrieve manager ID from localStorage
         const managerId = localStorage.getItem('managerId');
+        console.log("ManagerID",managerId);
 
         // Fetch inquiries based on manager ID
         const response = await fetch(`http://localhost:5000/api/enquiry/${managerId}`);
