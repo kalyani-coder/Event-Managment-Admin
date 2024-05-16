@@ -14,30 +14,30 @@ const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
-const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper,allBanks ,venue} = require('../models/newModels')
+const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper, allBanks, venue } = require('../models/newModels')
 
 
 
 // Venue post route 
-router.post("/venue" , async(req, res) => {
+router.post("/venue", async (req, res) => {
   const addVenue = new venue(req.body)
-  try{
+  try {
 
-    const existingVenue = await venue.findOne({venue : req.body.venue})
-    if(existingVenue){
-      return res.status(404).json({message : "Venue is already exists"})
+    const existingVenue = await venue.findOne({ venue: req.body.venue })
+    if (existingVenue) {
+      return res.status(404).json({ message: "Venue is already exists" })
     }
 
     const newVenue = await addVenue.save()
-    res.status(201).json({message : "Venue Added Successfully"})
+    res.status(201).json({ message: "Venue Added Successfully" })
 
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
 // all Bank accounts post route 
-router.post("/allbanks" , async(req, res) => {
+router.post("/allbanks", async (req, res) => {
   const newBank = new allBanks(req.body);
   try {
     // Check if a bank with the same name already exists
@@ -49,7 +49,7 @@ router.post("/allbanks" , async(req, res) => {
 
     const addTransper = await newBank.save();
     res.status(201).json({ message: "Bank Added successfully" });
-  } catch(e) {
+  } catch (e) {
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -278,17 +278,24 @@ router.post('/quotationinfo', async (req, res) => {
     // Extract the requirements array from the request body
     const { requirements, customer_Id, customerName } = req.body;
 
-    // Create the initial quotation information object with requirements and customer details
+    // Calculate subtotal based on the price of each requirement
+    const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    // Create the initial quotation information object with requirements, customer details, and calculated subtotal
     const newQuotationInfo = new QuatationInfo({
       requirements,
       customer_Id,
       customerName,
       eventName: "",
-      total_days: 0, 
-      transport: "", 
-      transport_amount: 0, 
-      description: "", 
-      sub_total: "" 
+      total_days: 0,
+      transport: "",
+      transport_amount: 0,
+      description: "",
+      sub_total: subTotal, 
+      cgst: "",
+      sgst: "",
+      Total_Amount: "",
+      grand_total : "",
     });
 
     // Save the new quotation information to the database
@@ -301,6 +308,7 @@ router.post('/quotationinfo', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 

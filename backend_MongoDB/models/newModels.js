@@ -349,6 +349,12 @@ const QuatationInfo = new Schema({
   transport_amount :Number,
   description: String,
   grand_total: Number,
+  sub_total : Number,
+  cgst : String,
+  sgst : String,
+  Total_Amount  : Number,
+
+
 
   requirements: [{
     stockName: String,
@@ -357,6 +363,7 @@ const QuatationInfo = new Schema({
     vendorId: String,
     purchaseQuantity: Number,
     rate_per_days : Number,
+    unit : String,
     days : Number,
     price: Number ,
 

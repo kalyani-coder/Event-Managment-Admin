@@ -201,7 +201,7 @@ const showMessage = () => {
             {/* <Link to={'/advpaymentcus'}>
               <button className="btn btn-primary mr-4 mb-4">Customer Payment</button>
             </Link> */}
-            <Link to={'/costingform'}>
+            <Link to={'/internalcosting'}>
               <button className="btn btn-primary mr-4 mb-4">Costing Form</button>
             </Link>
 

@@ -60,6 +60,33 @@ router.patch("/allbanks/:id", async (req, res) => {
 
 
 // this is patch route for add only stock multiple in api by student id 
+// router.patch('/quotationinfo/:customerId', async (req, res) => {
+//   try {
+//     const { customerId } = req.params;
+//     const newRequirements = req.body.requirements;
+
+//     // Find the quotation info by customer_Id
+//     const quotationInfo = await QuatationInfo.findOne({ customer_Id: customerId });
+
+//     if (!quotationInfo) {
+//       return res.status(404).json({ error: 'Quotation information not found' });
+//     }
+
+//     // Append new requirements to the existing requirements array
+//     quotationInfo.requirements = quotationInfo.requirements.concat(newRequirements);
+
+//     // Save the updated quotation info to the database
+//     const updatedQuotationInfo = await quotationInfo.save();
+
+//     // Respond with the updated quotation information object
+//     res.status(200).json(updatedQuotationInfo);
+//   } catch (error) {
+//     console.error("Error updating quotation information:", error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+
 router.patch('/quotationinfo/:customerId', async (req, res) => {
   try {
     const { customerId } = req.params;
@@ -71,6 +98,12 @@ router.patch('/quotationinfo/:customerId', async (req, res) => {
     if (!quotationInfo) {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
+
+    // Calculate subtotal of new requirements
+    const newSubtotal = newRequirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    // Update the existing sub_total with the sum of existing sub_total and new subtotal
+    quotationInfo.sub_total += newSubtotal;
 
     // Append new requirements to the existing requirements array
     quotationInfo.requirements = quotationInfo.requirements.concat(newRequirements);
