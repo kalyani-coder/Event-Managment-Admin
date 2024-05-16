@@ -60,51 +60,32 @@ router.patch("/allbanks/:id", async (req, res) => {
 
 
 // this is patch route for add only stock multiple in api by student id 
-
-router.patch('/quatationinfo/:studentId', async (req, res) => {
+router.patch('/quotationinfo/:customerId', async (req, res) => {
   try {
-    // Extract the studentId from the request parameters
-    const { studentId } = req.params;
+    const { customerId } = req.params;
+    const newRequirements = req.body.requirements;
 
-    // Find the existing quotation information object based on the studentId
-    let existingQuotationInfo = await QuatationInfo.findOne({ customer_Id: studentId });
+    // Find the quotation info by customer_Id
+    const quotationInfo = await QuatationInfo.findOne({ customer_Id: customerId });
 
-    if (!existingQuotationInfo) {
+    if (!quotationInfo) {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    // Extract the new stock information from the request body
-    const { newStock } = req.body;
+    // Append new requirements to the existing requirements array
+    quotationInfo.requirements = quotationInfo.requirements.concat(newRequirements);
 
-    // Calculate the price for the new stock
-    const calculatePrice = (ratePerDays, purchaseQuantity, days) => {
-      return ratePerDays * purchaseQuantity * days;
-    };
-
-    const { rate_per_days, purchaseQuantity, days } = newStock;
-    const price = calculatePrice(rate_per_days, purchaseQuantity, days);
-
-    // Add the new stock information to the existing requirements array
-    existingQuotationInfo.requirements.push({ ...newStock, price });
-
-    // Update the total price for the quotation
-    const totalPrice = existingQuotationInfo.requirements.reduce((total, stock) => {
-      return total + stock.price;
-    }, 0);
-
-    // Update the total price in the quotation information object
-    existingQuotationInfo.grand_total = totalPrice.toString();
-
-    // Save the updated quotation information to the database
-    existingQuotationInfo = await existingQuotationInfo.save();
+    // Save the updated quotation info to the database
+    const updatedQuotationInfo = await quotationInfo.save();
 
     // Respond with the updated quotation information object
-    res.json(existingQuotationInfo);
+    res.status(200).json(updatedQuotationInfo);
   } catch (error) {
-    console.error("Error adding more stock:", error);
+    console.error("Error updating quotation information:", error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 // final data to patch perticular and description in api by userid 
