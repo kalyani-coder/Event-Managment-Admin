@@ -278,7 +278,10 @@ router.post('/quotationinfo', async (req, res) => {
     // Extract the requirements array from the request body
     const { requirements, customer_Id, customerName } = req.body;
 
-    // Create the initial quotation information object with requirements and customer details
+    // Calculate subtotal based on the price of each requirement
+    const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    // Create the initial quotation information object with requirements, customer details, and calculated subtotal
     const newQuotationInfo = new QuatationInfo({
       requirements,
       customer_Id,
@@ -288,7 +291,7 @@ router.post('/quotationinfo', async (req, res) => {
       transport: "",
       transport_amount: 0,
       description: "",
-      sub_total: "",
+      sub_total: subTotal, 
       cgst: "",
       sgst: "",
       Total_Amount: "",
@@ -305,6 +308,7 @@ router.post('/quotationinfo', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 
