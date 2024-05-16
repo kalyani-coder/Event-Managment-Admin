@@ -261,10 +261,10 @@ function InternalCosting() {
 
     // Print Customer Data
     const customerData = [
-      ["Client Name", enquiry.customer_name || "-"],
-      ["Address", enquiry.address || "-"],
-      ["Event Date", enquiry.event_date || "-"],
-      ["Event Venue", enquiry.event_venue || "-"],
+      ["Client Name-", enquiry.customer_name || "-"],
+      ["Address-", enquiry.address || "-"],
+      ["Date-", enquiry.event_date || "-"],
+      ["Venue-", enquiry.event_venue || "-"],
     ];
 
     const companyData = [
@@ -305,10 +305,11 @@ function InternalCosting() {
       //   head: [
       //     [
       //       "Sr.No.",
-      //       "Stock Name",
-      //       "Vendor Name",
-      //       "Purchase Quantity",
-      //       "Rate per Days",
+      //       "Perticular",
+      //       "Description",
+      //       "Per",
+      //       "Unit",
+      //       "Rate",
       //       "Days",
       //       "Amount",
       //     ],
