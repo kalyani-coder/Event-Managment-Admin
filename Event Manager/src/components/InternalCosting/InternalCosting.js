@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import MyImage from "../../components/Enquiry/Quotation/logo.png";
+import myImage from "../../components/Enquiry/Quotation/logo.png";
 
 function InternalCosting() {
   const location = useLocation();
@@ -259,38 +259,71 @@ function InternalCosting() {
     const doc = new jsPDF();
     doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
 
-    // Print Customer and Company Data...
-    doc.setFontSize(10);
-    doc.text(`Customer Name: ${enquiry.customer_name || "-"}`, 10, 20);
-    doc.text(`Event Date: ${enquiry.event_date || "-"}`, 10, 30);
-    // Add more customer/company data as needed...
+    // Print Customer Data
+    const customerData = [
+      ["Client Name", enquiry.customer_name || "-"],
+      ["Address", enquiry.address || "-"],
+      ["Event Date", enquiry.event_date || "-"],
+      ["Event Venue", enquiry.event_venue || "-"],
+    ];
+
+    const companyData = [
+      ["Company Name", "Tutons Events LLP"],
+      [
+        "Company Address",
+        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
+      ],
+      ["Company Phone", "9225522123 / 9226061234"],
+      ["Company Email", "tutonsevents@gmail.com"],
+    ];
+    const imageWidth = 40;
+    const imageHeight = 30;
+    const imageX = 120;
+    const imageY = 10;
+  
+    // Print Customer Data table
+    doc.autoTable({
+      body: customerData,
+      startY: 30,
+      theme: "grid",
+    });
+
+    // Add image
+    doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
+
+     // Print Company Data table
+     doc.autoTable({
+      body: companyData,
+      startY: 30 + doc.lastAutoTable.finalY + 10, // Start after customer data table
+      theme: "grid",
+    });
 
     // Print Quotation Details...
     if (quotationData) {
       // Print table of requirements...
-      doc.autoTable({
-        head: [
-          [
-            "Sr.No.",
-            "Stock Name",
-            "Vendor Name",
-            "Purchase Quantity",
-            "Rate per Days",
-            "Days",
-            "Amount",
-          ],
-        ],
-        body: quotationData.requirements.map((req, index) => [
-          index + 1,
-          req.stockName,
-          req.vendorName,
-          req.purchaseQuantity,
-          req.rate_per_days,
-          req.days,
-          req.price,
-        ]),
-        startY: 50,
-      });
+      // doc.autoTable({
+      //   head: [
+      //     [
+      //       "Sr.No.",
+      //       "Stock Name",
+      //       "Vendor Name",
+      //       "Purchase Quantity",
+      //       "Rate per Days",
+      //       "Days",
+      //       "Amount",
+      //     ],
+      //   ],
+      //   body: quotationData.requirements.map((req, index) => [
+      //     index + 1,
+      //     req.stockName,
+      //     req.vendorName,
+      //     req.purchaseQuantity,
+      //     req.rate_per_days,
+      //     req.days,
+      //     req.price,
+      //   ]),
+      //   startY: 50,
+      // });
 
       // Print other details...
       doc.setFontSize(10);
@@ -636,13 +669,16 @@ function InternalCosting() {
               <div className="card-body">
                 <div style={{ marginBottom: "20px" }}>
                   <div>
-                    <strong>Customer Name:</strong> {enquiry.customer_name}
+                    <strong>Client Name:</strong> {enquiry.customer_name}
                   </div>
                   <div>
-                    <strong>Event Name:</strong> {enquiry.event_name}
+                    <strong>Address:</strong> {enquiry.address}
                   </div>
                   <div>
-                    <strong>Event Date:</strong> {enquiry.event_date}
+                    <strong>Date:</strong> {enquiry.event_date}
+                  </div>
+                  <div>
+                    <strong>Venue:</strong> {enquiry.event_venue}
                   </div>
                 </div>
 
@@ -651,10 +687,11 @@ function InternalCosting() {
                     <thead>
                       <tr>
                         <th>Sr.No.</th>
-                        <th>Stock Name</th>
-                        <th>Vendor Name</th>
-                        <th>Purchase Quantity</th>
-                        <th>Rate per Days</th>
+                        <th>Perticular</th>
+                        <th>Description</th>
+                        <th>Per</th>
+                        <th>Unit</th>
+                        <th>Rate</th>
                         <th>Days</th>
                         <th>Amount</th>
                       </tr>
@@ -664,8 +701,9 @@ function InternalCosting() {
                         <tr key={req._id}>
                           <td>{index + 1}</td>
                           <td>{req.stockName}</td>
-                          <td>{req.vendorName}</td>
+                          <td>{req.description}</td>
                           <td>{req.purchaseQuantity}</td>
+                          {/* <td>{req.unit}</td> */}
                           <td>{req.rate_per_days}</td>
                           <td>{req.days}</td>
                           <td>{req.price}</td>
