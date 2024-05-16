@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useHistory from React Router
+import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
 const LandingPage = () => {
-    const  navigate = useNavigate()
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('');
- 
+
   const handleLogin = () => {
     if (selectedOption === '') {
       alert('Please select an option');
     } else {
       // Navigate based on the selected option
-      if (selectedOption === 'Admin') {
-        navigate('/login'); // Navigate to admin login page
-      } else if (selectedOption === 'Manager') {
+      if (selectedOption === 'Manager') {
         navigate('/manager/login'); // Navigate to manager login page
+      } else if (selectedOption === 'Admin') {
+        navigate('/login'); // Navigate to admin login page
       }
+    }
+  };
+
+  const handleChange = (e) => {
+    setSelectedOption(e.target.value);
+    // Automatically navigate when "Admin" is selected
+    if (e.target.value === 'Admin') {
+      navigate('/login');
     }
   };
 
@@ -32,13 +40,13 @@ const LandingPage = () => {
           <select
             className="login-select"
             value={selectedOption}
-            onChange={(e) => setSelectedOption(e.target.value)}
+            onChange={handleChange} // Change event handler
           >
             <option value="">Select Role</option>
             <option value="Manager">Manager</option>
             <option value="Admin">Admin</option>
           </select>
-          <button type="button" className='login-button' onClick={handleLogin}>Login</button>
+          {/* <button type="button" className='login-button' onClick={handleLogin}>Login</button> */}
         </form>
       </div>
     </div>

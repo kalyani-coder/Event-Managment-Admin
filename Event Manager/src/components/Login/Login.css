@@ -5,3 +5,8 @@
     width: 75%;
     margin-left: 10%;
 }
+
+.arrow{
+	font-weight: bold !important;
+	cursor: pointer;
+}

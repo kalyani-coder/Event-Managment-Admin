@@ -375,6 +375,57 @@ export default function Sidenav() {
              
             </List>
 
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, " View Event")}
+              >
+                <div className="menuitems-of-header ">
+                <Link
+                    to="/viewevent"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                    className={
+                      activetab === " ViewEvent"
+                        ? "menuitems-of-header active"
+                        : "menuitems-of-header"
+                    }
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Tooltip title="View Event">
+                        <span>
+                          <FontAwesomeIcon
+                            icon={faCalendar}
+                            size="lg"
+                            color="#9b59b6"
+                          />
+                        </span>
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="View Event"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+             
+            </List>
+
 
             <List>
               <ListItem

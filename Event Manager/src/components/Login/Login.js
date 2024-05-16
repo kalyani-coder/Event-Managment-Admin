@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 
-const  Login = ()  => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +14,7 @@ const  Login = ()  => {
       navigate('/quotation');
     }
   }, []);
-  
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -30,7 +29,7 @@ const  Login = ()  => {
       if (response.ok) {
         console.log('Login successful');
         alert('Login successful');
-        
+
         localStorage.setItem('managerId', data._id);
         localStorage.setItem('token', data.token);
         navigate('/quotation');
@@ -49,18 +48,15 @@ const  Login = ()  => {
     }
   };
 
-  
-
   return (
-    <section className="vh-75 gradient-custom row d-flex justify-content-center align-items-center"> 
+    <section className="vh-75 gradient-custom row d-flex justify-content-center align-items-center">
       <div className="container-login py-4 h-75 mr-2">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div className="card-event  text-white" style={{ borderRadius: '1rem' }}>
+            <div className="card-event text-white" style={{ borderRadius: '1rem' }}>
               <div className="card-body-login p-5 text-center">
                 <form onSubmit={handleLogin}>
                   <div className="mb-md-5 mt-md-4 pb-5 login-card">
-                    <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                     {error && <p className="text-danger">{error}</p>}
                     <div data-mdb-input-init className="form-outline form-white mb-4">
                       <label className="form-label" htmlFor="typeEmailX">Email</label>
@@ -68,9 +64,12 @@ const  Login = ()  => {
                     </div>
                     <div data-mdb-input-init className="form-outline form-white mb-4">
                       <label className="form-label" htmlFor="typePasswordX">Password</label>
-                      <input type="password" id="typePasswordX" placeholder="Enter your password"  className="form-control form-control-s" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                      <input type="password" id="typePasswordX" placeholder="Enter your password" className="form-control form-control-s" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-s px-5" type="submit">Login</button>
+                    
+                    <h2 className="text-white text-center mt-3 mr-52"><span className="fs-5 fw-bold ">←</span>back</h2> {/* Moved heading below the login form */}
+                    
                   </div>
                 </form>
               </div>
@@ -78,6 +77,7 @@ const  Login = ()  => {
           </div>
         </div>
       </div>
+     
     </section>
   );
 }

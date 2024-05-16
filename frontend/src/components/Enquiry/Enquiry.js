@@ -98,6 +98,7 @@ export default function Enquiry() {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
+          {/* <button className="btn btn-primary"> View Enquiry</button> */}
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">

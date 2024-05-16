@@ -21,7 +21,6 @@ import ExecutiveDetails from "./components/UsersDetails/executive/ExecutiveDetai
 import ExecutiveDetailPage from "./components/UsersDetails/executive/ExecutiveDetailPage";
 import VendorDetails from "./components/UsersDetails/Vendor/VendorDetails";
 import VendorDetailPage from "./components/UsersDetails/Vendor/VendorDetailsPage";
-import EventDetails from "./components/Event/ViewEvent";
 import EventMoreDetails from "./components/Event/ViewMoreDetails";
 import AddExpense from "./components/Event/AddExpense";
 import ExpenseList from "./components/Event/ExpenseList";
@@ -62,6 +61,7 @@ import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
 import ViewAdvPaymentManager from "./components/AddNewEvent/ViewAdvPaymentManager";
 import InternalTrasferBank from "./components/InternalTransfer/InternalTrasferBank";
 import LandingPage from "./components/LandingPage/LandingPage";
+import EventDetails from "./components/Event/ViewEvent";
 function App() {
   return (
     <>
