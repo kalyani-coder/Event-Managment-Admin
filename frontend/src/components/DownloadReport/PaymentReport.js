@@ -85,7 +85,25 @@ const PaymentReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-          <h2 className="text-[35px] ">Payment Report</h2>
+        <Link to={'/eventreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Event Report</button>
+            </Link>
+            <Link to={'/enquiryreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Enquiry Report</button>
+            </Link>
+            <Link to={'/customerreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Customer Report</button>
+            </Link>
+            <Link to={'/managerreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Advance Manager Report</button>
+            </Link>
+            <Link to={'/paymentreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Payment Report</button>
+            </Link>
+            <Link to={'/vendorpaymentreport'}>
+              <button className="btn btn-primary mr-4 mb-4">Vendor Report</button>
+            </Link>
+          <h2 className="text-[30px] ">Payment Report</h2>
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}
             <div className="dropdown ">

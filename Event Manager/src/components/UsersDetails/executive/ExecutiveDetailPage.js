@@ -50,7 +50,7 @@ const ExecutiveDetailPage = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 md:w-[50%]  min-w-3 px-3 ml-3  ">
           {" "}
-          <h2 className="text-[35px]">
+          <h2 className="text-[30px]">
             {executive.fname} {executive.lname} Details
           </h2>
           <Card style={{ width: "100%" }}>

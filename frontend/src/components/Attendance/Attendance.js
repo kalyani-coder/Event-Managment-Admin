@@ -121,7 +121,7 @@ const AttendancePage = () => {
       >
         <div className="md:h-[80vh] max-h-[80vh] md:w-[50%] min-w-8 mx-4 ">
           <div className="md:flex place-content-between grid gap-2">
-            <h1 className="text-[35px]">Attendance Sheet</h1>
+            <h1 className="text-[30px]">Attendance Sheet</h1>
             <Button className="manager-btn ms-1" onClick={exportToExcel}>
               Export to Excel
             </Button>

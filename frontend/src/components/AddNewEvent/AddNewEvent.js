@@ -94,7 +94,7 @@ const AddNewEvent = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           {" "}
-          <h2 className="text-[35px]  pl-[1em]">Create Event</h2>
+          <h2 className="text-[30px]  pl-[1em]">Create Event</h2>
           <div className="row mb-2">
             <div className="col px-5">
               <Form.Group controlId="SelectEvent">

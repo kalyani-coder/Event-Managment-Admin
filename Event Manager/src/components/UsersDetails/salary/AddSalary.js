@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Header from "../../Sidebar/Header";
-
+import { Link } from 'react-router-dom';
 const AddSalary = () => {
   const location = useLocation();
   const managerDetails = location.state;
@@ -101,8 +101,11 @@ const AddSalary = () => {
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] w-full">
           {" "}
+          <Link to={'/viewsalary'}>
+              <button className="btn btn-primary mr-4 mb-4">View Salary</button>
+            </Link>
           <form className="" onSubmit={handleSubmit}>
-            <h2 className="text-[35px] pl-5">Add Salary</h2>
+            <h2 className="text-[30px] pl-5">Add Salary</h2>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
