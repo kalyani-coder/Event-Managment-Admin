@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import MyImage from "../../components/Enquiry/Quotation/logo.png";
 
 function InternalCosting() {
   const location = useLocation();
@@ -257,18 +258,27 @@ function InternalCosting() {
   const handlePrint = () => {
     const doc = new jsPDF();
     doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
-    
+
     // Print Customer and Company Data...
+    doc.setFontSize(10);
     doc.text(`Customer Name: ${enquiry.customer_name || "-"}`, 10, 20);
     doc.text(`Event Date: ${enquiry.event_date || "-"}`, 10, 30);
     // Add more customer/company data as needed...
-  
+
     // Print Quotation Details...
     if (quotationData) {
       // Print table of requirements...
       doc.autoTable({
         head: [
-          ["Sr.No.", "Stock Name", "Vendor Name", "Purchase Quantity", "Rate per Days", "Days", "Amount"]
+          [
+            "Sr.No.",
+            "Stock Name",
+            "Vendor Name",
+            "Purchase Quantity",
+            "Rate per Days",
+            "Days",
+            "Amount",
+          ],
         ],
         body: quotationData.requirements.map((req, index) => [
           index + 1,
@@ -277,20 +287,25 @@ function InternalCosting() {
           req.purchaseQuantity,
           req.rate_per_days,
           req.days,
-          req.price
+          req.price,
         ]),
-        startY: 50
+        startY: 50,
       });
-  
+
       // Print other details...
+      doc.setFontSize(10);
       doc.text(`Transport: ${quotationData.transport || "-"}`, 10, 150);
-      doc.text(`Transport Amount: ${quotationData.transport_amount || "-"}`, 10, 160);
+      doc.text(
+        `Transport Amount: ${quotationData.transport_amount || "-"}`,
+        10,
+        160
+      );
       doc.text(`Description: ${quotationData.description || "-"}`, 10, 170);
       doc.text(`Sub Total: ${quotationData.sub_total || "-"}`, 10, 180);
       doc.text(`CGST: ${quotationData.cgst || "-"}`, 10, 190);
       doc.text(`SGST: ${quotationData.sgst || "-"}`, 10, 200);
       doc.text(`Grand Total: ${quotationData.grand_total || "-"}`, 10, 210);
-  
+
       // Save the PDF with a meaningful name
       doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
       alert("PDF file generated");
@@ -298,8 +313,6 @@ function InternalCosting() {
       alert("Quotation details are not available.");
     }
   };
-  
-
 
   return (
     <>
@@ -605,13 +618,9 @@ function InternalCosting() {
               <Button variant="primary" onClick={handleViewQuotation}>
                 View
               </Button>
-              <button
-  className="btn btn-success ml-2"
-  onClick={handlePrint}
->
-  Print
-</button>
-
+              <button className="btn btn-success ml-2" onClick={handlePrint}>
+                Print
+              </button>
             </div>
           </div>
         </div>
