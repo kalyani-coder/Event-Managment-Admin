@@ -41,6 +41,10 @@ const Login = () => {
     }
   };
 
+  const navigatePage = () => {
+    window.location.href = "https://ssdpune.org"
+  }
+
   return (
     <div className="modal-overlay login-popup">
       <div className="modal-content-login">
@@ -77,7 +81,7 @@ const Login = () => {
                   <i className="button__icon fas fa-chevron-right"></i>
                 </button>
               </form>
-              <h1 className="arrow" onClick={() => navigate('/')}>
+              <h1 className="arrow" onClick={navigatePage}>
                 <span className="fs-5 fw-bold">←</span>Back
               </h1>
             </div>
