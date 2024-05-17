@@ -42,8 +42,8 @@ const Login = () => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay login-popup">
+      <div className="modal-content-login">
         <div className="container-login">
           <div className="screen">
             <div className="screen__content">

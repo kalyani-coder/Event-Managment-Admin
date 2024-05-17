@@ -63,7 +63,7 @@ const EventDetails = ({ routes }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        {eventData
+        {/* {eventData
           .filter(
             (event) =>
               event.fname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -94,7 +94,11 @@ const EventDetails = ({ routes }) => {
                 </button>
               </Card.Body>
             </Card>
-          ))}
+          ))} */}
+
+          
+
+
         {eventData.length === 0 && (
           <p className="text-center">No event details found.</p>
         )}

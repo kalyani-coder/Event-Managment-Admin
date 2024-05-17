@@ -1,7 +1,7 @@
 /* Add these styles to Login.css */
 
 /* Modal styles */
-.modal-overlay {
+.login-popup {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -14,7 +14,7 @@
 	z-index: 1000;
   }
   
-  .modal-content {
+  .modal-content-login {
 	border-radius: 10px;
 	position: relative;
 	max-width: 0px;

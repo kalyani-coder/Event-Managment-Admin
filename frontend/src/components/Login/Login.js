@@ -38,8 +38,8 @@ const Login = () => {
   if (!isModalOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={closeModal}>
-      <div className="modal-content bounce-in" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay login-popup" onClick={closeModal}>
+      <div className="modal-content-login bounce-in" onClick={(e) => e.stopPropagation()}>
         <div className="container-login">
           <div className="screen">
             <div className="screen__content">
