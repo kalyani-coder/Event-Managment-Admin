@@ -21,7 +21,7 @@ import ExecutiveDetails from "./components/UsersDetails/executive/ExecutiveDetai
 import ExecutiveDetailPage from "./components/UsersDetails/executive/ExecutiveDetailPage";
 import VendorDetails from "./components/UsersDetails/Vendor/VendorDetails";
 import VendorDetailPage from "./components/UsersDetails/Vendor/VendorDetailsPage";
-import EventDetails from "./components/Event/ViewEvent";
+// import EventDetails from "./components/Event/ViewEvent";
 import EventMoreDetails from "./components/Event/ViewMoreDetails";
 import AddExpense from "./components/Event/AddExpense";
 import ExpenseList from "./components/Event/ExpenseList";
@@ -62,6 +62,7 @@ import AdvPaymentManager from "./components/AddNewEvent/AdvPaymentManager";
 import ViewAdvPaymentManager from "./components/AddNewEvent/ViewAdvPaymentManager"
 import AdvancePaymentCus2 from "./components/AddNewEvent/AdvancePaymentCus2";
 import InternalCosting from "./components/InternalCosting/InternalCosting";
+import ViewEvent from "./components/AddNewEvent/ViewEvent";
 
 function App() {
   return (
@@ -95,7 +96,7 @@ function App() {
             <Route path="/vendordetails" element={<VendorDetails />} />
             <Route path="/vendor/:_id" element={<VendorDetailPage />} />
             <Route path="/view-more/:_id" element={<ViewVendorPayment />} />
-            <Route path="/viewevent" element={<EventDetails />} />
+            {/* <Route path="/viewevent" element={<EventDetails />} /> */}
             <Route
               path="/event-more-details/:eventId"
               element={<EventMoreDetails />}
@@ -138,6 +139,7 @@ function App() {
             <Route path="/advpaycus" element={<AdvancePaymentCus2 />} />
             <Route path="/viewadvpaymentmanager" element={<ViewAdvPaymentManager />} />
             <Route path="/internalcosting" element={<InternalCosting />} />
+            <Route path="/viewevent" element={<ViewEvent />} />
 
             {/* **************** */}
           </Routes>

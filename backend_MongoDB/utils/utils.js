@@ -217,6 +217,8 @@ const FilterBodyByTable = ({ req, table }) => {
         budget,
         address,
         status,
+        managerId,
+        managerName,
       } = req.body;
       return {
         eventName,
@@ -234,6 +236,8 @@ const FilterBodyByTable = ({ req, table }) => {
         budget,
         address,
         status,
+        managerId,
+        managerName,
       };
     } else if (table == "order") {
       const {

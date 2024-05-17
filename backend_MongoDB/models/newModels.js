@@ -138,7 +138,9 @@ const EventSchema = new Schema({
   guest_number: Number,
   budget: Number,
   address: String,
-  status: String
+  status: String,
+  managerId : String,
+  managerName : String,
 });
 
 const OrderSchema = new Schema({

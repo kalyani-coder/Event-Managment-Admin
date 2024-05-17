@@ -5,12 +5,42 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const { QuatationInfo } = require("../models/newModels");
+const { QuatationInfo, Event } = require("../models/newModels");
 const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry,allBanks, venue} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
 
+// Get route for event 
+router.get("/event/:id" , async(req, res) => {
+  const Id = req.params.id 
+  try{
+    const getById = await Event.findById(Id)
+    if(!Id){
+      res.status(404).json({message : "Id Not found"})
+      
+    }
+    res.status(201).json(getById)
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
+// get by  anager ID 
+router.get("/event/manager/:managerId", async( req, res) => {
+  try{
+    const {managerId} = req.params
+
+    const event = await Event.findOne({managerId : managerId})
+    if(!event){
+      res.status(404).json({message : "Id not found for manager"})
+    }
+    res.status(201).json(event)
+
+  }catch(e){
+    res.status(500).json({message : "Internal server Error"})
+  }
+})
 
 
 router.get('/quotationinfo/:customerId', async (req, res) => {

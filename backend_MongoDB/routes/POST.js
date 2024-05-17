@@ -38,19 +38,14 @@ router.post("/venue", async (req, res) => {
 
 // all Bank accounts post route 
 router.post("/allbanks", async (req, res) => {
-  const newBank = new allBanks(req.body);
   try {
-    // Check if a bank with the same name already exists
-    const existingBank = await allBanks.findOne({ Bank_Name: req.body.Bank_Name });
+    const newBank = new allBanks(req.body);
 
-    if (existingBank) {
-      return res.status(400).json({ message: "Bank with this name already exists" });
-    }
+    const savedBank = await newBank.save();
 
-    const addTransper = await newBank.save();
-    res.status(201).json({ message: "Bank Added successfully" });
+    res.status(201).json({ message: "Bank added successfully", bank: savedBank });
   } catch (e) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });``
   }
 });
 

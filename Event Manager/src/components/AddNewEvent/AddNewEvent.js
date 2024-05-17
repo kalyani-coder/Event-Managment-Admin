@@ -12,6 +12,9 @@ const AddNewEvent = () => {
   const [selectedEventType, setSelectedEventType] = useState("");
   const [subVenue, setSubVenue] = useState("");
   const [budget, setBudget] = useState("");
+  const managerId = localStorage.getItem("managerId")
+
+
 
   const handleEventTypeChange = (event) => {
     setSelectedEventType(event.target.value);
@@ -75,6 +78,8 @@ const AddNewEvent = () => {
           subvenue: subVenue,
           budget: budget,
           status: selectedCustomer.status,
+          managerId : managerId,
+
         });
         alert("Event Created successfully");
       } catch (error) {
@@ -104,8 +109,8 @@ const AddNewEvent = () => {
           <Link to={'/followupstatus'}>
           <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
           </Link>
-          <Link to={'/addnewevent'}>
-          <button className="btn btn-primary mr-4 mb-4">Add Event</button>
+          <Link to={'/viewevent'}>
+          <button className="btn btn-primary mr-4 mb-4">View Event</button>
           </Link>
         </div>
           {" "}
