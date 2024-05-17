@@ -272,120 +272,164 @@ function InternalCosting() {
     };
 
 
-  const handlePrint = () => {
-    const doc = new jsPDF();
+    const convertAmountToWords = (amount) => {
+        const singleDigits = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        const twoDigits = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        const placeValues = ['', 'Thousand', 'Million', 'Billion'];
+    
+        const toWords = (num) => {
+            if (num === 0) return 'Zero';
+    
+            let result = '';
+    
+            for (let i = 0; num > 0; i++) {
+                const threeDigits = num % 1000;
+                num = Math.floor(num / 1000);
+    
+                const ones = threeDigits % 10;
+                const tens = Math.floor(threeDigits / 10) % 10;
+                const hundreds = Math.floor(threeDigits / 100) % 10;
+    
+                if (hundreds !== 0) {
+                    result = singleDigits[hundreds] + ' Hundred ' + result;
+                }
+    
+                if (tens !== 0 || ones !== 0) {
+                    if (tens === 1) {
+                        result = teens[ones] + ' ' + result;
+                    } else {
+                        result = twoDigits[tens] + ' ' + singleDigits[ones] + ' ' + result;
+                    }
+                }
+    
+                if (threeDigits !== 0) {
+                    result += placeValues[i] + ' ';
+                }
+            }
+    
+            return result.trim();
+        };
+    
+        return toWords(amount);
+    };
 
-    doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
-
-    // Print Customer Data
-    const customerData = [
-      ["Customer Name", enquiry.customer_name || "-"],
-      ["Customer Address", enquiry.address || "-"],
-      ["Event Date", enquiry.event_date || "-"],
-      ["Event Venue", enquiry.event_venue || "-"],
-    ];
-
-    const companyData = [
-      ["Company Name", "Tutons Events LLP"],
-      [
-        "Company Address",
-        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
-      ],
-      ["Company Phone", "9225522123 / 9226061234"],
-      ["Company Email", "tutonsevents@gmail.com"],
-    ];
-
-    const customerTableX = 30;
-    const customerTableY = 40;
-
-    const companyTableX = 105;
-    const companyTableY = 40;
-
-    const pageWidth = doc.internal.pageSize.width;
-    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
-
-    doc.autoTable({
-      body: customerData,
-      startY: customerTableY,
-      theme: "grid",
-      margin: { right: companyData },
-    });
-
-    const imageWidth = 40;
-    const imageHeight = 30;
-    const imageX = 120;
-    const imageY = 10;
-    doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
-
-    doc.autoTable({
-      body: companyData,
-      startY: companyTableY,
-      theme: "grid",
-      margin: { left: companyTableX },
-    });
-
-    // Print Sections Data
-       // Print Quotation Details
-    if (quotationData) {
-      const tableData = quotationData.requirements.map((req, index) => [
-          index + 1,
-          req.stockName,
-          req.description,
-          req.purchaseQuantity,
-          req.unit,
-          req.rate_per_days,
-          req.days,
-          req.price,
-      ]);
-
-      // Append total rows
-      tableData.push(
-        ["", "","", "","","Subtotal",quotationData.sub_total || "-"],
-            ["","", "","", "", "CGST @ 9%",  "",  quotationData.cgst || "-"],
-            ["","", "","", "", "SGST @ 9%", "", "", "", quotationData.sgst || "-"],
-            ["","", "","", "", "Grand Total", "", "", "",  quotationData.grand_total || "-"],
-            ["","", "","", "", "Total", "", "", "",  quotationData.grand_total || "-"],
-            ["","", "","", "", "Amount in words Rs", "", "",  quotationData.amount_in_words || "-"]
-
-      );
-
-
-      doc.autoTable({
-          head: [
-              ["Sr.No.", "Perticular", "Description", "Per", "Unit", "Rate", "Days", "Amount"],
-          ],
-          body: tableData,
-          startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90, // Use 90 if no previous table
-          theme: "grid",
-      });
-
-      const finalY = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(12);
-      doc.text("Terms & Conditions", 10, finalY);
-      doc.setFontSize(10);
-      // Define the terms and conditions
-const terms = [
-    "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
-    "2. Amount once paid are non-refundable with any other date or event.",
-    "3. 100% Guarantee cannot be given on technical equipment.",
-    "4. There would be use of Artificial Flowers unless mentioned separately.",
-    "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
-    "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue (from any Officials /Site Owners/Police/Corpn / PPL / IPRS etc.), to be arranged by CUSTOMER, well in advance.",
-    "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
-    "8. The above Quote is valid for 60 Days from the date of Quote.",
-    "9. 18% GST is applicable on Total Billing."
-];
-
-
-     
-  } else {
-      alert("Quotation details are not available.");
-  }
-
-  doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-  alert("PDF file generated");
-};
-
+    
+    const handlePrint = () => {
+        const doc = new jsPDF();
+    
+        // doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
+    
+        // Print Customer Data
+        const customerData = [
+            ["Customer Name", enquiry.customer_name || "-"],
+            ["Customer Address", enquiry.address || "-"],
+            ["Event Date", enquiry.event_date || "-"],
+            ["Event Venue", enquiry.event_venue || "-"],
+        ];
+    
+        const companyData = [
+            ["Company Name", "Tutons Events LLP"],
+            [
+                "Company Address",
+                "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
+            ],
+            ["Company Phone", "9225522123 / 9226061234"],
+            ["Company Email", "tutonsevents@gmail.com"],
+        ];
+    
+        const customerTableX = 30;
+        const customerTableY = 40;
+    
+        const companyTableX = 105;
+        const companyTableY = 40;
+    
+        const pageWidth = doc.internal.pageSize.width;
+        const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
+    
+        doc.autoTable({
+            body: customerData,
+            startY: customerTableY,
+            theme: "grid",
+            margin: { right: customerTableWidth },
+        });
+    
+        const imageWidth = 40;
+        const imageHeight = 30;
+        const imageX = 120;
+        const imageY = 10;
+        doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
+    
+        doc.autoTable({
+            body: companyData,
+            startY: companyTableY,
+            theme: "grid",
+            margin: { left: companyTableX },
+        });
+    
+        // Print Quotation Details
+        if (quotationData) {
+            const tableData = quotationData.requirements.map((req, index) => [
+                index + 1,
+                req.stockName,
+                req.description,
+                req.purchaseQuantity,
+                req.unit,
+                req.rate_per_days,
+                req.days,
+                req.price,
+            ]);
+    
+            // Append total rows
+            tableData.push(
+                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"}`],
+                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "8%"}`],
+                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "8%"}`],
+                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"}`],
+                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"}`],
+                ["", "", "", "", "", "","Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
+            );
+    
+            doc.autoTable({
+                head: [
+                    ["Sr.No.", "Particular", "Description", "Per", "Unit", "Rate", "Days", "Amount"],
+                ],
+                body: tableData,
+                startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
+                theme: "grid",
+            });
+    
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(12);
+            doc.text("Terms & Conditions", 10, finalY);
+            doc.setFontSize(10);
+    
+            // Define the terms and conditions
+            const terms = [
+                "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
+                "2. Amount once paid are non-refundable with any other date or event.",
+                "3. 100% Guarantee cannot be given on technical equipment.",
+                "4. There would be use of Artificial Flowers unless mentioned separately.",
+                "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
+                "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
+                "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
+                "8. The above Quote is valid for 60 Days from the date of Quote.",
+                "9. 18% GST is applicable on Total Billing."
+            ];
+    
+            let termY = finalY + 10;
+            terms.forEach(term => {
+                doc.text(term, 10, termY);
+                termY += 6; // Increment Y position for the next line
+            });
+        } else {
+            alert("Quotation details are not available.");
+        }
+    
+        doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
+        alert("PDF file generated");
+    };
+    
     return (
         <>
             <Header />
@@ -536,7 +580,7 @@ const terms = [
                                                     min="0"
                                                 />
                                             </td>
-                                            
+
 
                                             <td style={{ width: "10%" }}>
                                                 <input
