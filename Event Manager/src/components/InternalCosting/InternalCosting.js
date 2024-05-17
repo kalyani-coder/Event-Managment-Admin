@@ -272,98 +272,119 @@ function InternalCosting() {
     };
 
 
-    const handlePrint = () => {
-        const doc = new jsPDF();
-        doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
+  const handlePrint = () => {
+    const doc = new jsPDF();
 
-        // Print Customer Data
-        const customerData = [
-            ["Client Name-", enquiry.customer_name || "-"],
-            ["Address-", enquiry.address || "-"],
-            ["Date-", enquiry.event_date || "-"],
-            ["Venue-", enquiry.event_venue || "-"],
-        ];
+    doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
 
-        const companyData = [
-            ["Company Name", "Tutons Events LLP"],
-            [
-                "Company Address",
-                "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
-            ],
-            ["Company Phone", "9225522123 / 9226061234"],
-            ["Company Email", "tutonsevents@gmail.com"],
-        ];
-        const imageWidth = 40;
-        const imageHeight = 30;
-        const imageX = 120;
-        const imageY = 10;
+    // Print Customer Data
+    const customerData = [
+      ["Customer Name", enquiry.customer_name || "-"],
+      ["Customer Address", enquiry.address || "-"],
+      ["Event Date", enquiry.event_date || "-"],
+      ["Event Venue", enquiry.event_venue || "-"],
+    ];
 
-        // Print Customer Data table
-        doc.autoTable({
-            body: customerData,
-            startY: 30,
-            theme: "grid",
-        });
+    const companyData = [
+      ["Company Name", "Tutons Events LLP"],
+      [
+        "Company Address",
+        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
+      ],
+      ["Company Phone", "9225522123 / 9226061234"],
+      ["Company Email", "tutonsevents@gmail.com"],
+    ];
 
-        // Add image
-        doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
+    const customerTableX = 30;
+    const customerTableY = 40;
 
-        // Print Company Data table
-        doc.autoTable({
-            body: companyData,
-            startY: 30 + doc.lastAutoTable.finalY + 10, // Start after customer data table
-            theme: "grid",
-        });
+    const companyTableX = 105;
+    const companyTableY = 40;
 
-        // Print Quotation Details...
-        if (quotationData) {
-            // Print table of requirements...
-            doc.autoTable({
-                head: [
-                    [
-                        "Sr.No.",
-                        "Perticular",
-                        "Description",
-                        "Per",
-                        "Unit",
-                        "Rate",
-                        "Days",
-                        "Amount",
-                    ],
-                ],
-                body: quotationData.requirements.map((req, index) => [
-                    index + 1,
-                    req.stockName,
-                    req.vendorName,
-                    req.purchaseQuantity,
-                    req.rate_per_days,
-                    req.days,
-                    req.price,
-                ]),
-                startY: 50,
-            });
+    const pageWidth = doc.internal.pageSize.width;
+    const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
 
-            // Print other details...
-            doc.setFontSize(10);
-            doc.text(`Transport: ${quotationData.transport || "-"}`, 10, 150);
-            doc.text(
-                `Transport Amount: ${quotationData.transport_amount || "-"}`,
-                10,
-                160
-            );
-            doc.text(`Description: ${quotationData.description || "-"}`, 10, 170);
-            doc.text(`Sub Total: ${quotationData.sub_total || "-"}`, 10, 180);
-            doc.text(`CGST: ${quotationData.cgst || "-"}`, 10, 190);
-            doc.text(`SGST: ${quotationData.sgst || "-"}`, 10, 200);
-            doc.text(`Grand Total: ${quotationData.grand_total || "-"}`, 10, 210);
+    doc.autoTable({
+      body: customerData,
+      startY: customerTableY,
+      theme: "grid",
+      margin: { right: companyData },
+    });
 
-            // Save the PDF with a meaningful name
-            doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-            alert("PDF file generated");
-        } else {
-            alert("Quotation details are not available.");
-        }
-    };
+    const imageWidth = 40;
+    const imageHeight = 30;
+    const imageX = 120;
+    const imageY = 10;
+    doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
+
+    doc.autoTable({
+      body: companyData,
+      startY: companyTableY,
+      theme: "grid",
+      margin: { left: companyTableX },
+    });
+
+    // Print Sections Data
+       // Print Quotation Details
+    if (quotationData) {
+      const tableData = quotationData.requirements.map((req, index) => [
+          index + 1,
+          req.stockName,
+          req.description,
+          req.purchaseQuantity,
+          req.unit,
+          req.rate_per_days,
+          req.days,
+          req.price,
+      ]);
+
+      // Append total rows
+      tableData.push(
+        ["", "","", "","","Subtotal",quotationData.sub_total || "-"],
+            ["","", "","", "", "CGST @ 9%",  "",  quotationData.cgst || "-"],
+            ["","", "","", "", "SGST @ 9%", "", "", "", quotationData.sgst || "-"],
+            ["","", "","", "", "Grand Total", "", "", "",  quotationData.grand_total || "-"],
+            ["","", "","", "", "Total", "", "", "",  quotationData.grand_total || "-"],
+            ["","", "","", "", "Amount in words Rs", "", "",  quotationData.amount_in_words || "-"]
+
+      );
+
+
+      doc.autoTable({
+          head: [
+              ["Sr.No.", "Perticular", "Description", "Per", "Unit", "Rate", "Days", "Amount"],
+          ],
+          body: tableData,
+          startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90, // Use 90 if no previous table
+          theme: "grid",
+      });
+
+      const finalY = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(12);
+      doc.text("Terms & Conditions", 10, finalY);
+      doc.setFontSize(10);
+      // Define the terms and conditions
+const terms = [
+    "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
+    "2. Amount once paid are non-refundable with any other date or event.",
+    "3. 100% Guarantee cannot be given on technical equipment.",
+    "4. There would be use of Artificial Flowers unless mentioned separately.",
+    "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
+    "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue (from any Officials /Site Owners/Police/Corpn / PPL / IPRS etc.), to be arranged by CUSTOMER, well in advance.",
+    "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
+    "8. The above Quote is valid for 60 Days from the date of Quote.",
+    "9. 18% GST is applicable on Total Billing."
+];
+
+
+     
+  } else {
+      alert("Quotation details are not available.");
+  }
+
+  doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
+  alert("PDF file generated");
+};
 
     return (
         <>
@@ -515,6 +536,8 @@ function InternalCosting() {
                                                     min="0"
                                                 />
                                             </td>
+                                            
+
                                             <td style={{ width: "10%" }}>
                                                 <input
                                                     type="number"
