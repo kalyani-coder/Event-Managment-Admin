@@ -269,6 +269,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                   <th scope="col">Event Date</th>
                   <th scope="col">Customer Name</th>
                   <th scope="col">Contact No.</th>
+                  <th scope="col">Manager Name</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -283,6 +284,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                     </td>
                     <td>{enquiry.customer_name}</td>
                     <td>{enquiry.contact}</td>
+                    <td>{enquiry.manager_name}</td>
                     <td>
                       <button
                         className="btn btn-primary"
