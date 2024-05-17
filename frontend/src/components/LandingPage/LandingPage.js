@@ -6,24 +6,14 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('');
 
-  const handleLogin = () => {
-    if (selectedOption === '') {
-      alert('Please select an option');
-    } else {
-      // Navigate based on the selected option
-      if (selectedOption === 'Manager') {
-        navigate('/manager/login'); // Navigate to manager login page
-      } else if (selectedOption === 'Admin') {
-        navigate('/login'); // Navigate to admin login page
-      }
-    }
-  };
-
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
-    // Automatically navigate when "Admin" is selected
     if (e.target.value === 'Admin') {
       navigate('/login');
+    }
+    else if(e.target.value === "Manager"){
+      window.location.href = "https://manager.ssdpune.org"
+
     }
   };
 

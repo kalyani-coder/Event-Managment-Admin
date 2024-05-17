@@ -31,7 +31,7 @@ const EnquiryReport = () => {
   const fetchEnquiryData = async () => {
     try {
       const response = await fetch(
-        "https://eventmanagement-admin-hocm.onrender.com/api/enquiry"
+        "http://localhost:5000/api/enquiry"
       );
       const enquiryData = await response.json();
       setEnquiries(enquiryData);
