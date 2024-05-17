@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './Login.css'
+import React, { useState } from 'react';
+import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -7,13 +7,6 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      navigate('/quotation');
-    }
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,9 +28,9 @@ const Login = () => {
         navigate('/quotation');
       } else {
         if (response.status === 404) {
-          alert('Email not found');
+          setError('Email not found');
         } else if (response.status === 401) {
-          alert('Incorrect password');
+          setError('Incorrect password');
         } else {
           setError(data.message);
         }
@@ -49,37 +42,56 @@ const Login = () => {
   };
 
   return (
-    <section className="vh-75 gradient-custom row d-flex justify-content-center align-items-center">
-      <div className="container-login py-4 h-75 mr-2">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div className="card-event text-white" style={{ borderRadius: '1rem' }}>
-              <div className="card-body-login p-5 text-center">
-                <form onSubmit={handleLogin}>
-                  <div className="mb-md-5 mt-md-4 pb-5 login-card">
-                    {error && <p className="text-danger">{error}</p>}
-                    <div data-mdb-input-init className="form-outline form-white mb-4">
-                      <label className="form-label" htmlFor="typeEmailX">Email</label>
-                      <input type="email" id="typeEmailX" placeholder="Enter your email" className="form-control form-control-s" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    </div>
-                    <div data-mdb-input-init className="form-outline form-white mb-4">
-                      <label className="form-label" htmlFor="typePasswordX">Password</label>
-                      <input type="password" id="typePasswordX" placeholder="Enter your password" className="form-control form-control-s" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                    </div>
-                    <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-s px-5" type="submit">Login</button>
-                    
-                    <h2 className="text-white text-center mt-3 mr-52"><span className="fs-5 fw-bold ">←</span>back</h2> {/* Moved heading below the login form */}
-                    
-                  </div>
-                </form>
-              </div>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="container-login">
+          <div className="screen">
+            <div className="screen__content">
+              <form className="login" onSubmit={handleLogin}>
+                <h3 className="fw-bold">Manager Login</h3>
+                {error && <p className="error-message">{error}</p>}
+                <div className="login__field">
+                  <i className="login__icon fas fa-user"></i>
+                  <input
+                    type="text"
+                    className="login__input"
+                    placeholder="User name / Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="login__field">
+                  <i className="login__icon fas fa-lock"></i>
+                  <input
+                    type="password"
+                    className="login__input"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className="button login__submit">
+                  <span className="button__text">Log In Now</span>
+                  <i className="button__icon fas fa-chevron-right"></i>
+                </button>
+              </form>
+              <h1 className="arrow" onClick={() => navigate('/')}>
+                <span className="fs-5 fw-bold">←</span>Back
+              </h1>
+            </div>
+            <div className="screen__background">
+              <span className="screen__background__shape screen__background__shape4"></span>
+              <span className="screen__background__shape screen__background__shape3"></span>
+              <span className="screen__background__shape screen__background__shape2"></span>
+              <span className="screen__background__shape screen__background__shape1"></span>
             </div>
           </div>
         </div>
       </div>
-     
-    </section>
+    </div>
   );
-}
+};
 
 export default Login;
