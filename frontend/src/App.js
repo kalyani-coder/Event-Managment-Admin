@@ -62,6 +62,8 @@ import ViewAdvPaymentManager from "./components/AddNewEvent/ViewAdvPaymentManage
 import InternalTrasferBank from "./components/InternalTransfer/InternalTrasferBank";
 import LandingPage from "./components/LandingPage/LandingPage";
 import EventDetails from "./components/Event/ViewEvent";
+import BankwiseReport from "./components/DownloadReport/BankwiseReport";
+
 function App() {
   return (
     <>
@@ -139,6 +141,7 @@ function App() {
             <Route path="/viewadvpaymentmanager" element={<ViewAdvPaymentManager />} />
             <Route path="/internaltransferfrombank" element={<InternalTrasferBank />} />
             <Route path="/viewinternaltransfer" element={<ViewInternalTransfer/>} />
+            <Route path="/bankwisereport" element={<BankwiseReport/>} />
             {/* **************** */}
           </Routes>
         </Router>
