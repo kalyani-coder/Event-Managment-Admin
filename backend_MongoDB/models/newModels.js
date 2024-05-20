@@ -355,6 +355,9 @@ const QuatationInfo = new Schema({
   cgst : String,
   sgst : String,
   Total_Amount  : Number,
+  event_name : String,
+  event_date : String,
+
 
 
 
