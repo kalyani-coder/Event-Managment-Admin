@@ -127,6 +127,9 @@ const CustomerReport = () => {
             <Link to={'/vendorpaymentreport'}>
               <button className="btn btn-primary mr-4 mb-4">Vendor Report</button>
             </Link>
+            <Link to={'/bankwisereport'}>
+            <button className="btn btn-primary mr-4 mb-4">Bankwise Report</button>
+          </Link>
           <h2 className="text-[30px] ">Customer Wise Report</h2>
           <div className="mb-3  align-items-center grid md:flex gap-2">
             <select
