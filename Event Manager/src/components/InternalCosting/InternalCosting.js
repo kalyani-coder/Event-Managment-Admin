@@ -171,6 +171,7 @@ function InternalCosting() {
 
     const [transportCharges, setTransportCharges] = useState(0);
     const [totalAmount, setTotalAmount] = useState(null);
+    const [transport, setTransport] = useState("")
 
     const handleAddRequirement = async () => {
         const requirements = rows.map((row) => ({
@@ -226,6 +227,10 @@ function InternalCosting() {
             alert("Error adding/updating stock");
         }
     };
+
+    const handleTransportChnage = (event) =>{
+        setTransport(event.target.value)
+    }
 
 
     const [grandTotal, setGrandTotal] = useState(null);
@@ -430,6 +435,34 @@ function InternalCosting() {
         alert("PDF file generated");
     };
     
+
+    const handlePatchQuotation = async () => {
+        if (!quotationData) {
+          return;
+        }
+    
+        const customerId = quotationData.customer_Id;
+        const dataToUpdate = {
+          transport: transport,
+          transport_amount: transportCharges,
+          description: descriptionValue,
+          grand_total: grandTotal,
+          cgst: "8%",
+          sgst: "8%",
+          total_amount: totalAmount,
+        };
+    
+        try {
+          const response = await axios.patch(`http://localhost:5000/api/savedquotation/${customerId}`, dataToUpdate);
+          alert('Data patched successfully:', response.data);
+          // Handle successful response
+        } catch (error) {
+          console.error('Error patching data:', error);
+          // Handle error response
+        }
+      };
+
+
     return (
         <>
             <Header />
@@ -629,6 +662,8 @@ function InternalCosting() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter Transport Type..."
+                                                onChange={handleTransportChnage}
+                                                value={transport}
                                             />
                                         </td>
                                     </tr>
@@ -797,6 +832,7 @@ function InternalCosting() {
                                     <div>
                                         <strong>Total Amount:</strong> {totalAmount !== null ? totalAmount.toFixed(2) : 'Loading...'}
                                     </div>
+                                    <button className="btn btn-primary" onClick={handlePatchQuotation}>Save</button>
                                 </div>
                             </div>
                         </div>

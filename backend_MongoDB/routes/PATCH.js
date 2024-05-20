@@ -135,12 +135,18 @@ router.patch('/savedquotation/:userId', async (req, res) => {
     }
 
     // Extract the updated fields from the request body
-    const { transport, transport_amount, description } = req.body;
+    const { transport, transport_amount, description ,grand_total,cgst,sgst,Total_Amount} = req.body;
 
     // Update the fields in the existing quotation information object
     existingQuotationInfo.transport = transport;
     existingQuotationInfo.transport_amount = transport_amount;
     existingQuotationInfo.description = description;
+    existingQuotationInfo.grand_total = grand_total;
+    existingQuotationInfo.cgst = cgst;
+    existingQuotationInfo.sgst = sgst;
+    existingQuotationInfo.Total_Amount = Total_Amount;
+
+
 
     // Save the updated quotation information to the database
     existingQuotationInfo = await existingQuotationInfo.save();
