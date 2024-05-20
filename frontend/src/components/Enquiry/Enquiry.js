@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../Sidebar/Header";
 import { Form, Button, Modal } from "react-bootstrap";
 import "./Enquiry.css";
-
+import { Link} from 'react-router-dom';
 export default function Enquiry() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -98,7 +98,9 @@ export default function Enquiry() {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
-          {/* <button className="btn btn-primary"> View Enquiry</button> */}
+          {/* <Link to={'/quotation'}>
+              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+            </Link> */}
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">
