@@ -261,6 +261,9 @@ const VendorPaymentReport = () => {
             <Link to={'/vendorpaymentreport'}>
               <button className="btn btn-primary mr-4 mb-4">Vendor Report</button>
             </Link>
+            <Link to={'/bankwisereport'}>
+            <button className="btn btn-primary mr-4 mb-4">Bankwise Report</button>
+          </Link>
           <h2 className="text-[30px] ">Vendor Payment Report</h2>
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}

@@ -184,6 +184,9 @@ const EventReport = () => {
             <Link to={'/vendorpaymentreport'}>
               <button className="btn btn-primary mr-4 mb-4">Vendor Report</button>
             </Link>
+            <Link to={'/bankwisereport'}>
+            <button className="btn btn-primary mr-4 mb-4">Bankwise Report</button>
+          </Link>
           </div>
           <h2 className="text-[30px] ">Event Report</h2>
 
