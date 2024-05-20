@@ -291,6 +291,8 @@ router.post('/quotationinfo', async (req, res) => {
       sgst: "",
       Total_Amount: "",
       grand_total : "",
+      event_date : "",
+      event_name : "",
     });
 
     // Save the new quotation information to the database

@@ -135,7 +135,7 @@ router.patch('/savedquotation/:userId', async (req, res) => {
     }
 
     // Extract the updated fields from the request body
-    const { transport, transport_amount, description ,grand_total,cgst,sgst,Total_Amount} = req.body;
+    const { transport, transport_amount, description ,grand_total,cgst,sgst,Total_Amount, event_name, event_date} = req.body;
 
     // Update the fields in the existing quotation information object
     existingQuotationInfo.transport = transport;
@@ -145,6 +145,8 @@ router.patch('/savedquotation/:userId', async (req, res) => {
     existingQuotationInfo.cgst = cgst;
     existingQuotationInfo.sgst = sgst;
     existingQuotationInfo.Total_Amount = Total_Amount;
+    existingQuotationInfo.event_name = event_name;
+    existingQuotationInfo.event_date = event_date;
 
 
 
