@@ -7,7 +7,7 @@ import { Link} from 'react-router-dom';
 
 const AddVendor = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [vendorCategory, setVendorCategory] = useState("");
   const [company_name, setcompany_name] = useState("");
   const [contact_person_name, setcontact_person_name] = useState("");
@@ -60,7 +60,7 @@ const AddVendor = () => {
 
       if (response.status === 200) {
         // Show success message
-        setSuccessMessage("Data submitted successfully!");
+        alert("Data submitted successfully!");
         setShowSuccessAlert(true);
         handleDiscard();
       } else {

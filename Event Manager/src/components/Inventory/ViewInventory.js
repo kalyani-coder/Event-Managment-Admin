@@ -5,7 +5,7 @@ const ViewInventory = () => {
   const [inventoryItems, setInventoryItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatedQuantity, setUpdatedQuantity] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -76,12 +76,12 @@ const ViewInventory = () => {
           delete updated[itemName];
           return updated;
         });
-        setSuccessMessage("Quantity updated successfully.");
+        alert("Quantity updated successfully.");
         setErrorMessage("");
       })
       .catch((error) => {
         console.error("Error updating quantity:", error);
-        setSuccessMessage("");
+        alert("");
         setErrorMessage("Error updating quantity. Please try again.");
       });
   };

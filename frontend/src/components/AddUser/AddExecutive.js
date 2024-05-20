@@ -8,7 +8,7 @@ import { Link} from 'react-router-dom';
 
 const AddExecutive = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -77,7 +77,7 @@ const AddExecutive = () => {
 
       if (response.status === 200) {
         // Show success message
-        setSuccessMessage("Data submitted successfully!");
+        alert("Data submitted successfully!");
         setShowSuccessAlert(true);
         handleDiscard();
       } else {

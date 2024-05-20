@@ -11,7 +11,7 @@ const InternalTransferFromBank = () => {
   const [toAccountNumber, setToAccountNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, alert] = useState('');
   const [bankNames, setBankNames] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const InternalTransferFromBank = () => {
     })
     .then(response => response.json())
     .then(data => {
-      // setSuccessMessage("Data Saved Successfully!");
+      // alert("Data Saved Successfully!");
       // setShowSuccessAlert(true);
       console.log(data);
       setAmount("");

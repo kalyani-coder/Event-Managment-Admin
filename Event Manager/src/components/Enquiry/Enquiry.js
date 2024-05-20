@@ -6,7 +6,7 @@ import { Form, Button, Modal, Table } from "react-bootstrap";
 
 export default function Enquiry() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -46,7 +46,7 @@ export default function Enquiry() {
       );
       if (res.status === 200) {
         // Show success message
-        setSuccessMessage("Enquiry Added successfully!");
+        alert("Enquiry Added successfully!");
         setShowSuccessAlert(true);
         // Reset the form after successful submission
         setFormData({

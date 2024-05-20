@@ -11,7 +11,7 @@ const AddExpense = () => {
   const [event_name, setEventName] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [expense_type, setExpenseType] = useState("");
 
@@ -54,7 +54,7 @@ const AddExpense = () => {
       })
       .then((response) => {
         console.log("Success:", response.data);
-        setSuccessMessage("Expense added successfully");
+        alert("Expense added successfully");
       })
       .catch((error) => {
         console.error("Error:", error);

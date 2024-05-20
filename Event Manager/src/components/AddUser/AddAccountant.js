@@ -6,7 +6,7 @@ import Header from "../Sidebar/Header";
 
 const AddAccountant = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -88,7 +88,7 @@ const AddAccountant = () => {
       if (response.status === 200) {
         console.log("Data successfully submitted:", response.data);
         // Show success message
-        setSuccessMessage("Data submitted successfully!");
+        alert("Data submitted successfully!");
         setShowSuccessAlert(true);
         handleDiscard();
       } else {

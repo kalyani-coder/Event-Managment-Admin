@@ -6,7 +6,7 @@ import "./AddManager.css";
 
 const AddManager = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, alert] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -76,7 +76,7 @@ const AddManager = () => {
       );
       console.log("Data posted:", response.data);
 
-      setSuccessMessage("Manager Added successfully!");
+      alert("Manager Added successfully!");
       setShowSuccessAlert(true);
 
       handleDiscard();
