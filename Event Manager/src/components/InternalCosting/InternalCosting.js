@@ -247,10 +247,10 @@ function InternalCosting() {
             let sgst = 0;
 
             if (cgstChecked) {
-                cgst = (total * 8) / 100;
+                cgst = (total * 9) / 100;
             }
             if (sgstChecked) {
-                sgst = (total * 8) / 100;
+                sgst = (total * 9) / 100;
             }
 
             const grandTotal = total + cgst + sgst;
@@ -388,8 +388,8 @@ function InternalCosting() {
             // Append total rows
             tableData.push(
                 ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"}`],
-                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "8%"}`],
-                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "8%"}`],
+                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
                 ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"}`],
                 ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"}`],
                 ["", "", "", "", "", "","Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
@@ -447,8 +447,8 @@ function InternalCosting() {
           transport_amount: transportCharges,
           description: descriptionValue,
           grand_total: grandTotal,
-          cgst: "8%",
-          sgst: "8%",
+          cgst: "9%",
+          sgst: "9%",
           total_amount: totalAmount,
         };
     
@@ -472,7 +472,7 @@ function InternalCosting() {
             >
                 <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
                     <h2 className="text-[35px]">
-                        Quotation Form {enquiry.customer_name}
+                        Internal Costing Form {enquiry.customer_name}
                     </h2>
                     <div className="row clearfix">
                         <div className="col-md-12 mt-6">
@@ -712,12 +712,12 @@ function InternalCosting() {
 
                                             <label>
                                                 <input type="checkbox" onChange={handleCgstChange} />
-                                                CGST 8 %
+                                                CGST 9 %
                                             </label><br />
 
                                             <label>
                                                 <input type="checkbox" onChange={handleSgstChange} />
-                                                SGST 8 %
+                                                SGST 9 %
                                             </label>
 
                                         </td>
@@ -821,10 +821,10 @@ function InternalCosting() {
                                         <strong>Sub Total:</strong>  {quotationData ? quotationData.sub_total : 'Loading...'}
                                     </div>
                                     <div>
-                                        <strong>CGST:</strong> 8 %
+                                        <strong>CGST:</strong> 9 %
                                     </div>
                                     <div>
-                                        <strong>SGST:</strong> 8 %
+                                        <strong>SGST:</strong> 9 %
                                     </div>
                                     <div>
                                         <strong>Grand Total:</strong> {grandTotal !== null ? grandTotal.toFixed(2) : 'Loading...'}

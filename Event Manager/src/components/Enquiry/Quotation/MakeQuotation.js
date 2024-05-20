@@ -171,6 +171,7 @@ function QuotationForm() {
 
     const [transportCharges, setTransportCharges] = useState(0);
     const [totalAmount, setTotalAmount] = useState(null);
+    const [transport, setTransport] = useState("")
 
     const handleAddRequirement = async () => {
         const requirements = rows.map((row) => ({
@@ -227,6 +228,10 @@ function QuotationForm() {
         }
     };
 
+    const handleTransportChnage = (event) =>{
+        setTransport(event.target.value)
+    }
+
 
     const [grandTotal, setGrandTotal] = useState(null);
     useEffect(() => {
@@ -242,10 +247,10 @@ function QuotationForm() {
             let sgst = 0;
 
             if (cgstChecked) {
-                cgst = (total * 8) / 100;
+                cgst = (total * 9) / 100;
             }
             if (sgstChecked) {
-                sgst = (total * 8) / 100;
+                sgst = (total * 9) / 100;
             }
 
             const grandTotal = total + cgst + sgst;
@@ -271,10 +276,54 @@ function QuotationForm() {
         setTransportCharges(e.target.value);
     };
 
+
+    const convertAmountToWords = (amount) => {
+        const singleDigits = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        const twoDigits = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        const placeValues = ['', 'Thousand', 'Million', 'Billion'];
+    
+        const toWords = (num) => {
+            if (num === 0) return 'Zero';
+    
+            let result = '';
+    
+            for (let i = 0; num > 0; i++) {
+                const threeDigits = num % 1000;
+                num = Math.floor(num / 1000);
+    
+                const ones = threeDigits % 10;
+                const tens = Math.floor(threeDigits / 10) % 10;
+                const hundreds = Math.floor(threeDigits / 100) % 10;
+    
+                if (hundreds !== 0) {
+                    result = singleDigits[hundreds] + ' Hundred ' + result;
+                }
+    
+                if (tens !== 0 || ones !== 0) {
+                    if (tens === 1) {
+                        result = teens[ones] + ' ' + result;
+                    } else {
+                        result = twoDigits[tens] + ' ' + singleDigits[ones] + ' ' + result;
+                    }
+                }
+    
+                if (threeDigits !== 0) {
+                    result += placeValues[i] + ' ';
+                }
+            }
+    
+            return result.trim();
+        };
+    
+        return toWords(amount);
+    };
+
+    
     const handlePrint = () => {
         const doc = new jsPDF();
     
-        doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
+        // doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
     
         // Print Customer Data
         const customerData = [
@@ -286,7 +335,10 @@ function QuotationForm() {
     
         const companyData = [
             ["Company Name", "Tutons Events LLP"],
-            ["Company Address", "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045"],
+            [
+                "Company Address",
+                "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
+            ],
             ["Company Phone", "9225522123 / 9226061234"],
             ["Company Email", "tutonsevents@gmail.com"],
         ];
@@ -304,7 +356,7 @@ function QuotationForm() {
             body: customerData,
             startY: customerTableY,
             theme: "grid",
-            margin: { right: companyTableX },
+            margin: { right: customerTableWidth },
         });
     
         const imageWidth = 40;
@@ -335,31 +387,28 @@ function QuotationForm() {
     
             // Append total rows
             tableData.push(
-                ["", "", "", "", "", "Subtotal", quotationData.sub_total || "-"],
-                ["", "", "", "", "", "CGST @ 9%", "", quotationData.cgst || "-"],
-                ["", "", "", "", "", "SGST @ 9%", "", "", "", quotationData.sgst || "-"],
-                ["", "", "", "", "", "Grand Total", "", "", "", quotationData.grand_total || "-"],
-                ["", "", "", "", "", "Total", "", "", "", quotationData.grand_total || "-"],
-                ["", "", "", "", "", "Amount in words Rs", "", "", quotationData.amount_in_words || "-"]
+                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"}`],
+                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"}`],
+                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"}`],
+                ["", "", "", "", "", "","Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
             );
-    
-            const tableFinalY = doc.lastAutoTable.finalY + 10;
     
             doc.autoTable({
                 head: [
                     ["Sr.No.", "Particular", "Description", "Per", "Unit", "Rate", "Days", "Amount"],
                 ],
                 body: tableData,
-                startY: tableFinalY,
+                startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
                 theme: "grid",
             });
     
-            const termsHeadingY = tableFinalY + 10;
+            const finalY = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(12);
-            doc.text("Terms & Conditions", 10, termsHeadingY);
+            doc.text("Terms & Conditions", 10, finalY);
             doc.setFontSize(10);
     
-            const termsBodyY = termsHeadingY + 10;
             // Define the terms and conditions
             const terms = [
                 "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
@@ -367,27 +416,52 @@ function QuotationForm() {
                 "3. 100% Guarantee cannot be given on technical equipment.",
                 "4. There would be use of Artificial Flowers unless mentioned separately.",
                 "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
-                "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue (from any Officials /Site Owners/Police/Corpn / PPL / IPRS etc.), to be arranged by CUSTOMER, well in advance.",
+                "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
                 "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
                 "8. The above Quote is valid for 60 Days from the date of Quote.",
                 "9. 18% GST is applicable on Total Billing."
             ];
     
-            // Loop through the terms and add them to the PDF
-            terms.forEach((term, index) => {
-                const yOffset = 10 * index; // Adjust line spacing
-                doc.text(term, 10, termsBodyY + yOffset); // Start at (10, termsBodyY) and increment y-coordinate
+            let termY = finalY + 10;
+            terms.forEach(term => {
+                doc.text(term, 10, termY);
+                termY += 6; // Increment Y position for the next line
             });
-    
         } else {
             alert("Quotation details are not available.");
         }
     
-        // Save the PDF
         doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
         alert("PDF file generated");
     };
     
+
+    const handlePatchQuotation = async () => {
+        if (!quotationData) {
+          return;
+        }
+    
+        const customerId = quotationData.customer_Id;
+        const dataToUpdate = {
+          transport: transport,
+          transport_amount: transportCharges,
+          description: descriptionValue,
+          grand_total: grandTotal,
+          cgst: "9%",
+          sgst: "9%",
+          total_amount: totalAmount,
+        };
+    
+        try {
+          const response = await axios.patch(`http://localhost:5000/api/savedquotation/${customerId}`, dataToUpdate);
+          alert('Data patched successfully:', response.data);
+          // Handle successful response
+        } catch (error) {
+          console.error('Error patching data:', error);
+          // Handle error response
+        }
+      };
+
 
     return (
         <>
@@ -539,7 +613,7 @@ function QuotationForm() {
                                                     min="0"
                                                 />
                                             </td>
-                                            
+
 
                                             <td style={{ width: "10%" }}>
                                                 <input
@@ -588,6 +662,8 @@ function QuotationForm() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter Transport Type..."
+                                                onChange={handleTransportChnage}
+                                                value={transport}
                                             />
                                         </td>
                                     </tr>
@@ -636,12 +712,12 @@ function QuotationForm() {
 
                                             <label>
                                                 <input type="checkbox" onChange={handleCgstChange} />
-                                                CGST 8 %
+                                                CGST 9 %
                                             </label><br />
 
                                             <label>
                                                 <input type="checkbox" onChange={handleSgstChange} />
-                                                SGST 8 %
+                                                SGST 9 %
                                             </label>
 
                                         </td>
@@ -745,10 +821,10 @@ function QuotationForm() {
                                         <strong>Sub Total:</strong>  {quotationData ? quotationData.sub_total : 'Loading...'}
                                     </div>
                                     <div>
-                                        <strong>CGST:</strong> 8 %
+                                        <strong>CGST:</strong> 9 %
                                     </div>
                                     <div>
-                                        <strong>SGST:</strong> 8 %
+                                        <strong>SGST:</strong> 9 %
                                     </div>
                                     <div>
                                         <strong>Grand Total:</strong> {grandTotal !== null ? grandTotal.toFixed(2) : 'Loading...'}
@@ -756,6 +832,7 @@ function QuotationForm() {
                                     <div>
                                         <strong>Total Amount:</strong> {totalAmount !== null ? totalAmount.toFixed(2) : 'Loading...'}
                                     </div>
+                                    <button className="btn btn-primary" onClick={handlePatchQuotation}>Save</button>
                                 </div>
                             </div>
                         </div>
