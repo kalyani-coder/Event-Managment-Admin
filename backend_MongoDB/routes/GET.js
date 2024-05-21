@@ -42,27 +42,65 @@ router.get("/event/manager/:managerId", async( req, res) => {
   }
 })
 
+// get quatationonfo 
 
-router.get('/quotationinfo/:customerId', async (req, res) => {
+router.get('/quotationinfo/event/:eventDate', async (req, res) => {
   try {
-    // Extract the customerId from the request parameters
-    const { customerId } = req.params;
+    const eventDate = req.params.eventDate;
+    const getByEventName = await QuatationInfo.findOne({ event_date: eventDate });
 
-    // Find the existing quotation information object based on the customerId
+    if (getByEventName) {
+      res.status(200).json(getByEventName);
+    } else {
+      res.status(404).json({ message: 'Quotation not found for the given event date' });
+    }
+  } catch (e) {
+    console.error("Error fetching quotation information:", e);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.get('/quotationinfo/customer/:customerId', async (req, res) => {
+  try {
+    const { customerId } = req.params;
     const quotationInfo = await QuatationInfo.findOne({ customer_Id: customerId });
 
-    // If no quotation information is found, return a 404 error
-    if (!quotationInfo) {
-      return res.status(404).json({ error: 'Quotation information not found' });
+    if (quotationInfo) {
+      res.status(200).json(quotationInfo);
+    } else {
+      res.status(404).json({ error: 'Quotation information not found' });
     }
-
-    // Respond with the found quotation information object
-    res.json(quotationInfo);
   } catch (error) {
     console.error("Error fetching quotation information:", error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+router.get('/quotationinfo', async (req, res) => {
+  try {
+    const allQuatationInfo = await QuatationInfo.find();
+    res.status(200).json(allQuatationInfo);
+  } catch (err) {
+    console.error("Error fetching quotation info:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get('/quotationinfo/stock/:stockId', async (req, res) => {
+  try {
+    const { stockId } = req.params;
+    const quotationInfo = await QuatationInfo.findOne({ 'requirements._id': stockId }, { 'requirements.$': 1 });
+    if (quotationInfo && quotationInfo.requirements && quotationInfo.requirements.length > 0) {
+      res.status(200).json(quotationInfo.requirements[0]);
+    } else {
+      res.status(404).json({ message: 'Stock object not found for the given _id' });
+    }
+  } catch (error) {
+    console.error("Error fetching stock object:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // venue get route 
 router.get("/venue" , async(req, res) => {
@@ -260,16 +298,7 @@ router.get('/inventory-stocks/vendor/:vendorId', async (req, res) => {
 });
 
 
-// get quatationonfo 
-router.get("/quotationinfo", async (req, res) => {
-  try {
-    const allQuatationInfo = await QuatationInfo.find();
-    res.status(200).json(allQuatationInfo);
-  } catch (err) {
-    console.error("Error fetching quatation info:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+
 
 // get method for inventory stocks 
 router.get('/inventory-stocks/vendor/:vendorId/stock/:stockName', async (req, res) => {
