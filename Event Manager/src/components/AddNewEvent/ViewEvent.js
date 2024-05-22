@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import Header from "../Sidebar/Header";
@@ -14,30 +14,42 @@ const ViewEvent = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
-    try {
-      // Retrieve manager ID from localStorage
-      const managerId = localStorage.getItem('managerId');
+// const [newManagerData, setManagerData] = useState([]);
+// console.log("aish", newManagerData);
+// const managerData = async () => {
+//   const getManagerId = localStorage.getItem("managerId");
+//   try {
+//     const response = await fetch(
+//       `http://localhost:5000/api/event/manager/${getManagerId}`
+//     );
+//     const data = await response.json();
+//     setManagerData(data);
+//   } catch (e) {
+//     console.log(`data not been get ${e}`);
+//   }
+// };
+// useEffect(() => {
+//   managerData();
+// });
 
-      // Fetch events based on manager ID
-      const response = await axios.get(`http://localhost:5000/api/event/manager/${managerId}`);
-      const data = response.data;
-
-      // Sort events based on event date in descending order
-      const sortedEvents = data.sort(
-        (a, b) => new Date(b.event_date) - new Date(a.event_date)
-      );
-
-      setEvents(sortedEvents);
-      setFilteredEvents(sortedEvents);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+const [newManagerData, setManagerData]=useState([])
+console.log("aish",newManagerData)
+const managerData = async () => {
+  const getManagerId = localStorage.getItem("managerId");
+  try{
+    const response = await fetch(`http://localhost:5000/api/event/manager/${getManagerId}`);
+    const data = await response.json();
+    setManagerData(data);
+    }catch(e){
+      console.log('data not been get ${e}');
+      }
   };
+  useEffect(() => {managerData();
+  });
+
+
+
 
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
@@ -59,7 +71,9 @@ const ViewEvent = () => {
   const filterData = (searchTerm, startDate, endDate) => {
     let filtered = events.filter((event) => {
       const eventName = event.eventName ? event.eventName.toLowerCase() : "";
-      const companyName = event.company_name ? event.company_name.toLowerCase() : "";
+      const companyName = event.company_name
+        ? event.company_name.toLowerCase()
+        : "";
       const customerName = event.fname ? event.fname.toLowerCase() : "";
 
       return (
@@ -72,7 +86,9 @@ const ViewEvent = () => {
     if (startDate && endDate) {
       filtered = filtered.filter((event) => {
         const eventDate = new Date(event.event_date);
-        return eventDate >= new Date(startDate) && eventDate <= new Date(endDate);
+        return (
+          eventDate >= new Date(startDate) && eventDate <= new Date(endDate)
+        );
       });
     }
 
@@ -95,14 +111,27 @@ const ViewEvent = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="filter-container">
-            <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
-            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+            <input
+              type="text"
+              placeholder="Search Order"
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+            />
+            <input
+              type="date"
+              value={dateRange.startDate}
+              onChange={handleStartDateChange}
+            />
+            <input
+              type="date"
+              value={dateRange.endDate}
+              onChange={handleEndDateChange}
+            />
           </div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">View Events</h2>
           </div>
-          <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
+          <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
             <table className="table">
               <thead className="sticky top-0 bg-white">
                 <tr>
@@ -113,18 +142,29 @@ const ViewEvent = () => {
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
-                {filteredEvents.map((event) => (
-                  <tr key={event._id}>
-                    <td>{event.fname}</td>
-                    <td>{event.event_date ? format(new Date(event.event_date), "dd/MM/yyyy") : ""}</td>
-                    <td>{event.contact}</td>
-                    <td>
-                      <button className="btn btn-primary" onClick={() => openPopup(event)}>
-                        View More
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {newManagerData.length > 0 && (
+                  <tbody style={{ background: "white", borderRadius: "10px" }}>
+                    {newManagerData.map((event) => (
+                      <tr key={event._id}>
+                        <td>{event.fname}</td>
+                        <td>
+                          {event.event_date
+                            ? format(new Date(event.event_date), "dd/MM/yyyy")
+                            : ""}
+                        </td>
+                        <td>{event.contact}</td>
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => openPopup(event)}
+                          >
+                            View More
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                )}
               </tbody>
             </table>
           </div>
@@ -145,7 +185,13 @@ const ViewEvent = () => {
                       <p style={{ lineHeight: "35px" }}>
                         Customer Name: {selectedEvent.fname}
                         <br />
-                        Event Date: {selectedEvent.event_date ? format(new Date(selectedEvent.event_date), "dd/MM/yyyy") : ""}
+                        Event Date:{" "}
+                        {selectedEvent.event_date
+                          ? format(
+                              new Date(selectedEvent.event_date),
+                              "dd/MM/yyyy"
+                            )
+                          : ""}
                         <br />
                         Number of Estimated Guests: {selectedEvent.guest_number}
                         <br />

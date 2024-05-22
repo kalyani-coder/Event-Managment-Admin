@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import Header from "../../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import "./ViewEnquiry.css";
-import "../Quotation/ViewEnquiry.css";
 
 const ViewInquiryPage = ({ enquiry }) => {
   const [inquiries, setInquiries] = useState([]);
@@ -12,6 +11,7 @@ const ViewInquiryPage = ({ enquiry }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,15 +37,9 @@ const ViewInquiryPage = ({ enquiry }) => {
 
   const handleSearch = () => {
     const filtered = inquiries.filter((enquiry) => {
-      const eventName = enquiry.event_name
-        ? enquiry.event_name.toLowerCase()
-        : "";
-      const companyName = enquiry.company_name
-        ? enquiry.company_name.toLowerCase()
-        : "";
-      const customerName = enquiry.customer_name
-        ? enquiry.customer_name.toLowerCase()
-        : "";
+      const eventName = enquiry.event_name ? enquiry.event_name.toLowerCase() : "";
+      const companyName = enquiry.company_name ? enquiry.company_name.toLowerCase() : "";
+      const customerName = enquiry.customer_name ? enquiry.customer_name.toLowerCase() : "";
 
       return (
         eventName.includes(searchTerm.toLowerCase()) ||
@@ -60,9 +54,7 @@ const ViewInquiryPage = ({ enquiry }) => {
   const handleDateRangeFilter = () => {
     const filtered = inquiries.filter((enquiry) => {
       const eventDate = new Date(enquiry.event_date);
-      const startDate = dateRange.startDate
-        ? new Date(dateRange.startDate)
-        : null;
+      const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
       const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
 
       return (
@@ -80,8 +72,6 @@ const ViewInquiryPage = ({ enquiry }) => {
     setDateRange({ startDate: "", endDate: "" });
   };
 
-  const [showModal, setShowModal] = useState(false);
-
   const openPopup = (enquiry) => {
     setSelectedInquiry(enquiry);
     setShowModal(true);
@@ -91,25 +81,11 @@ const ViewInquiryPage = ({ enquiry }) => {
     setShowModal(false);
     setSelectedInquiry(null);
   };
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Ongoing":
-        return "text-yellow";
-      case "Hot":
-        return "text-red";
-      case "Completed":
-        return "text-green";
-      default:
-        return ""; // default color
-    }
-  };
+
   return (
     <>
       <Header />
-      <div
-        className="w-full  h-screen
-        flex items-center justify-center main-container-for-Addaccount  "
-      >
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <h2 className="text-[35px]">View Enquiry</h2>
           <div className="d-flex flex-wrap align-items-center">
@@ -143,7 +119,7 @@ const ViewInquiryPage = ({ enquiry }) => {
               </button>
             </div>
 
-            <div className=" flex items-center justify-between w-full p-2 flex-wrap gap-2">
+            <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
               <div className="grid md:flex items-center">
                 <label className="mr-1">Start Date:</label>
                 <input
@@ -189,7 +165,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                     color: "#fff",
                     cursor: "pointer",
                     fontSize: "16px",
-                    marginLeft: "10px", // Add left margin for spacing between date inputs and buttons
+                    marginLeft: "10px",
                   }}
                 >
                   Apply
@@ -204,7 +180,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                     color: "#fff",
                     cursor: "pointer",
                     fontSize: "16px",
-                    marginLeft: "10px", // Add left margin for spacing between buttons
+                    marginLeft: "10px",
                   }}
                 >
                   Clear
@@ -213,57 +189,9 @@ const ViewInquiryPage = ({ enquiry }) => {
             </div>
           </div>
 
-          {/* old table format  */}
-
-          {/* <div className="d-flex flex-wrap justify-content-between">
-          {filteredInquiries.map((enquiry) => (
-            <div
-              key={enquiry._id}
-              className="card"
-              style={{
-                width: "30%",
-                marginBottom: "20px",
-                padding: "15px",
-                border: "1px solid #ddd",
-              }}
-            >
-              <p className={`d-flex justify-content-end fw-bold ${getStatusColor(enquiry.status)}`}>
-                Status: {enquiry.status}
-              </p>
-
-              <div className="card-body">
-                <h5 className="card-title">{enquiry.title}</h5>
-                <p className="card-text">
-                  Event Name: {enquiry.event_name || ""}
-                  <br />
-                  Event Date:{" "}
-                  {enquiry.event_date
-                    ? format(new Date(enquiry.event_date), "dd/MM/yyyy")
-                    : ""}
-                  <br />
-                  Customer Name: {enquiry.customer_name}
-                  <br />
-                  Contact Number: {enquiry.contact}
-                </p>
-
-
-                <button
-                  className="btn btn-outline-primary ml-2"
-                  onClick={() => openPopup(enquiry)}
-                >
-                  View More
-                </button>
-
-
-
-              </div>
-            </div>
-          ))}
-        </div> */}
-
-          <div className="table-responsive  md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
+          <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
             <table className="table">
-              <thead className=" sticky top-0 bg-white">
+              <thead className="sticky top-0 bg-white">
                 <tr>
                   <th scope="col">Event Name</th>
                   <th scope="col">Event Date</th>
@@ -284,7 +212,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                     </td>
                     <td>{enquiry.customer_name}</td>
                     <td>{enquiry.contact}</td>
-                    <td>{enquiry.manager_name}</td>
+                    <td>{enquiry.assign_manager_name}</td>
                     <td>
                       <button
                         className="btn btn-primary"
@@ -303,7 +231,7 @@ const ViewInquiryPage = ({ enquiry }) => {
               <Modal
                 show={showModal}
                 onHide={closePopup}
-                dialogClassName="modal-dialog-centered modal-dialog-responsive "
+                dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
                 <Modal.Header closeButton>
                   <Modal.Title>Inquiry Details</Modal.Title>
@@ -317,14 +245,10 @@ const ViewInquiryPage = ({ enquiry }) => {
                         <br />
                         Event Date:{" "}
                         {selectedInquiry.event_date
-                          ? format(
-                              new Date(selectedInquiry.event_date),
-                              "dd/MM/yyyy"
-                            )
+                          ? format(new Date(selectedInquiry.event_date), "dd/MM/yyyy")
                           : ""}
                         <br />
-                        Number of Estimated Guests:{" "}
-                        {selectedInquiry.guest_quantity}
+                        Number of Estimated Guests: {selectedInquiry.guest_quantity}
                         <br />
                         Event Venue: {selectedInquiry.event_venue}
                         <br />

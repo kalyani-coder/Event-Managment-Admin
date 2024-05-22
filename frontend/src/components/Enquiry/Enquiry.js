@@ -98,9 +98,9 @@ export default function Enquiry() {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
-          {/* <Link to={'/quotation'}>
+          <Link to={'/quotation'}>
               <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
-            </Link> */}
+            </Link>
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">

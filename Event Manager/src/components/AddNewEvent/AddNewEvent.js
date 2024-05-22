@@ -109,9 +109,9 @@ const AddNewEvent = () => {
           <Link to={'/followupstatus'}>
           <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
           </Link>
-          {/* <Link to={'/viewevent'}>
+          <Link to={'/viewevent'}>
           <button className="btn btn-primary mr-4 mb-4">View Event</button>
-          </Link> */}
+          </Link>
         </div>
           {" "}
           <h2 className="text-[30px]  pl-[1em]">Create Event</h2>
