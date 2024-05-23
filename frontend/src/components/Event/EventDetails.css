@@ -1,0 +1,34 @@
+/* Search box container */
+.filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Search input */
+  .filter-container input[type="text"],
+  .filter-container input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Focus effect */
+  .filter-container input[type="text"]:focus,
+  .filter-container input[type="date"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
+  
+  /* Search box overall style */
+  .search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  

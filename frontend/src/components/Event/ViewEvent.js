@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import { format } from "date-fns";
 import Header from "../Sidebar/Header";
+import './EventDetails.css'; // Import your CSS file
 
 const EventDetails = ({ routes }) => {
   const [eventData, setEventData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
+  const [showModal, setShowModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +28,17 @@ const EventDetails = ({ routes }) => {
   }, []);
 
   const handleViewMore = (event) => {
-    navigate(`/event-more-details/${event._id}`);
+    setSelectedEvent(event);
+    setShowModal(true);
+  };
+
+  const handleSearchInputChange = (e) => setSearchTerm(e.target.value);
+  const handleStartDateChange = (e) => setDateRange({ ...dateRange, startDate: e.target.value });
+  const handleEndDateChange = (e) => setDateRange({ ...dateRange, endDate: e.target.value });
+
+  const closePopup = () => {
+    setShowModal(false);
+    setSelectedEvent(null);
   };
 
   const exportToExcel = () => {
@@ -46,58 +61,98 @@ const EventDetails = ({ routes }) => {
     XLSX.writeFile(wb, "EventDetails.xlsx");
   };
 
+  const filteredEvents = eventData.filter(event =>
+    (event.fname && event.fname.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (event.eventName && event.eventName.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
     <>
       <Header />
-
-      <div className="container mt-5">
-        <h2 className="mb-4">Event Details</h2>
-        <button className="btn btn-success mb-3" onClick={exportToExcel}>
-          Export to Excel
-        </button>
-        <div className="mb-3">
-          <input
-            type="text"
-            placeholder="Search by name or company"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <div className="filter-container">
+            <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
+            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+          </div>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-[30px]">View Events</h2>
+            <Button onClick={exportToExcel}>Export to Excel</Button>
+          </div>
+          <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
+            <table className="table">
+              <thead className="sticky top-0 bg-white">
+                <tr>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col">Event Date</th>
+                  <th scope="col">Contact No.</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody style={{ background: "white", borderRadius: "10px" }}>
+                {filteredEvents.map((event) => (
+                  <tr key={event._id}>
+                    <td>{event.fname}</td>
+                    <td>{event.eventName}</td>
+                    <td>{event.event_date ? format(new Date(event.event_date), "dd/MM/yyyy") : ""}</td>
+                    <td>{event.contact}</td>
+                    <td>
+                      <button className="btn btn-primary" onClick={() => handleViewMore(event)}>
+                        View More
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            {selectedEvent && (
+              <Modal
+                show={showModal}
+                onHide={closePopup}
+                dialogClassName="modal-dialog-centered modal-dialog-responsive"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Event Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div>
+                    <h2>{selectedEvent.eventName}</h2>
+                    <p style={{ lineHeight: "35px" }}>
+                      Customer Name: {selectedEvent.fname}
+                      <br />
+                      Event Date: {selectedEvent.event_date ? format(new Date(selectedEvent.event_date), "dd/MM/yyyy") : ""}
+                      <br />
+                      Number of Estimated Guests: {selectedEvent.guest_number}
+                      <br />
+                      Event Venue: {selectedEvent.venue}
+                      <br />
+                      Subvenue: {selectedEvent.subvenue}
+                      <br />
+                      Event Type: {selectedEvent.event_type}
+                      <br />
+                      Customer Email: {selectedEvent.email}
+                      <br />
+                      Contact Number: {selectedEvent.contact}
+                      <br />
+                      Event Address: {selectedEvent.address}
+                      <br />
+                      Budget: ${selectedEvent.budget}
+                    </p>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closePopup}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
+          </div>
         </div>
-        {eventData
-          .filter(
-            (event) =>
-              event.fname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              event.company_name
-                ?.toLowerCase()
-                .includes(searchTerm.toLowerCase())
-          )
-          .map((event) => (
-            <Card
-              key={event.event_id}
-              style={{ width: "100%", marginBottom: "20px" }}
-            >
-              <Card.Body>
-                <Card.Title>{event.fname}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  Company: {event.company_name}
-                </Card.Subtitle>
-                <Card.Text>Venue: {event.venue}</Card.Text>
-                <Card.Text>Subvenue: {event.subvenue}</Card.Text>
-                <Card.Text>Event Date: {event.event_date}</Card.Text>
-                <Card.Text>Guest Number: {event.guest_number}</Card.Text>
-                <Card.Text>Budget: ${event.budget}</Card.Text>
-                <button
-                  className="btn btn-info"
-                  onClick={() => handleViewMore(event)}
-                >
-                  View More
-                </button>
-              </Card.Body>
-            </Card>
-          ))}
-        {eventData.length === 0 && (
-          <p className="text-center">No event details found.</p>
-        )}
       </div>
     </>
   );
