@@ -176,7 +176,7 @@ const EventReport = () => {
               <button className="btn btn-primary mr-4 mb-4">Customer Report</button>
             </Link>
             <Link to={'/managerreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Advance Manager Report</button>
+              <button className="btn btn-primary mr-4 mb-4">Manager Report</button>
             </Link>
             <Link to={'/paymentreport'}>
               <button className="btn btn-primary mr-4 mb-4">Payment Report</button>
@@ -186,7 +186,10 @@ const EventReport = () => {
             </Link>
             <Link to={'/bankwisereport'}>
             <button className="btn btn-primary mr-4 mb-4">Bankwise Report</button>
-          </Link>
+            </Link>
+            <Link to={'/oustandingpaymentreport'}>
+            <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
+            </Link>
           </div>
           <h2 className="text-[30px] ">Event Report</h2>
 

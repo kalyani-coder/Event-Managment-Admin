@@ -344,7 +344,54 @@ export default function Sidenav() {
                 </div>
               </ListItem>
             </List>
-
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Event Details")}
+              >
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/eventdetails"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                      className={
+                        activetab === "Event Details"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Tooltip title="Event Details">
+                          <span>
+                            <TaskTwoToneIcon
+                              sx={{ color: "#9b59b6" }}
+                              title="Event Details"
+                            />
+                          </span>
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Event Details"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List>
             <List>
               <ListItem
                 disablePadding

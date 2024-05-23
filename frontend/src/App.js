@@ -63,6 +63,8 @@ import InternalTrasferBank from "./components/InternalTransfer/InternalTrasferBa
 import LandingPage from "./components/LandingPage/LandingPage";
 import EventDetails from "./components/Event/ViewEvent";
 import BankwiseReport from "./components/DownloadReport/BankwiseReport";
+import OutstandingReport from "./components/DownloadReport/OutstandingReport";
+
 
 function App() {
   return (
@@ -142,6 +144,8 @@ function App() {
             <Route path="/internaltransferfrombank" element={<InternalTrasferBank />} />
             <Route path="/viewinternaltransfer" element={<ViewInternalTransfer/>} />
             <Route path="/bankwisereport" element={<BankwiseReport/>} />
+            <Route path="/oustandingpaymentreport" element={<OutstandingReport/>} />
+            
             {/* **************** */}
           </Routes>
         </Router>
