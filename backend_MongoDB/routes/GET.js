@@ -27,20 +27,21 @@ router.get("/event/:id" , async(req, res) => {
 })
 
 // get by  anager ID 
-router.get("/event/manager/:managerId", async( req, res) => {
-  try{
-    const {managerId} = req.params
+router.get("/event/manager/:managerId", async (req, res) => {
+  try {
+    const { managerId } = req.params;
 
-    const event = await Event.findOne({managerId : managerId})
-    if(!event){
-      res.status(404).json({message : "Id not found for manager"})
+    const events = await Event.find({ managerId: managerId });
+    if (events.length === 0) {
+      return res.status(404).json({ message: "No events found for this manager" });
     }
-    res.status(201).json(event)
+    res.status(200).json(events);
 
-  }catch(e){
-    res.status(500).json({message : "Internal server Error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
+
 
 // get quatationonfo 
 
@@ -83,7 +84,7 @@ router.get('/quotationinfo', async (req, res) => {
   } catch (err) {
     console.error("Error fetching quotation info:", err);
     res.status(500).json({ message: "Internal server error" });
-  }
+  } 
 });
 
 router.get('/quotationinfo/stock/:stockId', async (req, res) => {

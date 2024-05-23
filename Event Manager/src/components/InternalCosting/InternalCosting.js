@@ -62,10 +62,10 @@ function InternalCosting() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/quotationinfo/${enquiry._id}`
+                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
             );
             setQuotationData(response.data);
-            console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
+            console.log("Fetched Quotation Data:", response.data);
             setModalShow(true);
         } catch (error) {
             console.error("Failed to fetch quotation info:", error);
