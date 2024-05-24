@@ -551,7 +551,7 @@ export default function Sidebar() {
                             icon={faFileDownload}
                             style={{ marginRight: "10px", color: "#fff" }} // Change color
                           />
-                         Advance Manager Report
+                         Manager Report
                         </Link>
                       </li>
                       <li>

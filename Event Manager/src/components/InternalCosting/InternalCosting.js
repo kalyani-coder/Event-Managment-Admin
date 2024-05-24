@@ -62,7 +62,7 @@ function InternalCosting() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/quotationinfo/${enquiry._id}`
+                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
             );
             setQuotationData(response.data);
             console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
@@ -87,10 +87,16 @@ function InternalCosting() {
 
     const newhandleStockChange = (e) => {
         const selectedStockName = e.target.value;
+        const selectedStock = newstocksData.find(stock => stock.Stock_Name === selectedStockName);
+        console.log("selectedStock" , selectedStock)
+    
         setNewSelectedStock(selectedStockName);
 
-        const selectedStockId = e.target.value; // Assuming the value contains the ID of the selected stock
-        setNewSelectedStockId(selectedStockId);
+       // Assuming the value contains the ID of the selected stock
+        setNewSelectedStockId(selectedStock._id);
+        console.log("stockid " , selectedStock._id)
+        setNewSelectedVendorId(selectedStock.Vendor_Id);
+        console.log("vendorid" , selectedStock.Vendor_Id)
 
         const vendors = newstocksData
             .filter((stock) => stock.Stock_Name === selectedStockName)
@@ -108,7 +114,7 @@ function InternalCosting() {
         setNewSelectedVendor(selectedVendorName);
 
         const selectedVendorId = e.target.value; // Assuming the value contains the ID of the selected vendor
-        setNewSelectedVendorId(selectedVendorId);
+        // setNewSelectedVendorId(selectedVendorId);
 
         const selectedVendorData = newstocksData.find(
             (stock) =>
@@ -176,9 +182,9 @@ function InternalCosting() {
     const handleAddRequirement = async () => {
         const requirements = rows.map((row) => ({
             stockName: newSelectedStock,
-            stockId: newSelectedStock,
+            stockId: newSelectedStockId,
             vendorName: newSelectedVendor,
-            vendorId: newSelectedVendor,
+            vendorId: newSelectedVendorId,
             unit: row.unit,
             purchaseQuantity: row.qty,
             rate_per_days: row.price,

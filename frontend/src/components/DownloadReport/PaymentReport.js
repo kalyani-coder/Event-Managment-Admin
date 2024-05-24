@@ -95,7 +95,7 @@ const PaymentReport = () => {
               <button className="btn btn-primary mr-4 mb-4">Customer Report</button>
             </Link>
             <Link to={'/managerreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Advance Manager Report</button>
+              <button className="btn btn-primary mr-4 mb-4">Manager Report</button>
             </Link>
             <Link to={'/paymentreport'}>
               <button className="btn btn-primary mr-4 mb-4">Payment Report</button>
