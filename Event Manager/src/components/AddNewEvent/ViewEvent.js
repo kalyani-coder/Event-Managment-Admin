@@ -49,8 +49,6 @@ const managerData = async () => {
   });
 
 
-
-
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
     filterData(event.target.value, dateRange.startDate, dateRange.endDate);
