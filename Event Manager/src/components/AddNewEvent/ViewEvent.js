@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { format } from "date-fns";
 import Header from "../Sidebar/Header";
 
@@ -12,67 +10,44 @@ const ViewEvent = () => {
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
 
-
-// const [newManagerData, setManagerData] = useState([]);
-// console.log("aish", newManagerData);
-// const managerData = async () => {
-//   const getManagerId = localStorage.getItem("managerId");
-//   try {
-//     const response = await fetch(
-//       `http://localhost:5000/api/event/manager/${getManagerId}`
-//     );
-//     const data = await response.json();
-//     setManagerData(data);
-//   } catch (e) {
-//     console.log(`data not been get ${e}`);
-//   }
-// };
-// useEffect(() => {
-//   managerData();
-// });
-
-const [newManagerData, setManagerData]=useState([])
-console.log("aish",newManagerData)
-const managerData = async () => {
-  const getManagerId = localStorage.getItem("managerId");
-  try{
-    const response = await fetch(`http://localhost:5000/api/event/manager/${getManagerId}`);
-    const data = await response.json();
-    setManagerData(data);
-    }catch(e){
-      console.log('data not been get ${e}');
-      }
+  const managerData = async () => {
+    const managerId = localStorage.getItem("managerId");
+    try {
+      const response = await fetch(`http://localhost:5000/api/event/manager/${managerId}`);
+      const data = await response.json();
+      setEvents(data);
+      setFilteredEvents(data); // Initialize filteredEvents with the fetched data
+    } catch (e) {
+      console.error(`Failed to fetch data: ${e}`);
+    }
   };
-  useEffect(() => {managerData();
-  });
 
+  useEffect(() => {
+    managerData();
+  }, []);
+
+  useEffect(() => {
+    filterData(searchTerm, dateRange.startDate, dateRange.endDate);
+  }, [searchTerm, dateRange]);
 
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
-    filterData(event.target.value, dateRange.startDate, dateRange.endDate);
   };
 
   const handleStartDateChange = (event) => {
-    const newStartDate = event.target.value;
-    setDateRange((prev) => ({ ...prev, startDate: newStartDate }));
-    filterData(searchTerm, newStartDate, dateRange.endDate);
+    setDateRange((prev) => ({ ...prev, startDate: event.target.value }));
   };
 
   const handleEndDateChange = (event) => {
-    const newEndDate = event.target.value;
-    setDateRange((prev) => ({ ...prev, endDate: newEndDate }));
-    filterData(searchTerm, dateRange.startDate, newEndDate);
+    setDateRange((prev) => ({ ...prev, endDate: event.target.value }));
   };
 
   const filterData = (searchTerm, startDate, endDate) => {
     let filtered = events.filter((event) => {
-      const eventName = event.eventName ? event.eventName.toLowerCase() : "";
-      const companyName = event.company_name
-        ? event.company_name.toLowerCase()
-        : "";
-      const customerName = event.fname ? event.fname.toLowerCase() : "";
+      const eventName = event.eventName?.toLowerCase() || "";
+      const companyName = event.company_name?.toLowerCase() || "";
+      const customerName = event.fname?.toLowerCase() || "";
 
       return (
         eventName.includes(searchTerm.toLowerCase()) ||
@@ -84,9 +59,7 @@ const managerData = async () => {
     if (startDate && endDate) {
       filtered = filtered.filter((event) => {
         const eventDate = new Date(event.event_date);
-        return (
-          eventDate >= new Date(startDate) && eventDate <= new Date(endDate)
-        );
+        return eventDate >= new Date(startDate) && eventDate <= new Date(endDate);
       });
     }
 
@@ -140,84 +113,66 @@ const managerData = async () => {
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
-                {newManagerData.length > 0 && (
-                  <tbody style={{ background: "white", borderRadius: "10px" }}>
-                    {newManagerData.map((event) => (
-                      <tr key={event._id}>
-                        <td>{event.fname}</td>
-                        <td>
-                          {event.event_date
-                            ? format(new Date(event.event_date), "dd/MM/yyyy")
-                            : ""}
-                        </td>
-                        <td>{event.contact}</td>
-                        <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => openPopup(event)}
-                          >
-                            View More
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
+                {filteredEvents.map((event) => (
+                  <tr key={event._id}>
+                    <td>{event.fname}</td>
+                    <td>{event.event_date ? format(new Date(event.event_date), "dd/MM/yyyy") : ""}</td>
+                    <td>{event.contact}</td>
+                    <td>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => openPopup(event)}
+                      >
+                        View More
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <div>
-            {selectedEvent && (
-              <Modal
-                show={showModal}
-                onHide={closePopup}
-                dialogClassName="modal-dialog-centered modal-dialog-responsive"
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>Event Details</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  {selectedEvent && (
-                    <div>
-                      <h2>{selectedEvent.eventName}</h2>
-                      <p style={{ lineHeight: "35px" }}>
-                        Customer Name: {selectedEvent.fname}
-                        <br />
-                        Event Date:{" "}
-                        {selectedEvent.event_date
-                          ? format(
-                              new Date(selectedEvent.event_date),
-                              "dd/MM/yyyy"
-                            )
-                          : ""}
-                        <br />
-                        Number of Estimated Guests: {selectedEvent.guest_number}
-                        <br />
-                        Event Venue: {selectedEvent.venue}
-                        <br />
-                        Subvenue: {selectedEvent.subvenue}
-                        <br />
-                        Event Type: {selectedEvent.event_type}
-                        <br />
-                        Customer Email: {selectedEvent.email}
-                        <br />
-                        Contact Number: {selectedEvent.contact}
-                        <br />
-                        Event Address: {selectedEvent.address}
-                        <br />
-                        Budget: ${selectedEvent.budget}
-                      </p>
-                    </div>
-                  )}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={closePopup}>
-                    Close
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            )}
-          </div>
+          {selectedEvent && (
+            <Modal
+              show={showModal}
+              onHide={closePopup}
+              dialogClassName="modal-dialog-centered modal-dialog-responsive"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Event Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div>
+                  <h2>{selectedEvent.eventName}</h2>
+                  <p style={{ lineHeight: "35px" }}>
+                    Customer Name: {selectedEvent.fname}
+                    <br />
+                    Event Date: {selectedEvent.event_date ? format(new Date(selectedEvent.event_date), "dd/MM/yyyy") : ""}
+                    <br />
+                    Number of Estimated Guests: {selectedEvent.guest_number}
+                    <br />
+                    Event Venue: {selectedEvent.venue}
+                    <br />
+                    Subvenue: {selectedEvent.subvenue}
+                    <br />
+                    Event Type: {selectedEvent.event_type}
+                    <br />
+                    Customer Email: {selectedEvent.email}
+                    <br />
+                    Contact Number: {selectedEvent.contact}
+                    <br />
+                    Event Address: {selectedEvent.address}
+                    <br />
+                    Budget: ${selectedEvent.budget}
+                  </p>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={closePopup}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          )}
         </div>
       </div>
     </>
