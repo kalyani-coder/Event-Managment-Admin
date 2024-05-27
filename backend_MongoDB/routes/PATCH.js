@@ -6,8 +6,23 @@ const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster, advancePaymantManager } = require("../models/newModels")
-const { ManagerDetails, ManagerTask } = require("../models/newModels");
+const { ManagerDetails, ManagerTask ,AdvanceExpence} = require("../models/newModels");
 const { QuatationInfo, allBanks, ExpenceForm } = require("../models/newModels")
+
+
+router.patch("/advanceexpence/:id", async (req, res) => {
+  const expenceId = req.params.id
+  const updateData = req.body;
+  try {
+    const updatedExpence = await AdvanceExpence.findByIdAndUpdate(expenceId, updateData, { new: true })
+    if (!expenceId) {
+      return res.status(404).json({ message: "ExpenceId not found" })
+    }
+    res.status(201).json({ message: "Expence Updated successfully" })
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
 
 // patch for the expence 
 router.patch("/expence/:id", async (req, res) => {

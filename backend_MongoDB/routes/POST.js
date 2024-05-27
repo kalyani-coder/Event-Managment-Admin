@@ -13,10 +13,20 @@ const { Attendance } = require("../models/newModels");
 const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
-const { InventoryStocks,ExpenceForm } = require('../models/newModels')
+const { InventoryStocks,ExpenceForm ,AdvanceExpence} = require('../models/newModels')
 const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper, allBanks, venue } = require('../models/newModels')
 
 
+
+router.post("/advanceexpence" , async(req, res)=> {
+  const expenceData = new AdvanceExpence(req.body)
+  try{
+    const allexpence = await expenceData.save()
+    res.status(201).json({message : "Advance Expence Added Successfully"})
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
 // POST route for the Expence 
 router.post("/expence" , async(req, res)=> {
   const expenceData = new ExpenceForm(req.body)
