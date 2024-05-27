@@ -64,6 +64,7 @@ import AdvancePaymentCus2 from "./components/AddNewEvent/AdvancePaymentCus2";
 import InternalCosting from "./components/InternalCosting/InternalCosting";
 import ViewEvent from "./components/AddNewEvent/ViewEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
+import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
 
 function App() {
   return (
@@ -142,6 +143,8 @@ function App() {
             <Route path="/internalcosting" element={<InternalCosting />} />
             <Route path="/viewevent" element={<ViewEvent />} />
             <Route path="/eventdetails" element={<EventDetails />} />
+            <Route path="/expenseform" element={<ExpenseForm />} />
+
 
             {/* **************** */}
           </Routes>

@@ -348,6 +348,54 @@ export default function Sidenav() {
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
+                onClick={(event) => handleClick(event, "Expense Form")}
+              >
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/expenseform"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                      className={
+                        activetab === "Expense Form"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Tooltip title="Expense Form">
+                          <span>
+                            <TaskTwoToneIcon
+                              sx={{ color: "#9b59b6" }}
+                              title="Expense Form"
+                            />
+                          </span>
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Expense Form"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List>
+            <List>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
                 onClick={(event) => handleClick(event, "Event Details")}
               >
                 <div className="menuitems-of-header ">

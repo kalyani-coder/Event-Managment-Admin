@@ -3,11 +3,39 @@ const router = express.Router();
 
 const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
-const {InventoryStocks} =  require('../models/newModels')
-const {AddEventMaster,advancePaymantManager} =  require('../models/newModels')
+const {InventoryStocks,ExpenceForm} =  require('../models/newModels')
+const {AddEventMaster,advancePaymantManager,AdvanceExpence} =  require('../models/newModels')
 const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper, allBanks, venue} = require("../models/newModels");
 
 
+router.delete("/advanceexpence/:id" , async(req, res) => {
+  const expenceId = req.params.id
+  try{
+    const deletedExpence = await AdvanceExpence.findByIdAndDelete(expenceId)
+    if(!deletedExpence){
+      return res.status(404).json({message : "Expence Id not found"})
+    }
+    res.status(201).json({message : "Expence Deleted Successfully"})
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
+// delete route for the expence 
+router.delete("/expence/:id" , async(req, res) => {
+  const expenceId = req.params.id
+  try{
+    const deletedExpence = await ExpenceForm.findByIdAndDelete(expenceId)
+    if(!deletedExpence){
+      return res.status(404).json({message : "Expence Id not found"})
+    }
+    res.status(201).json({message : "Expence Deleted Successfully"})
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
 // delete route for venue 
 router.delete("/venue/:id" , async(req, res) => {
 

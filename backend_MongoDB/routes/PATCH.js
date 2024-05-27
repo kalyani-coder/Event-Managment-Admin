@@ -5,11 +5,39 @@ const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
-const { AddEventMaster,advancePaymantManager } = require("../models/newModels")
-const { ManagerDetails, ManagerTask } = require("../models/newModels");
-const {QuatationInfo,allBanks} = require("../models/newModels")
+const { AddEventMaster, advancePaymantManager } = require("../models/newModels")
+const { ManagerDetails, ManagerTask ,AdvanceExpence} = require("../models/newModels");
+const { QuatationInfo, allBanks, ExpenceForm } = require("../models/newModels")
 
 
+router.patch("/advanceexpence/:id", async (req, res) => {
+  const expenceId = req.params.id
+  const updateData = req.body;
+  try {
+    const updatedExpence = await AdvanceExpence.findByIdAndUpdate(expenceId, updateData, { new: true })
+    if (!expenceId) {
+      return res.status(404).json({ message: "ExpenceId not found" })
+    }
+    res.status(201).json({ message: "Expence Updated successfully" })
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+
+// patch for the expence 
+router.patch("/expence/:id", async (req, res) => {
+  const expenceId = req.params.id
+  const updateData = req.body;
+  try {
+    const updatedExpence = await ExpenceForm.findByIdAndUpdate(expenceId, updateData, { new: true })
+    if (!expenceId) {
+      return res.status(404).json({ message: "ExpenceId not found" })
+    }
+    res.status(201).json({ message: "Expence Updated successfully" })
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
 
 router.patch("/allbanks/:id", async (req, res) => {
   try {
@@ -135,7 +163,7 @@ router.patch('/savedquotation/:userId', async (req, res) => {
     }
 
     // Extract the updated fields from the request body
-    const { transport, transport_amount, description ,grand_total,cgst,sgst,Total_Amount, event_name, event_date} = req.body;
+    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date } = req.body;
 
     // Update the fields in the existing quotation information object
     existingQuotationInfo.transport = transport;
@@ -239,11 +267,11 @@ router.patch("/advpaymanager/:id", async (req, res) => {
 router.patch("/addeventmaster/:id", async (req, res) => {
   try {
     const eventId = req.params.id;
-    const updatedEventName = req.body.eventName; 
+    const updatedEventName = req.body.eventName;
     const updateEvent = await AddEventMaster.findByIdAndUpdate(
       eventId,
       { eventName: updatedEventName },
-      { new: true } 
+      { new: true }
     );
 
     if (!updateEvent) {
@@ -259,11 +287,11 @@ router.patch("/addeventmaster/:id", async (req, res) => {
 router.patch("/addeventmaster/:id", async (req, res) => {
   try {
     const eventId = req.params.id;
-    const updatedEventName = req.body.eventName; 
+    const updatedEventName = req.body.eventName;
     const updateEvent = await AddEventMaster.findByIdAndUpdate(
       eventId,
       { eventName: updatedEventName },
-      { new: true } 
+      { new: true }
     );
 
     if (!updateEvent) {
@@ -297,13 +325,13 @@ router.patch("/enquiry/:id", async (req, res) => {
 // PATCH route to update a vendor by ID
 router.patch("/addvendor/:vendorId", async (req, res) => {
   const vendorId = req.params.vendorId;
-  const updateFields = req.body; 
+  const updateFields = req.body;
 
   try {
     const updatedVendor = await AddVendor.findByIdAndUpdate(
       vendorId,
       updateFields,
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedVendor) {
@@ -320,7 +348,7 @@ router.patch("/addvendor/:vendorId", async (req, res) => {
 // PATCH route to update an inventory stock by ID
 router.patch('/inventory-stocks/:stockId', async (req, res) => {
   const stockId = req.params.stockId;
-  const updateFields = req.body; 
+  const updateFields = req.body;
 
   try {
     const updatedStock = await InventoryStocks.findByIdAndUpdate(
@@ -343,7 +371,7 @@ router.patch('/inventory-stocks/:stockId', async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-    const { Price, Stock_Quantity } = req.body; 
+    const { Price, Stock_Quantity } = req.body;
 
     // Find the product by ID
     const existingProduct = await InventoryStocks.findById(productId);
