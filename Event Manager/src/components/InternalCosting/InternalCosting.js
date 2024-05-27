@@ -62,7 +62,7 @@ function InternalCosting() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
+                `http://localhost:5000/api/quotationinfo/${enquiry._id}`
             );
             setQuotationData(response.data);
             console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
@@ -114,7 +114,7 @@ function InternalCosting() {
         setNewSelectedVendor(selectedVendorName);
 
         const selectedVendorId = e.target.value; // Assuming the value contains the ID of the selected vendor
-        // setNewSelectedVendorId(selectedVendorId);
+        setNewSelectedVendorId(selectedVendorId);
 
         const selectedVendorData = newstocksData.find(
             (stock) =>
