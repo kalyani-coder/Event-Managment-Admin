@@ -467,11 +467,36 @@ const venueSchema = new Schema({
 
 })
 
+const expenceForm = new Schema({
+  expence_date : {
+    type : String,
+  },
+  prticular : {
+    type : String,
+  },
+  amount : {
+    type : Number,
+  },
+  client_Name : {
+    type : String,
+  },
+  client_contact : {
+    type : Number 
+  },
+  managerId : {
+    type : String,
+  },
+  manager_Name : {
+    type : String
+  },
+})
+
 
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   venue : mongoose.model("allvenue" ,venueSchema),
+  ExpenceForm : mongoose.model("expenceform", expenceForm),
   bankTransper : mongoose.model("BankTransfer", bankTransper),
   allBanks : mongoose.model("AllBanks" , allBanksAccounts),
   ManagerTask : mongoose.model("ManagerTask", managerTask),

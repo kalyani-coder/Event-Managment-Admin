@@ -5,11 +5,34 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const { QuatationInfo, Event } = require("../models/newModels");
+const { QuatationInfo, Event,ExpenceForm } = require("../models/newModels");
 const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry,allBanks, venue} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+// Expence form get route 
+
+router.get("/expence" , async(req, res) => {
+  try{
+    const getbyExpence = await ExpenceForm.find()
+    res.status(201).json(getbyExpence)
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+router.get("/expence/:id", async(req, res) =>{
+  const id = req.params.id
+  try{
+    const GetById = await ExpenceForm.findById(id)
+    if(!GetById){
+      return res.status(404).json({message : "Expence ID not found "})
+    }
+    res.status(201).json(GetById)
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
 
 // Get route for event 
 router.get("/event/:id" , async(req, res) => {
