@@ -19,14 +19,25 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const { email, password } = formData;
 
-    // Check if email and password match
-    if (formData.email === "test@gmail.com" && formData.password === "test") {
-      console.log("Login successful");
-      // Navigate to dashboard page
-      navigate("/dashboard");
+    // Validation checks
+    if (!email && !password) {
+      window.alert("Please enter your email and password.");
+    } else if (!email) {
+      window.alert("Please enter your email.");
+    } else if (!password) {
+      window.alert("Please enter your password.");
+    } else if (email !== "test@gmail.com" && password !== "test") {
+      window.alert("Email is incorrect.\nPassword is incorrect.");
+    } else if (email !== "test@gmail.com") {
+      window.alert("Email is incorrect.");
+    } else if (password !== "test") {
+      window.alert("Password is incorrect.");
     } else {
-      alert("Email or password is incorrect");
+      console.log("Login successful");
+      navigate("/dashboard");
     }
   };
 
@@ -50,7 +61,7 @@ const Login = () => {
                   <input
                     type="text"
                     className="login__input"
-                    placeholder="User name / Email"
+                    placeholder="Enter Email ID"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -68,7 +79,7 @@ const Login = () => {
                   />
                 </div>
                 <button type="submit" className="button login__submit">
-                  <span className="button__text">Log In Now</span>
+                  <span className="button__text-login">Log In Now</span>
                   <i className="button__icon fas fa-chevron-right"></i>
                 </button>
               </form>

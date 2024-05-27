@@ -97,27 +97,32 @@ const ManagerReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-        <Link to={'/eventreport'}>
+        <div className="flex">
+            <Link to={'/eventreport'}>
               <button className="btn btn-primary mr-4 mb-4">Event Report</button>
             </Link>
             <Link to={'/enquiryreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Enquiry Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Enquiry Report</button>
             </Link>
             <Link to={'/customerreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Customer Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Customer Report</button>
             </Link>
             <Link to={'/managerreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Manager Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Manager Report</button>
             </Link>
             <Link to={'/paymentreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Payment Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Payment Report</button>
             </Link>
             <Link to={'/vendorpaymentreport'}>
-              <button className="btn btn-primary mr-4 mb-4">Vendor Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Vendor Report</button>
             </Link>
             <Link to={'/bankwisereport'}>
-            <button className="btn btn-primary mr-4 mb-4">Bankwise Report</button>
-          </Link>
+            <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
+            </Link>
+            <Link to={'/oustandingpaymentreport'}>
+            <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
+            </Link>
+          </div>
           <h2 className="text-[30px] ">Manager Report</h2>
           <div className="mb-3  align-items-center grid md:flex gap-2">
             <input

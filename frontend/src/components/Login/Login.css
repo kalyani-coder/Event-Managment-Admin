@@ -213,6 +213,7 @@
   .arrow {
 	font-weight: bold !important;
 	cursor: pointer;
+	font-size: 20px;
   }
   
   .social-login__icon:hover {
@@ -228,5 +229,9 @@
 	  box-shadow: 0px 0px 24px #5C5696;
 	  border-radius: 17px;
 	}
+  }
+
+  .button__text-login{
+	margin-left: 60px;
   }
   

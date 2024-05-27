@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "./AddManager.css";
 
 const AddManager = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, alert] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -24,13 +24,62 @@ const AddManager = () => {
   const [profilePicture, setProfilePicture] = useState(null);
 
   const isValidForm = () => {
+    const namePattern = /^[A-Za-z\s]+$/; // Regular expression to allow spaces and multiple words
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    const alphaFields = [
+      { value: fname, field: "First Name" },
+      { value: lname, field: "Last Name" },
+      { value: city, field: "City" },
+      { value: state, field: "State" },
+      { value: holderName, field: "Account Holder Name" },
+      { value: bankName, field: "Bank Name" },
+      { value: branchName, field: "Branch Name" },
+    ];
+  
+    let errorMessage = "";
+  
+    for (let i = 0; i < alphaFields.length; i++) {
+      if (!namePattern.test(alphaFields[i].value)) {
+        errorMessage += `${alphaFields[i].field} should only contain alphabetical characters, spaces, and multiple words.\n`;
+      }
+    }
+  
     if (!fname || !lname || !contact || !password) {
-      alert("Please fill out all required fields.");
+      errorMessage += "Please fill out all required fields.\n";
+    }
+  
+    // Check if contact is a valid integer
+    if (contact.trim() !== "" && !Number.isInteger(Number(contact))) {
+      errorMessage += "Phone should only contain numbers.\n";
+    }
+  
+    // Check if contact has a maximum of 10 digits
+    if (contact.trim() !== "" && contact.trim().length > 10) {
+      errorMessage += "Phone should have a maximum of 10 digits.\n";
+    }
+  
+    // Check if email is valid
+    if (email.trim() !== "" && !emailPattern.test(email)) {
+      errorMessage += "Please enter a valid email address.\n";
+    }
+     // Check if email is valid and not empty
+  if (!email || !emailPattern.test(email)) { // Check if email is empty or not in valid format
+    errorMessage += "Email is required .\n";
+  }
+  
+    // Check if password contains at least one special character, one number, and one alphabet character
+    if (password.trim() !== "" && !passwordPattern.test(password)) {
+      errorMessage += "Password must contain at least one special character, one number, and one alphabet character.\n";
+    }
+  
+    if (errorMessage) {
+      window.alert(errorMessage);
       return false;
     }
+  
     return true;
   };
-
   const handleDiscard = () => {
     setFname("");
     setLname("");
@@ -77,7 +126,7 @@ const AddManager = () => {
       );
       console.log("Data posted:", response.data);
 
-      alert("Manager Added successfully!");
+      window.alert("Manager Added successfully!");
       setShowSuccessAlert(true);
 
       handleDiscard();
@@ -201,7 +250,7 @@ const AddManager = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>Email<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="email"
                     value={email}
