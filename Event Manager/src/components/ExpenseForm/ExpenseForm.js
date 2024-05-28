@@ -189,7 +189,7 @@ const ExpenseForm = () => {
               </div>
             </div>
             <Button type="submit" className="manager-btn ms-4 mb-3">
-              Save & Assign to Admin
+              Save & Send to Admin
             </Button>
           </Form>
         </div>
