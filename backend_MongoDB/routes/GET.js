@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Attendance } = require("../models/newModels");
-// const { ExecutiveTask } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");

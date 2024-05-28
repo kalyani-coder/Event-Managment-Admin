@@ -552,18 +552,6 @@ router.post("/:table", async (req, res) => {
   }
 });
 
-// router.post('/executivetask', async (req, res) => {
-//   try {
-//     const { Task, exe_id, Date, Time, Status, EventId } = req.body;
-//     const executiveTask = new ExecutiveTask({ Task, exe_id, Date, Time, Status, EventId });
-//     await executiveTask.save();
-//     res.status(200).json(executiveTask);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Server Error');
-//   }
-// });
-
 router.post("/:table/:id", async (req, res) => {
   const { table, id } = req.params;
   if (
