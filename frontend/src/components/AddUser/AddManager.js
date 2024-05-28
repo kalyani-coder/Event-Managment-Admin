@@ -133,6 +133,7 @@ const AddManager = () => {
       console.log("Data posted:", response.data);
 
       window.alert("Manager Added successfully!");
+
       setShowSuccessAlert(true);
       handleDiscard();
     } catch (error) {

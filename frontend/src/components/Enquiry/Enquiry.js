@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import Header from "../Sidebar/Header";
 import { Form, Button, Modal } from "react-bootstrap";
 import "./Enquiry.css";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 export default function Enquiry() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -20,6 +21,7 @@ export default function Enquiry() {
   const [selectedManagerId, setSelectedManagerId] = useState("");
   const [selectedManagerName, setSelectedManagerName] = useState("");
   const [venues, setVenues] = useState([]);
+  const [validatedFields, setValidatedFields] = useState([]);
 
   useEffect(() => {
     fetchEvents();
@@ -58,17 +60,36 @@ export default function Enquiry() {
     setShowModal(true);
   };
 
+  const isCustomerNameValid = (name) => {
+    const namePattern = /^[A-Za-z\s]+$/;
+    const words = name.trim().split(/\s+/);
+    return namePattern.test(name) && words.length > 1;
+  };
+
+  const isContactValid = (contact) => {
+    // Check if the contact contains only digits and has exactly 10 digits
+    const contactPattern = /^\d{10}$/;
+    return contactPattern.test(contact);
+  };
+
   const handleSubmit = async () => {
-    if (!customerName || !customerEmail) {
-      alert("Customer name and email are required.");
+    const invalidFields = [];
+
+    if (!customerName || !isCustomerNameValid(customerName)) {
+      invalidFields.push("customerName");
+    }
+    if (!contact || !isContactValid(contact)) {
+      invalidFields.push("contact");
+    }
+    if (!eventVenue) {
+      invalidFields.push("eventVenue");
+    }
+
+    if (invalidFields.length > 0) {
+      setValidatedFields(invalidFields);
       return;
     }
-  
-    if (!selectedManagerId) {
-      alert("Please select a manager.");
-      return; 
-    }
-  
+
     try {
       const response = await axios.post("http://localhost:5000/api/enquiry", {
         event_name: selectedEvent,
@@ -83,13 +104,13 @@ export default function Enquiry() {
         assign_manager_Id: selectedManagerId,
         assign_manager_name: selectedManagerName,
       });
-      alert("Enquiry added & assign to manager successfully");
+      alert("Enquiry added & assigned to manager successfully");
       setShowModal(false);
     } catch (error) {
       console.error("Error adding enquiry:", error);
     }
   };
-  
+
   
 
   return (
@@ -132,7 +153,7 @@ export default function Enquiry() {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${validatedFields.includes("customerName") ? 'is-invalid' : ''}`}
                     name="customer_name"
                     id="customer_name"
                     placeholder="Customer Name"
@@ -140,6 +161,7 @@ export default function Enquiry() {
                     onChange={(e) => setCustomerName(e.target.value)}
                     required
                   />
+                  {validatedFields.includes("customerName") && <div className="invalid-feedback">Customer name is required and must contain only alphabetical characters.</div>}
                 </div>
               </div>
             </div>
@@ -156,6 +178,7 @@ export default function Enquiry() {
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
                   />
+                  
                 </div>
               </div>
 
@@ -166,7 +189,7 @@ export default function Enquiry() {
                   </label>
                   <input
                     type="tel"
-                    className="form-control"
+                    className={`form-control ${validatedFields.includes("contact") ? 'is-invalid' : ''}`}
                     name="contact"
                     id="contact"
                     placeholder="Contact Number"
@@ -175,6 +198,7 @@ export default function Enquiry() {
                     required
                     maxLength="10"
                   />
+                  {validatedFields.includes("contact") && <div className="invalid-feedback">Contact number is required and must be 10 digits.</div>}
                 </div>
               </div>
             </div>
@@ -232,7 +256,7 @@ export default function Enquiry() {
                     Select Venue <span style={{ color: "red" }}>*</span>
                   </label>
                   <Form.Select
-                    className="form-control"
+                    className={`form-control ${validatedFields.includes("eventVenue") ? 'is-invalid' : ''}`}
                     name="event_venue"
                     id="event_venue"
                     value={eventVenue}
@@ -246,6 +270,7 @@ export default function Enquiry() {
                       </option>
                     ))}
                   </Form.Select>
+                  {validatedFields.includes("eventVenue") && <div className="invalid-feedback">Event venue is required.</div>}
                 </div>
               </div>
             </div>
