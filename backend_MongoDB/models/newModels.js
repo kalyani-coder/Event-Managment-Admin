@@ -495,6 +495,10 @@ const expenceForm = new Schema({
   manager_Name : {
     type : String
   },
+  status : {
+    type : String,
+    default : "pending"
+  },
 })
 
 const advanceExpence = new Schema({
