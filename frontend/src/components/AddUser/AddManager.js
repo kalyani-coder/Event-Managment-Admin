@@ -23,63 +23,68 @@ const AddManager = () => {
   const [ifscCode, setIfscCode] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
+  const [validationMessages, setValidationMessages] = useState({});
+
   const isValidForm = () => {
-    const namePattern = /^[A-Za-z\s]+$/; // Regular expression to allow spaces and multiple words
+    const namePattern = /^[A-Za-z\s]+$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     const alphaFields = [
-      { value: fname, field: "First Name" },
-      { value: lname, field: "Last Name" },
-      { value: city, field: "City" },
-      { value: state, field: "State" },
-      { value: holderName, field: "Account Holder Name" },
-      { value: bankName, field: "Bank Name" },
-      { value: branchName, field: "Branch Name" },
+      { value: fname, field: "fname", label: "First Name" },
+      { value: lname, field: "lname", label: "Last Name" },
+      { value: city, field: "city", label: "City" },
+      { value: state, field: "state", label: "State" },
+      { value: holderName, field: "holderName", label: "Account Holder Name" },
+      { value: bankName, field: "bankName", label: "Bank Name" },
+      { value: branchName, field: "branchName", label: "Branch Name" },
     ];
-  
-    let errorMessage = "";
-  
-    for (let i = 0; i < alphaFields.length; i++) {
-      if (!namePattern.test(alphaFields[i].value)) {
-        errorMessage += `${alphaFields[i].field} should only contain alphabetical characters, spaces, and multiple words.\n`;
+
+    let newValidationMessages = {};
+
+    alphaFields.forEach(({ value, field, label }) => {
+      if (!value) {
+        newValidationMessages[field] = `Please fill out the ${label}.`;
+      } else if (!namePattern.test(value)) {
+        newValidationMessages[field] = `${label} should only contain alphabetical characters.`;
       }
+    });
+
+    if (!email) {
+      newValidationMessages.email = "Please fill out the Email.";
+    } else if (!emailPattern.test(email)) {
+      newValidationMessages.email = "Please enter a valid email address.";
     }
-  
-    if (!fname || !lname || !contact || !password) {
-      errorMessage += "Please fill out all required fields.\n";
+
+    if (!password) {
+      newValidationMessages.password = "Please fill out the Password.";
+    } else if (!passwordPattern.test(password)) {
+      newValidationMessages.password = "Password must contain at least one special character, one number, and one alphabet character.";
     }
-  
-    // Check if contact is a valid integer
-    if (contact.trim() !== "" && !Number.isInteger(Number(contact))) {
-      errorMessage += "Phone should only contain numbers.\n";
+
+    if (!contact) {
+      newValidationMessages.contact = "Please fill out the Phone.";
+    } else if (!Number.isInteger(Number(contact))) {
+      newValidationMessages.contact = "Phone should only contain numbers.";
+    } else if (contact.trim().length > 10) {
+      newValidationMessages.contact = "Phone should have a maximum of 10 digits.";
     }
-  
-    // Check if contact has a maximum of 10 digits
-    if (contact.trim() !== "" && contact.trim().length > 10) {
-      errorMessage += "Phone should have a maximum of 10 digits.\n";
+    if (!accountNumber) {
+      newValidationMessages.accountNumber = "Please fill out the Account Number.";
+    } else if (!Number.isInteger(Number(accountNumber))) {
+      newValidationMessages.accountNumber = "Account Number should only contain numbers.";
     }
-  
-    // Check if email is valid
-    if (email.trim() !== "" && !emailPattern.test(email)) {
-      errorMessage += "Please enter a valid email address.\n";
-    }
-     // Check if email is valid and not empty
-  if (!email || !emailPattern.test(email)) { // Check if email is empty or not in valid format
-    errorMessage += "Email is required .\n";
-  }
-  
-    // Check if password contains at least one special character, one number, and one alphabet character
-    if (password.trim() !== "" && !passwordPattern.test(password)) {
-      errorMessage += "Password must contain at least one special character, one number, and one alphabet character.\n";
-    }
-  
-    if (errorMessage) {
-      window.alert(errorMessage);
+
+
+    if (Object.keys(newValidationMessages).length > 0) {
+      setValidationMessages(newValidationMessages);
+      window.scrollTo(0, 0);
       return false;
     }
-  
+
+    setValidationMessages({});
     return true;
   };
+
   const handleDiscard = () => {
     setFname("");
     setLname("");
@@ -94,6 +99,7 @@ const AddManager = () => {
     setBankName("");
     setBranchName("");
     setIfscCode("");
+    setValidationMessages({});
   };
 
   const handleSubmit = async (event) => {
@@ -128,7 +134,6 @@ const AddManager = () => {
 
       window.alert("Manager Added successfully!");
       setShowSuccessAlert(true);
-
       handleDiscard();
     } catch (error) {
       console.error("Error posting data:", error);
@@ -186,7 +191,6 @@ const AddManager = () => {
     <>
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
-       
         <div className="md:h-[80vh] h-[80vh] ">
           {showSuccessAlert && (
             <Alert
@@ -199,97 +203,117 @@ const AddManager = () => {
           )}
 
           <Form onSubmit={handleSubmit} className="">
-          <div className="flex">
-            <Link to={'/addmanager'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
-            </Link>
-            <Link to={'/addaccountant'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
-            </Link>
-            <Link to={'/addexecutive'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
-            </Link>
-            <Link to={'/addvendor'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
-            </Link>
-          </div>
+            <div className="flex">
+              <Link to={'/addmanager'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
+              </Link>
+              <Link to={'/addaccountant'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
+              </Link>
+              <Link to={'/addexecutive'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
+              </Link>
+              <Link to={'/addvendor'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
+              </Link>
+            </div>
             <h2 className="text-[30px] pl-[1em] ">Add Manager</h2>
 
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="fname">
-                  <Form.Label>
+                  <Form.Label className={validationMessages.fname ? "label-invalid" : ""}>
                     First Name <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
-                    className="input-area"
+                    className={`input-area ${validationMessages.fname ? "is-invalid" : ""}`}
                     type="text"
                     value={fname}
                     onChange={(e) => setFname(e.target.value)}
                     placeholder="Enter first name"
-                    required
+                    
                   />
+                  {validationMessages.fname && (
+                    <div className="invalid-feedback">{validationMessages.fname}</div>
+                  )}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="lname">
-                  <Form.Label>
+                  <Form.Label className={validationMessages.lname ? "label-invalid" : ""}>
                     Last Name <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.lname ? "is-invalid" : ""}`}
                     type="text"
                     value={lname}
                     onChange={(e) => setLname(e.target.value)}
                     placeholder="Enter last name"
-                    required
+                    
                   />
+                  {validationMessages.lname && (
+                    <div className="invalid-feedback">{validationMessages.lname}</div>
+                  )}
                 </Form.Group>
               </div>
             </div>
-
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="email">
-                  <Form.Label>Email<span style={{ color: "red" }}>*</span></Form.Label>
+                  <Form.Label className={validationMessages.email ? "label-invalid" : ""}>
+                    Email <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.email ? "is-invalid" : ""}`}
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter email"
+                    
                   />
+                  {validationMessages.email && (
+                    <div className="invalid-feedback">{validationMessages.email}</div>
+                  )}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="password">
-                  <Form.Label>
+                  <Form.Label className={validationMessages.password ? "label-invalid" : ""}>
                     Password <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.password ? "is-invalid" : ""}`}
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password"
-                    required
+                    
                   />
+                  {validationMessages.password && (
+                    <div className="invalid-feedback">{validationMessages.password}</div>
+                  )}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="contact">
-                  <Form.Label>
+                  <Form.Label className={validationMessages.contact ? "label-invalid" : ""}>
                     Phone<span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.contact ? "is-invalid" : ""}`}
                     type="tel"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="Enter phone"
-                    required
+                    
                   />
+                  {validationMessages.contact && (
+                    <div className="invalid-feedback">{validationMessages.contact}</div>
+                  )}
                 </Form.Group>
               </div>
-
               <div className="col px-5">
                 <Form.Group controlId="address">
                   <Form.Label>Address</Form.Label>
@@ -305,23 +329,30 @@ const AddManager = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="city">
-                  <Form.Label>City</Form.Label>
+                  <Form.Label className={validationMessages.city ? "label-invalid" : ""}>
+                    City
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.city ? "is-invalid" : ""}`}
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Enter city"
                   />
+                  {validationMessages.city && (
+                    <div className="invalid-feedback">{validationMessages.city}</div>
+                  )}
                 </Form.Group>
               </div>
-
               <div className="col px-5">
                 <Form.Group controlId="state">
                   <Form.Label>State</Form.Label>
                   <Form.Control
                     as="select"
                     value={state}
+                    placeholder="Select State"
                     onChange={(e) => setState(e.target.value)}
+                    
                   >
                     {indianStates.map((state) => (
                       <option key={state} value={state}>
@@ -335,67 +366,94 @@ const AddManager = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="holder_name">
-                  <Form.Label>Account Holder Name</Form.Label>
+                  <Form.Label className={validationMessages.holderName ? "label-invalid" : ""}>
+                    Account Holder Name
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.holderName ? "is-invalid" : ""}`}
                     type="text"
                     value={holderName}
                     onChange={(e) => setHolderName(e.target.value)}
                     placeholder="Enter account holder name"
                   />
+                  {validationMessages.holderName && (
+                    <div className="invalid-feedback">{validationMessages.holderName}</div>
+                  )}
                 </Form.Group>
               </div>
-
               <div className="col px-5">
                 <Form.Group controlId="account_number">
-                  <Form.Label>Account Number</Form.Label>
+                  <Form.Label className={validationMessages.accountNumber ? "label-invalid" : ""}>
+                    Account Number
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.accountNumber ? "is-invalid" : ""}`}
                     type="text"
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
                     placeholder="Enter account number"
                   />
+                  {validationMessages.accountNumber && (
+                    <div className="invalid-feedback">{validationMessages.accountNumber}</div>
+                  )}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="bank_name">
-                  <Form.Label>Bank Name</Form.Label>
+                  <Form.Label className={validationMessages.bankName ? "label-invalid" : ""}>
+                    Bank Name
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.bankName ? "is-invalid" : ""}`}
                     type="text"
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
                     placeholder="Enter bank name"
                   />
+                  {validationMessages.bankName && (
+                    <div className="invalid-feedback">{validationMessages.bankName}</div>
+                  )}
                 </Form.Group>
               </div>
-
               <div className="col px-5">
                 <Form.Group controlId="branch_name">
-                  <Form.Label>Branch Name</Form.Label>
+                  <Form.Label className={validationMessages.branchName ? "label-invalid" : ""}>
+                    Branch Name
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.branchName ? "is-invalid" : ""}`}
                     type="text"
                     value={branchName}
                     onChange={(e) => setBranchName(e.target.value)}
                     placeholder="Enter branch name"
                   />
+                  {validationMessages.branchName && (
+                    <div className="invalid-feedback">{validationMessages.branchName}</div>
+                  )}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="IFSC_code">
-                  <Form.Label>IFSC Code</Form.Label>
+                  <Form.Label className={validationMessages.ifscCode ? "label-invalid" : ""}>
+                    IFSC Code
+                  </Form.Label>
                   <Form.Control
+                    className={`input-area ${validationMessages.ifscCode ? "is-invalid" : ""}`}
                     type="text"
                     value={ifscCode}
                     onChange={(e) => setIfscCode(e.target.value)}
                     placeholder="Enter IFSC code"
                   />
+                  {validationMessages.ifscCode && (
+                    <div className="invalid-feedback">{validationMessages.ifscCode}</div>
+                  )}
                 </Form.Group>
               </div>
             </div>
-
             <div className="row mb-2">
               <div className="col px-5">
                 <Button
@@ -414,9 +472,6 @@ const AddManager = () => {
                 </Button>
               </div>
             </div>
-
-            {/* <button className="manager-btn"> Hover me
-          </button> */}
           </Form>
         </div>
       </div>
