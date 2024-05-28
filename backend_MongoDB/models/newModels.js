@@ -20,8 +20,8 @@ const EnquirySchema = new Schema({
     type: String,
     default: ""
   },
-  assign_manager_Id : {type : String, required : false},
-  assign_manager_name : {type : String, required : false}
+  assign_manager_Id: { type: String, required: false },
+  assign_manager_name: { type: String, required: false }
 });
 
 const QuotationSchema = new Schema({
@@ -59,29 +59,29 @@ const AdvPaymentSchema = new Schema({
   // UPI_id: String,
   // transaction_id: String,
 
-  clientId : {type :String},
-  managerId : {type : String},
+  clientId: { type: String },
+  managerId: { type: String },
 
   client_name: {
     type: String,
   },
-  contact: {type : String},
+  contact: { type: String },
 
   event_name: {
     type: String,
   },
 
   event_date: {
-    type :String
+    type: String
   },
-  venue:{ 
-    type : String
+  venue: {
+    type: String
   },
-  guest_number: { 
-    type : String
+  guest_number: {
+    type: String
   },
-  event_requirement : {
-    type : String
+  event_requirement: {
+    type: String
   },
   amount: {
     type: Number,
@@ -100,10 +100,10 @@ const AdvPaymentSchema = new Schema({
   },
 
   cash_whome_to_submit: {
-    type : String
+    type: String
   },
   transaction_id: {
-    type : String
+    type: String
   },
 
   payment_date: {
@@ -112,14 +112,14 @@ const AdvPaymentSchema = new Schema({
   payment_time: {
     type: String,
   },
-  Bank_Name :{
-    type : String
+  Bank_Name: {
+    type: String
 
   },
-  bank_Account_Number : {
-    type : String
+  bank_Account_Number: {
+    type: String
   },
-  
+
 });
 
 
@@ -139,8 +139,8 @@ const EventSchema = new Schema({
   budget: Number,
   address: String,
   status: String,
-  managerId : String,
-  managerName : String,
+  managerId: String,
+  managerName: String,
 });
 
 const OrderSchema = new Schema({
@@ -152,8 +152,8 @@ const OrderSchema = new Schema({
   venue: String,
   address: String,
   event_name: String,
-  event_Type :String,
-  guest_Number : String,
+  event_Type: String,
+  guest_Number: String,
   assign_manager_name: String,
   assign_manager_Id: String,
 
@@ -236,7 +236,7 @@ const ManagerDetailsSchema = new Schema({
   fname: String,
   lname: String,
   email: String,
-  password : String,
+  password: String,
   contact: Number,
   address: String,
   city: String,
@@ -344,19 +344,19 @@ const AddVendor = new Schema({
 })
 
 const QuatationInfo = new Schema({
- 
-  customerName : String,
-  customer_Id : String,
+
+  customerName: String,
+  customer_Id: String,
   transport: String,
-  transport_amount :Number,
+  transport_amount: Number,
   description: String,
   grand_total: Number,
-  sub_total : Number,
-  cgst : String,
-  sgst : String,
-  Total_Amount  : Number,
-  event_name : String,
-  event_date : String,
+  sub_total: Number,
+  cgst: String,
+  sgst: String,
+  Total_Amount: Number,
+  event_name: String,
+  event_date: String,
 
 
 
@@ -367,13 +367,13 @@ const QuatationInfo = new Schema({
     vendorName: String,
     vendorId: String,
     purchaseQuantity: Number,
-    rate_per_days : Number,
-    unit : String,
-    days : Number,
-    price: Number ,
+    rate_per_days: Number,
+    unit: String,
+    days: Number,
+    price: Number,
 
   }]
-  
+
 
 })
 
@@ -436,87 +436,90 @@ const advancePaymantManager = new Schema({
 })
 
 const managerTask = new Schema({
-  manager_Id : {type : String},
-  manager_Name : {type : String},
-  task : {type : String},
-  date : {type : String},
-  time : {type : String},
+  manager_Id: { type: String },
+  manager_Name: { type: String },
+  task: { type: String },
+  date: { type: String },
+  time: { type: String },
 
 })
 
 
 const bankTransper = new Schema({
 
-  from_bank : {type : String},
-  from_bank_accountNu : {type : Number},
-  to_bank : {type : String},
-  to_bank_accountNu : {type : Number},
-  amount : {type : Number},
+  from_bank: { type: String },
+  from_bank_accountNu: { type: Number },
+  to_bank: { type: String },
+  to_bank_accountNu: { type: Number },
+  amount: { type: Number },
   date: { type: String, default: () => new Date().toLocaleDateString() }
-  
+
 })
 
 const allBanksAccounts = new Schema({
-  Bank_Name : { type : String , required : true},
-  Account_Number : {type : Number}
+  Bank_Name: { type: String, required: true },
+  Account_Number: { type: Number }
 
 })
 
 const venueSchema = new Schema({
-  venue : {type : String, required : true},
+  venue: { type: String, required: true },
 
 })
 
 const expenceForm = new Schema({
-  expence_date : {
-    type : String,
+  expence_date: {
+    type: String,
   },
-  prticular : {
-    type : String,
+  prticular: {
+    type: String,
   },
-  amount : {
-    type : Number,
+  amount: {
+    type: Number,
   },
-  client_Name : {
-    type : String,
+  client_Name: {
+    type: String,
   },
-  client_contact : {
-    type : Number 
+  client_contact: {
+    type: Number
   },
-  event_name : {
-    type : String
+  event_name: {
+    type: String
   },
-  event_Date : {
-    type : String
+  event_Date: {
+    type: String
   },
-  managerId : {
-    type : String,
+  managerId: {
+    type: String,
   },
-  manager_Name : {
-    type : String
+  manager_Name: {
+    type: String
   },
-  status : {
-    type : String,
-    default : "pending"
+  status: {
+    type: String,
+    default: "pending"
   },
 })
 
 const advanceExpence = new Schema({
-  payment_Date : {
-    type : String 
+  payment_Date: {
+    type: String
   },
-  from_Bank : {
-    type :String 
+  from_Bank: {
+    type: String
   },
-  bank_Account_Number : {
-    type : Number
+  bank_Account_Number: {
+    type: Number
   },
-  managerId : {
-    type : String 
+  managerId: {
+    type: String
   },
-  manager_Name : {
-    type : String
-},
+  manager_Name: {
+    type: String
+  },
+  amount: {
+    type: Number
+  },
 
 })
 
@@ -524,12 +527,12 @@ const advanceExpence = new Schema({
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
-  venue : mongoose.model("allvenue" ,venueSchema),
-  AdvanceExpence : mongoose.model("ExpenceAdvance",advanceExpence),
-  ExpenceForm : mongoose.model("expenceform", expenceForm),
-  bankTransper : mongoose.model("BankTransfer", bankTransper),
-  allBanks : mongoose.model("AllBanks" , allBanksAccounts),
-  ManagerTask : mongoose.model("ManagerTask", managerTask),
+  venue: mongoose.model("allvenue", venueSchema),
+  AdvanceExpence: mongoose.model("ExpenceAdvance", advanceExpence),
+  ExpenceForm: mongoose.model("expenceform", expenceForm),
+  bankTransper: mongoose.model("BankTransfer", bankTransper),
+  allBanks: mongoose.model("AllBanks", allBanksAccounts),
+  ManagerTask: mongoose.model("ManagerTask", managerTask),
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),
   QuatationInfo: mongoose.model("quatationinfo", QuatationInfo),
