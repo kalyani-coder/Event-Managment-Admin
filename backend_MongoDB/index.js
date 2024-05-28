@@ -12,28 +12,17 @@ const DELETE = require("./routes/DELETE");
 const PATCH = require('./routes/PATCH');
 const Login = require("./routes/LoginRoute");
 const AddVendor = require('./routes/AddVendorRoute');
-// const AddVendor = require('./routes/AddVendorRoute')
 
 app.use(bodyParser.json());
 app.use(cors());
 
-// const apiRouter = express.Router();
-
-
-// const AddVendor = require('./routes/AddVendorRoute')
-
-// apiRouter.use('/addvendor' , AddVendor)
 
 app.use("/api", GET);
 app.use("/api", POST);
 app.use("/api", DELETE);
 app.use('/api' , PATCH);
 app.use("/auth", Login);
-app.use('/api' , AddVendor)
-
-
-// app.use('/api' , AddVendor)
-// app.use("/api" , apiRouter);
+app.use('/api' , AddVendor);
 
 mongoose
   .connect(

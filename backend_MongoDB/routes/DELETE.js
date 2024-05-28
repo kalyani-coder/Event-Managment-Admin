@@ -190,25 +190,6 @@ router.delete("/addvendor/:id", async (req, res) => {
   }
 });
 
-
-// Add Vendor Api delete route 
-// router.delete("/vendor/:vendorId", async (req, res) => {
-//   const vendorId = req.params.vendorId;
-
-//   try {
-//     const deletedVendor = await AddVendor.findByIdAndDelete(vendorId);
-
-//     if (!deletedVendor) {
-//       return res.status(404).json({ message: "Vendor not found" });
-//     }
-
-//     res.status(200).json({ message: "Vendor deleted successfully" });
-//   } catch (err) {
-//     console.error("Error deleting vendor:", err);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
-
 // Inventory stocks delete route 
 router.delete('/inventory-stocks/:stockId', async (req, res) => {
   const stockId = req.params.stockId;
