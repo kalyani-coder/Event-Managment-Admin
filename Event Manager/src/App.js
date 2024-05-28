@@ -65,6 +65,7 @@ import InternalCosting from "./components/InternalCosting/InternalCosting";
 import ViewEvent from "./components/AddNewEvent/ViewEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
 import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
+import ViewExpenseDetails from './components/ExpenseForm/ViewExpenseDetails';
 
 function App() {
   return (
@@ -144,7 +145,7 @@ function App() {
             <Route path="/viewevent" element={<ViewEvent />} />
             <Route path="/eventdetails" element={<EventDetails />} />
             <Route path="/expenseform" element={<ExpenseForm />} />
-
+            <Route path="/viewexpensedetails" element={<ViewExpenseDetails />} />
 
             {/* **************** */}
           </Routes>

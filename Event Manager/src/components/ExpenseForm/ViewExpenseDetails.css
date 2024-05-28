@@ -1,0 +1,5 @@
+.status-badge {
+    width: 80px; /* Set a fixed width for badges */
+    display: inline-block;
+    text-align: center;
+  }
