@@ -203,7 +203,7 @@ function QuotationForm() {
                 setSubtotal(subtotal + calcTotal()); // Add the total of newly added requirements to the subtotal
             } else {
                 const response = await axios.patch(
-                    `http://localhost:5000/api/quotationinfo/${enquiry._id}`,
+                    `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`,
                     data
                 );
                 alert("Stock updated successfully");
