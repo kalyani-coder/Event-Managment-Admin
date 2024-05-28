@@ -64,6 +64,8 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import EventDetails from "./components/Event/ViewEvent";
 import BankwiseReport from "./components/DownloadReport/BankwiseReport";
 import OutstandingReport from "./components/DownloadReport/OutstandingReport";
+import AdvanceExpense from './components/Expense/AdvanceExpense';
+import ViewExpense from "./components/Expense/ViewExpense";
 
 
 function App() {
@@ -145,6 +147,8 @@ function App() {
             <Route path="/viewinternaltransfer" element={<ViewInternalTransfer/>} />
             <Route path="/bankwisereport" element={<BankwiseReport/>} />
             <Route path="/oustandingpaymentreport" element={<OutstandingReport/>} />
+            <Route path="/advanceexpense" element={<AdvanceExpense/>} />
+            <Route path="/viewexpense" element={<ViewExpense/>} />
             
             {/* **************** */}
           </Routes>
