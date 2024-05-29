@@ -47,7 +47,7 @@ const AddExpense = () => {
     console.log("Sending data:", expenseData);
 
     axios
-      .post(`http://localhost:5000/api/eventexpense/${event_id}`, expenseData, {
+      .post(`https://node-backend.macj-abuyerschoice.com/api/eventexpense/${event_id}`, expenseData, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -16,10 +16,10 @@ const OutstandingReport = () => {
   useEffect(() => {
     const fetchReportData = async () => {
       try {
-        const enquiryResponse = await fetch('http://localhost:5000/api/enquiry');
+        const enquiryResponse = await fetch('https://node-backend.macj-abuyerschoice.com/api/enquiry');
         const enquiryData = await enquiryResponse.json();
 
-        const quotationResponse = await fetch('http://localhost:5000/api/quotationinfo');
+        const quotationResponse = await fetch('https://node-backend.macj-abuyerschoice.com/api/quotationinfo');
         const quotationData = await quotationResponse.json();
 
         const report = generateReport(enquiryData, quotationData);

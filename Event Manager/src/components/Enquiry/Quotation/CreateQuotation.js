@@ -16,7 +16,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await fetch("http://localhost:5000/api/enquiry");
+//         const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/enquiry");
 //         const data = await response.json();
 
 //         // Sort inquiries based on event date in descending order
@@ -365,7 +365,7 @@ const CreateQuotation = () => {
         const managerId = localStorage.getItem("managerId");
 
         // Fetch inquiries associated with manager ID
-        const response = await fetch(`http://localhost:5000/api/enquiry/${managerId}`);
+        const response = await fetch(`https://node-backend.macj-abuyerschoice.com/api/enquiry/${managerId}`);
         const data = await response.json();
 
         setInquiries(data);

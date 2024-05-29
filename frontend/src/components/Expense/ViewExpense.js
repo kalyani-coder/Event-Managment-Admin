@@ -14,7 +14,7 @@ const ViewExpense = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/expence", {
+      const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/expence", {
         params: {
           client_Name: clientName,
           expence_date: expenseDate,
@@ -29,7 +29,7 @@ const ViewExpense = () => {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addmanager");
+      const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/addmanager");
       const managerData = response.data.reduce((acc, manager) => {
         acc[manager._id] = `${manager.fname} ${manager.lname}`;
         return acc;

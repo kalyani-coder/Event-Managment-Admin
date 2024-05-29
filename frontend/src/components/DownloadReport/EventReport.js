@@ -26,9 +26,9 @@ const EventReport = () => {
 
   const fetchEventData = async () => {
     try {
-      let url = "http://localhost:5000/api/event";
+      let url = "https://node-backend.macj-abuyerschoice.com/api/event";
       if (selectedStatus) {
-        url = `http://localhost:5000/api/event/status/${selectedStatus}`;
+        url = `https://node-backend.macj-abuyerschoice.com/api/event/status/${selectedStatus}`;
       }
       console.log("Fetching data from:", url);
       const response = await fetch(url);
@@ -108,7 +108,7 @@ const EventReport = () => {
 
   const fetchData = async () => {
     try {
-      let url = "http://localhost:5000/api/event";
+      let url = "https://node-backend.macj-abuyerschoice.com/api/event";
       if (selectedStatus !== "All") {
         url += `/status/${selectedStatus}`;
       }

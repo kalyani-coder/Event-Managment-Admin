@@ -27,7 +27,7 @@ const ExpenseForm = () => {
 
   useEffect(() => {
     // Fetch clients from the API
-    axios.get('http://localhost:5000/api/event')
+    axios.get('https://node-backend.macj-abuyerschoice.com/api/event')
       .then(response => {
         setClients(response.data);
         setFilteredClients(response.data);
@@ -94,7 +94,7 @@ const ExpenseForm = () => {
 
     console.log("Submitting expense data:", expenseData); // Log the data being submitted
 
-    axios.post('http://localhost:5000/api/expence', expenseData)
+    axios.post('https://node-backend.macj-abuyerschoice.com/api/expence', expenseData)
       .then(response => {
         alert('Expense saved successfully');
         setAlertVariant('success');

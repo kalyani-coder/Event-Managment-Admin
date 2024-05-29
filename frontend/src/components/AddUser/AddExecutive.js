@@ -71,7 +71,7 @@ const AddExecutive = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/executive",
+        "https://node-backend.macj-abuyerschoice.com/api/executive",
         formData
       );
 

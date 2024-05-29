@@ -127,7 +127,7 @@ const AddManager = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/addmanager",
+        "https://node-backend.macj-abuyerschoice.com/api/addmanager",
         formData
       );
       console.log("Data posted:", response.data);

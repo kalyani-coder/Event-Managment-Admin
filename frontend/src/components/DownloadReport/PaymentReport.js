@@ -17,7 +17,7 @@ const PaymentReport = () => {
   const fetchSalaryData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/staffsalary"
+        "https://node-backend.macj-abuyerschoice.com/api/staffsalary"
       );
       const salaryData = await response.json();
       setSalaryData(salaryData);

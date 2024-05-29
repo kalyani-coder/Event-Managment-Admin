@@ -47,7 +47,7 @@ function AdvPaymentForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/advpayment",
+        "https://node-backend.macj-abuyerschoice.com/api/advpayment",
         orderDetails
       );
       console.log("Order Details:", orderDetails);

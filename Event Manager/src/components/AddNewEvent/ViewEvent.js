@@ -14,7 +14,7 @@ const ViewEvent = () => {
   const managerData = async () => {
     const managerId = localStorage.getItem("managerId");
     try {
-      const response = await fetch(`http://localhost:5000/api/event/manager/${managerId}`);
+      const response = await fetch(`https://node-backend.macj-abuyerschoice.com/api/event/manager/${managerId}`);
       const data = await response.json();
       setEvents(data);
       setFilteredEvents(data); // Initialize filteredEvents with the fetched data

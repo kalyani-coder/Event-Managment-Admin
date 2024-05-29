@@ -15,7 +15,7 @@ const ViewAdvPaymentManager = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/advpaymanager")
+      .get("https://node-backend.macj-abuyerschoice.com/api/advpaymanager")
       .then((response) => {
         setPayments(response.data);
       })
@@ -54,7 +54,7 @@ const ViewAdvPaymentManager = () => {
     setDateRange({ startDate: "", endDate: "" });
     // Refetch original payments data
     axios
-      .get("http://localhost:5000/api/advpaymanager")
+      .get("https://node-backend.macj-abuyerschoice.com/api/advpaymanager")
       .then((response) => {
         setPayments(response.data);
       })

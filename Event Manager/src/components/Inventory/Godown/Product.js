@@ -10,7 +10,7 @@ function YourComponent() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/inventory-stocks"
+          "https://node-backend.macj-abuyerschoice.com/api/inventory-stocks"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -30,7 +30,7 @@ function YourComponent() {
     console.log(selectedName);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/stock/${selectedName}`
+        `https://node-backend.macj-abuyerschoice.com/api/inventory-stocks/stock/${selectedName}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");

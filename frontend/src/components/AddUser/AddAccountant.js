@@ -83,7 +83,7 @@ const AddAccountant = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/accountant",
+        "https://node-backend.macj-abuyerschoice.com/api/accountant",
         formData
       );
 

@@ -11,13 +11,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch updated tasks from the API
-    fetch("http://localhost:5000/api/executivetask")
+    fetch("https://node-backend.macj-abuyerschoice.com/api/executivetask")
       .then((response) => response.json())
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error fetching tasks:", error));
 
     // Fetch events data from the API
-    fetch("http://localhost:5000/api/enquiry")
+    fetch("https://node-backend.macj-abuyerschoice.com/api/enquiry")
       .then((response) => response.json())
       .then((data) => {
         // Filter events with status 'Conform' or 'Hot'
