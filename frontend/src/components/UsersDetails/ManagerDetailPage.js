@@ -82,19 +82,17 @@ const ManagerDetailPage = () => {
                 <hr />
               </div>
               <div className="my-3 grid gap-1 md:flex">
-                <Button variant="info" onClick={handleEdit}>
+                <button className="manager-btn" onClick={handleEdit}>
                   Edit
-                </Button>{" "}
-                <Button
+                </button>{" "}
+                <button
                   variant="danger"
-                  className="mx-1"
+                  className="manager-btn"
                   onClick={handleDelete}
                 >
                   Delete
-                </Button>
-                <Button variant="info" className="mx-1" onClick={handleSalary}>
-                  Add Salary
-                </Button>
+                </button>
+               
               </div>
             </Card.Body>
           </Card>

@@ -822,7 +822,7 @@ function InternalCosting() {
                                                     <td>{req.unit}</td>
                                                     <td>{req.rate_per_days}</td>
                                                     <td>{req.days}</td>
-                                                    <td>{req.price}</td>
+                                                    <td>{req.price} Rs</td>
                                                 </tr>
                                             ))}
                                         </tbody>
