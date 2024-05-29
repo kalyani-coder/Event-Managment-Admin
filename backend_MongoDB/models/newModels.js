@@ -21,7 +21,20 @@ const EnquirySchema = new Schema({
     default: ""
   },
   assign_manager_Id: { type: String, required: false },
-  assign_manager_name: { type: String, required: false }
+  assign_manager_name: { type: String, required: false },
+  enquiry_date : {type : String}
+});
+
+
+EnquirySchema.pre('save', function(next) {
+  if (!this.enquiry_date) {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = now.getFullYear();
+    this.enquiry_date = `${day}-${month}-${year}`;
+  }
+  next();
 });
 
 const QuotationSchema = new Schema({

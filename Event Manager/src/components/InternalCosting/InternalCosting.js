@@ -62,7 +62,7 @@ function InternalCosting() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `https://node-backend.macj-abuyerschoice.com/api/quotationinfo/customer/${enquiry._id}`
+                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
             );
             setQuotationData(response.data);
             console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
@@ -75,7 +75,7 @@ function InternalCosting() {
 
     useEffect(() => {
         axios
-            .get("https://node-backend.macj-abuyerschoice.com/api/inventory-stocks")
+            .get("http://localhost:5000/api/inventory-stocks")
             .then((response) => {
                 const data = response.data;
                 const names = data.map((stock) => stock.Stock_Name);
@@ -88,15 +88,15 @@ function InternalCosting() {
     const newhandleStockChange = (e) => {
         const selectedStockName = e.target.value;
         const selectedStock = newstocksData.find(stock => stock.Stock_Name === selectedStockName);
-        console.log("selectedStock" , selectedStock)
-    
+        console.log("selectedStock", selectedStock)
+
         setNewSelectedStock(selectedStockName);
 
-       // Assuming the value contains the ID of the selected stock
+        // Assuming the value contains the ID of the selected stock
         setNewSelectedStockId(selectedStock._id);
-        console.log("stockid " , selectedStock._id)
+        console.log("stockid ", selectedStock._id)
         setNewSelectedVendorId(selectedStock.Vendor_Id);
-        console.log("vendorid" , selectedStock.Vendor_Id)
+        console.log("vendorid", selectedStock.Vendor_Id)
 
         const vendors = newstocksData
             .filter((stock) => stock.Stock_Name === selectedStockName)
@@ -133,7 +133,7 @@ function InternalCosting() {
         // Fetch Stock Quantity and Price based on selected vendor
         try {
             const response = await axios.get(
-                `https://node-backend.macj-abuyerschoice.com/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
+                `http://localhost:5000/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
             );
             const { Stock_Quantity, Price } = response.data;
             setNewSelectedStockQuantityValue(Stock_Quantity);
@@ -201,15 +201,15 @@ function InternalCosting() {
         try {
             if (isFirstSubmission) {
                 const response = await axios.post(
-                    "https://node-backend.macj-abuyerschoice.com/api/quotationinfo",
+                    "http://localhost:5000/api/quotationinfo",
                     data
                 );
                 alert("Stock added successfully");
                 setIsFirstSubmission(false);
-                setSubtotal(subtotal + calcTotal()); // Add the total of newly added requirements to the subtotal
+                setSubtotal(subtotal + calcTotal());
             } else {
                 const response = await axios.patch(
-                    `https://node-backend.macj-abuyerschoice.com/api/quotationinfo/${enquiry._id}`,
+                    `http://localhost:5000/api/quotationinfo/${enquiry._id}`,
                     data
                 );
                 alert("Stock updated successfully");
@@ -234,7 +234,7 @@ function InternalCosting() {
         }
     };
 
-    const handleTransportChnage = (event) =>{
+    const handleTransportChnage = (event) => {
         setTransport(event.target.value)
     }
 
@@ -285,60 +285,76 @@ function InternalCosting() {
 
     const convertAmountToWords = (amount) => {
         const singleDigits = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-        const twoDigits = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
         const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
         const placeValues = ['', 'Thousand', 'Million', 'Billion'];
-    
+
         const toWords = (num) => {
             if (num === 0) return 'Zero';
-    
+
             let result = '';
-    
-            for (let i = 0; num > 0; i++) {
-                const threeDigits = num % 1000;
+            let place = 0;
+
+            while (num > 0) {
+                let chunk = num % 1000;
+                if (chunk) {
+                    result = `${processChunk(chunk)}${placeValues[place]} ${result}`.trim();
+                }
                 num = Math.floor(num / 1000);
-    
-                const ones = threeDigits % 10;
-                const tens = Math.floor(threeDigits / 10) % 10;
-                const hundreds = Math.floor(threeDigits / 100) % 10;
-    
-                if (hundreds !== 0) {
-                    result = singleDigits[hundreds] + ' Hundred ' + result;
-                }
-    
-                if (tens !== 0 || ones !== 0) {
-                    if (tens === 1) {
-                        result = teens[ones] + ' ' + result;
-                    } else {
-                        result = twoDigits[tens] + ' ' + singleDigits[ones] + ' ' + result;
-                    }
-                }
-    
-                if (threeDigits !== 0) {
-                    result += placeValues[i] + ' ';
-                }
+                place++;
             }
-    
+
             return result.trim();
         };
-    
-        return toWords(amount);
+
+        const processChunk = (num) => {
+            let str = '';
+
+            const hundreds = Math.floor(num / 100);
+            const remainder = num % 100;
+
+            if (hundreds) {
+                str += `${singleDigits[hundreds]} Hundred `;
+            }
+
+            if (remainder) {
+                if (remainder < 10) {
+                    str += singleDigits[remainder];
+                } else if (remainder >= 11 && remainder <= 19) {
+                    str += teens[remainder - 10];
+                } else {
+                    const tensDigit = Math.floor(remainder / 10);
+                    const onesDigit = remainder % 10;
+                    str += `${tens[tensDigit]} ${singleDigits[onesDigit]}`;
+                }
+            }
+
+            return str.trim() + ' ';
+        };
+
+        // Round down to remove decimal part
+        const integerPart = Math.floor(amount);
+        return toWords(integerPart);
     };
 
-    
+
+
     const handlePrint = () => {
         const doc = new jsPDF();
-    
+
         // doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
-    
+
         // Print Customer Data
+        // const pageWidth = doc.internal.pageSize.width;
+        // const customerTableWidth = pageWidth * 0.2;
+
         const customerData = [
             ["Customer Name", enquiry.customer_name || "-"],
             ["Customer Address", enquiry.address || "-"],
             ["Event Date", enquiry.event_date || "-"],
             ["Event Venue", enquiry.event_venue || "-"],
         ];
-    
+
         const companyData = [
             ["Company Name", "Tutons Events LLP"],
             [
@@ -348,36 +364,37 @@ function InternalCosting() {
             ["Company Phone", "9225522123 / 9226061234"],
             ["Company Email", "tutonsevents@gmail.com"],
         ];
-    
-        const customerTableX = 30;
+
+        const customerTableX = 10;
         const customerTableY = 40;
-    
+
         const companyTableX = 105;
         const companyTableY = 40;
-    
+
         const pageWidth = doc.internal.pageSize.width;
-        const customerTableWidth = (pageWidth - companyTableX) / 2 - 10;
-    
+        const customerTableWidth = pageWidth * 0.3;
+        const rightMargin = pageWidth - customerTableX - customerTableWidth;
+
         doc.autoTable({
             body: customerData,
             startY: customerTableY,
             theme: "grid",
-            margin: { right: customerTableWidth },
+            margin: { right: rightMargin, left: customerTableX },
         });
-    
+
         const imageWidth = 40;
         const imageHeight = 30;
         const imageX = 120;
         const imageY = 10;
         doc.addImage(myImage, "PNG", imageX, imageY, imageWidth, imageHeight);
-    
+
         doc.autoTable({
             body: companyData,
             startY: companyTableY,
             theme: "grid",
             margin: { left: companyTableX },
         });
-    
+
         // Print Quotation Details
         if (quotationData) {
             const tableData = quotationData.requirements.map((req, index) => [
@@ -390,17 +407,17 @@ function InternalCosting() {
                 req.days,
                 req.price,
             ]);
-    
+
             // Append total rows
             tableData.push(
-                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"}`],
+                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
                 ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
                 ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"}`],
-                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"}`],
-                ["", "", "", "", "", "","Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
+                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
+                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+                ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
             );
-    
+
             doc.autoTable({
                 head: [
                     ["Sr.No.", "Particular", "Description", "Per", "Unit", "Rate", "Days", "Amount"],
@@ -409,12 +426,12 @@ function InternalCosting() {
                 startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
                 theme: "grid",
             });
-    
+
             const finalY = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(12);
             doc.text("Terms & Conditions", 10, finalY);
             doc.setFontSize(10);
-    
+
             // Define the terms and conditions
             const terms = [
                 "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
@@ -427,7 +444,7 @@ function InternalCosting() {
                 "8. The above Quote is valid for 60 Days from the date of Quote.",
                 "9. 18% GST is applicable on Total Billing."
             ];
-    
+
             let termY = finalY + 10;
             terms.forEach(term => {
                 doc.text(term, 10, termY);
@@ -436,37 +453,37 @@ function InternalCosting() {
         } else {
             alert("Quotation details are not available.");
         }
-    
+
         doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
         alert("PDF file generated");
     };
-    
+
 
     const handlePatchQuotation = async () => {
         if (!quotationData) {
-          return;
+            return;
         }
-    
+
         const customerId = quotationData.customer_Id;
         const dataToUpdate = {
-          transport: transport,
-          transport_amount: transportCharges,
-          description: descriptionValue,
-          grand_total: grandTotal,
-          cgst: "9%",
-          sgst: "9%",
-          total_amount: totalAmount,
+            transport: transport,
+            transport_amount: transportCharges,
+            description: descriptionValue,
+            grand_total: grandTotal,
+            cgst: "9%",
+            sgst: "9%",
+            total_amount: totalAmount,
         };
-    
+
         try {
-          const response = await axios.patch(`https://node-backend.macj-abuyerschoice.com/api/savedquotation/${customerId}`, dataToUpdate);
-          alert('Quotation Created successfully');
-          // Handle successful response
+            const response = await axios.patch(`http://localhost:5000/api/savedquotation/${customerId}`, dataToUpdate);
+            alert('Quotation Created successfully');
+            // Handle successful response
         } catch (error) {
-          console.error('Error patching data:', error);
-          // Handle error response
+            console.error('Error patching data:', error);
+            // Handle error response
         }
-      };
+    };
 
 
     return (

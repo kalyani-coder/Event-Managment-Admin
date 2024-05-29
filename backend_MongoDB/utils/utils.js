@@ -94,8 +94,18 @@ const FilterBodyByTable = ({ req, table }) => {
         status,
         hot_input_value,
         assign_manager_name,
-        assign_manager_Id
+        assign_manager_Id,
+        enquiry_date,
       } = req.body;
+
+      let currentEnquiryDate = enquiry_date;
+      if (!currentEnquiryDate) {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0'); 
+        const year = now.getFullYear();
+        currentEnquiryDate = `${day}-${month}-${year}`;
+      }
       return {
         enquiry_id,
         event_name,
@@ -111,6 +121,7 @@ const FilterBodyByTable = ({ req, table }) => {
         hot_input_value,
         assign_manager_Id,
         assign_manager_name,
+        enquiry_date: currentEnquiryDate,
       };
     } else if (table === "executivetask") {
       const { Task, exe_id, Date, Time, Status, EventId } = req.body;
