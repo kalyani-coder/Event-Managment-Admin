@@ -255,8 +255,8 @@ const FollowUpStatus = () => {
           </div>
           <div className="filter-container">
             <input type="text" placeholder="Search event or customer" value={searchTerm} onChange={handleSearchInputChange} />
-            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+           <label>Start Date:</label> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+           <label>End Date:</label> <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
           <h2 className="text-[30px]">Follow Up Status</h2>
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">

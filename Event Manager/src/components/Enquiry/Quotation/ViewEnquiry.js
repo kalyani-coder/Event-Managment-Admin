@@ -116,8 +116,8 @@ const ViewInquiryPage = () => {
           </div>
           <div className="filter-container">
             <input type="text" placeholder="Search Event or customer" value={searchTerm} onChange={handleSearchInputChange} />
-            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+           <label>Start Date:</label> <input type="date"  value={dateRange.startDate} onChange={handleStartDateChange} />
+           <label>End Date:</label> <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">View Enquiry</h2>
