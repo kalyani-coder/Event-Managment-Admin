@@ -115,7 +115,7 @@ const ViewInquiryPage = () => {
             </Link>
           </div>
           <div className="filter-container">
-            <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
+            <input type="text" placeholder="Search Event or customer" value={searchTerm} onChange={handleSearchInputChange} />
             <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
             <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
