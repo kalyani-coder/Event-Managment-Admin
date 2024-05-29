@@ -58,7 +58,7 @@ const AdvPaymentManager = () => {
   useEffect(() => {
     const fetchManagers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/order");
+        const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/order");
         setManagers(response.data);
       } catch (error) {
         console.error("Error fetching managers:", error);
@@ -73,7 +73,7 @@ const AdvPaymentManager = () => {
       try {
         if (formData.selectedManager) {
           const response = await axios.get(
-            `http://localhost:5000/api/order?assign_manager_Id=${formData.selectedManagerId}`
+            `https://node-backend.macj-abuyerschoice.com/api/order?assign_manager_Id=${formData.selectedManagerId}`
           );
           setEvents(response.data);
         }
@@ -121,7 +121,7 @@ const AdvPaymentManager = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/advpaymanager",
+        "https://node-backend.macj-abuyerschoice.com/api/advpaymanager",
         {
           manager_Name: formData.selectedManager,
           EventName: formData.selectedEvent,

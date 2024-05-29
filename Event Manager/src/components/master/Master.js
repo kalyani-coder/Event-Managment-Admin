@@ -21,7 +21,7 @@ const Master = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor");
+      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addvendor");
       const data = await response.json();
       setVendors(data);
     } catch (error) {
@@ -31,7 +31,7 @@ const Master = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster");
+      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addeventmaster");
       const data = await response.json();
       setEvents(data);
     } catch (error) {
@@ -43,7 +43,7 @@ const Master = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor", {
+      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addvendor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/addvendor/${vendorId}`,
+          `https://node-backend.macj-abuyerschoice.com/api/addvendor/${vendorId}`,
           {
             method: "DELETE",
           }
@@ -110,7 +110,7 @@ const Master = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster", {
+      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addeventmaster", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +145,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/addeventmaster/${eventId}`,
+          `https://node-backend.macj-abuyerschoice.com/api/addeventmaster/${eventId}`,
           {
             method: "DELETE",
           }

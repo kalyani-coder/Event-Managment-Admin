@@ -31,7 +31,7 @@ export default function Enquiry() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addeventmaster");
+      const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/addeventmaster");
       setEvents(response.data);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -40,7 +40,7 @@ export default function Enquiry() {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addmanager");
+      const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/addmanager");
       setManagers(response.data);
     } catch (error) {
       console.error("Error fetching managers:", error);
@@ -49,7 +49,7 @@ export default function Enquiry() {
 
   const fetchVenues = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/venue");
+      const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/venue");
       setVenues(response.data);
     } catch (error) {
       console.error("Error fetching venues:", error);
@@ -91,7 +91,7 @@ export default function Enquiry() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/enquiry", {
+      const response = await axios.post("https://node-backend.macj-abuyerschoice.com/api/enquiry", {
         event_name: selectedEvent,
         customer_name: customerName,
         email: customerEmail,

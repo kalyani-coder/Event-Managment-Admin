@@ -82,7 +82,7 @@ const UpdateTaskPage = () => {
     const fetchManagers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/managerdetails"
+          "https://node-backend.macj-abuyerschoice.com/api/managerdetails"
         );
         const data = await response.json();
         setManagers(data);

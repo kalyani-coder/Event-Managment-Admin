@@ -37,7 +37,7 @@ function AddEvent() {
     const fetchCustomerNames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/enquiry?customer_name=${searchQuery}`
+          `https://node-backend.macj-abuyerschoice.com/api/enquiry?customer_name=${searchQuery}`
         );
 
         // Extract customer details from the response
@@ -62,7 +62,7 @@ function AddEvent() {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/venue");
+        const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/venue");
         setVenues(response.data);
       } catch (error) {
         console.error("Error fetching venues:", error);
@@ -119,7 +119,7 @@ function AddEvent() {
     try {
       // Make a POST request to the API endpoint
       const response = await axios.post(
-        "http://localhost:5000/api/event",
+        "https://node-backend.macj-abuyerschoice.com/api/event",
         eventData
       );
 

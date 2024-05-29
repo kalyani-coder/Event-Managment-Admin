@@ -48,15 +48,15 @@ const AddSalary = () => {
   }, [managerDetails]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/managerdetails")
+    fetch("https://node-backend.macj-abuyerschoice.com/api/managerdetails")
       .then((response) => response.json())
       .then((data) => setManagerOptions(data));
 
-    fetch("http://localhost:5000/api/accountant")
+    fetch("https://node-backend.macj-abuyerschoice.com/api/accountant")
       .then((response) => response.json())
       .then((data) => setAccountantOptions(data));
 
-    fetch("http://localhost:5000/api/executive")
+    fetch("https://node-backend.macj-abuyerschoice.com/api/executive")
       .then((response) => response.json())
       .then((data) => setExecutiveOptions(data));
   }, []);
@@ -83,7 +83,7 @@ const AddSalary = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/staffsalary", salaryData)
+      .post("https://node-backend.macj-abuyerschoice.com/api/staffsalary", salaryData)
       .then((response) => {
         console.log("Salary added successfully:", response.data);
         alert("Salary Added Successfully");

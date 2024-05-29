@@ -29,7 +29,7 @@ const AdvanceExpense = () => {
 
   useEffect(() => {
     // Fetch managers
-    axios.get('http://localhost:5000/api/addmanager')
+    axios.get('https://node-backend.macj-abuyerschoice.com/api/addmanager')
       .then(response => {
         setManagers(response.data);
       })
@@ -38,7 +38,7 @@ const AdvanceExpense = () => {
       });
 
     // Fetch banks
-    axios.get('http://localhost:5000/api/allbanks')
+    axios.get('https://node-backend.macj-abuyerschoice.com/api/allbanks')
       .then(response => {
         setBanks(response.data);
       })
@@ -78,7 +78,7 @@ const AdvanceExpense = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/advanceexpence', formData)
+    axios.post('https://node-backend.macj-abuyerschoice.com/api/advanceexpence', formData)
       .then(response => {
         console.log(response.data);
         // Handle success - show a success message, redirect, etc.

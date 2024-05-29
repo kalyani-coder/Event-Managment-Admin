@@ -54,7 +54,7 @@ const AddVendor = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendor",
+        "https://node-backend.macj-abuyerschoice.com/api/vendor",
         formData
       );
 

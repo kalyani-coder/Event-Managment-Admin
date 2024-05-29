@@ -52,7 +52,7 @@ const VendorPayment = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/addvendor");
+        const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/addvendor");
         setVendors(response.data);
       } catch (error) {
         console.error("Error fetching vendors:", error);
@@ -67,7 +67,7 @@ const VendorPayment = () => {
       try {
         if (formData.selectedVendor) {
           const response = await axios.get(
-            `http://localhost:5000/api/event?eventName=${formData.selectedVendor}`
+            `https://node-backend.macj-abuyerschoice.com/api/event?eventName=${formData.selectedVendor}`
           );
           setEvents(response.data);
         }
@@ -109,7 +109,7 @@ const VendorPayment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendorpayment",
+        "https://node-backend.macj-abuyerschoice.com/api/vendorpayment",
         {
           fname: formData.selectedVendor,
           event_name: formData.selectedEvent,
