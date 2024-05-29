@@ -62,7 +62,7 @@ function InternalCosting() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
+                `https://node-backend.macj-abuyerschoice.com/api/quotationinfo/customer/${enquiry._id}`
             );
             setQuotationData(response.data);
             console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
@@ -75,7 +75,7 @@ function InternalCosting() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/api/inventory-stocks")
+            .get("https://node-backend.macj-abuyerschoice.com/api/inventory-stocks")
             .then((response) => {
                 const data = response.data;
                 const names = data.map((stock) => stock.Stock_Name);
@@ -133,7 +133,7 @@ function InternalCosting() {
         // Fetch Stock Quantity and Price based on selected vendor
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
+                `https://node-backend.macj-abuyerschoice.com/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
             );
             const { Stock_Quantity, Price } = response.data;
             setNewSelectedStockQuantityValue(Stock_Quantity);
@@ -201,7 +201,7 @@ function InternalCosting() {
         try {
             if (isFirstSubmission) {
                 const response = await axios.post(
-                    "http://localhost:5000/api/quotationinfo",
+                    "https://node-backend.macj-abuyerschoice.com/api/quotationinfo",
                     data
                 );
                 alert("Stock added successfully");
@@ -209,7 +209,7 @@ function InternalCosting() {
                 setSubtotal(subtotal + calcTotal());
             } else {
                 const response = await axios.patch(
-                    `http://localhost:5000/api/quotationinfo/${enquiry._id}`,
+                    `https://node-backend.macj-abuyerschoice.com/api/quotationinfo/${enquiry._id}`,
                     data
                 );
                 alert("Stock updated successfully");
@@ -476,7 +476,7 @@ function InternalCosting() {
         };
 
         try {
-            const response = await axios.patch(`http://localhost:5000/api/savedquotation/${customerId}`, dataToUpdate);
+            const response = await axios.patch(`https://node-backend.macj-abuyerschoice.com/api/savedquotation/${customerId}`, dataToUpdate);
             alert('Quotation Created successfully');
             // Handle successful response
         } catch (error) {

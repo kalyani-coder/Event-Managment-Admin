@@ -7,14 +7,14 @@ const EnquirySchema = new Schema({
   event_date: String,
   guest_quantity: Number,
   event_venue: String,
-  event_requirement: String,
+  budget: Number,
   customer_name: String,
   email: String,
   contact: Number,
   address: String,
   status: {
     type: String,
-    default: ""
+    default: "pending"
   },
   hot_input_value: {
     type: String,
@@ -22,19 +22,7 @@ const EnquirySchema = new Schema({
   },
   assign_manager_Id: { type: String, required: false },
   assign_manager_name: { type: String, required: false },
-  enquiry_date : {type : String}
-});
-
-
-EnquirySchema.pre('save', function(next) {
-  if (!this.enquiry_date) {
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    const year = now.getFullYear();
-    this.enquiry_date = `${day}-${month}-${year}`;
-  }
-  next();
+  
 });
 
 const QuotationSchema = new Schema({
@@ -151,7 +139,10 @@ const EventSchema = new Schema({
   guest_number: Number,
   budget: Number,
   address: String,
-  status: String,
+  status: {
+    type : String,
+    default : "pending"
+  },
   managerId: String,
   managerName: String,
 });

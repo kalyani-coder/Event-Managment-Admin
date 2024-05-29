@@ -16,6 +16,14 @@
 .card-body {
   padding: 20px;
 }
+.dashboard{
+  color: black;
+}
+.dashboard:hover{
+  cursor: pointer;
+  text-decoration: none !important;
+
+}
 
 .card-title {
   margin-bottom: 10px;
