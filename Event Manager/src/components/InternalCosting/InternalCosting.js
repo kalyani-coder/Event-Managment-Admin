@@ -228,6 +228,11 @@ function InternalCosting() {
                     total: 0,
                 },
             ]);
+             // Clear other form fields
+        setNewSelectedStock("");
+        setNewSelectedStockId("");
+        setNewSelectedVendor("");
+        setNewSelectedVendorId("");
         } catch (error) {
             console.error("Error adding/updating stock", error);
             alert("Error adding/updating stock");
