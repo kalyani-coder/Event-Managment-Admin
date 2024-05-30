@@ -133,7 +133,7 @@ function AdvancePaymnetCus() {
 
 
     axios
-      .post("https://node-backend.macj-abuyerschoice.com/api/advpayment", data)
+      .post("http://localhost:5000/api/advpayment", data)
       .then((response) => {
         // Display alert box after successfully saving data
         alert("Customer payment successfully.");
@@ -151,7 +151,7 @@ function AdvancePaymnetCus() {
 
   const fetchManagers = () => {
     axios
-      .get("https://node-backend.macj-abuyerschoice.com/api/addmanager")
+      .get("http://localhost:5000/api/addmanager")
       .then((response) => {
         setManagers(response.data);
       })
@@ -164,7 +164,7 @@ function AdvancePaymnetCus() {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/allbanks");
+        const response = await axios.get("http://localhost:5000/api/allbanks");
         setBankNames(response.data);
       } catch (error) {
         console.error("Error fetching banks:", error);

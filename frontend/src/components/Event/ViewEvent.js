@@ -17,7 +17,7 @@ const EventDetails = ({ routes }) => {
 
   useEffect(() => {
     axios
-      .get("https://node-backend.macj-abuyerschoice.com/api/event")
+      .get("http://localhost:5000/api/event")
       .then((response) => {
         setEventData(response.data);
         console.log(response.data);

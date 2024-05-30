@@ -9,7 +9,7 @@ const ViewSalary = () => {
 
   useEffect(() => {
     axios
-      .get("https://node-backend.macj-abuyerschoice.com/api/staffsalary")
+      .get("http://localhost:5000/api/staffsalary")
       .then((response) => {
         setSalaryData(response.data);
       })

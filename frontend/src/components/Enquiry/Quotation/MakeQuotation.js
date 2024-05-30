@@ -29,7 +29,7 @@
 //   // Fetch data for stock names and vendor names
 // useEffect(() => {
 //   // Fetch stock data
-//   axios.get("https://node-backend.macj-abuyerschoice.com/api/inventory-stocks")
+//   axios.get("http://localhost:5000/api/inventory-stocks")
 //     .then(response => {
 //       setStockData(response.data);
 //     })
@@ -38,7 +38,7 @@
 //     });
 
 //   // Fetch vendor data
-//   axios.get("https://node-backend.macj-abuyerschoice.com/api/addvendor")
+//   axios.get("http://localhost:5000/api/addvendor")
 //     .then(response => {
 //       setVendorData(response.data);
 //     })
@@ -57,12 +57,12 @@
 //       const selectedStockName = value.Stock_Name;
 //       // Fetch vendor data
 //       axios
-//         .get("https://node-backend.macj-abuyerschoice.com/api/addvendor")
+//         .get("http://localhost:5000/api/addvendor")
 //         .then((response) => {
 //           const vendorData = response.data;
 //           // Fetch stock data
 //           axios
-//             .get("https://node-backend.macj-abuyerschoice.com/api/inventory-stocks")
+//             .get("http://localhost:5000/api/inventory-stocks")
 //             .then((response) => {
 //               const stockData = response.data;
 //               // Filter stock data based on the selected stock name

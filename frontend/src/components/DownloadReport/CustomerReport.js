@@ -16,7 +16,7 @@ const CustomerReport = () => {
   const fetchEventData = async () => {
     try {
       const response = await fetch(
-        "https://node-backend.macj-abuyerschoice.com/api/advpayment"
+        "http://localhost:5000/api/advpayment"
       );
       const eventData = await response.json();
       setEvents(eventData);

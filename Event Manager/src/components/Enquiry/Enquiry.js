@@ -41,7 +41,7 @@ export default function Enquiry() {
   const submitForm = async () => {
     try {
       const res = await axios.post(
-        "https://node-backend.macj-abuyerschoice.com/api/enquiry",
+        "http://localhost:5000/api/enquiry",
         formData
       );
       if (res.status === 200) {
@@ -88,7 +88,7 @@ export default function Enquiry() {
     const fetchRecentInquiries = async () => {
       try {
         const res = await axios.get(
-          "https://node-backend.macj-abuyerschoice.com/api/recent-inquiries"
+          "http://localhost:5000/api/recent-inquiries"
         );
         setRecentInquiries(res.data);
       } catch (e) {
@@ -105,7 +105,7 @@ export default function Enquiry() {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "https://node-backend.macj-abuyerschoice.com/api/addeventmaster"
+          "http://localhost:5000/api/addeventmaster"
         );
         setEvents(response.data);
       } catch (error) {

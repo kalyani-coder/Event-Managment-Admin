@@ -31,7 +31,7 @@ const GodownInventory = () => {
 
   const handleAddVendor = async () => {
     try {
-      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addvendor", {
+      const response = await fetch("http://localhost:5000/api/addvendor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const GodownInventory = () => {
       }
 
       const response = await fetch(
-        "https://node-backend.macj-abuyerschoice.com/api/inventory-stocks",
+        "http://localhost:5000/api/inventory-stocks",
         {
           method: "POST",
           headers: {
@@ -106,7 +106,7 @@ const GodownInventory = () => {
   const fetchVendorStocks = async (vendorId) => {
     try {
       const response = await fetch(
-        `https://node-backend.macj-abuyerschoice.com/api/inventory-stocks/vendor/${vendorId}`
+        `http://localhost:5000/api/inventory-stocks/vendor/${vendorId}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -123,7 +123,7 @@ const GodownInventory = () => {
     // Fetch vendors when the component mounts
     const fetchVendors = async () => {
       try {
-        const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/addvendor");
+        const response = await fetch("http://localhost:5000/api/addvendor");
         if (response.ok) {
           const data = await response.json();
           setVendors(data);
@@ -164,7 +164,7 @@ const GodownInventory = () => {
     try {
       // Update the API with the new quantity
       await fetch(
-        `https://node-backend.macj-abuyerschoice.com/api/inventory-stocks/${selectedStockId}`,
+        `http://localhost:5000/api/inventory-stocks/${selectedStockId}`,
         {
           method: "PATCH",
           headers: {
@@ -208,7 +208,7 @@ const GodownInventory = () => {
     try {
       // Update the API with the new price
       await fetch(
-        `https://node-backend.macj-abuyerschoice.com/api/inventory-stocks/${selectedStockId}`,
+        `http://localhost:5000/api/inventory-stocks/${selectedStockId}`,
         {
           method: "PATCH",
           headers: {

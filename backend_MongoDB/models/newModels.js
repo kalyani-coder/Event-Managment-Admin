@@ -505,7 +505,10 @@ const expenceForm = new Schema({
   },
   venue: { 
     type: String,
-  }
+  },
+  decline_message : {
+    type : String
+  },
 })
 
 const advanceExpence = new Schema({

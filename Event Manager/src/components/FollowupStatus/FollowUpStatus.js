@@ -32,7 +32,7 @@ const FollowUpStatus = () => {
           return;
         }
 
-        const response = await axios.get(`https://node-backend.macj-abuyerschoice.com/api/enquiry/${managerId}`);
+        const response = await axios.get(`http://localhost:5000/api/enquiry/${managerId}`);
         const data = response.data;
 
         const sortedInquiries = data.sort(
@@ -146,7 +146,7 @@ const FollowUpStatus = () => {
   //     }
 
   //     const response = await axios.patch(
-  //       `https://node-backend.macj-abuyerschoice.com/api/enquiry/${enquiryId}`,
+  //       `http://localhost:5000/api/enquiry/${enquiryId}`,
   //       requestBody
   //     );
 
@@ -192,7 +192,7 @@ const FollowUpStatus = () => {
       }
   
       const response = await axios.patch(
-        `https://node-backend.macj-abuyerschoice.com/api/enquiry/${enquiryId}`,
+        `http://localhost:5000/api/enquiry/${enquiryId}`,
         requestBody
       );
   

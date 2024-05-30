@@ -24,6 +24,14 @@ app.use('/api' , PATCH);
 app.use("/auth", Login);
 app.use('/api' , AddVendor);
 
+
+// old db string 
+// mongodb+srv://vedantr:Z3xQLJYpdhTnfYem@eventmanagementadmin.rwc1byd.mongodb.net/?retryWrites=true&w=majority
+
+// New DB String 
+// mongodb+srv://vedantassignment05:beILI1SdMq1bWgHG@em.8avlbse.mongodb.net/?retryWrites=true&w=majority&appName=EM
+
+
 mongoose
   .connect(
     "mongodb+srv://vedantr:Z3xQLJYpdhTnfYem@eventmanagementadmin.rwc1byd.mongodb.net/?retryWrites=true&w=majority",
@@ -40,3 +48,6 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+
+  

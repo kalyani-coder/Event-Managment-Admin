@@ -13,7 +13,7 @@ const ViewInternalTransfer = () => {
 
   const fetchInternalTransfers = async () => {
     try {
-      const response = await fetch("https://node-backend.macj-abuyerschoice.com/api/banktransfer");
+      const response = await fetch("http://localhost:5000/api/banktransfer");
       const data = await response.json();
       setInternalTransfers(data);
     } catch (error) {

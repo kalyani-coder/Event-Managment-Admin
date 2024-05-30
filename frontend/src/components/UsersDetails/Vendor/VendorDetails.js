@@ -12,7 +12,7 @@ const VendorDetails = () => {
   useEffect(() => {
     // Fetch vendor data from the API
     axios
-      .get("https://node-backend.macj-abuyerschoice.com/api/vendor")
+      .get("http://localhost:5000/api/vendor")
       .then((response) => {
         setVendorData(response.data);
       })

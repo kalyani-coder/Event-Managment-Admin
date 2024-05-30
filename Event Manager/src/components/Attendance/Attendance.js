@@ -67,7 +67,7 @@ const AttendancePage = () => {
     setDate(selectedDate);
     setAttendanceData([]);
     axios
-      .get(`https://node-backend.macj-abuyerschoice.com/api/attendance/${selectedDate}`)
+      .get(`http://localhost:5000/api/attendance/${selectedDate}`)
       .then((res) => {
         res.data.map((item) => {
           setAttendanceData((prev) => [
@@ -91,7 +91,7 @@ const AttendancePage = () => {
 
   const submit = () => {
     axios
-      .post(`https://node-backend.macj-abuyerschoice.com/api/bulkattendance/${date}`, attendanceData)
+      .post(`http://localhost:5000/api/bulkattendance/${date}`, attendanceData)
       .then(() => {
         handleDateChange(date);
       })

@@ -10,7 +10,7 @@ const ViewInventory = () => {
 
   useEffect(() => {
     // Fetch inventory data from your API here
-    fetch("https://node-backend.macj-abuyerschoice.com/api/inventorystock")
+    fetch("http://localhost:5000/api/inventorystock")
       .then((response) => response.json())
       .then((data) => {
         setInventoryItems(data);
@@ -46,7 +46,7 @@ const ViewInventory = () => {
     }
 
     fetch(
-      `https://node-backend.macj-abuyerschoice.com/api/inventorystock/${itemName}/${
+      `http://localhost:5000/api/inventorystock/${itemName}/${
         changeType === "increase" ? "+" : changeType === "decrease" ? "-" : ""
       }${newQuantity}`,
       {

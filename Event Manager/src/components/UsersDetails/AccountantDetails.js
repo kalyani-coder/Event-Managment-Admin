@@ -11,7 +11,7 @@ const AccountantDetails = () => {
 
   useEffect(() => {
     axios
-      .get("https://node-backend.macj-abuyerschoice.com/api/accountant")
+      .get("http://localhost:5000/api/accountant")
       .then((response) => {
         setAccountantData(response.data);
       })

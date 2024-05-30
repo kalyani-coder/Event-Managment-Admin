@@ -11,7 +11,7 @@ const ViewMoreDetails = () => {
   useEffect(() => {
     // Fetch event details based on the eventId
     axios
-      .get(`https://node-backend.macj-abuyerschoice.com/api/event/${eventId}`)
+      .get(`http://localhost:5000/api/event/${eventId}`)
       .then((response) => {
         setEventDetails(response.data);
       })

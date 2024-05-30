@@ -23,7 +23,7 @@ const AddNewEvent = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "https://node-backend.macj-abuyerschoice.com/api/addeventmaster"
+          "http://localhost:5000/api/addeventmaster"
         );
         setEvents(response.data);
       } catch (error) {
@@ -37,7 +37,7 @@ const AddNewEvent = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("https://node-backend.macj-abuyerschoice.com/api/enquiry");
+        const response = await axios.get("http://localhost:5000/api/enquiry");
         setCustomers(response.data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -65,7 +65,7 @@ const AddNewEvent = () => {
   const handleSubmit = async () => {
     if (selectedCustomer && selectedEvent && selectedEventType) {
       try {
-        await axios.post("https://node-backend.macj-abuyerschoice.com/api/event", {
+        await axios.post("http://localhost:5000/api/event", {
           eventName: selectedEvent,
           fname: selectedCustomer.customer_name,
           email: selectedCustomer.email,

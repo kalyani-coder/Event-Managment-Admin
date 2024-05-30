@@ -13,7 +13,7 @@ const ViewExpenseDetails = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://node-backend.macj-abuyerschoice.com/api/expence', {
+      const response = await axios.get('http://localhost:5000/api/expence', {
         params: {
           client_Name: clientName,
           expence_date: expenseDate

@@ -35,7 +35,7 @@ export default function Enquiry() {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "https://node-backend.macj-abuyerschoice.com/api/addeventmaster"
+        "http://localhost:5000/api/addeventmaster"
       );
       setEvents(response.data);
     } catch (error) {
@@ -46,7 +46,7 @@ export default function Enquiry() {
   const fetchManagers = async () => {
     try {
       const response = await axios.get(
-        "https://node-backend.macj-abuyerschoice.com/api/addmanager"
+        "http://localhost:5000/api/addmanager"
       );
       setManagers(response.data);
     } catch (error) {
@@ -57,7 +57,7 @@ export default function Enquiry() {
   const fetchVenues = async () => {
     try {
       const response = await axios.get(
-        "https://node-backend.macj-abuyerschoice.com/api/venue"
+        "http://localhost:5000/api/venue"
       );
       setVenues(response.data);
     } catch (error) {
@@ -120,7 +120,7 @@ export default function Enquiry() {
 
     try {
       const response = await axios.post(
-        "https://node-backend.macj-abuyerschoice.com/api/enquiry",
+        "http://localhost:5000/api/enquiry",
         {
           event_name: selectedEvent,
           customer_name: customerName,
