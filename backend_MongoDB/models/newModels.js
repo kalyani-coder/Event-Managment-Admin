@@ -501,8 +501,11 @@ const expenceForm = new Schema({
   },
   status: {
     type: String,
-    default: "pending"
+    default : "pending"
   },
+  venue: { 
+    type: String,
+  }
 })
 
 const advanceExpence = new Schema({
