@@ -25,6 +25,7 @@ export default function Enquiry() {
   const [customerNameError, setCustomerNameError] = useState("");
   const [contactError, setContactError] = useState("");
   const [venueError, setVenueError] = useState("");
+
   useEffect(() => {
     fetchEvents();
     fetchManagers();
@@ -68,12 +69,6 @@ export default function Enquiry() {
     setShowModal(true);
   };
 
-  // const isCustomerNameValid = (name) => {
-  //   const namePattern = /^[A-Za-z\s]+$/;
-  //   const words = name.trim().split(/\s+/);
-  //   return namePattern.test(name) && words.length > 1;
-  // };
-
   useEffect(() => {
     const customerNameTimeout = setTimeout(() => {
       setCustomerNameError("");
@@ -106,23 +101,16 @@ export default function Enquiry() {
     if (!customerName) {
       invalidFields.push("customerName");
       setCustomerNameError("Customer Name is required");
-      setTimeout(() => {
-        setCustomerNameError("");
-      }, 3000);
     }
 
     if (!contact || !isContactValid(contact)) {
       invalidFields.push("contact");
-      setTimeout(() => {
-        setCustomerNameError("");
-      }, 3000);
+      setContactError("Contact number is required and must be 10 digits");
     }
 
     if (!eventVenue) {
       invalidFields.push("eventVenue");
-      setTimeout(() => {
-        setCustomerNameError("");
-      }, 3000);
+      setVenueError("Event venue is required");
     }
 
     if (invalidFields.length > 0) {
@@ -161,6 +149,29 @@ export default function Enquiry() {
     setCustomerName(cleanedValue);
   };
 
+  const handleContactChange = (e) => {
+    const inputValue = e.target.value;
+    // Allow only digits
+    const cleanedValue = inputValue.replace(/\D/g, "");
+    setContact(cleanedValue);
+  };
+
+  const handleContactKeyDown = (e) => {
+    // Allow only numeric input, backspace, delete, arrow keys, and tab
+    if (
+      !(
+        (e.key >= '0' && e.key <= '9') || 
+        e.key === 'Backspace' || 
+        e.key === 'Delete' || 
+        e.key === 'ArrowLeft' || 
+        e.key === 'ArrowRight' || 
+        e.key === 'Tab'
+      )
+    ) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <Header />
@@ -175,31 +186,11 @@ export default function Enquiry() {
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="SelectEvent">
-                  <Form.Label>Select Occasion:</Form.Label>
-                  <div className="relative">
-                    <Form.Select
-                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
-                      aria-label="Select Event"
-                      name="event"
-                      value={selectedEvent}
-                      onChange={(e) => setSelectedEvent(e.target.value)}
-                    >
-                      <option value="">Select Occasion</option>
-                      {events.map((event) => (
-                        <option key={event._id} value={event.eventName}>
-                          {event.eventName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </div>
-                </Form.Group>
-              </div>
-              <div className="col px-5">
+             
+             <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="customer_name">
-                    Customer Name <span style={{ color: "red" }}>*</span>
+                    Client Name <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -210,7 +201,7 @@ export default function Enquiry() {
                     }`}
                     name="customer_name"
                     id="customer_name"
-                    placeholder="Customer Name"
+                    placeholder="Client Name"
                     value={customerName}
                     onChange={handleCustomerNameChange}
                     required
@@ -218,78 +209,13 @@ export default function Enquiry() {
                   {validatedFields.includes("customerName") &&
                     !customerName && (
                       <div className="invalid-feedback">
-                        Customer Name is required
+                        Client Name is required
                       </div>
                     )}
                 </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="email">Customer Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    id="email"
-                    placeholder="Customer Email"
-                    value={customerEmail}
-                    onChange={(e) => setCustomerEmail(e.target.value)}
-                  />
-                  {customerName === "" && (
-                    <div className="invalid-feedback">
-                      Customer Name is required
-                    </div>
-                  )}
-                  {validatedFields.includes("customerName") && (
-                    <div className="invalid-feedback">{customerNameError}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="contact">
-                    Contact Number <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    className={`form-control ${
-                      validatedFields.includes("contact") ? "is-invalid" : ""
-                    }`}
-                    name="contact"
-                    id="contact"
-                    placeholder="Contact Number"
-                    value={contact}
-                    onChange={(e) => setContact(e.target.value)}
-                    required
-                    maxLength="10"
-                  />
-                  {validatedFields.includes("contact") && (
-                    <div className="invalid-feedback">
-                      Contact number is required
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="address">Customer Address</label>
-                  <textarea
-                    className="form-control"
-                    name="address"
-                    id="address"
-                    placeholder="Customer Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="col px-5">
+               
+               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_date">Event Date</label>
                   <input
@@ -305,24 +231,8 @@ export default function Enquiry() {
               </div>
             </div>
             <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="guest_quantity">
-                    Estimated Number of Guests
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="guest_quantity"
-                    id="guest_quantity"
-                    placeholder=" Estimated Number of Guests"
-                    value={guestQuantity}
-                    onChange={(e) => setGuestQuantity(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="col px-5">
+              
+                  <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_venue">
                     Select Venue <span style={{ color: "red" }}>*</span>
@@ -351,13 +261,35 @@ export default function Enquiry() {
                   )}
                 </div>
               </div>
+
+                 <div className="col px-5">
+                <Form.Group controlId="SelectEvent">
+                  <Form.Label>Select Occasion:</Form.Label>
+                  <div className="relative">
+                    <Form.Select
+                      className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
+                      aria-label="Select Event"
+                      name="event"
+                      value={selectedEvent}
+                      onChange={(e) => setSelectedEvent(e.target.value)}
+                    >
+                      <option value="">Select Event</option>
+                      {events.map((event) => (
+                        <option key={event._id} value={event.event}>
+                          {event.event}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </div> 
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_budget">Event Budget</label>
                   <input
-                  type="number"
+                    type="number"
                     className="form-control"
                     name="event_requirement"
                     id="event_requirement"
@@ -367,6 +299,82 @@ export default function Enquiry() {
                   />
                 </div>
               </div>
+
+               <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="contact">
+                    Contact Number <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    className={`form-control ${
+                      validatedFields.includes("contact") ? "is-invalid" : ""
+                    }`}
+                    name="contact"
+                    id="contact"
+                    placeholder="Contact Number"
+                    value={contact}
+                    onChange={handleContactChange}
+                    onKeyDown={handleContactKeyDown}
+                    required
+                    maxLength="10"
+                  />
+                  {validatedFields.includes("contact") && (
+                    <div className="invalid-feedback">
+                      Contact number is required
+                    </div>
+                  )}
+                </div>
+              </div> 
+               </div>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="guest_quantity">
+                    Estimated Number of Guests
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="guest_quantity"
+                    id="guest_quantity"
+                    placeholder=" Estimated Number of Guests"
+                    value={guestQuantity}
+                    onChange={(e) => setGuestQuantity(e.target.value)}
+                  />
+                </div>
+              </div>
+
+               <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="email">Client Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    id="email"
+                    placeholder="Client Email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                  />
+                 
+                </div>
+              </div> 
+            </div>
+            <div className="row mb-2">
+               <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="address">Customer Address</label>
+                  <textarea
+                    className="form-control"
+                    name="address"
+                    id="address"
+                    placeholder="Customer Address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+              </div> 
             </div>
             <div className="row mb-2">
               <div className="col px-5">
@@ -388,7 +396,7 @@ export default function Enquiry() {
           </div>
         </div>
       </div>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={() => setShowModal(false)} className="model-container-enquiry">
         <Modal.Header closeButton>
           <Modal.Title>Assign Manager</Modal.Title>
         </Modal.Header>

@@ -410,13 +410,17 @@ function InternalCosting() {
 
             // Append total rows
             tableData.push(
-                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
-                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
-                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
-                ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
-            );
+                    ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
+                    ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+                    ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+                    ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
+                    ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+                    ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`],
+                    // ["", "", "", "", "", "", "Transport Type", transport],
+                    // ["", "", "", "", "", "", "Transport Detail", `${transportCharges} Rs`]
+                );
+
+                
 
             doc.autoTable({
                 head: [
@@ -425,35 +429,48 @@ function InternalCosting() {
                 body: tableData,
                 startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
                 theme: "grid",
-            });
 
-            const finalY = doc.lastAutoTable.finalY + 10;
-            doc.setFontSize(12);
-            doc.text("Terms & Conditions", 10, finalY);
-            doc.setFontSize(10);
+                   });
 
-            // Define the terms and conditions
-            const terms = [
-                "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
-                "2. Amount once paid are non-refundable with any other date or event.",
-                "3. 100% Guarantee cannot be given on technical equipment.",
-                "4. There would be use of Artificial Flowers unless mentioned separately.",
-                "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
-                "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
-                "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
-                "8. The above Quote is valid for 60 Days from the date of Quote.",
-                "9. 18% GST is applicable on Total Billing."
-            ];
 
-            let termY = finalY + 10;
-            terms.forEach(term => {
-                doc.text(term, 10, termY);
-                termY += 6; // Increment Y position for the next line
-            });
-        } else {
-            alert("Quotation details are not available.");
-        }
+                //    doc.setFontSize(12);
+                //    doc.text(`Transport Type: ${transport}`, 10, finalY + 10); // Adjust Y position as needed
+                //    doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 20); // Adjust Y position as needed
+               
 
+                const finalY = doc.lastAutoTable.finalY + 10;
+
+                // Print Transport Type and Transport Charges as text
+                doc.setFontSize(10);
+                doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
+                doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
+            
+                // Print Terms and Conditions
+                doc.setFontSize(12);
+                doc.text("Terms & Conditions", 10, finalY +30); // Adjust Y position as needed
+                doc.setFontSize(10);
+            
+                // Define the terms and conditions
+                const terms = [
+                    "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
+                    "2. Amount once paid are non-refundable with any other date or event.",
+                    "3. 100% Guarantee cannot be given on technical equipment.",
+                    "4. There would be use of Artificial Flowers unless mentioned separately.",
+                    "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
+                    "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
+                    "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
+                    "8. The above Quote is valid for 60 Days from the date of Quote.",
+                    "9. 18% GST is applicable on Total Billing."
+                ];
+            
+                let termY = finalY + 40; // Adjust Y position as needed
+                terms.forEach(term => {
+                    doc.text(term, 10, termY);
+                    termY += 6; // Increment Y position for the next line
+                });
+            } else {
+                alert("Quotation details are not available.");
+            }
         doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
         alert("PDF file generated");
     };
