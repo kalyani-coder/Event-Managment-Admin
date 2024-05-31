@@ -620,97 +620,99 @@ function InternalCosting() {
       <div
         className="w-full  h-screen
         flex items-center justify-center  overflow-y-auto"
-      >
-        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-          <h2 className="text-[35px]">
-            Internal Costing Form {enquiry.customer_name}
-          </h2>
-          <div className="row clearfix">
-            <div className="col-md-12 mt-6">
-              <table
-                className="table table-bordered table-hover"
-                id="tab_logic"
-              >
-                <thead>
-                  <tr>
-                    <th className="text-center" style={{ width: "15%" }}>
-                      {" "}
-                      Select Stockname{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "15%" }}>
-                      {" "}
-                      Select Vendorname{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "10%" }}>
-                      {" "}
-                      Qty{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "5%" }}>
-                      {" "}
-                      Unit{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "5%" }}>
-                      {" "}
-                      Rate{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "5%" }}>
-                      {" "}
-                      Days{" "}
-                    </th>
-                    <th className="text-center" style={{ width: "15%" }}>
-                      {" "}
-                      Amount{" "}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row, index) => (
-                    <tr key={row.id}>
-                      <td style={{ width: "15%" }}>
-                        <select
-                          className="form-control"
-                          id="stockName"
-                          onChange={newhandleStockChange}
-                          value={newSelectedStock} // Ensure selected value is managed
-                        >
-                          <option value="">Select Stock</option>
-                          {stockNames.map((stockName) => (
-                            <option key={stockName} value={stockName}>
-                              {stockName}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td style={{ width: "10%" }}>
-                        <select
-                          className="form-control"
-                          id="vendorName"
-                          onChange={newhandleVendorChange}
-                          value={newSelectedVendor}
-                        >
-                          <option value="">Select Vendor</option>
-                          {vendorNames.map((vendor) => (
-                            <option key={vendor} value={vendor}>
-                              {vendor}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td style={{ width: "15%" }}>
-                        <input
-                          type="number"
-                          value={row.qty}
-                          onChange={(e) =>
-                            handleChange(index, "qty", parseInt(e.target.value))
-                          }
-                          className="form-control qty"
-                          step="0"
-                          min="0"
-                        />
-                        <div style={{ color: "green" }}>
-                          Avai Qty: {newSelectedStockQuantityValue}
-                        </div>
-                      </td>
+            >
+                <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+                    <h4 className="text-[35px]">
+                        Internal Costing Form {enquiry.customer_name}
+                    </h4>
+                  
+                    
+                    <div className="row clearfix">
+                        <div className="col-md-12 mt-6">
+                            <table
+                                className="table table-bordered table-hover"
+                                id="tab_logic"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th className="text-center" style={{ width: "15%" }}>
+                                            {" "}
+                                            Select Stockname{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "15%" }}>
+                                            {" "}
+                                            Select Vendorname{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "10%" }}>
+                                            {" "}
+                                            Qty{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "5%" }}>
+                                            {" "}
+                                            Unit{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "5%" }}>
+                                            {" "}
+                                            Rate{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "5%" }}>
+                                            {" "}
+                                            Days{" "}
+                                        </th>
+                                        <th className="text-center" style={{ width: "15%" }}>
+                                            {" "}
+                                            Amount{" "}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rows.map((row, index) => (
+                                        <tr key={row.id}>
+                                            <td style={{ width: "15%" }}>
+                                                <select
+                                                    className="form-control"
+                                                    id="stockName"
+                                                    onChange={newhandleStockChange}
+                                                    value={newSelectedStock} // Ensure selected value is managed
+                                                >
+                                                    <option value="">Select Stock</option>
+                                                    {stockNames.map((stockName) => (
+                                                        <option key={stockName} value={stockName}>
+                                                            {stockName}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td style={{ width: "10%" }}>
+                                                <select
+                                                    className="form-control"
+                                                    id="vendorName"
+                                                    onChange={newhandleVendorChange}
+                                                    value={newSelectedVendor}
+                                                >
+                                                    <option value="">Select Vendor</option>
+                                                    {vendorNames.map((vendor) => (
+                                                        <option key={vendor} value={vendor}>
+                                                            {vendor}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td style={{ width: "15%" }}>
+                                                <input
+                                                    type="number"
+                                                    value={row.qty}
+                                                    onChange={(e) =>
+                                                        handleChange(index, "qty", parseInt(e.target.value))
+                                                    }
+                                                    className="form-control qty"
+                                                    step="0"
+                                                    min="0"
+                                                />
+                                                <div style={{ color: "green" }}>
+                                                    Avai Qty: {newSelectedStockQuantityValue}
+                                                </div>
+                                            </td>
 
                       <td style={{ width: "15%" }}>
                         <input
