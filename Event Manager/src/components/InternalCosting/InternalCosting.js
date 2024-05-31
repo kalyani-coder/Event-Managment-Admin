@@ -588,9 +588,11 @@ const roundedTotalAmount = totalAmount !== null ? Math.round(totalAmount) : '-';
         flex items-center justify-center  overflow-y-auto"
             >
                 <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-                    <h2 className="text-[35px]">
+                    <h4 className="text-[35px]">
                         Internal Costing Form {enquiry.customer_name}
-                    </h2>
+                    </h4>
+                  
+                    
                     <div className="row clearfix">
                         <div className="col-md-12 mt-6">
                             <table
