@@ -34,10 +34,9 @@ export default function Enquiry() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/addeventmaster"
-      );
+      const response = await axios.get("http://localhost:5000/api/addeventmaster");
       setEvents(response.data);
+      console.log("Fetched events: ", response.data); // Added logging
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -45,9 +44,7 @@ export default function Enquiry() {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/addmanager"
-      );
+      const response = await axios.get("http://localhost:5000/api/addmanager");
       setManagers(response.data);
     } catch (error) {
       console.error("Error fetching managers:", error);
@@ -56,9 +53,7 @@ export default function Enquiry() {
 
   const fetchVenues = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/venue"
-      );
+      const response = await axios.get("http://localhost:5000/api/venue");
       setVenues(response.data);
     } catch (error) {
       console.error("Error fetching venues:", error);
@@ -90,7 +85,6 @@ export default function Enquiry() {
   }, [customerNameError, contactError, venueError]);
 
   const isContactValid = (contact) => {
-    // Check if the contact contains only digits and has exactly 10 digits
     const contactPattern = /^\d{10}$/;
     return contactPattern.test(contact);
   };
@@ -119,22 +113,19 @@ export default function Enquiry() {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/enquiry",
-        {
-          event_name: selectedEvent,
-          customer_name: customerName,
-          email: customerEmail,
-          contact: contact,
-          address: address,
-          event_date: eventDate,
-          guest_quantity: guestQuantity,
-          event_venue: eventVenue,
-          budget: eventRequirement,
-          assign_manager_Id: selectedManagerId,
-          assign_manager_name: selectedManagerName,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/api/enquiry", {
+        event_name: selectedEvent,
+        customer_name: customerName,
+        email: customerEmail,
+        contact: contact,
+        address: address,
+        event_date: eventDate,
+        guest_quantity: guestQuantity,
+        event_venue: eventVenue,
+        budget: eventRequirement,
+        assign_manager_Id: selectedManagerId,
+        assign_manager_name: selectedManagerName,
+      });
       alert("Enquiry added & assigned to manager successfully");
       setShowModal(false);
     } catch (error) {
@@ -144,27 +135,24 @@ export default function Enquiry() {
 
   const handleCustomerNameChange = (e) => {
     const inputValue = e.target.value;
-    // Remove digits from the input value
     const cleanedValue = inputValue.replace(/[0-9]/g, "");
     setCustomerName(cleanedValue);
   };
 
   const handleContactChange = (e) => {
     const inputValue = e.target.value;
-    // Allow only digits
     const cleanedValue = inputValue.replace(/\D/g, "");
     setContact(cleanedValue);
   };
 
   const handleContactKeyDown = (e) => {
-    // Allow only numeric input, backspace, delete, arrow keys, and tab
     if (
       !(
-        (e.key >= '0' && e.key <= '9') || 
-        e.key === 'Backspace' || 
-        e.key === 'Delete' || 
-        e.key === 'ArrowLeft' || 
-        e.key === 'ArrowRight' || 
+        (e.key >= '0' && e.key <= '9') ||
+        e.key === 'Backspace' ||
+        e.key === 'Delete' ||
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight' ||
         e.key === 'Tab'
       )
     ) {
@@ -179,26 +167,19 @@ export default function Enquiry() {
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
             <Link to={"/quotation"}>
-              <button className="btn btn-primary mr-4 mb-4">
-                View Enquiry
-              </button>
+              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
             </Link>
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
             <div className="row mb-2">
-             
-             <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="customer_name">
                     Client Name <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${
-                      validatedFields.includes("customerName")
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control ${validatedFields.includes("customerName") ? "is-invalid" : ""}`}
                     name="customer_name"
                     id="customer_name"
                     placeholder="Client Name"
@@ -206,16 +187,13 @@ export default function Enquiry() {
                     onChange={handleCustomerNameChange}
                     required
                   />
-                  {validatedFields.includes("customerName") &&
-                    !customerName && (
-                      <div className="invalid-feedback">
-                        Client Name is required
-                      </div>
-                    )}
+                  {validatedFields.includes("customerName") && !customerName && (
+                    <div className="invalid-feedback">Client Name is required</div>
+                  )}
                 </div>
               </div>
-               
-               <div className="col px-5">
+
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_date">Event Date</label>
                   <input
@@ -231,16 +209,13 @@ export default function Enquiry() {
               </div>
             </div>
             <div className="row mb-2">
-              
-                  <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_venue">
                     Select Venue <span style={{ color: "red" }}>*</span>
                   </label>
                   <Form.Select
-                    className={`form-control ${
-                      validatedFields.includes("eventVenue") ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${validatedFields.includes("eventVenue") ? "is-invalid" : ""}`}
                     name="event_venue"
                     id="event_venue"
                     value={eventVenue}
@@ -255,14 +230,12 @@ export default function Enquiry() {
                     ))}
                   </Form.Select>
                   {validatedFields.includes("eventVenue") && (
-                    <div className="invalid-feedback">
-                      Event venue is required.
-                    </div>
+                    <div className="invalid-feedback">Event venue is required.</div>
                   )}
                 </div>
               </div>
 
-                 <div className="col px-5">
+              <div className="col px-5">
                 <Form.Group controlId="SelectEvent">
                   <Form.Label>Select Occasion:</Form.Label>
                   <div className="relative">
@@ -273,16 +246,16 @@ export default function Enquiry() {
                       value={selectedEvent}
                       onChange={(e) => setSelectedEvent(e.target.value)}
                     >
-                      <option value="">Select Event</option>
+                      <option value="">Select Occasion</option>
                       {events.map((event) => (
-                        <option key={event._id} value={event.event}>
-                          {event.event}
+                        <option key={event._id} value={event.eventName}>
+                          {event.eventName}
                         </option>
                       ))}
                     </Form.Select>
                   </div>
                 </Form.Group>
-              </div> 
+              </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
@@ -300,16 +273,14 @@ export default function Enquiry() {
                 </div>
               </div>
 
-               <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="contact">
                     Contact Number <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
                     type="tel"
-                    className={`form-control ${
-                      validatedFields.includes("contact") ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${validatedFields.includes("contact") ? "is-invalid" : ""}`}
                     name="contact"
                     id="contact"
                     placeholder="Contact Number"
@@ -320,19 +291,15 @@ export default function Enquiry() {
                     maxLength="10"
                   />
                   {validatedFields.includes("contact") && (
-                    <div className="invalid-feedback">
-                      Contact number is required
-                    </div>
+                    <div className="invalid-feedback">Contact number is required</div>
                   )}
                 </div>
-              </div> 
-               </div>
+              </div>
+            </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="guest_quantity">
-                    Estimated Number of Guests
-                  </label>
+                  <label htmlFor="guest_quantity">Estimated Number of Guests</label>
                   <input
                     type="text"
                     className="form-control"
@@ -345,7 +312,7 @@ export default function Enquiry() {
                 </div>
               </div>
 
-               <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="email">Client Email</label>
                   <input
@@ -357,12 +324,11 @@ export default function Enquiry() {
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
                   />
-                 
                 </div>
-              </div> 
+              </div>
             </div>
             <div className="row mb-2">
-               <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="address">Customer Address</label>
                   <textarea
@@ -374,16 +340,12 @@ export default function Enquiry() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-              </div> 
+              </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <Button
-                    variant="info"
-                    className="manager-btn ms-1"
-                    onClick={handleAddEnquiry}
-                  >
+                  <Button variant="info" className="manager-btn ms-1" onClick={handleAddEnquiry}>
                     Add Enquiry & Assign to Manager
                   </Button>
                 </div>
@@ -407,9 +369,7 @@ export default function Enquiry() {
               value={selectedManagerId}
               onChange={(e) => {
                 setSelectedManagerId(e.target.value);
-                setSelectedManagerName(
-                  e.target.options[e.target.selectedIndex].text
-                );
+                setSelectedManagerName(e.target.options[e.target.selectedIndex].text);
               }}
             >
               <option value="">Select Manager Name</option>
@@ -422,16 +382,10 @@ export default function Enquiry() {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            className="btn btn-primary assign-btn"
-            onClick={() => setShowModal(false)}
-          >
+          <Button className="btn btn-primary assign-btn" onClick={() => setShowModal(false)}>
             Close
           </Button>
-          <Button
-            className="btn btn-secondary assign-btn"
-            onClick={handleSubmit}
-          >
+          <Button className="btn btn-secondary assign-btn" onClick={handleSubmit}>
             Assign
           </Button>
         </Modal.Footer>
