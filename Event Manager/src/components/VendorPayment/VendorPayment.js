@@ -328,7 +328,7 @@ const VendorPayment = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="advance_payment">Advance Payment</label>
+                  <label htmlFor="advance_payment">Advance Payment<span style={{ color: "red" }}>*</span></label>
                   <input
                     className="form-control mb-2"
                     type="text"
@@ -341,7 +341,7 @@ const VendorPayment = () => {
               </div>
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="rem_amt">Pending Amount</label>
+                  <label htmlFor="rem_amt">Pending Amount<span style={{ color: "red" }}>*</span></label>
                   <input
                     className="form-control mb-2"
                     type="text"
