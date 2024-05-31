@@ -64,8 +64,12 @@ function QuotationForm() {
             const response = await axios.get(
                 `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
             );
-            setQuotationData(response.data);
-            console.log("Fetched Quotation Data:", response.data);
+            const quotation = response.data;
+            // Fetch the description from the quotation data
+            const { requirements, description } = quotation;
+            // Update the state with the fetched data
+            setQuotationData({ requirements, description });
+            console.log("Fetched Quotation Data:", quotation);
             setModalShow(true);
         } catch (error) {
             console.error("Failed to fetch quotation info:", error);

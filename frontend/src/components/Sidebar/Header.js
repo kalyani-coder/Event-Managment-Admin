@@ -42,6 +42,8 @@ import {
   faClipboardList,
   faFileDownload,
   faBars,
+  faDollarSign,
+  faList
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -408,7 +410,7 @@ export default function Sidenav() {
                       <Tooltip title="View Event">
                         <span>
                           <FontAwesomeIcon
-                            icon={faCalendar}
+                            icon={faList}
                             size="lg"
                             color="#9b59b6"
                           />
@@ -458,7 +460,7 @@ export default function Sidenav() {
                       <Tooltip title="View Expense">
                         <span>
                           <FontAwesomeIcon
-                            icon={faCalendar}
+                            icon={faDollarSign}
                             size="lg"
                             color="#9b59b6"
                           />
