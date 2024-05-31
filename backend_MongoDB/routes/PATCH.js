@@ -10,6 +10,30 @@ const { ManagerDetails, ManagerTask ,AdvanceExpence} = require("../models/newMod
 const { QuatationInfo, allBanks, ExpenceForm } = require("../models/newModels")
 
 
+router.patch('/quotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
+  const { customerId, requirementId } = req.params;
+  const updatedRequirement = req.body;
+
+  try {
+      const quotation = await QuatationInfo.findOneAndUpdate(
+          { customer_Id: customerId, 'requirements._id': requirementId },
+          { $set: { 'requirements.$': updatedRequirement } },
+          { new: true }
+      );
+
+      if (!quotation) {
+          return res.status(404).json({ message: 'Quotation not found' });
+      }
+
+      res.json(quotation);
+  } catch (error) {
+      console.error('Error updating requirement', error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
 router.patch("/advanceexpence/:id", async (req, res) => {
   const expenceId = req.params.id
   const updateData = req.body;

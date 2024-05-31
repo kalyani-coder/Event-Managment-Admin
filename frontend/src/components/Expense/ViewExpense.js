@@ -3,7 +3,7 @@ import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Form, Button, Alert, Table, Badge, Modal } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-
+import "../Expense/ViewExpence.css"
 
 
 const ViewExpense = () => {
@@ -348,7 +348,7 @@ const ViewExpense = () => {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showDeclineModal} onHide={handleCloseDeclineModal}>
+      <Modal show={showDeclineModal} onHide={handleCloseDeclineModal} className="custom-modal">
         <Modal.Header closeButton>
           <Modal.Title>Enter Reason for Decline</Modal.Title>
         </Modal.Header>
