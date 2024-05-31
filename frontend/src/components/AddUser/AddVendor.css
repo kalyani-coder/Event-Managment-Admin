@@ -39,14 +39,14 @@
   border: 2px solid #17c3b2;
   position: relative;
   overflow: hidden;
-  background-color: rgb(20, 65, 78);
+  background-color: #0d6efd;
   text-align: center;
   /* text-transform: uppercase; */
   font-size: 16px;
   transition: 0.7s;
   z-index: 1;
   font-family: inherit;
-  color: #17c3b2;
+  color: white;
   border-radius: 30px;
 }
 
