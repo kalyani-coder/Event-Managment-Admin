@@ -458,13 +458,16 @@ function InternalCosting() {
                 `${req.price} Rs`
             ]);
 
+
+            const roundedGrandTotal = grandTotal !== null ? Math.round(grandTotal) : '-';
+const roundedTotalAmount = totalAmount !== null ? Math.round(totalAmount) : '-';
             // Append total rows
             tableData.push(
                 ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
                 ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
                 ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
-                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+                ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
+                ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
                 ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`],
 
             );
