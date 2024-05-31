@@ -421,8 +421,7 @@ function InternalCosting() {
                     ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
                     ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
                     ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`],
-                    // ["", "", "", "", "", "", "Transport Type", transport],
-                    // ["", "", "", "", "", "", "Transport Detail", `${transportCharges} Rs`]
+                    
                 );
 
                 

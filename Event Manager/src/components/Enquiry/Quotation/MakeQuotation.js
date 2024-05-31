@@ -403,11 +403,19 @@ function QuotationForm() {
                 startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
                 theme: "grid",
             });
+
     
-            const finalY = doc.lastAutoTable.finalY + 10;
-            doc.setFontSize(12);
-            doc.text("Terms & Conditions", 10, finalY);
-            doc.setFontSize(10);
+          const finalY = doc.lastAutoTable.finalY + 10;
+
+                // Print Transport Type and Transport Charges as text
+                doc.setFontSize(10);
+                doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
+                doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
+            
+                // Print Terms and Conditions
+                doc.setFontSize(12);
+                doc.text("Terms & Conditions", 10, finalY +20); // Adjust Y position as needed
+                doc.setFontSize(10);
     
             // Define the terms and conditions
             const terms = [
@@ -422,7 +430,7 @@ function QuotationForm() {
                 "9. 18% GST is applicable on Total Billing."
             ];
     
-            let termY = finalY + 10;
+            let termY = finalY +25;
             terms.forEach(term => {
                 doc.text(term, 10, termY);
                 termY += 6; // Increment Y position for the next line
