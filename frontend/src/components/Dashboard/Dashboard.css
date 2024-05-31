@@ -130,3 +130,9 @@ a {
 .fa {
   color: #4183d7;
 }
+/* In your CSS file */
+.fixed-width-badge {
+  min-width: 150px; /* Adjust based on the longest text */
+  display: inline-block;
+  text-align: center;
+}

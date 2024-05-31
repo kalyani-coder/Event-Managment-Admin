@@ -3,7 +3,7 @@ import "./Dashboard.css";
 import { FaUser, FaCalendarAlt, FaShoppingCart } from "react-icons/fa";
 import ApexCharts from "apexcharts/dist/apexcharts";
 import Header from "./../Sidebar/Header";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -23,7 +23,8 @@ const Dashboard = () => {
       .then((data) => {
         // Filter events with status 'Conform' or 'Hot'
         const filteredEvents = data.filter(
-          (event) => event.status === "Conform" || event.status === "Work Not Received"
+          (event) =>
+            event.status === "Confirm" || event.status === "Work Not Received"
         );
         setEvents(filteredEvents);
       })
@@ -52,58 +53,55 @@ const Dashboard = () => {
     new ApexCharts(document.querySelector("#pieChart"), options).render();
   }, []);
 
-
   const [enquiryCount, setEnquiryCount] = useState(0);
-  const [eventCount, setNewEvents] = useState(0)
+  const [eventCount, setNewEvents] = useState(0);
 
   const fetchEnquiry = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/enquiry');
+      const response = await fetch("http://localhost:5000/api/enquiry");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
       setEnquiryCount(data.length);
     } catch (error) {
-      console.error('Failed to fetch enquiries:', error);
+      console.error("Failed to fetch enquiries:", error);
     }
   };
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/event');
+      const response = await fetch("http://localhost:5000/api/event");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
       setNewEvents(data.length);
     } catch (error) {
-      console.error('Failed to fetch enquiries:', error);
+      console.error("Failed to fetch enquiries:", error);
     }
   };
 
-
   const pendingEnquiry = () => {
     try {
-
-    } catch {
-
-    }
-  }
+    } catch {}
+  };
 
   const [pendingEnquiryCount, setPendingEnquiryCount] = useState(0);
 
   const fetchPendingEnquiry = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/enquiry');
+      const response = await fetch("http://localhost:5000/api/enquiry");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      const pendingEnquiries = data.filter(enquiry => enquiry.status === 'pending');
+      const pendingEnquiries = data.filter(
+        (enquiry) => enquiry.status === "pending"
+      );
       setPendingEnquiryCount(pendingEnquiries.length);
     } catch (error) {
-      console.error('Failed to fetch enquiries:', error);
+      console.error("Failed to fetch enquiries:", error);
     }
   };
   useEffect(() => {
@@ -122,8 +120,6 @@ const Dashboard = () => {
             <div className="row">
               <div className="col-md-4">
                 <div className="card shadow custom-card">
-
-
                   <Link to="/quotation" className="dashboard">
                     <div className="card-body text-center">
                       <h5 className="card-title">
@@ -142,19 +138,13 @@ const Dashboard = () => {
                       <p
                         className="card-text text-success"
                         style={{ fontSize: "1.2rem" }}
-                      >
-
-                      </p>
+                      ></p>
                     </div>
                   </Link>
-
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="card shadow custom-card">
-
-
-
                   <Link to={"/viewevent"} className="dashboard">
                     <div className="card-body text-center">
                       <h5 className="card-title">
@@ -173,48 +163,43 @@ const Dashboard = () => {
                       <p
                         className="card-text text-success"
                         style={{ fontSize: "1.2rem" }}
-                      >
-
-                      </p>
+                      ></p>
                     </div>
                   </Link>
-
                 </div>
               </div>
 
-
-
               <div className="col-md-4">
                 <div className="card shadow custom-card">
-
-                <Link className="dashboard"> 
-                  <div className="card-body text-center">
-                    <h5 className="card-title">
-                      <FaShoppingCart className="icon cart-icon mb-2" style={{ fontSize: "2rem" }} />{" "}
-
-                    </h5>
-                    <div className="d-flex justify-content-around">
-                      <div className="flex-fill text-center">
-                        <h4>Pending Enquiries</h4>
-                        <p className="card-text mb-0" style={{ fontSize: '1.5rem' }}>
-                          {pendingEnquiryCount}
-                        </p>
-                      </div>
-                      {/* <div className="flex-fill text-center">
+                  <Link className="dashboard">
+                    <div className="card-body text-center">
+                      <h5 className="card-title">
+                        <FaShoppingCart
+                          className="icon cart-icon mb-2"
+                          style={{ fontSize: "2rem" }}
+                        />{" "}
+                      </h5>
+                      <div className="d-flex justify-content-around">
+                        <div className="flex-fill text-center">
+                          <h4>Pending Enquiries</h4>
+                          <p
+                            className="card-text mb-0"
+                            style={{ fontSize: "1.5rem" }}
+                          >
+                            {pendingEnquiryCount}
+                          </p>
+                        </div>
+                        {/* <div className="flex-fill text-center">
                         <h4>Pending Events</h4>
                         <p className="card-text mb-0" style={{ fontSize: '1.5rem' }}>
                           123
                         </p>
                       </div> */}
+                      </div>
                     </div>
-                  </div>
-
                   </Link>
                 </div>
               </div>
-
-
-
             </div>
           </div>
 
@@ -244,8 +229,9 @@ const Dashboard = () => {
                       {/* <td>{event.contact}</td> */}
                       <td className="text-center">
                         <span
-                          className={`badge bg-${event.status === "Conform" ? "success" : "danger"
-                            }`}
+                          className={`badge fixed-width-badge bg-${
+                            event.status === "Confirm" ? "success" : "danger"
+                          }`}
                         >
                           {event.status}
                         </span>

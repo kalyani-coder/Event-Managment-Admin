@@ -82,7 +82,7 @@ router.delete('/banktransper/:id', async (req, res) => {
   }
 });
 
-router.delete('/quatationinfo/:id', async (req, res) => {
+router.delete('/quotationinfo/:id', async (req, res) => {
   const deletedManagerId = req.params.id;
 
   try {
@@ -98,6 +98,30 @@ router.delete('/quatationinfo/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal server error'});
   }
 });
+
+// Route to delete a requirement by ID
+router.delete('/quotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
+  const { customerId, requirementId } = req.params;
+
+  try {
+      const quotation = await QuatationInfo.findOneAndUpdate(
+          { customer_Id: customerId },
+          { $pull: { requirements: { _id: requirementId } } },
+          { new: true }
+      );
+
+      if (!quotation) {
+          return res.status(404).json({ message: 'Quotation not found' });
+      }
+
+      res.json(quotation);
+  } catch (error) {
+      console.error('Error deleting requirement', error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 // DELETE route for manager task 
 router.delete('/managertask/:id', async (req, res) => {

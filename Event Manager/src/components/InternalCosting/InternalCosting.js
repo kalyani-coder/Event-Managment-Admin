@@ -6,6 +6,8 @@ import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import myImage from "../../components/Enquiry/Quotation/logo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 function InternalCosting() {
     const location = useLocation();
@@ -50,7 +52,7 @@ function InternalCosting() {
     const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
 
     const [modalShow, setModalShow] = useState(false);
-    const [quotationData, setQuotationData] = useState(null);
+    const [quotationData, setQuotationData] = useState({ requirements: [] });
     console.log("vedant new", quotationData)
 
     useEffect(() => {
@@ -179,6 +181,25 @@ function InternalCosting() {
     const [totalAmount, setTotalAmount] = useState(null);
     const [transport, setTransport] = useState("")
 
+
+
+
+   
+
+    useEffect(() => {
+        // Fetch initial quotation data
+        const fetchQuotationData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`);
+                setQuotationData(response.data);
+            } catch (error) {
+                console.error("Error fetching quotation data", error);
+            }
+        };
+
+        fetchQuotationData();
+    }, [enquiry._id]);
+
     const handleAddRequirement = async () => {
         const requirements = rows.map((row) => ({
             stockName: newSelectedStock,
@@ -199,22 +220,37 @@ function InternalCosting() {
         };
 
         try {
+            let response;
             if (isFirstSubmission) {
-                const response = await axios.post(
+                response = await axios.post(
                     "http://localhost:5000/api/quotationinfo",
                     data
                 );
                 alert("Stock added successfully");
                 setIsFirstSubmission(false);
-                setSubtotal(subtotal + calcTotal());
             } else {
-                const response = await axios.patch(
+                response = await axios.patch(
                     `http://localhost:5000/api/quotationinfo/${enquiry._id}`,
                     data
                 );
                 alert("Stock updated successfully");
-                setSubtotal(subtotal + calcTotal()); // Add the total of newly updated requirements to the subtotal
             }
+
+           
+        // Recalculate the subtotal
+        const newSubTotal = subtotal + calcTotal();
+
+        // Update the subtotal state
+        setSubtotal(newSubTotal);
+
+        // Update the quotationData state with the new subtotal
+        setQuotationData((prevData) => ({
+            ...prevData,
+            sub_total: newSubTotal,
+            requirements: [...prevData.requirements, ...requirements],
+        }));
+
+
             // Clear inputs after successful submission
             setRows([
                 {
@@ -228,16 +264,24 @@ function InternalCosting() {
                     total: 0,
                 },
             ]);
-             // Clear other form fields
-        setNewSelectedStock("");
-        setNewSelectedStockId("");
-        setNewSelectedVendor("");
-        setNewSelectedVendorId("");
+            setNewSelectedStock("");
+            setNewSelectedStockId("");
+            setNewSelectedVendor("");
+            setNewSelectedVendorId("");
         } catch (error) {
             console.error("Error adding/updating stock", error);
             alert("Error adding/updating stock");
         }
     };
+
+
+
+
+
+
+
+
+
 
     const handleTransportChnage = (event) => {
         setTransport(event.target.value)
@@ -405,26 +449,27 @@ function InternalCosting() {
             const tableData = quotationData.requirements.map((req, index) => [
                 index + 1,
                 req.stockName,
-                req.description,
+                descriptionValue,
                 req.purchaseQuantity,
                 req.unit,
                 req.rate_per_days,
                 req.days,
-                req.price,
+                // req.price,
+                `${req.price} Rs`
             ]);
 
             // Append total rows
             tableData.push(
-                    ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
-                    ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-                    ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-                    ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
-                    ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
-                    ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`],
-                    
-                );
+                ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`],
+                ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+                ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+                ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
+                ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+                ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`],
 
-                
+            );
+
+
 
             doc.autoTable({
                 head: [
@@ -434,47 +479,48 @@ function InternalCosting() {
                 startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 90,
                 theme: "grid",
 
-                   });
+            });
 
 
-                //    doc.setFontSize(12);
-                //    doc.text(`Transport Type: ${transport}`, 10, finalY + 10); // Adjust Y position as needed
-                //    doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 20); // Adjust Y position as needed
-               
+            //    doc.setFontSize(12);
+            //    doc.text(`Transport Type: ${transport}`, 10, finalY + 10); // Adjust Y position as needed
+            //    doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 20); // Adjust Y position as needed
 
-                const finalY = doc.lastAutoTable.finalY + 10;
 
-                // Print Transport Type and Transport Charges as text
-                doc.setFontSize(10);
-                doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
-                doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
-            
-                // Print Terms and Conditions
-                doc.setFontSize(12);
-                doc.text("Terms & Conditions", 10, finalY +30); // Adjust Y position as needed
-                doc.setFontSize(10);
-            
-                // Define the terms and conditions
-                const terms = [
-                    "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
-                    "2. Amount once paid are non-refundable with any other date or event.",
-                    "3. 100% Guarantee cannot be given on technical equipment.",
-                    "4. There would be use of Artificial Flowers unless mentioned separately.",
-                    "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
-                    "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
-                    "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
-                    "8. The above Quote is valid for 60 Days from the date of Quote.",
-                    "9. 18% GST is applicable on Total Billing."
-                ];
-            
-                let termY = finalY + 40; // Adjust Y position as needed
-                terms.forEach(term => {
-                    doc.text(term, 10, termY);
-                    termY += 6; // Increment Y position for the next line
-                });
-            } else {
-                alert("Quotation details are not available.");
-            }
+            const finalY = doc.lastAutoTable.finalY + 10;
+
+            // Print Transport Type and Transport Charges as text
+            doc.setFontSize(10);
+            doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
+            doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
+            // doc.text(`Description : ${descriptionValue}`, 10, finalY + 15);
+
+            // Print Terms and Conditions  
+            doc.setFontSize(12);
+            doc.text("Terms & Conditions", 10, finalY + 30); // Adjust Y position as needed
+            doc.setFontSize(10);
+
+            // Define the terms and conditions
+            const terms = [
+                "1. The confirmation of the artist depends on first-come-first-serve basis in terms of booking amounts.",
+                "2. Amount once paid are non-refundable with any other date or event.",
+                "3. 100% Guarantee cannot be given on technical equipment.",
+                "4. There would be use of Artificial Flowers unless mentioned separately.",
+                "5. All Cheques / DD to be paid favoring \"Tutons Events LLP\".",
+                "6. All necessary Permissions/Clearances required for the event & work at the Site/Venue",
+                "7. Payment: 50% Before the event & 50% after delivery, within 30 Days.",
+                "8. The above Quote is valid for 60 Days from the date of Quote.",
+                "9. 18% GST is applicable on Total Billing."
+            ];
+
+            let termY = finalY + 40; // Adjust Y position as needed
+            terms.forEach(term => {
+                doc.text(term, 10, termY);
+                termY += 6; // Increment Y position for the next line
+            });
+        } else {
+            alert("Quotation details are not available.");
+        }
         doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
         alert("PDF file generated");
     };
@@ -507,6 +553,30 @@ function InternalCosting() {
     };
 
 
+
+    const handleDelete = async (requirementId) => {
+        const customerId = quotationData.customer_Id;
+
+        try {
+            await axios.delete(
+                `http://localhost:5000/api/quotationinfo/customer/${customerId}/requirements/${requirementId}`
+            );
+
+            // Update the local state to reflect the deletion
+            const updatedRequirements = quotationData.requirements.filter(
+                (req) => req._id !== requirementId
+            );
+            setQuotationData({ ...quotationData, requirements: updatedRequirements });
+
+            alert('Requirement deleted successfully');
+        } catch (error) {
+            console.error('Error deleting requirement', error);
+            alert('Error deleting requirement');
+        }
+    };
+    
+
+   
     return (
         <>
             <Header />
@@ -683,15 +753,77 @@ function InternalCosting() {
                     </div>
                     <div className="row clearfix">
                         <div className="col-md-12">
-                            <button
-                                type="button"
-                                className="btn btn-primary pull-left"
-                                onClick={handleAddRequirement}
-                            >
-                                {isFirstSubmission ? "Add Stock" : "Add More Stocks"}
+
+
+
+                            <button className="btn btn-primary" onClick={handleAddRequirement}>
+                                Add/Update Stock
                             </button>
                         </div>
                     </div>
+
+
+                    <div>
+            {quotationData ? (
+                <div className="card">
+                    <div className="card-body">
+                        <div className="table-responsive">
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.No.</th>
+                                        <th>Perticular</th>
+                                        {/* <th>Description</th> */}
+                                        <th>Per</th>
+                                        <th>Unit</th>
+                                        <th>Rate</th>
+                                        <th>Days</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {quotationData.requirements.map((req, index) => (
+                                        <tr key={req._id}>
+                                            <td>{index + 1}</td>
+                                            <td>{req.stockName}</td>
+                                            {/* <td>{descriptionValue}</td> */}
+                                            <td>{req.purchaseQuantity}</td>
+                                            <td>{req.unit}</td>
+                                            <td>{req.rate_per_days}</td>
+                                            <td>{req.days}</td>
+                                            <td>{req.price} Rs</td>
+                                            <td>
+                                                {/* <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleEdit(req)}
+                                                >
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </button> */}
+
+
+                                                <button
+                                                    className="btn btn-danger mr-2"
+                                                    onClick={() => handleDelete(req._id)}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div>Loading...</div>
+            )}
+            {/* Bootstrap Modal for Editing Requirement */}
+           
+        </div>
+
+
                     <div className="row clearfix" style={{ marginTop: "20px" }}>
                         <div className="col-md-6">
                             <table
@@ -825,7 +957,7 @@ function InternalCosting() {
                                             <tr>
                                                 <th>Sr.No.</th>
                                                 <th>Perticular</th>
-                                                <th>Description</th>
+                                                {/* <th>Description</th> */}
                                                 <th>Per</th>
                                                 <th>Unit</th>
                                                 <th>Rate</th>
@@ -838,7 +970,7 @@ function InternalCosting() {
                                                 <tr key={req._id}>
                                                     <td>{index + 1}</td>
                                                     <td>{req.stockName}</td>
-                                                    <td>{req.description}</td>
+                                                    {/* <td>{req.description}</td> */}
                                                     <td>{req.purchaseQuantity}</td>
                                                     <td>{req.unit}</td>
                                                     <td>{req.rate_per_days}</td>
