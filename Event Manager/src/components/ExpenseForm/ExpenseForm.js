@@ -3,6 +3,7 @@ import axios from "axios";
 import { Form, Button, Modal } from "react-bootstrap";
 import { format } from "date-fns";
 import Header from "../Sidebar/Header";
+import {Link} from "react-router-dom";
 
 const ExpenseForm = () => {
   const [events, setEvents] = useState([]);
@@ -118,7 +119,10 @@ const ExpenseForm = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-[30px]">View Expense</h2>
+            <h2 className="text-[30px]">Expense Form</h2>
+            <Link to="/viewexpensedetails">
+            <button className="btn btn-primary">View Expense</button>
+            </Link>
             <input
               type="text"
               placeholder="Search by Event Name, Date or Venue"

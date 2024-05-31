@@ -36,11 +36,11 @@ const ViewExpenseDetails = () => {
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case 'Decline':
+      case 'declined':
         return <Badge bg="danger" className="status-badge">Decline</Badge>;
       case 'Approved':
         return <Badge bg="success" className="status-badge">Approved</Badge>;
-      case 'pending':
+      case 'Pending':
         return <Badge bg="warning" className="status-badge">Pending</Badge>;
       default:
         return <Badge bg="secondary" className="status-badge">{status}</Badge>;
@@ -57,9 +57,6 @@ const ViewExpenseDetails = () => {
           <div className="flex">
             <Link to={'/expenseform'}>
               <button className="btn btn-primary mr-4 mb-4">Add Expense Form</button>
-            </Link>
-            <Link to={'/viewexpensedetails'}>
-              <button className="btn btn-primary mr-4 mb-4">View Expense Details</button>
             </Link>
           </div>
           <h2 className="text-[30px] pl-[1em] mb-3">View Expense Details</h2>

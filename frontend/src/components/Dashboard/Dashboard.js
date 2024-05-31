@@ -23,7 +23,7 @@ const Dashboard = () => {
       .then((data) => {
         // Filter events with status 'Conform' or 'Hot'
         const filteredEvents = data.filter(
-          (event) => event.status === "Conform" || event.status === "Hot"
+          (event) => event.status === "Conform" || event.status === "Work Not Received"
         );
         setEvents(filteredEvents);
       })
@@ -220,7 +220,7 @@ const Dashboard = () => {
 
           <div className="col-md-8  ">
             <div className="activity-card overflow-y-auto h-[23.3em] rounded ">
-              <h2 className="activity-title font-bold ">Enquiry</h2>
+              <h2 className="activity-title font-bold mb-3">Enquiry</h2>
               <table className="table table-striped">
                 <thead>
                   <tr>
