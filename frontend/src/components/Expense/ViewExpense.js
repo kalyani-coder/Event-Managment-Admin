@@ -183,6 +183,11 @@ const ViewExpense = () => {
   };
 
   const handleSubmitDecline = () => {
+    if (declineReason.trim().split(/\s+/).length <= 10) {
+      // Submit the decline reason
+      setShowDeclineModal(false);
+      setDeclineReason('');
+    }
     if (!declineReason) {
       alert("Please enter a reason for declining the expense.");
       return;
@@ -196,6 +201,14 @@ const ViewExpense = () => {
     updateExpenseStatus(selectedExpenseId, "declined", declineReason);
     handleCloseDeclineModal();
     alert("Expense declined successfully.");
+  };
+  const handleDeclineReasonChange = (event) => {
+    const words = event.target.value.trim().split(/\s+/);
+    if (words.length <= 10) {
+      setDeclineReason(event.target.value);
+    } else {
+      window.alert('10 words limit only');
+    }
   };
   return (
     <>
@@ -220,6 +233,7 @@ const ViewExpense = () => {
                     <th scope="col">Amount</th>
                     <th scope="col">Proceed</th>
                     <th scope="col">Decline</th>
+                    
                   </tr>
                 </thead>
                 <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -360,17 +374,17 @@ const ViewExpense = () => {
               placeholder="Type Reason For Decline Payment"
               rows={2}
               value={declineReason}
-              onChange={(e) => setDeclineReason(e.target.value)}
+              onChange={handleDeclineReasonChange}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-secondary" onClick={handleCloseDeclineModal}>
+          <Button variant="secondary" onClick={handleCloseDeclineModal}>
             Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleSubmitDecline}>
+          </Button>
+          <Button variant="primary" onClick={handleSubmitDecline}>
             Confirm Decline
-          </button>
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

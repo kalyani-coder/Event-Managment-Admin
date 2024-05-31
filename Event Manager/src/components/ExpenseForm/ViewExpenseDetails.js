@@ -74,6 +74,7 @@ const ViewExpenseDetails = () => {
                     <th scope="col">Particular</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Query</th>
                   </tr>
                 </thead>
                 <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -86,6 +87,7 @@ const ViewExpenseDetails = () => {
                       <td>{expense.prticular}</td>
                       <td>{expense.amount} Rs.</td>
                       <td>{getStatusBadge(expense.status)}</td>
+                      <td>{expense.decline_message}</td>
                     </tr>
                   ))}
                 </tbody>
