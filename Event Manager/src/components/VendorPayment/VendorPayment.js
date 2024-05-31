@@ -341,7 +341,7 @@ const VendorPayment = () => {
               </div>
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="rem_amt">Pending Amount<span style={{ color: "red" }}>*</span></label>
+                  <label htmlFor="rem_amt">Pending Amount</label>
                   <input
                     className="form-control mb-2"
                     type="text"
