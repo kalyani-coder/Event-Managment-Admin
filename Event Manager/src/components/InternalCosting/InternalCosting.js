@@ -44,6 +44,7 @@ function InternalCosting() {
   // Define CGST and SGST states
   const [cgstChecked, setCgstChecked] = useState(false);
   const [sgstChecked, setSgstChecked] = useState(false);
+  const [igstChecked, setIgstChecked] = useState(false);
   const [cgst, setCgst] = useState(0);
   const [sgst, setSgst] = useState(0);
 
@@ -195,6 +196,22 @@ function InternalCosting() {
   }, [enquiry._id]);
 
   const handleAddRequirement = async () => {
+      // Check if any required fields are empty
+  const isEmpty = rows.some(
+    (row) =>
+      !row.stockName ||
+      !row.vendorName ||
+      row.qty === 0 ||
+      !row.unit ||
+      row.price === 0 ||
+      row.rateperdays === 0 ||
+      row.total === 0
+  );
+
+  if (isEmpty) {
+    alert("Please fill stock .");
+    return;
+  }
     const requirements = rows.map((row) => ({
       stockName: newSelectedStock,
       stockId: newSelectedStockId,
@@ -220,7 +237,7 @@ function InternalCosting() {
           "http://localhost:5000/api/quotationinfo",
           data
         );
-        alert("Stock added successfully");
+        // alert("Stock added successfully");
         setIsFirstSubmission(false);
       } else {
         response = await axios.patch(
@@ -282,6 +299,7 @@ function InternalCosting() {
       let total = quotationData.sub_total || 0;
       let cgst = 0;
       let sgst = 0;
+      let igst = 0;
 
       if (cgstChecked) {
         cgst = (total * 9) / 100;
@@ -289,8 +307,12 @@ function InternalCosting() {
       if (sgstChecked) {
         sgst = (total * 9) / 100;
       }
+      if (igstChecked) {
+        igst = (total * 18) / 100;
+      }
 
-      const grandTotal = total + cgst + sgst;
+
+      const grandTotal = total + cgst + sgst+ igst;
       setGrandTotal(grandTotal);
       calculateTotalAmount(grandTotal);
     }
@@ -307,6 +329,9 @@ function InternalCosting() {
 
   const handleSgstChange = () => {
     setSgstChecked(!sgstChecked);
+  };
+  const handleIgstChange = () => {
+    setIgstChecked(!igstChecked);
   };
 
   const handleTransportChargesChange = (e) => {
@@ -925,6 +950,12 @@ function InternalCosting() {
                         <input type="checkbox" onChange={handleSgstChange} />
                         SGST 9 %
                       </label>
+                      <br />
+                      <label>
+                        <input type="checkbox" onChange={handleCgstChange} />
+                        IGST 18 %
+                      </label>
+
                     </td>
                   </tr>
 

@@ -13,6 +13,7 @@ export default function Enquiry() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [contact, setContact] = useState("");
   const [address, setAddress] = useState("");
+  const [state, setState] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [guestQuantity, setGuestQuantity] = useState("");
   const [eventVenue, setEventVenue] = useState("");
@@ -25,6 +26,7 @@ export default function Enquiry() {
   const [customerNameError, setCustomerNameError] = useState("");
   const [contactError, setContactError] = useState("");
   const [venueError, setVenueError] = useState("");
+  const [stateError, setStateError] = useState("");
 
   useEffect(() => {
     fetchEvents();
@@ -34,7 +36,9 @@ export default function Enquiry() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addeventmaster");
+      const response = await axios.get(
+        "http://localhost:5000/api/addeventmaster"
+      );
       setEvents(response.data);
       console.log("Fetched events: ", response.data); // Added logging
     } catch (error) {
@@ -76,13 +80,17 @@ export default function Enquiry() {
     const venueTimeout = setTimeout(() => {
       setVenueError("");
     }, 3000);
+    const stateTimeout = setTimeout(() => {
+      setStateError(""); // Corrected to clear stateError
+    }, 3000);
 
     return () => {
       clearTimeout(customerNameTimeout);
       clearTimeout(contactTimeout);
       clearTimeout(venueTimeout);
+      clearTimeout(stateTimeout);
     };
-  }, [customerNameError, contactError, venueError]);
+  }, [customerNameError, contactError, venueError, stateError]);
 
   const isContactValid = (contact) => {
     const contactPattern = /^\d{10}$/;
@@ -106,6 +114,10 @@ export default function Enquiry() {
       invalidFields.push("eventVenue");
       setVenueError("Event venue is required");
     }
+    if (!state) {
+      invalidFields.push("state");
+      setStateError("State is required");
+    }
 
     if (invalidFields.length > 0) {
       setValidatedFields(invalidFields);
@@ -119,6 +131,7 @@ export default function Enquiry() {
         email: customerEmail,
         contact: contact,
         address: address,
+        state: state,
         event_date: eventDate,
         guest_quantity: guestQuantity,
         event_venue: eventVenue,
@@ -148,17 +161,55 @@ export default function Enquiry() {
   const handleContactKeyDown = (e) => {
     if (
       !(
-        (e.key >= '0' && e.key <= '9') ||
-        e.key === 'Backspace' ||
-        e.key === 'Delete' ||
-        e.key === 'ArrowLeft' ||
-        e.key === 'ArrowRight' ||
-        e.key === 'Tab'
+        (e.key >= "0" && e.key <= "9") ||
+        e.key === "Backspace" ||
+        e.key === "Delete" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "Tab"
       )
     ) {
       e.preventDefault();
     }
   };
+
+  const indianStates = [
+    "",
+    "Andaman and Nicobar Islands",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
 
   return (
     <>
@@ -167,7 +218,9 @@ export default function Enquiry() {
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
             <Link to={"/quotation"}>
-              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+              <button className="btn btn-primary mr-4 mb-4">
+                View Enquiry
+              </button>
             </Link>
             <h2 className="text-[30px] pl-[1em]">Enquiry</h2>
 
@@ -179,7 +232,11 @@ export default function Enquiry() {
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${validatedFields.includes("customerName") ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      validatedFields.includes("customerName")
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     name="customer_name"
                     id="customer_name"
                     placeholder="Client Name"
@@ -187,9 +244,12 @@ export default function Enquiry() {
                     onChange={handleCustomerNameChange}
                     required
                   />
-                  {validatedFields.includes("customerName") && !customerName && (
-                    <div className="invalid-feedback">Client Name is required</div>
-                  )}
+                  {validatedFields.includes("customerName") &&
+                    !customerName && (
+                      <div className="invalid-feedback">
+                        Client Name is required
+                      </div>
+                    )}
                 </div>
               </div>
 
@@ -215,7 +275,9 @@ export default function Enquiry() {
                     Select Venue <span style={{ color: "red" }}>*</span>
                   </label>
                   <Form.Select
-                    className={`form-control ${validatedFields.includes("eventVenue") ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      validatedFields.includes("eventVenue") ? "is-invalid" : ""
+                    }`}
                     name="event_venue"
                     id="event_venue"
                     value={eventVenue}
@@ -230,7 +292,9 @@ export default function Enquiry() {
                     ))}
                   </Form.Select>
                   {validatedFields.includes("eventVenue") && (
-                    <div className="invalid-feedback">Event venue is required.</div>
+                    <div className="invalid-feedback">
+                      Event venue is required.
+                    </div>
                   )}
                 </div>
               </div>
@@ -280,7 +344,9 @@ export default function Enquiry() {
                   </label>
                   <input
                     type="tel"
-                    className={`form-control ${validatedFields.includes("contact") ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      validatedFields.includes("contact") ? "is-invalid" : ""
+                    }`}
                     name="contact"
                     id="contact"
                     placeholder="Contact Number"
@@ -291,7 +357,9 @@ export default function Enquiry() {
                     maxLength="10"
                   />
                   {validatedFields.includes("contact") && (
-                    <div className="invalid-feedback">Contact number is required</div>
+                    <div className="invalid-feedback">
+                      Contact number is required
+                    </div>
                   )}
                 </div>
               </div>
@@ -299,7 +367,9 @@ export default function Enquiry() {
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="guest_quantity">Estimated Number of Guests</label>
+                  <label htmlFor="guest_quantity">
+                    Estimated Number of Guests
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -341,11 +411,39 @@ export default function Enquiry() {
                   />
                 </div>
               </div>
+              <div className="col px-5">
+                <Form.Group controlId="state">
+                  <Form.Label>State</Form.Label>{" "}
+                  <span style={{ color: "red" }}>*</span>
+                  <Form.Control
+                    as="select"
+                    value={state}
+                    className={`form-control ${
+                      validatedFields.includes("state") ? "is-invalid" : ""
+                    }`}
+                    placeholder="Select State"
+                    onChange={(e) => setState(e.target.value)}
+                  >
+                    {indianStates.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  {stateError && (
+                    <div className="invalid-feedback">{stateError}</div>
+                  )}
+                </Form.Group>
+              </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <Button variant="info" className="manager-btn ms-1" onClick={handleAddEnquiry}>
+                  <Button
+                    variant="info"
+                    className="manager-btn ms-1"
+                    onClick={handleAddEnquiry}
+                  >
                     Add Enquiry & Assign to Manager
                   </Button>
                 </div>
@@ -358,7 +456,11 @@ export default function Enquiry() {
           </div>
         </div>
       </div>
-      <Modal show={showModal} onHide={() => setShowModal(false)} className="model-container-enquiry">
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        className="model-container-enquiry"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Assign Manager</Modal.Title>
         </Modal.Header>
@@ -369,7 +471,9 @@ export default function Enquiry() {
               value={selectedManagerId}
               onChange={(e) => {
                 setSelectedManagerId(e.target.value);
-                setSelectedManagerName(e.target.options[e.target.selectedIndex].text);
+                setSelectedManagerName(
+                  e.target.options[e.target.selectedIndex].text
+                );
               }}
             >
               <option value="">Select Manager Name</option>
@@ -382,10 +486,16 @@ export default function Enquiry() {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn btn-primary assign-btn" onClick={() => setShowModal(false)}>
+          <Button
+            className="btn btn-primary assign-btn"
+            onClick={() => setShowModal(false)}
+          >
             Close
           </Button>
-          <Button className="btn btn-secondary assign-btn" onClick={handleSubmit}>
+          <Button
+            className="btn btn-secondary assign-btn"
+            onClick={handleSubmit}
+          >
             Assign
           </Button>
         </Modal.Footer>
