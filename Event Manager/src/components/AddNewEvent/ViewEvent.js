@@ -84,7 +84,7 @@ const ViewEvent = () => {
           <div className="filter-container">
             <input
               type="text"
-              placeholder="Search Order"
+              placeholder="Search Customer Name"
               value={searchTerm}
               onChange={handleSearchInputChange}
             />

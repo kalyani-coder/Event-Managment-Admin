@@ -12,13 +12,17 @@ const AddNewEvent = () => {
   const [selectedEventType, setSelectedEventType] = useState("");
   const [subVenue, setSubVenue] = useState("");
   const [budget, setBudget] = useState("");
-  const managerId = localStorage.getItem("managerId")
-
-
+  const [customerError, setCustomerError] = useState("");
+  const [eventTypeError, setEventTypeError] = useState("");
+  const managerId = localStorage.getItem("managerId");
 
   const handleEventTypeChange = (event) => {
     setSelectedEventType(event.target.value);
+    if (event.target.value) {
+      setEventTypeError("");
+    }
   };
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -53,17 +57,28 @@ const AddNewEvent = () => {
       (customer) => customer._id === selectedCustomerId
     );
     setSelectedCustomer(selectedCustomerData);
+    if (selectedCustomerData) {
+      setCustomerError("");
+    }
   };
 
   const handleEventChange = (event) => {
     setSelectedEvent(event.target.value);
   };
-  // const statusFetch = selectedCustomer.status
-
-  // console.log("vedant",statusFetch)
 
   const handleSubmit = async () => {
-    if (selectedCustomer && selectedEvent && selectedEventType) {
+    let valid = true;
+    if (!selectedCustomer) {
+      setCustomerError("Customer name is required");
+      valid = false;
+    }
+
+    if (!selectedEventType) {
+      setEventTypeError("Event type is required");
+      valid = false;
+    }
+
+    if (valid) {
       try {
         await axios.post("http://localhost:5000/api/event", {
           eventName: selectedEvent,
@@ -78,16 +93,13 @@ const AddNewEvent = () => {
           subvenue: subVenue,
           budget: budget,
           status: selectedCustomer.status,
-          managerId : managerId,
-
+          managerId: managerId,
         });
-        alert("Event Created successfully");
+        alert("Event created successfully");
       } catch (error) {
         console.error("Error submitting event:", error);
         // Handle error, display error message, etc.
       }
-    } else {
-      console.log("client not found");
     }
   };
 
@@ -95,33 +107,28 @@ const AddNewEvent = () => {
     <>
       <Header />
       <div
-        className="w-full  h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
+        className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto"
       >
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
-        <div className="flex">
-          <Link to={'/quotation'}>
-          <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
-          </Link>
-          {/* <Link to={'/createquotation'}>
-          <button className="btn btn-primary mr-4 mb-4">Proposal</button>
-          </Link> */}
-          <Link to={'/followupstatus'}>
-          <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
-          </Link>
-          <Link to={'/viewevent'}>
-          <button className="btn btn-primary mr-4 mb-4">View Event</button>
-          </Link>
-        </div>
-          {" "}
-          <h2 className="text-[30px]  pl-[1em]">Create Event</h2>
+          <div className="flex">
+            <Link to={'/quotation'}>
+              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+            </Link>
+            <Link to={'/followupstatus'}>
+              <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+            </Link>
+            <Link to={'/viewevent'}>
+              <button className="btn btn-primary mr-4 mb-4">View Event</button>
+            </Link>
+          </div>
+          <h2 className="text-[30px] pl-[1em]">Create Event</h2>
           <div className="row mb-2">
             <div className="col px-5">
               <Form.Group controlId="SelectEvent">
                 <Form.Label>Select Event:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
+                    className="w-full py-2 pl-3 pr-10 border-gray-300 focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
                     aria-label="Select Event"
                     name="event"
                     onChange={handleEventChange}
@@ -141,8 +148,8 @@ const AddNewEvent = () => {
                 <Form.Label>Select Customer:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300  focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl"
-                    aria-label="Select Customer "
+                    className={`w-full py-2 pl-3 pr-10 border-gray-300 focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl ${customerError ? 'border-red-500' : ''}`}
+                    aria-label="Select Customer"
                     name="customer"
                     onChange={handleCustomerChange}
                   >
@@ -153,6 +160,7 @@ const AddNewEvent = () => {
                       </option>
                     ))}
                   </Form.Select>
+                  {customerError && <span className="text-red-500">{customerError}</span>}
                 </div>
               </Form.Group>
             </div>
@@ -163,7 +171,7 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Email</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter email"
                   id="email"
                   value={selectedCustomer ? selectedCustomer.email : ""}
@@ -177,7 +185,7 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Contact Number</label>
                 <input
                   type="number"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Contact Number"
                   id="number"
                   value={selectedCustomer ? selectedCustomer.contact : ""}
@@ -192,11 +200,9 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Number Of Guests</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Guest"
-                  value={
-                    selectedCustomer ? selectedCustomer.guest_quantity : ""
-                  }
+                  value={selectedCustomer ? selectedCustomer.guest_quantity : ""}
                   id="guest"
                 />
               </div>
@@ -206,7 +212,7 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Venue</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Venue"
                   id="Venue"
                   value={selectedCustomer ? selectedCustomer.event_venue : ""}
@@ -220,7 +226,7 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Address</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Address"
                   id="address"
                   value={selectedCustomer ? selectedCustomer.address : ""}
@@ -229,11 +235,11 @@ const AddNewEvent = () => {
             </div>
             <div className="col px-5">
               <div className="form-group">
-                <label htmlFor="status">status</label>
+                <label htmlFor="status">Status</label>
                 <input
                   type="text"
-                  className="form-control "
-                  placeholder="status"
+                  className="form-control"
+                  placeholder="Status"
                   id="status"
                   value={selectedCustomer ? selectedCustomer.status : ""}
                 />
@@ -246,7 +252,7 @@ const AddNewEvent = () => {
                 <label htmlFor="email">Event Date</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Event Date"
                   id="eventdate"
                   value={selectedCustomer ? selectedCustomer.event_date : ""}
@@ -258,7 +264,7 @@ const AddNewEvent = () => {
                 <Form.Label>Event Type:</Form.Label>
                 <div className="relative">
                   <Form.Select
-                    className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                    className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${eventTypeError ? 'border-red-500' : ''}`}
                     aria-label="Select EventType"
                     name="eventType"
                     onChange={handleEventTypeChange}
@@ -269,6 +275,7 @@ const AddNewEvent = () => {
                     <option>Birthday Party</option>
                     <option>Other</option>
                   </Form.Select>
+                  {eventTypeError && <span className="text-red-500">{eventTypeError}</span>}
                 </div>
               </Form.Group>
             </div>
@@ -279,7 +286,7 @@ const AddNewEvent = () => {
                 <label htmlFor="subVenue">Sub Venue</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Sub Venue"
                   id="subVenue"
                   value={subVenue}
@@ -288,12 +295,11 @@ const AddNewEvent = () => {
               </div>
             </div>
             <div className="col px-5">
-              {/* Input field for budget */}
               <div className="form-group">
                 <label htmlFor="budget">Budget</label>
                 <input
                   type="text"
-                  className="form-control "
+                  className="form-control"
                   placeholder="Enter Budget"
                   id="budget"
                   value={budget}
