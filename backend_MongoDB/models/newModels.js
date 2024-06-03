@@ -22,6 +22,12 @@ const EnquirySchema = new Schema({
   },
   assign_manager_Id: { type: String, required: false },
   assign_manager_name: { type: String, required: false },
+  state : {
+    type: String,
+    
+  },
+
+  
   
 });
 
