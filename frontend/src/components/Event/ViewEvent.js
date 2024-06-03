@@ -72,7 +72,7 @@ const EventDetails = ({ routes }) => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="filter-container">
-            <input type="text" placeholder="Search Order" value={searchTerm} onChange={handleSearchInputChange} />
+            <input type="text" placeholder="Search Event" value={searchTerm} onChange={handleSearchInputChange} />
             <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
             <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
