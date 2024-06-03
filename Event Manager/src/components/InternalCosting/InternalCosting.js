@@ -69,6 +69,9 @@ function InternalCosting() {
       setQuotationData(response.data);
       console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
       setModalShow(true);
+      if (response.data && response.data.state) {
+        setState(response.data.state);
+      }
     } catch (error) {
       console.error("Failed to fetch quotation info:", error);
     }
@@ -196,22 +199,22 @@ function InternalCosting() {
   }, [enquiry._id]);
 
   const handleAddRequirement = async () => {
-      // Check if any required fields are empty
-  const isEmpty = rows.some(
-    (row) =>
-      !row.stockName ||
-      !row.vendorName ||
-      row.qty === 0 ||
-      !row.unit ||
-      row.price === 0 ||
-      row.rateperdays === 0 ||
-      row.total === 0
-  );
+    // Check if any required fields are empty
+    const isEmpty = rows.some(
+      (row) =>
+        !row.stockName ||
+        !row.vendorName ||
+        row.qty === 0 ||
+        !row.unit ||
+        row.price === 0 ||
+        row.rateperdays === 0 ||
+        row.total === 0
+    );
 
-  if (isEmpty) {
-    alert("Please fill stock .");
-    return;
-  }
+    if (isEmpty) {
+      alert("Please fill stock .");
+      return;
+    }
     const requirements = rows.map((row) => ({
       stockName: newSelectedStock,
       stockId: newSelectedStockId,
@@ -311,8 +314,7 @@ function InternalCosting() {
         igst = (total * 18) / 100;
       }
 
-
-      const grandTotal = total + cgst + sgst+ igst;
+      const grandTotal = total + cgst + sgst + igst;
       setGrandTotal(grandTotal);
       calculateTotalAmount(grandTotal);
     }
@@ -441,6 +443,7 @@ function InternalCosting() {
       ["Customer Address", enquiry.address || "-"],
       ["Event Date", enquiry.event_date || "-"],
       ["Event Venue", enquiry.event_venue || "-"],
+      ["Stae", enquiry.state || "-"],
     ];
 
     const companyData = [
@@ -589,6 +592,8 @@ function InternalCosting() {
     alert("PDF file generated");
   };
 
+  const [state, setState] = useState("Maharashtra");
+
   const handlePatchQuotation = async () => {
     if (!quotationData) {
       return;
@@ -645,99 +650,98 @@ function InternalCosting() {
       <div
         className="w-full  h-screen
         flex items-center justify-center  overflow-y-auto"
-            >
-                <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-                    <h4 className="text-[35px]">
-                        Internal Costing Form {enquiry.customer_name}
-                    </h4>
-                  
-                    
-                    <div className="row clearfix">
-                        <div className="col-md-12 mt-6">
-                            <table
-                                className="table table-bordered table-hover"
-                                id="tab_logic"
-                            >
-                                <thead>
-                                    <tr>
-                                        <th className="text-center" style={{ width: "15%" }}>
-                                            {" "}
-                                            Select Stockname{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "15%" }}>
-                                            {" "}
-                                            Select Vendorname{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "10%" }}>
-                                            {" "}
-                                            Qty{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "5%" }}>
-                                            {" "}
-                                            Unit{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "5%" }}>
-                                            {" "}
-                                            Rate{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "5%" }}>
-                                            {" "}
-                                            Days{" "}
-                                        </th>
-                                        <th className="text-center" style={{ width: "15%" }}>
-                                            {" "}
-                                            Amount{" "}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {rows.map((row, index) => (
-                                        <tr key={row.id}>
-                                            <td style={{ width: "15%" }}>
-                                                <select
-                                                    className="form-control"
-                                                    id="stockName"
-                                                    onChange={newhandleStockChange}
-                                                    value={newSelectedStock} // Ensure selected value is managed
-                                                >
-                                                    <option value="">Select Stock</option>
-                                                    {stockNames.map((stockName) => (
-                                                        <option key={stockName} value={stockName}>
-                                                            {stockName}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td style={{ width: "10%" }}>
-                                                <select
-                                                    className="form-control"
-                                                    id="vendorName"
-                                                    onChange={newhandleVendorChange}
-                                                    value={newSelectedVendor}
-                                                >
-                                                    <option value="">Select Vendor</option>
-                                                    {vendorNames.map((vendor) => (
-                                                        <option key={vendor} value={vendor}>
-                                                            {vendor}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td style={{ width: "15%" }}>
-                                                <input
-                                                    type="number"
-                                                    value={row.qty}
-                                                    onChange={(e) =>
-                                                        handleChange(index, "qty", parseInt(e.target.value))
-                                                    }
-                                                    className="form-control qty"
-                                                    step="0"
-                                                    min="0"
-                                                />
-                                                <div style={{ color: "green" }}>
-                                                    Avai Qty: {newSelectedStockQuantityValue}
-                                                </div>
-                                            </td>
+      >
+        <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
+          <h4 className="text-[35px]">
+            Internal Costing Form {enquiry.customer_name}
+          </h4>
+          State {enquiry.state}
+          <div className="row clearfix">
+            <div className="col-md-12 mt-6">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic"
+              >
+                <thead>
+                  <tr>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Stockname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Select Vendorname{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "10%" }}>
+                      {" "}
+                      Qty{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Unit{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Rate{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "5%" }}>
+                      {" "}
+                      Days{" "}
+                    </th>
+                    <th className="text-center" style={{ width: "15%" }}>
+                      {" "}
+                      Amount{" "}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, index) => (
+                    <tr key={row.id}>
+                      <td style={{ width: "15%" }}>
+                        <select
+                          className="form-control"
+                          id="stockName"
+                          onChange={newhandleStockChange}
+                          value={newSelectedStock} // Ensure selected value is managed
+                        >
+                          <option value="">Select Stock</option>
+                          {stockNames.map((stockName) => (
+                            <option key={stockName} value={stockName}>
+                              {stockName}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td style={{ width: "10%" }}>
+                        <select
+                          className="form-control"
+                          id="vendorName"
+                          onChange={newhandleVendorChange}
+                          value={newSelectedVendor}
+                        >
+                          <option value="">Select Vendor</option>
+                          {vendorNames.map((vendor) => (
+                            <option key={vendor} value={vendor}>
+                              {vendor}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td style={{ width: "15%" }}>
+                        <input
+                          type="number"
+                          value={row.qty}
+                          onChange={(e) =>
+                            handleChange(index, "qty", parseInt(e.target.value))
+                          }
+                          className="form-control qty"
+                          step="0"
+                          min="0"
+                        />
+                        <div style={{ color: "green" }}>
+                          Avai Qty: {newSelectedStockQuantityValue}
+                        </div>
+                      </td>
 
                       <td style={{ width: "15%" }}>
                         <input
@@ -820,7 +824,6 @@ function InternalCosting() {
               </button>
             </div>
           </div>
-
           <div>
             {quotationData ? (
               <div className="card">
@@ -878,7 +881,6 @@ function InternalCosting() {
             )}
             {/* Bootstrap Modal for Editing Requirement */}
           </div>
-
           <div className="row clearfix" style={{ marginTop: "20px" }}>
             <div className="col-md-6">
               <table
@@ -940,22 +942,30 @@ function InternalCosting() {
                   <tr>
                     <th className="text-center">GST</th>
                     <td className="text-center">
-                      <label>
-                        <input type="checkbox" onChange={handleCgstChange} />
-                        CGST 9 %
-                      </label>
-                      <br />
-
-                      <label>
-                        <input type="checkbox" onChange={handleSgstChange} />
-                        SGST 9 %
-                      </label>
-                      <br />
-                      <label>
-                        <input type="checkbox" onChange={handleCgstChange} />
-                        IGST 18 %
-                      </label>
-
+                      {state === "Maharashtra" ? (
+                        <>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={handleCgstChange}
+                            />
+                            CGST 9 %
+                          </label>
+                          <br />
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={handleSgstChange}
+                            />
+                            SGST 9 %
+                          </label>
+                        </>
+                      ) : (
+                        <label>
+                          <input type="checkbox" onChange={handleCgstChange} />
+                          IGST 18 %
+                        </label>
+                      )}
                     </td>
                   </tr>
 

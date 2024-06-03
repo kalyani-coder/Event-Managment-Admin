@@ -13,7 +13,6 @@ export default function Enquiry() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [contact, setContact] = useState("");
   const [address, setAddress] = useState("");
-  const [state, setState] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [guestQuantity, setGuestQuantity] = useState("");
   const [eventVenue, setEventVenue] = useState("");
@@ -80,8 +79,9 @@ export default function Enquiry() {
     const venueTimeout = setTimeout(() => {
       setVenueError("");
     }, 3000);
+
     const stateTimeout = setTimeout(() => {
-      setStateError(""); // Corrected to clear stateError
+      setStateError("");
     }, 3000);
 
     return () => {
@@ -90,12 +90,14 @@ export default function Enquiry() {
       clearTimeout(venueTimeout);
       clearTimeout(stateTimeout);
     };
-  }, [customerNameError, contactError, venueError, stateError]);
+  }, [customerNameError, contactError, venueError,stateError]);
 
   const isContactValid = (contact) => {
     const contactPattern = /^\d{10}$/;
     return contactPattern.test(contact);
   };
+
+  const [selectedState, setSelectedState] = useState("");
 
   const handleSubmit = async () => {
     const invalidFields = [];
@@ -114,8 +116,8 @@ export default function Enquiry() {
       invalidFields.push("eventVenue");
       setVenueError("Event venue is required");
     }
-    if (!state) {
-      invalidFields.push("state");
+    if (!selectedState) {
+      invalidFields.push("selectedState");
       setStateError("State is required");
     }
 
@@ -131,13 +133,13 @@ export default function Enquiry() {
         email: customerEmail,
         contact: contact,
         address: address,
-        state: state,
         event_date: eventDate,
         guest_quantity: guestQuantity,
         event_venue: eventVenue,
         budget: eventRequirement,
         assign_manager_Id: selectedManagerId,
         assign_manager_name: selectedManagerName,
+        state : selectedState,
       });
       alert("Enquiry added & assigned to manager successfully");
       setShowModal(false);
@@ -172,6 +174,7 @@ export default function Enquiry() {
       e.preventDefault();
     }
   };
+
 
   const indianStates = [
     "",
@@ -411,28 +414,35 @@ export default function Enquiry() {
                   />
                 </div>
               </div>
+
               <div className="col px-5">
-                <Form.Group controlId="state">
-                  <Form.Label>State</Form.Label>{" "}
-                  <span style={{ color: "red" }}>*</span>
-                  <Form.Control
-                    as="select"
-                    value={state}
-                    className={`form-control ${
-                      validatedFields.includes("state") ? "is-invalid" : ""
-                    }`}
-                    placeholder="Select State"
-                    onChange={(e) => setState(e.target.value)}
-                  >
-                    {indianStates.map((state) => (
+                <Form.Group controlId="SelectState">
+                  <Form.Label>Select State</Form.Label>
+                  <div className="relative">
+                    <Form.Select
+                      className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl ${
+                        validatedFields.includes("state") ? "is-invalid" : ""
+                      }`}
+                      aria-label="Select State"
+                      name="selectedState"
+                      value={selectedState}
+                      onChange={(e) => setSelectedState(e.target.value)}
+                    >
+                      <option value="">Select State</option>
+                      {indianStates.map((state) => (
                       <option key={state} value={state}>
                         {state}
                       </option>
                     ))}
-                  </Form.Control>
-                  {stateError && (
-                    <div className="invalid-feedback">{stateError}</div>
-                  )}
+                    </Form.Select>
+                    {validatedFields.includes("selectedState") &&
+                    !selectedState && (
+                      <div className="invalid-feedback">
+                       State is required
+                      </div>
+                    )}
+                  </div>
+                
                 </Form.Group>
               </div>
             </div>
