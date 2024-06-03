@@ -14,6 +14,11 @@ const ViewExpense = () => {
   const [managers, setManagers] = useState({});
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [eventStartDate, setEventStartDate] = useState(""); // State for event start date
+  const [eventEndDate, setEventEndDate] = useState(""); // State for event end date
+
+
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/expence", {
@@ -210,17 +215,85 @@ const ViewExpense = () => {
       window.alert('10 words limit only');
     }
   };
+  
+  const handleStartDateChange = (event) => {
+    setEventStartDate(event.target.value);
+  };
+
+  const handleEndDateChange = (event) => {
+    setEventEndDate(event.target.value);
+  };
+
+  const filteredExpenses = expenses.filter((expense) => {
+    const managerName = managers[expense.managerId] || ""; // Default to empty string if manager name not found
+    const formattedManagerName = managerName.toLowerCase();
+    const formattedEventName = expense.event_name ? expense.event_name.toLowerCase() : "";
+    const formattedSearchTerm = searchTerm.toLowerCase();
+
+    // Convert event dates to timestamp for comparison
+    const eventDateTimestamp = new Date(expense.event_Date).getTime();
+    const startDateTimestamp = eventStartDate ? new Date(eventStartDate).getTime() : -Infinity;
+    const endDateTimestamp = eventEndDate ? new Date(eventEndDate).getTime() : Infinity;
+
+    return (
+      (formattedManagerName.includes(formattedSearchTerm) ||
+        formattedEventName.includes(formattedSearchTerm)) &&
+      eventDateTimestamp >= startDateTimestamp &&
+      eventDateTimestamp <= endDateTimestamp
+    );
+  });
+
   return (
     <>
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[70%]">
-          <div className="flex">
-
-          </div>
+        
+        
           <h2 className="text-[30px] pl-[1em] mb-3">View Expense Details</h2>
+          <div className="filter-container">
+            <input type="text" placeholder="Search by Manager Name or Event Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input-expense"
+              style={{
+                  padding: "10px",
+                  marginRight: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                  width:"30.5%",
+                }} />
+          
+          <label className="mr-1">Event Start Date:</label>
+              <input
+                type="date"
+                value={eventStartDate}
+                onChange={handleStartDateChange}
+                style={{
+                  padding: "10px",
+                  marginRight: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                }}
+              />
+              <label className="mr-1">Event End Date:</label>
+              <input
+                type="date"
+                value={eventEndDate}
+                onChange={handleEndDateChange}
+                style={{
+                  padding: "10px",
+                  marginRight: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                }}
+              />
+            </div>
           <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
-            {expenses.length > 0 && (
+            {filteredExpenses.length > 0 && (
               <Table className="table">
                 <thead className="sticky top-0 bg-white">
                   <tr>
@@ -237,7 +310,7 @@ const ViewExpense = () => {
                   </tr>
                 </thead>
                 <tbody style={{ background: "white", borderRadius: "10px" }}>
-                  {expenses.map((expense, index) => (
+                  {filteredExpenses.map((expense, index) => (
                     <tr key={expense.id}>
                       <td>{index + 1}</td>
                       <td>{managers[expense.managerId] || "Unknown"}</td>
