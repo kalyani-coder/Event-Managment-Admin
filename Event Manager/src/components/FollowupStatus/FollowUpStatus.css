@@ -56,4 +56,8 @@
   }
   .fixed-width-badge {
     width: 130px; /* Adjust the width as per your requirement */
+    display: inline-block;
+    text-align: center;
   }
+
+ 
