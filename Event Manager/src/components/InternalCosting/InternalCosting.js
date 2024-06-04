@@ -506,32 +506,54 @@ function InternalCosting() {
       const roundedTotalAmount =
         totalAmount !== null ? Math.round(totalAmount) : "-";
       // Append total rows
+      // tableData.push(
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "SubTotal",
+      //     `${quotationData.sub_total || "-"} Rs`,
+      //   ],
+      //   ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+      //   ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+      //   ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
+      //   ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "Amounts In Words",
+      //     `${convertAmountToWords(totalAmount) || "-"}`,
+      //   ]
+      // );
+
       tableData.push(
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "SubTotal",
-          `${quotationData.sub_total || "-"} Rs`,
-        ],
-        ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-        ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+        ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`]
+      );
+  
+      if (enquiry.state === "Maharashtra") {
+        tableData.push(
+          ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+          ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`]
+        );
+      } else {
+        tableData.push(
+          ["", "", "", "", "", "", "IGST", `${quotationData.igst || "18%"}`]
+        );
+      }
+  
+      tableData.push(
         ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
         ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "Amounts In Words",
-          `${convertAmountToWords(totalAmount) || "-"}`,
-        ]
+        ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
       );
+  
 
       doc.autoTable({
         head: [
@@ -648,9 +670,7 @@ function InternalCosting() {
     }
   };
 
-  
 
-  
 
   return (
     <>
