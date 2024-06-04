@@ -47,6 +47,7 @@ function InternalCosting() {
   const [igstChecked, setIgstChecked] = useState(false);
   const [cgst, setCgst] = useState(0);
   const [sgst, setSgst] = useState(0);
+  const [igst, setIgst] = useState(0);
 
   const [newSelectedStockId, setNewSelectedStockId] = useState("");
   const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
@@ -295,7 +296,7 @@ function InternalCosting() {
     if (quotationData) {
       calculateGrandTotal();
     }
-  }, [quotationData, cgstChecked, sgstChecked, transportCharges]);
+  }, [quotationData, cgstChecked, sgstChecked, igstChecked, transportCharges]);
 
   const calculateGrandTotal = () => {
     if (quotationData) {
@@ -313,6 +314,7 @@ function InternalCosting() {
       if (igstChecked) {
         igst = (total * 18) / 100;
       }
+      
 
       const grandTotal = total + cgst + sgst + igst;
       setGrandTotal(grandTotal);
@@ -945,7 +947,7 @@ function InternalCosting() {
                   <tr>
                     <th className="text-center">GST</th>
                     <td className="text-center">
-                      {state === "Maharashtra" ? (
+                      {enquiry.state === "Maharashtra" ? (
                         <>
                           <label>
                             <input
@@ -1081,6 +1083,9 @@ function InternalCosting() {
                   </div>
                   <div>
                     <strong>SGST:</strong> 9 %
+                  </div>
+                  <div>
+                    <strong>IGST:</strong> 18 %
                   </div>
                   <div>
                     <strong>Grand Total:</strong>{" "}
