@@ -200,21 +200,21 @@ function InternalCosting() {
 
   const handleAddRequirement = async () => {
     // Check if any required fields are empty
-    const isEmpty = rows.some(
-      (row) =>
-        !row.stockName ||
-        !row.vendorName ||
-        row.qty === 0 ||
-        !row.unit ||
-        row.price === 0 ||
-        row.rateperdays === 0 ||
-        row.total === 0
-    );
+    // const isEmpty = rows.some(
+    //   (row) =>
+    //     !row.stockName ||
+    //     !row.vendorName ||
+    //     row.qty === 0 ||
+    //     !row.unit ||
+    //     row.price === 0 ||
+    //     row.rateperdays === 0 ||
+    //     row.total === 0
+    // );
 
-    if (isEmpty) {
-      alert("Please fill stock .");
-      return;
-    }
+    // if (isEmpty) {
+    //   alert("Please fill stock .");
+    //   return;
+    // }
     const requirements = rows.map((row) => ({
       stockName: newSelectedStock,
       stockId: newSelectedStockId,
@@ -608,6 +608,9 @@ function InternalCosting() {
       cgst: "9%",
       sgst: "9%",
       total_amount: totalAmount,
+      event_name: enquiry.event_name,
+      event_date: enquiry.event_date,
+      state: enquiry.state,
     };
 
     try {
@@ -1022,6 +1025,9 @@ function InternalCosting() {
                   </div>
                   <div>
                     <strong>Venue:</strong> {enquiry.event_venue}
+                  </div>
+                  <div>
+                    <strong>State:</strong> {enquiry.state}
                   </div>
                 </div>
 
