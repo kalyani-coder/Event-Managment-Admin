@@ -962,7 +962,7 @@ function InternalCosting() {
                         </>
                       ) : (
                         <label>
-                          <input type="checkbox" onChange={handleCgstChange} />
+                          <input type="checkbox" onChange={handleIgstChange} />
                           IGST 18 %
                         </label>
                       )}
