@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import Header from "../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import "./FollowUpStatus.css";
 
 const FollowUpStatus = () => {
@@ -19,7 +19,7 @@ const FollowUpStatus = () => {
     nofollowup: false,
     highbudget: false,
     checkbox3: false,
-    checkbox4: false
+    checkbox4: false,
   });
   const navigate = useNavigate();
 
@@ -32,7 +32,9 @@ const FollowUpStatus = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/api/enquiry/${managerId}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/enquiry/${managerId}`
+        );
         const data = response.data;
 
         const sortedInquiries = data.sort(
@@ -84,9 +86,15 @@ const FollowUpStatus = () => {
 
   const filterData = () => {
     let filtered = inquiries.filter((enquiry) => {
-      const eventName = enquiry.event_name ? enquiry.event_name.toLowerCase() : "";
-      const companyName = enquiry.company_name ? enquiry.company_name.toLowerCase() : "";
-      const customerName = enquiry.customer_name ? enquiry.customer_name.toLowerCase() : "";
+      const eventName = enquiry.event_name
+        ? enquiry.event_name.toLowerCase()
+        : "";
+      const companyName = enquiry.company_name
+        ? enquiry.company_name.toLowerCase()
+        : "";
+      const customerName = enquiry.customer_name
+        ? enquiry.customer_name.toLowerCase()
+        : "";
 
       return (
         eventName.includes(searchTerm.toLowerCase()) ||
@@ -165,17 +173,15 @@ const FollowUpStatus = () => {
   //   }
   // };
 
-
-
   const handleUpdateStatus = async () => {
     try {
       if (!enquiryId) {
         console.error("No Enquiry ID available");
         return;
       }
-  
+
       let requestBody = { status: selectedStatus };
-  
+
       if (selectedStatus === "Work Not Received") {
         // Check if hotInputValue is filled, if not, check checkbox values
         if (hotInputValue.trim() !== "") {
@@ -190,50 +196,36 @@ const FollowUpStatus = () => {
           }
         }
       }
-  
+
       const response = await axios.patch(
         `http://localhost:5000/api/enquiry/${enquiryId}`,
         requestBody
       );
-  
+
       console.log("Status updated successfully:", response.data);
-  
+
       alert("Status updated successfully!");
       if (selectedStatus === "Confirm") {
         // Construct the URL with inquiry data as parameters
         const inquiryDataParams = new URLSearchParams({
           id: enquiryId,
           event_name: filteredInquiries.event_name || "",
-          event_date: filteredInquiries.event_date ? format(new Date(filteredInquiries.event_date), "dd/MM/yyyy") : "",
+          event_date: filteredInquiries.event_date
+            ? format(new Date(filteredInquiries.event_date), "dd/MM/yyyy")
+            : "",
           customer_name: filteredInquiries.customer_name,
           contact: filteredInquiries.contact,
           status: filteredInquiries.status,
-          inquiryData: JSON.stringify(response.data) // Convert response.data to JSON string
+          inquiryData: JSON.stringify(response.data), // Convert response.data to JSON string
         });
-      
+
         // Navigate to the new page with the constructed URL
         navigate(`/advpaymentcus?${inquiryDataParams.toString()}`);
       }
-  
+
       setShowModal(false);
     } catch (error) {
       console.error("Error updating status:", error);
-    }
-  };
-
-
-
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Ongoing":
-        return "text-yellow";
-      case "Work Not Received":
-        return "text-red";
-      case "Confirm":
-        return "text-green";
-      default:
-        return ""; // default color
     }
   };
 
@@ -243,20 +235,39 @@ const FollowUpStatus = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="flex">
-            <Link to={'/quotation'}>
-              <button className="btn btn-primary mr-4 mb-4">View Enquiry</button>
+            <Link to={"/quotation"}>
+              <button className="btn btn-primary mr-4 mb-4">
+                View Enquiry
+              </button>
             </Link>
-            <Link to={'/followupstatus'}>
-              <button className="btn btn-primary mr-4 mb-4">FollowUp Status</button>
+            <Link to={"/followupstatus"}>
+              <button className="btn btn-primary mr-4 mb-4">
+                FollowUp Status
+              </button>
             </Link>
-            <Link to={'/addnewevent'}>
+            <Link to={"/addnewevent"}>
               <button className="btn btn-primary mr-4 mb-4">Add Event</button>
             </Link>
           </div>
           <div className="filter-container">
-            <input type="text" placeholder="Search event or customer" value={searchTerm} onChange={handleSearchInputChange} />
-           <label>Start Date:</label> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-           <label>End Date:</label> <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+            <input
+              type="text"
+              placeholder="Search event or customer"
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+            />
+            <label>Start Date:</label>{" "}
+            <input
+              type="date"
+              value={dateRange.startDate}
+              onChange={handleStartDateChange}
+            />
+            <label>End Date:</label>{" "}
+            <input
+              type="date"
+              value={dateRange.endDate}
+              onChange={handleEndDateChange}
+            />
           </div>
           <h2 className="text-[30px]">Follow Up Status</h2>
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
@@ -282,8 +293,20 @@ const FollowUpStatus = () => {
                     </td>
                     <td>{enquiry.customer_name}</td>
                     <td>{enquiry.contact}</td>
-                    <td className={`fw-bold ${getStatusColor(enquiry.status)}`}>
-                      {enquiry.status}
+                    <td className="">
+                      <span
+                        className={`badge fixed-width-badge bg-${
+                          enquiry.status === "Confirm"
+                            ? "success"
+                            : enquiry.status === "Work Not Received"
+                            ? "danger"
+                            : enquiry.status === "Ongoing"
+                            ? "warning"
+                            : ""
+                        }`}
+                      >
+                        {enquiry.status}
+                      </span>
                     </td>
                     <td>
                       <button
@@ -332,7 +355,10 @@ const FollowUpStatus = () => {
                     checked={selectedStatus === "Work Not Received"}
                     onChange={handleStatusChange}
                   />
-                  <label className="form-check-label" htmlFor="statusWorkNotReceived">
+                  <label
+                    className="form-check-label"
+                    htmlFor="statusWorkNotReceived"
+                  >
                     Work Not Received
                   </label>
                   {selectedStatus === "Work Not Received" && (
@@ -345,7 +371,10 @@ const FollowUpStatus = () => {
                           checked={checkBoxValues.checkbox1}
                           onChange={handleCheckBoxChange}
                         />
-                        <label className="form-check-label" htmlFor="nofollowup">
+                        <label
+                          className="form-check-label"
+                          htmlFor="nofollowup"
+                        >
                           No Follow-Up
                         </label>
                       </div>
@@ -358,14 +387,14 @@ const FollowUpStatus = () => {
                           checked={checkBoxValues.highbudget}
                           onChange={handleCheckBoxChange}
                         />
-                        <label className="form-check-label" htmlFor="highbudget">
+                        <label
+                          className="form-check-label"
+                          htmlFor="highbudget"
+                        >
                           High Budget
                         </label>
                       </div>
 
-                     
-
-                      
                       <div className="form-group mt-2">
                         <label htmlFor="hotInput">Type Reason:</label>
                         <input

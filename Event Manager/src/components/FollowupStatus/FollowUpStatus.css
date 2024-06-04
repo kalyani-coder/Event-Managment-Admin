@@ -54,3 +54,6 @@
       margin-left: 0;
     }
   }
+  .fixed-width-badge {
+    width: 130px; /* Adjust the width as per your requirement */
+  }
