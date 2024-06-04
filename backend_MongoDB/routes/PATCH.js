@@ -124,7 +124,7 @@ router.patch('/savedquotation/:userId', async (req, res) => {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date } = req.body;
+    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date , state} = req.body;
 
     existingQuotationInfo.transport = transport;
     existingQuotationInfo.transport_amount = transport_amount;
@@ -135,6 +135,7 @@ router.patch('/savedquotation/:userId', async (req, res) => {
     existingQuotationInfo.Total_Amount = Total_Amount;
     existingQuotationInfo.event_name = event_name;
     existingQuotationInfo.event_date = event_date;
+    existingQuotationInfo.state = state;
 
 
 
