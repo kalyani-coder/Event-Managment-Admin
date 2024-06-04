@@ -314,7 +314,6 @@ function InternalCosting() {
       if (igstChecked) {
         igst = (total * 18) / 100;
       }
-      
 
       const grandTotal = total + cgst + sgst + igst;
       setGrandTotal(grandTotal);
@@ -445,7 +444,7 @@ function InternalCosting() {
       ["Customer Address", enquiry.address || "-"],
       ["Event Date", enquiry.event_date || "-"],
       ["Event Venue", enquiry.event_venue || "-"],
-      ["Stae", enquiry.state || "-"],
+      ["State", enquiry.state || "-"],
     ];
 
     const companyData = [
@@ -648,6 +647,10 @@ function InternalCosting() {
       alert("Error deleting requirement");
     }
   };
+
+  
+
+  
 
   return (
     <>
@@ -1078,15 +1081,20 @@ function InternalCosting() {
                     <strong>Sub Total:</strong>{" "}
                     {quotationData ? quotationData.sub_total : "Loading..."}
                   </div>
+                  {enquiry.state === 'Maharashtra' ? (
+                  <>
+                    <div>
+                      <strong> CGST:</strong> 9 %
+                    </div>
+                    <div>
+                      <strong> SGST:</strong> 9 %
+                    </div>
+                  </>
+                ) : (
                   <div>
-                    <strong>CGST:</strong> 9 %
+                    <strong> IGST:</strong> 18 %
                   </div>
-                  <div>
-                    <strong>SGST:</strong> 9 %
-                  </div>
-                  <div>
-                    <strong>IGST:</strong> 18 %
-                  </div>
+                )}
                   <div>
                     <strong>Grand Total:</strong>{" "}
                     {grandTotal !== null ? grandTotal.toFixed(2) : "Loading..."}
