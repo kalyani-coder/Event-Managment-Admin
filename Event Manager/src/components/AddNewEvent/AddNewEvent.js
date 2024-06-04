@@ -145,7 +145,7 @@ const AddNewEvent = () => {
             </div>
             <div className="col px-5">
               <Form.Group controlId="SelectCustomer">
-                <Form.Label>Select Customer:</Form.Label>
+                <Form.Label>Select Customer:<span style={{ color: "red" }}>*</span></Form.Label>
                 <div className="relative">
                   <Form.Select
                     className={`w-full py-2 pl-3 pr-10 border-gray-300 focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl ${customerError ? 'border-red-500' : ''}`}
@@ -261,7 +261,7 @@ const AddNewEvent = () => {
             </div>
             <div className="col px-5">
               <Form.Group controlId="SelectEventType">
-                <Form.Label>Event Type:</Form.Label>
+                <Form.Label>Event Type:<span style={{ color: "red" }}>*</span></Form.Label>
                 <div className="relative">
                   <Form.Select
                     className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-2xl focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${eventTypeError ? 'border-red-500' : ''}`}
