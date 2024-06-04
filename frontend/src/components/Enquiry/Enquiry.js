@@ -417,12 +417,12 @@ export default function Enquiry() {
 
               <div className="col px-5">
                 <Form.Group controlId="SelectState">
-                  <Form.Label>Select State</Form.Label>
+                  <Form.Label>Select State</Form.Label> <span style={{ color: "red" }}>*</span>
                   <div className="relative">
                     <Form.Select
-                      className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 rounded-2xl ${
-                        validatedFields.includes("state") ? "is-invalid" : ""
-                      }`}
+                       className={`form-control ${
+                      validatedFields.includes("selectedState") ? "is-invalid" : ""
+                    }`}
                       aria-label="Select State"
                       name="selectedState"
                       value={selectedState}
