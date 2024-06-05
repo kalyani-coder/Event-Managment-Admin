@@ -55,11 +55,11 @@ const Login = () => {
                 <h3 className="fw-bold">Manager Login</h3>
                 {error && <p className="error-message">{error}</p>}
                 <div className="login__field">
-                  <i className="login__icon fas fa-user"></i>
+                <i className="login__icon fas fa-lock"></i>
                   <input
                     type="text"
                     className="login__input"
-                    placeholder="User name / Email"
+                    placeholder="Enter Email ID"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -77,13 +77,13 @@ const Login = () => {
                   />
                 </div>
                 <button type="submit" className="button login__submit">
-                  <span className="button__text">Log In Now</span>
+                  <span className="button__text-login">Log In Now</span>
                   <i className="button__icon fas fa-chevron-right"></i>
                 </button>
               </form>
-              <h1 className="arrow" onClick={navigatePage}>
-                <span className="fs-5 fw-bold">←</span>Back
-              </h1>
+              <h1 className="arrow">
+                  <span className="fs-5 fw-bold">←</span>Back
+                </h1>
             </div>
             <div className="screen__background">
               <span className="screen__background__shape screen__background__shape4"></span>

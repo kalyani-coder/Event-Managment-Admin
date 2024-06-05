@@ -21,6 +21,17 @@
 	width: 100%;
 	animation: bounce-in 0.6s ease;
   }
+
+  .button__text-login{
+	margin-left: 60px;
+  }
+
+  .arrow {
+	font-weight: bold !important;
+	cursor: pointer;
+	font-size: 20px;
+  }
+  
   
   /* Bounce animation */
   @keyframes bounce-in {
