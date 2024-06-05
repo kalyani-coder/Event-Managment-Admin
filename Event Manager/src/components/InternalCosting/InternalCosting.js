@@ -47,6 +47,7 @@ function InternalCosting() {
   const [igstChecked, setIgstChecked] = useState(false);
   const [cgst, setCgst] = useState(0);
   const [sgst, setSgst] = useState(0);
+  const [igst, setIgst] = useState(0);
 
   const [newSelectedStockId, setNewSelectedStockId] = useState("");
   const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
@@ -295,7 +296,7 @@ function InternalCosting() {
     if (quotationData) {
       calculateGrandTotal();
     }
-  }, [quotationData, cgstChecked, sgstChecked, transportCharges]);
+  }, [quotationData, cgstChecked, sgstChecked, igstChecked, transportCharges]);
 
   const calculateGrandTotal = () => {
     if (quotationData) {
@@ -443,7 +444,7 @@ function InternalCosting() {
       ["Customer Address", enquiry.address || "-"],
       ["Event Date", enquiry.event_date || "-"],
       ["Event Venue", enquiry.event_venue || "-"],
-      ["Stae", enquiry.state || "-"],
+      ["State", enquiry.state || "-"],
     ];
 
     const companyData = [
@@ -505,32 +506,54 @@ function InternalCosting() {
       const roundedTotalAmount =
         totalAmount !== null ? Math.round(totalAmount) : "-";
       // Append total rows
+      // tableData.push(
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "SubTotal",
+      //     `${quotationData.sub_total || "-"} Rs`,
+      //   ],
+      //   ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+      //   ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+      //   ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
+      //   ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "Amounts In Words",
+      //     `${convertAmountToWords(totalAmount) || "-"}`,
+      //   ]
+      // );
+
       tableData.push(
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "SubTotal",
-          `${quotationData.sub_total || "-"} Rs`,
-        ],
-        ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-        ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+        ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`]
+      );
+  
+      if (enquiry.state === "Maharashtra") {
+        tableData.push(
+          ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+          ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`]
+        );
+      } else {
+        tableData.push(
+          ["", "", "", "", "", "", "IGST", `${quotationData.igst || "18%"}`]
+        );
+      }
+  
+      tableData.push(
         ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
         ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "Amounts In Words",
-          `${convertAmountToWords(totalAmount) || "-"}`,
-        ]
+        ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
       );
+  
 
       doc.autoTable({
         head: [
@@ -646,6 +669,8 @@ function InternalCosting() {
       alert("Error deleting requirement");
     }
   };
+
+
 
   return (
     <>
@@ -945,7 +970,7 @@ function InternalCosting() {
                   <tr>
                     <th className="text-center">GST</th>
                     <td className="text-center">
-                      {state === "Maharashtra" ? (
+                      {enquiry.state === "Maharashtra" ? (
                         <>
                           <label>
                             <input
@@ -1076,12 +1101,20 @@ function InternalCosting() {
                     <strong>Sub Total:</strong>{" "}
                     {quotationData ? quotationData.sub_total : "Loading..."}
                   </div>
+                  {enquiry.state === 'Maharashtra' ? (
+                  <>
+                    <div>
+                      <strong> CGST:</strong> 9 %
+                    </div>
+                    <div>
+                      <strong> SGST:</strong> 9 %
+                    </div>
+                  </>
+                ) : (
                   <div>
-                    <strong>CGST:</strong> 9 %
+                    <strong> IGST:</strong> 18 %
                   </div>
-                  <div>
-                    <strong>SGST:</strong> 9 %
-                  </div>
+                )}
                   <div>
                     <strong>Grand Total:</strong>{" "}
                     {grandTotal !== null ? grandTotal.toFixed(2) : "Loading..."}
