@@ -96,6 +96,12 @@ const AddNewEvent = () => {
           managerId: managerId,
         });
         alert("Event created successfully");
+        // Clear the form
+        setSelectedCustomer(null);
+        setSelectedEvent("");
+        setSelectedEventType("");
+        setSubVenue("");
+        setBudget("");
       } catch (error) {
         console.error("Error submitting event:", error);
         // Handle error, display error message, etc.
@@ -132,6 +138,7 @@ const AddNewEvent = () => {
                     aria-label="Select Event"
                     name="event"
                     onChange={handleEventChange}
+                    value={selectedEvent} // Added value to clear form
                   >
                     <option>Select Event</option>
                     {events.map((event) => (
@@ -152,6 +159,7 @@ const AddNewEvent = () => {
                     aria-label="Select Customer"
                     name="customer"
                     onChange={handleCustomerChange}
+                    value={selectedCustomer ? selectedCustomer._id : ""} // Added value to clear form
                   >
                     <option>Select Customer</option>
                     {customers.map((customer) => (
@@ -204,6 +212,7 @@ const AddNewEvent = () => {
                   placeholder="Enter Guest"
                   value={selectedCustomer ? selectedCustomer.guest_quantity : ""}
                   id="guest"
+                  readOnly // Added readOnly
                 />
               </div>
             </div>
@@ -216,6 +225,7 @@ const AddNewEvent = () => {
                   placeholder="Enter Venue"
                   id="Venue"
                   value={selectedCustomer ? selectedCustomer.event_venue : ""}
+                  readOnly // Added readOnly
                 />
               </div>
             </div>
@@ -230,6 +240,7 @@ const AddNewEvent = () => {
                   placeholder="Enter Address"
                   id="address"
                   value={selectedCustomer ? selectedCustomer.address : ""}
+                  readOnly // Added readOnly
                 />
               </div>
             </div>
@@ -242,6 +253,7 @@ const AddNewEvent = () => {
                   placeholder="Status"
                   id="status"
                   value={selectedCustomer ? selectedCustomer.status : ""}
+                  readOnly // Added readOnly
                 />
               </div>
             </div>
@@ -256,6 +268,7 @@ const AddNewEvent = () => {
                   placeholder="Enter Event Date"
                   id="eventdate"
                   value={selectedCustomer ? selectedCustomer.event_date : ""}
+                  readOnly // Added readOnly
                 />
               </div>
             </div>
@@ -268,6 +281,7 @@ const AddNewEvent = () => {
                     aria-label="Select EventType"
                     name="eventType"
                     onChange={handleEventTypeChange}
+                    value={selectedEventType} // Added value to clear form
                   >
                     <option>Select Event Type</option>
                     <option>Family Function</option>
