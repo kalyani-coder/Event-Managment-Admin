@@ -135,7 +135,7 @@
   .login {
 	width: 320px;
 	padding: 30px;
-	padding-top: 156px;
+	padding-top: 130px;
   }
   
   .login__field {
@@ -239,5 +239,33 @@
 	  box-shadow: 0px 0px 24px #5C5696;
 	  border-radius: 17px;
 	}
+  }
+  
+  .login__field {
+	position: relative;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+  }
+  
+  .login__input {
+	width: 100%;
+	padding-left: 40px; /* Adjust the padding to make room for the icon */
+	padding-right: 40px; /* Adjust the padding to make room for the toggle icon */
+  }
+  
+  .login__icon {
+	position: absolute;
+	left: 10px;
+	color: #888; /* Adjust the color as needed */
+  }
+  
+  .toggle-password {
+	position: absolute;
+	right: 50px; /* Positioning the toggle icon just in front of the password placeholder */
+	cursor: pointer;
+	color:black; /* Adjust the color as needed */
+	transform: translateY(-50%);
+	top: 50%;
   }
   

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
@@ -55,7 +57,7 @@ const Login = () => {
                 <h3 className="fw-bold">Manager Login</h3>
                 {error && <p className="error-message">{error}</p>}
                 <div className="login__field">
-                <i className="login__icon fas fa-lock"></i>
+                  <FaEnvelope className="login__icon" />
                   <input
                     type="text"
                     className="login__input"
@@ -66,9 +68,12 @@ const Login = () => {
                   />
                 </div>
                 <div className="login__field">
-                  <i className="login__icon fas fa-lock"></i>
+                  <FaLock className="login__icon" />
+                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className="login__input"
                     placeholder="Password"
                     value={password}
@@ -81,9 +86,9 @@ const Login = () => {
                   <i className="button__icon fas fa-chevron-right"></i>
                 </button>
               </form>
-              <h1 className="arrow">
-                  <span className="fs-5 fw-bold">←</span>Back
-                </h1>
+              <h1 className="arrow" onClick={navigatePage}>
+                <span className="fs-5 fw-bold">←</span>Back
+              </h1>
             </div>
             <div className="screen__background">
               <span className="screen__background__shape screen__background__shape4"></span>

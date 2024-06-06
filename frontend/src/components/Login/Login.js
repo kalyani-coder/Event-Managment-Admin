@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -69,6 +71,10 @@ const Login = () => {
                 </div>
                 <div className="login__field">
                   <i className="login__icon fas fa-lock"></i>
+                  <FaLock className="login__icon" />
+                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   <input
                     type="password"
                     className="login__input"
