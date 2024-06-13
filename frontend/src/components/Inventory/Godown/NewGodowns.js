@@ -339,7 +339,7 @@ const NewGodowns = () => {
               </div>
             )}
           </Form>
-          <h4 className="text-[35px] pl-[1em]">Add Stocks</h4>
+          <h4 className="text-[30px] pl-[1em]">Add Stocks</h4>
           <Form onSubmit={handleSubmitformData}>
             <div className="row mb-2">
               <div className="col px-5">
@@ -441,7 +441,7 @@ const NewGodowns = () => {
           <hr />
 
           <div className="inventory">
-            <h4 className="mt-3 text-[35px] pl-[1em]">
+            <h4 className="mt-3 text-[30px] pl-[1em]">
               Godown Inventory By Product
             </h4>
             <div className="col px-5">
@@ -505,7 +505,7 @@ const NewGodowns = () => {
                 </tbody>
 
                 {editProductData && (
-                  <Modal show={showEditModal} onHide={handleCloseEdit}>
+                  <Modal show={showEditModal} onHide={handleCloseEdit} className="model-container-godowns">
                     <Modal.Header closeButton>
                       <Modal.Title>Edit Price</Modal.Title>
                     </Modal.Header>
@@ -541,12 +541,18 @@ const NewGodowns = () => {
                     </Modal.Body>
 
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={handleCloseEdit}>
-                        Cancel
-                      </Button>
-                      <Button variant="primary" onClick={handleSaveEdit}>
-                        Save
-                      </Button>
+                    <button
+        className="button-godown button-cancel"
+        onClick={handleCloseEdit}
+      >
+        Cancel
+      </button>
+      <button
+        className="button-godown button-save"
+        onClick={handleSaveEdit}
+      >
+        Save
+      </button>
                     </Modal.Footer>
                   </Modal>
                 )}
