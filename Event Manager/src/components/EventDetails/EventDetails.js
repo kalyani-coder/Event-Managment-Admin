@@ -15,7 +15,7 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/enquiry");
+        const response = await axios.get("http://localhost:8888/api/enquiry");
         console.log("API Response:", response.data);
 
         if (response.data && Array.isArray(response.data)) {
@@ -36,7 +36,7 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       if (eventDate) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/quotationinfo/event/${eventDate}`);
+          const response = await axios.get(`http://localhost:8888/api/quotationinfo/event/${eventDate}`);
           console.log("Event Details Response:", response.data);
           setSelectedEventDetails(response.data);
         } catch (error) {

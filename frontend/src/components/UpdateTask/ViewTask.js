@@ -9,7 +9,7 @@ const ViewTaskPage = () => {
     // Fetch task data from the API
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/executivetask");
+        const response = await fetch("http://localhost:8888/api/executivetask");
         const data = await response.json();
         setTasks(data);
       } catch (error) {

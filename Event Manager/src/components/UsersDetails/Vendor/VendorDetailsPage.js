@@ -23,7 +23,7 @@ const VendorDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/vendor/${_id}`)
+        .delete(`http://localhost:8888/api/vendor/${_id}`)
         .then(() => {
           console.log("Vendor data deleted successfully");
           navigate("/vendordetails");

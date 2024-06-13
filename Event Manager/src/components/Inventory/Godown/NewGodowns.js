@@ -14,7 +14,7 @@ const NewGodowns = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor", {
+      const response = await fetch("http://localhost:8888/api/addvendor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const NewGodowns = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/addvendor");
+        const response = await fetch("http://localhost:8888/api/addvendor");
         if (response.ok) {
           const data = await response.json();
           setVendors(data);
@@ -103,7 +103,7 @@ const NewGodowns = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/inventory-stocks",
+        "http://localhost:8888/api/inventory-stocks",
         {
           method: "POST",
           headers: {
@@ -144,7 +144,7 @@ const NewGodowns = () => {
   const handleDeleteVendor = async (vendorId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/addvendor/${vendorId}`,
+        `http://localhost:8888/api/addvendor/${vendorId}`,
         {
           method: "DELETE",
         }
@@ -181,7 +181,7 @@ const NewGodowns = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/inventory-stocks"
+          "http://localhost:8888/api/inventory-stocks"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -201,7 +201,7 @@ const NewGodowns = () => {
     console.log(selectedName);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/stock/${selectedName}`
+        `http://localhost:8888/api/inventory-stocks/stock/${selectedName}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -249,7 +249,7 @@ const NewGodowns = () => {
 
       // Perform PATCH request to update the price and quantity
       const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/${updatedProduct._id}`,
+        `http://localhost:8888/api/inventory-stocks/${updatedProduct._id}`,
         {
           method: "PATCH",
           headers: {
@@ -291,7 +291,7 @@ const NewGodowns = () => {
   const handleSaveEventName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster", {
+      const response = await fetch("http://localhost:8888/api/addeventmaster", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

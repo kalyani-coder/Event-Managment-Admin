@@ -83,7 +83,7 @@ const UpdateTaskPage = () => {
     const fetchManagers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/managerdetails"
+          "http://localhost:8888/api/managerdetails"
         );
         const data = await response.json();
         setManagers(data);

@@ -53,7 +53,7 @@ const AddVendor = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendor",
+        "http://localhost:8888/api/vendor",
         formData
       );
 

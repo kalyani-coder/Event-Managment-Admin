@@ -47,7 +47,7 @@ function AdvPaymentForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/advpayment",
+        "http://localhost:8888/api/advpayment",
         orderDetails
       );
       console.log("Order Details:", orderDetails);

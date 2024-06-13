@@ -24,7 +24,7 @@ const VendorPaymentReport = () => {
   const fetchPaymentData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/vendorpayment"
+        "http://localhost:8888/api/vendorpayment"
       );
       const paymentData = await response.json();
       setPayments(paymentData);

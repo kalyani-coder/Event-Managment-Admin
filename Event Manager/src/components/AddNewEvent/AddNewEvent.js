@@ -27,7 +27,7 @@ const AddNewEvent = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/addeventmaster"
+          "http://localhost:8888/api/addeventmaster"
         );
         setEvents(response.data);
       } catch (error) {
@@ -41,7 +41,7 @@ const AddNewEvent = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/enquiry");
+        const response = await axios.get("http://localhost:8888/api/enquiry");
         setCustomers(response.data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -80,7 +80,7 @@ const AddNewEvent = () => {
 
     if (valid) {
       try {
-        await axios.post("http://localhost:5000/api/event", {
+        await axios.post("http://localhost:8888/api/event", {
           eventName: selectedEvent,
           fname: selectedCustomer.customer_name,
           email: selectedCustomer.email,

@@ -15,7 +15,7 @@ const CustomerReport = () => {
   const fetchEventData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/advpayment"
+        "http://localhost:8888/api/advpayment"
       );
       const eventData = await response.json();
       setEvents(eventData);

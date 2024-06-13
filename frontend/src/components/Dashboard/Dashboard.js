@@ -12,13 +12,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch updated tasks from the API
-    fetch("http://localhost:5000/api/executivetask")
+    fetch("http://localhost:8888/api/executivetask")
       .then((response) => response.json())
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error fetching tasks:", error));
 
     // Fetch events data from the API
-    fetch("http://localhost:5000/api/enquiry")
+    fetch("http://localhost:8888/api/enquiry")
       .then((response) => response.json())
       .then((data) => {
         // Filter events with status 'Conform' or 'Hot'
@@ -58,7 +58,7 @@ const Dashboard = () => {
 
   const fetchEnquiry = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/enquiry");
+      const response = await fetch("http://localhost:8888/api/enquiry");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/event");
+      const response = await fetch("http://localhost:8888/api/event");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -91,7 +91,7 @@ const Dashboard = () => {
 
   const fetchPendingEnquiry = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/enquiry");
+      const response = await fetch("http://localhost:8888/api/enquiry");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

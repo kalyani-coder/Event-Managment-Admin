@@ -54,7 +54,7 @@ const VendorPayment = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/addvendor");
+        const response = await axios.get("http://localhost:8888/api/addvendor");
         setVendors(response.data);
       } catch (error) {
         console.error("Error fetching vendors:", error);
@@ -69,7 +69,7 @@ const VendorPayment = () => {
       try {
         if (formData.selectedVendor) {
           const response = await axios.get(
-            `http://localhost:5000/api/event?eventName=${formData.selectedVendor}`
+            `http://localhost:8888/api/event?eventName=${formData.selectedVendor}`
           );
           setEvents(response.data);
         }
@@ -111,7 +111,7 @@ const VendorPayment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendorpayment",
+        "http://localhost:8888/api/vendorpayment",
         {
           fname: formData.selectedVendor,
           event_name: formData.selectedEvent,
@@ -157,7 +157,7 @@ const VendorPayment = () => {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/allbanks");
+        const response = await axios.get("http://localhost:8888/api/allbanks");
         setBankNames(response.data);
       } catch (error) {
         console.error("Error fetching banks:", error);

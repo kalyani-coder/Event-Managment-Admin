@@ -19,7 +19,7 @@ const BankwiseReport = () => {
 
   const fetchTransferData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/banktransfer");
+      const response = await fetch("http://localhost:8888/api/banktransfer");
       const transferData = await response.json();
       setTransfers(transferData);
       setFilteredTransfers(transferData);

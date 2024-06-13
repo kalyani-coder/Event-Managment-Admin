@@ -13,7 +13,7 @@ const ManagerReport = () => {
 
   const fetchEventData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/managerdetails");
+      const response = await fetch("http://localhost:8888/api/managerdetails");
       const eventData = await response.json();
       setEvents(eventData);
       setFilteredEvents(eventData); // Initially, display all events

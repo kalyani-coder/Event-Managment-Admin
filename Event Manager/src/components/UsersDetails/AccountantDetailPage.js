@@ -26,7 +26,7 @@ const AccountantDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/accountant/${_id}`)
+        .delete(`http://localhost:8888/api/accountant/${_id}`)
         .then(() => {
           console.log("Accountant data deleted successfully");
           navigate("/accountantdetails");

@@ -21,7 +21,7 @@ const ViewExpense = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/expence", {
+      const response = await axios.get("http://localhost:8888/api/expence", {
         params: {
           client_Name: clientName,
           expence_date: expenseDate,
@@ -36,7 +36,7 @@ const ViewExpense = () => {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addmanager");
+      const response = await axios.get("http://localhost:8888/api/addmanager");
       const managerData = response.data.reduce((acc, manager) => {
         acc[manager._id] = `${manager.fname} ${manager.lname}`;
         return acc;
@@ -104,7 +104,7 @@ const ViewExpense = () => {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/allbanks')
+    axios.get('http://localhost:8888/api/allbanks')
       .then(response => {
         setBanks(response.data);
       })
@@ -143,7 +143,7 @@ const ViewExpense = () => {
       amount: amount
     };
 
-    axios.post('http://localhost:5000/api/advanceexpence', formData)
+    axios.post('http://localhost:8888/api/advanceexpence', formData)
       .then(response => {
         alert("Expense submitted successfully");
         handleCloseEventModal();
@@ -159,7 +159,7 @@ const ViewExpense = () => {
   const updateExpenseStatus = (expenseId, newStatus, declineMessage = "") => {
     const patchData = { status: newStatus, decline_message: declineMessage };
 
-    axios.patch(`http://localhost:5000/api/expence/${expenseId}`, patchData)
+    axios.patch(`http://localhost:8888/api/expence/${expenseId}`, patchData)
       .then(response => {
         console.log("Expense status updated successfully:", response.data);
       })

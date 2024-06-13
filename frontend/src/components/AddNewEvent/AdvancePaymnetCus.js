@@ -19,7 +19,7 @@ function AdvancePaymnetCus() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/event");
+        const response = await axios.get("http://localhost:8888/api/event");
         setCusName(response.data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -137,7 +137,7 @@ function AdvancePaymnetCus() {
     };
   
     axios
-      .post("http://localhost:5000/api/advpayment", data)
+      .post("http://localhost:8888/api/advpayment", data)
       .then((response) => {
         // Display alert box after successfully saving data
         alert("Customer payment successfully saved.");
@@ -152,7 +152,7 @@ function AdvancePaymnetCus() {
   };
   const fetchManagers = () => {
     axios
-      .get("http://localhost:5000/api/addmanager")
+      .get("http://localhost:8888/api/addmanager")
       .then((response) => {
         setManagers(response.data);
       })
@@ -185,7 +185,7 @@ function AdvancePaymnetCus() {
       };
 
       axios
-        .post("http://localhost:5000/api/order", data)
+        .post("http://localhost:8888/api/order", data)
         .then((response) => {
           console.log("Data assigned to manager successfully:", response.data);
           setShowModal(false);

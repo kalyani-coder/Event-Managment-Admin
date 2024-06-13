@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 JWT_SECRET = "vedant"
@@ -117,6 +117,30 @@ router.post('/managertask', async (req, res) => {
 
 
 // Login with JWT Token
+// router.post("/manager/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const manager = await ManagerDetails.findOne({ email });
+//     if (!manager) {
+//       return res.status(404).json({ message: "Email not found" });
+//     }
+
+//     const isPasswordValid = await bcrypt.compare(password, manager.password);
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ message: "Incorrect password" });
+//     }
+
+//     const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
+
+//     res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token, });
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
+
+
 router.post("/manager/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -126,20 +150,69 @@ router.post("/manager/login", async (req, res) => {
       return res.status(404).json({ message: "Email not found" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, manager.password);
-    if (!isPasswordValid) {
+    console.log('Stored password:', manager.password); // Debugging log
+    console.log('Entered password:', password); // Debugging log
+
+    // Compare the provided password directly (not secure)
+    if (password !== manager.password) {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
     const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
 
-    res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token, });
+    res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
+
+
+
+// router.post('/addmanager', async (req, res) => {
+//   try {
+//     const {
+//       fname,
+//       lname,
+//       email,
+//       password,
+//       contact,
+//       address,
+//       city,
+//       state,
+//       holder_name,
+//       account_number,
+//       IFSC_code,
+//       bank_name,
+//       branch_name,
+
+//     } = req.body;
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const newManager = new ManagerDetails({
+//       fname: fname,
+//       lname: lname,
+//       email: email,
+//       password: hashedPassword,
+//       contact: contact,
+//       address: address,
+//       city: city,
+//       state: state,
+//       holder_name: holder_name,
+//       account_number: account_number,
+//       IFSC_code: IFSC_code,
+//       bank_name: bank_name,
+//       branch_name: branch_name,
+//     });
+
+//     const savedManager = await newManager.save();
+
+//     res.status(201).json({ message: "Manager added successfully" });
+//   } catch (error) {
+//     console.error('Error saving advance payment:', error);
+//     res.status(500).json({ message: 'Failed to add Manager' });
+//   }
+// });
 
 
 router.post('/addmanager', async (req, res) => {
@@ -158,14 +231,15 @@ router.post('/addmanager', async (req, res) => {
       IFSC_code,
       bank_name,
       branch_name,
-
     } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+
+    console.log('Password being stored:', password); // Debugging log
+
     const newManager = new ManagerDetails({
       fname: fname,
       lname: lname,
       email: email,
-      password: hashedPassword,
+      password: password, 
       contact: contact,
       address: address,
       city: city,
@@ -181,14 +255,10 @@ router.post('/addmanager', async (req, res) => {
 
     res.status(201).json({ message: "Manager added successfully" });
   } catch (error) {
-    console.error('Error saving advance payment:', error);
+    console.error('Error saving manager:', error);
     res.status(500).json({ message: 'Failed to add Manager' });
   }
 });
-
-
-
-
 
 router.post('/advpaymanager', async (req, res) => {
   try {

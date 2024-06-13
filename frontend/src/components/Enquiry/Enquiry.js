@@ -36,7 +36,7 @@ export default function Enquiry() {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/addeventmaster"
+        "http://localhost:8888/api/addeventmaster"
       );
       setEvents(response.data);
       console.log("Fetched events: ", response.data); // Added logging
@@ -47,7 +47,7 @@ export default function Enquiry() {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/addmanager");
+      const response = await axios.get("http://localhost:8888/api/addmanager");
       setManagers(response.data);
     } catch (error) {
       console.error("Error fetching managers:", error);
@@ -56,7 +56,7 @@ export default function Enquiry() {
 
   const fetchVenues = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/venue");
+      const response = await axios.get("http://localhost:8888/api/venue");
       setVenues(response.data);
     } catch (error) {
       console.error("Error fetching venues:", error);
@@ -127,7 +127,7 @@ export default function Enquiry() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/enquiry", {
+      const response = await axios.post("http://localhost:8888/api/enquiry", {
         event_name: selectedEvent,
         customer_name: customerName,
         email: customerEmail,

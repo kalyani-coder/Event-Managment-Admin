@@ -64,7 +64,7 @@ function QuotationForm() {
     const handleViewQuotation = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`
+                `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
             );
             setQuotationData(response.data);
             console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
@@ -77,7 +77,7 @@ function QuotationForm() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/api/inventory-stocks")
+            .get("http://localhost:8888/api/inventory-stocks")
             .then((response) => {
                 const data = response.data;
                 const names = data.map((stock) => stock.Stock_Name);
@@ -135,7 +135,7 @@ function QuotationForm() {
         // Fetch Stock Quantity and Price based on selected vendor
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
+                `http://localhost:8888/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
             );
             const { Stock_Quantity, Price } = response.data;
             setNewSelectedStockQuantityValue(Stock_Quantity);
@@ -190,7 +190,7 @@ function QuotationForm() {
         // Fetch initial quotation data
         const fetchQuotationData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/quotationinfo/customer/${enquiry._id}`);
+                const response = await axios.get(`http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`);
                 setQuotationData(response.data);
             } catch (error) {
                 console.error("Error fetching quotation data", error);
@@ -223,14 +223,14 @@ function QuotationForm() {
             let response;
             if (isFirstSubmission) {
                 response = await axios.post(
-                    "http://localhost:5000/api/quotationinfo",
+                    "http://localhost:8888/api/quotationinfo",
                     data
                 );
                 alert("Stock added successfully");
                 setIsFirstSubmission(false);
             } else {
                 response = await axios.patch(
-                    `http://localhost:5000/api/quotationinfo/${enquiry._id}`,
+                    `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
                     data
                 );
                 alert("Stock updated successfully");
@@ -543,7 +543,7 @@ function QuotationForm() {
         };
 
         try {
-            const response = await axios.patch(`http://localhost:5000/api/savedquotation/${customerId}`, dataToUpdate);
+            const response = await axios.patch(`http://localhost:8888/api/savedquotation/${customerId}`, dataToUpdate);
             alert('Quotation Created successfully');
             // Handle successful response
         } catch (error) {
@@ -559,7 +559,7 @@ function QuotationForm() {
 
         try {
             await axios.delete(
-                `http://localhost:5000/api/quotationinfo/customer/${customerId}/requirements/${requirementId}`
+                `http://localhost:8888/api/quotationinfo/customer/${customerId}/requirements/${requirementId}`
             );
 
             // Update the local state to reflect the deletion

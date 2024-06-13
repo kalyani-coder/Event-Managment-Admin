@@ -22,7 +22,7 @@ const ExpenseForm = () => {
     const managerId = localStorage.getItem("managerId");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/event/manager/${managerId}`
+        `http://localhost:8888/api/event/manager/${managerId}`
       );
       const data = await response.json();
       setEvents(data);
@@ -88,7 +88,7 @@ const ExpenseForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/expence",
+        "http://localhost:8888/api/expence",
         expenseData
       );
       console.log(response.data);

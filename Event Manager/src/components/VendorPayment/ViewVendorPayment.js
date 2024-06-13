@@ -13,7 +13,7 @@ const VendorPaymentView = () => {
     const fetchVendorPayments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/vendorpayment"
+          "http://localhost:8888/api/vendorpayment"
         );
         setVendorPayments(response.data);
       } catch (error) {

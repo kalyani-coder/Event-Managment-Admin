@@ -16,7 +16,7 @@ const PaymentReport = () => {
   const fetchSalaryData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/staffsalary"
+        "http://localhost:8888/api/staffsalary"
       );
       const salaryData = await response.json();
       setSalaryData(salaryData);

@@ -33,7 +33,7 @@ const ManagerDetailPage = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/addmanager/${_id}`)
+        .delete(`http://localhost:8888/api/addmanager/${_id}`)
         .then(() => {
           console.log("Manager data deleted successfully");
           navigate("/managerdetails");

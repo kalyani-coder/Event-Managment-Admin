@@ -28,7 +28,7 @@ const Master = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor");
+      const response = await fetch("http://localhost:8888/api/addvendor");
       const data = await response.json();
       setVendors(data);
     } catch (error) {
@@ -38,7 +38,7 @@ const Master = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster");
+      const response = await fetch("http://localhost:8888/api/addeventmaster");
       const data = await response.json();
       setEvents(data);
     } catch (error) {
@@ -48,7 +48,7 @@ const Master = () => {
 
   const fetchBanks = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/allbanks");
+      const response = await fetch("http://localhost:8888/api/allbanks");
       const data = await response.json();
       setBanks(data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Master = () => {
 
   const fetchVenues = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/venue");
+      const response = await fetch("http://localhost:8888/api/venue");
       const data = await response.json();
       setVenues(data);
     } catch (error) {
@@ -70,7 +70,7 @@ const Master = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor", {
+      const response = await fetch("http://localhost:8888/api/addvendor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/addvendor/${vendorId}`,
+          `http://localhost:8888/api/addvendor/${vendorId}`,
           {
             method: "DELETE",
           }
@@ -131,7 +131,7 @@ const Master = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster", {
+      const response = await fetch("http://localhost:8888/api/addeventmaster", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +163,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/addeventmaster/${eventId}`,
+          `http://localhost:8888/api/addeventmaster/${eventId}`,
           {
             method: "DELETE",
           }
@@ -205,7 +205,7 @@ const Master = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/allbanks", {
+      const response = await fetch("http://localhost:8888/api/allbanks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -238,7 +238,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/allbanks/${bankId}`,
+          `http://localhost:8888/api/allbanks/${bankId}`,
           {
             method: "DELETE",
           }
@@ -271,7 +271,7 @@ const Master = () => {
     }
   
     try {
-      const response = await fetch("http://localhost:5000/api/venue", {
+      const response = await fetch("http://localhost:8888/api/venue", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -306,7 +306,7 @@ const Master = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/venue/${venueId}`,
+          `http://localhost:8888/api/venue/${venueId}`,
           {
             method: "DELETE",
           }

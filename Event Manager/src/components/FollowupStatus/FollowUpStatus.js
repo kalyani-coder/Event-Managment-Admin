@@ -33,7 +33,7 @@ const FollowUpStatus = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/enquiry/${managerId}`
+          `http://localhost:8888/api/enquiry/${managerId}`
         );
         const data = response.data;
 
@@ -156,7 +156,7 @@ const FollowUpStatus = () => {
       }
 
       const response = await axios.patch(
-        `http://localhost:5000/api/enquiry/${enquiryId}`,
+        `http://localhost:8888/api/enquiry/${enquiryId}`,
         requestBody
       );
 

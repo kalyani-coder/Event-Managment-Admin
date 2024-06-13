@@ -10,7 +10,7 @@ const ViewExpense = () => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/eventexpense");
+        const response = await fetch("http://localhost:8888/api/eventexpense");
         const data = await response.json();
         setExpenses(data);
       } catch (error) {

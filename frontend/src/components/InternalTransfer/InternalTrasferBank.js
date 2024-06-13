@@ -17,7 +17,7 @@ const InternalTransferFromBank = () => {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/allbanks");
+        const response = await fetch("http://localhost:8888/api/allbanks");
         const data = await response.json();
         setBankNames(data);
       } catch (error) {
@@ -39,7 +39,7 @@ const InternalTransferFromBank = () => {
       amount: parseFloat(amount)
     };
 
-    fetch("http://localhost:5000/api/banktransfer", {
+    fetch("http://localhost:8888/api/banktransfer", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

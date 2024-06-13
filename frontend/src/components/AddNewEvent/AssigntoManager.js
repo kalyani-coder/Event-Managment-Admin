@@ -14,7 +14,7 @@ const AssigntoManager = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/advpayment"
+          "http://localhost:8888/api/advpayment"
         );
         setEventName(response.data);
       } catch (error) {
@@ -40,7 +40,7 @@ const AssigntoManager = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/managerdetails"
+          "http://localhost:8888/api/managerdetails"
         );
         setManagerName(response.data);
       } catch (error) {
@@ -71,7 +71,7 @@ const AssigntoManager = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/order",
+        "http://localhost:8888/api/order",
         postData
       );
       // console.log('Data posted successfully:', response.data);

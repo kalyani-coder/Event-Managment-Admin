@@ -31,7 +31,7 @@ const EnquiryReport = () => {
   const fetchEnquiryData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/enquiry"
+        "http://localhost:8888/api/enquiry"
       );
       const enquiryData = await response.json();
       setEnquiries(enquiryData);
