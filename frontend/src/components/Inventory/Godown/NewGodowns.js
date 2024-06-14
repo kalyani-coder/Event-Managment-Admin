@@ -338,14 +338,14 @@ const NewGodowns = () => {
                       name="Category"
                       value={formData.Category}
                       onChange={handleInputChange}
-                      
+                      required
                     />
                   </div>
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="Stock_Name">
-                  <Form.Label>Stock Name:</Form.Label>
+                  <Form.Label>Product Category:</Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="text"
@@ -353,7 +353,7 @@ const NewGodowns = () => {
                       name="Stock_Name"
                       value={formData.Stock_Name}
                       onChange={handleInputChange}
-                      
+                      required
                     />
                   </div>
                 </Form.Group>
@@ -370,7 +370,7 @@ const NewGodowns = () => {
                       name="Stock_Quantity"
                       value={formData.Stock_Quantity}
                       onChange={handleInputChange}
-                      
+                      required
                     />
                   </div>
                 </Form.Group>
@@ -385,7 +385,7 @@ const NewGodowns = () => {
                       name="Price"
                       value={formData.Price}
                       onChange={handleInputChange}
-                      
+                      required
                     />
                   </div>
                 </Form.Group>
@@ -404,7 +404,7 @@ const NewGodowns = () => {
                       name="vendor"
                       value={selectedVendor}
                       onChange={handleVendorChange}
-                      
+                      required
                     >
                       <option value="">Select Vendor</option>
                       {vendors.map((vendor) => (
