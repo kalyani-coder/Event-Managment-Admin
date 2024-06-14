@@ -345,7 +345,7 @@ const NewGodowns = () => {
               </div>
               <div className="col px-5">
                 <Form.Group controlId="Stock_Name">
-                  <Form.Label>Product Category:</Form.Label>
+                  <Form.Label>Stock Name:</Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="text"
