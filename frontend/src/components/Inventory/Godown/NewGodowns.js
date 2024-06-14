@@ -7,14 +7,14 @@ import "./NewGodown.css";
 
 const NewGodowns = () => {
   const [vendorName, setVendorName] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, alert] = useState("");
   const [alertVariant, setAlertVariant] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/addvendor", {
+      const response = await fetch("http://localhost:8888/api/addvendor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,19 +23,19 @@ const NewGodowns = () => {
       });
 
       if (response.ok) {
-        setAlertMessage("Vendor added successfully.");
-        setAlertVariant("success");
+        alert("Vendor added successfully.");
+        
         setTimeout(() => {
-          setAlertMessage("");
+          alert("");
         }, 3000);
       } else {
-        setAlertMessage("Failed to add vendor.");
-        setAlertVariant("danger");
+        alert("Failed to add vendor.");
+        
       }
     } catch (error) {
       console.error("Error adding vendor:", error);
-      setAlertMessage("Failed to add vendor. Please try again later.");
-      setAlertVariant("danger");
+      alert("Failed to add vendor. Please try again later.");
+      
     }
   };
 
@@ -46,7 +46,7 @@ const NewGodowns = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/addvendor");
+        const response = await fetch("http://localhost:8888/api/addvendor");
         if (response.ok) {
           const data = await response.json();
           setVendors(data);
@@ -96,37 +96,29 @@ const NewGodowns = () => {
     event.preventDefault();
 
     if (!selectedVendor) {
-      setAlertMessage("Please select a vendor.");
-      setAlertVariant("danger");
+      alert("Please select a vendor.");
+      
       return;
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/inventory-stocks",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
+      const response = await fetch("http://localhost:8888/api/inventory-stocks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
       if (response.ok) {
-        setAlertMessage("Stock added successfully.");
-        setAlertVariant("success");
-        setTimeout(() => {
-          setAlertMessage("");
-        }, 4000);
+        window.alert("Stock added successfully.");
+        console.log("Stock added successfully.");
       } else {
-        setAlertMessage("Failed to add stock.");
-        setAlertVariant("danger");
+        window.alert("Failed to add stock.");
       }
     } catch (error) {
       console.error("Error adding stock:", error);
-      setAlertMessage("Failed to add stock. Please try again later.");
-      setAlertVariant("danger");
+      window.alert("Failed to add stock. Please try again later.");
     }
   };
 
@@ -144,21 +136,20 @@ const NewGodowns = () => {
   const handleDeleteVendor = async (vendorId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/addvendor/${vendorId}`,
+        `http://localhost:8888/api/addvendor/${vendorId}`,
         {
           method: "DELETE",
         }
       );
       if (response.ok) {
-        setAlertMessage("Vendor deleted successfully.");
-        setAlertVariant("success");
+        alert("Vendor deleted successfully.");
         setTimeout(() => {
-          setAlertMessage("");
+          alert("");
         }, 3000);
         setSelectedVendorId(null);
       } else {
-        setAlertMessage("Failed to delete vendor. Please try again later.");
-        setAlertVariant("danger");
+        alert("Failed to delete vendor. Please try again later.");
+        
       }
     } catch (error) {
       console.error("Error deleting vendor:", error);
@@ -181,7 +172,7 @@ const NewGodowns = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/inventory-stocks"
+          "http://localhost:8888/api/inventory-stocks"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -201,7 +192,7 @@ const NewGodowns = () => {
     console.log(selectedName);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/stock/${selectedName}`
+        `http://localhost:8888/api/inventory-stocks/stock/${selectedName}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -249,7 +240,7 @@ const NewGodowns = () => {
 
       // Perform PATCH request to update the price and quantity
       const response = await fetch(
-        `http://localhost:5000/api/inventory-stocks/${updatedProduct._id}`,
+        `http://localhost:8888/api/inventory-stocks/${updatedProduct._id}`,
         {
           method: "PATCH",
           headers: {
@@ -291,7 +282,7 @@ const NewGodowns = () => {
   const handleSaveEventName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/addeventmaster", {
+      const response = await fetch("http://localhost:8888/api/addeventmaster", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -303,17 +294,16 @@ const NewGodowns = () => {
 
       if (response.ok) {
         console.log(responseData.message);
-        setAlertMessage(responseData.message);
-        setAlertVariant("success");
+        alert(responseData.message);
+        
         setTimeout(() => {
-          setAlertMessage("");
+          alert("");
         }, 3000);
       } else {
         console.error(responseData.message);
-        setAlertMessage(responseData.message);
-        setAlertVariant("danger");
+        alert(responseData.message);
         setTimeout(() => {
-          setAlertMessage("");
+          alert("");
         }, 3000);
       }
     } catch (e) {
@@ -333,11 +323,7 @@ const NewGodowns = () => {
         {" "}
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <Form onSubmit={handleSubmit}>
-            {alertMessage && (
-              <div>
-                <Alert variant={alertVariant}>{alertMessage}</Alert>
-              </div>
-            )}
+           
           </Form>
           <h4 className="text-[30px] pl-[1em]">Add Stocks</h4>
           <Form onSubmit={handleSubmitformData}>
@@ -352,14 +338,14 @@ const NewGodowns = () => {
                       name="Category"
                       value={formData.Category}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="Stock_Name">
-                  <Form.Label>Product Category:</Form.Label>
+                  <Form.Label>Stock Name:</Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="text"
@@ -367,7 +353,7 @@ const NewGodowns = () => {
                       name="Stock_Name"
                       value={formData.Stock_Name}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
@@ -384,7 +370,7 @@ const NewGodowns = () => {
                       name="Stock_Quantity"
                       value={formData.Stock_Quantity}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
@@ -399,7 +385,7 @@ const NewGodowns = () => {
                       name="Price"
                       value={formData.Price}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
@@ -418,7 +404,7 @@ const NewGodowns = () => {
                       name="vendor"
                       value={selectedVendor}
                       onChange={handleVendorChange}
-                      required
+                      
                     >
                       <option value="">Select Vendor</option>
                       {vendors.map((vendor) => (
