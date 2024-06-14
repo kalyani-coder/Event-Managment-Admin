@@ -1,0 +1,27 @@
+.custom-btn-mdp {
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+    background-color: #6c757d; /* Default background color */
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-btn-mdp:hover {
+    background-color: #545b62; /* Darker shade on hover */
+  }
+  
+  .custom-btn-mdp.secondary {
+    background-color:   #007bff; /* Secondary button color */
+  }
+  
+  .custom-btn-mdp.secondary:hover {
+    background-color:  #0056b3; /* Darker shade on hover */
+  }
+  
+  .Model-mdp{
+    margin-top: 50px;
+  }
