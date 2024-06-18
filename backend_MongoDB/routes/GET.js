@@ -54,6 +54,22 @@ router.get("/expence/:id", async(req, res) =>{
   }
 })
 
+// GET EXPENCE BY MANAGER ID 
+
+router.get("/expence/manager/:managerId", async(req, res) =>{
+  const managerId = req.params.managerId
+  try{
+    const GetById = await ExpenceForm.findOne({managerId : managerId})
+    if(!GetById){
+      return res.status(404).json({message : "Manager ID not found "})
+    }
+    res.status(201).json(GetById)
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
+
 // Get route for event 
 router.get("/event/:id" , async(req, res) => {
   const Id = req.params.id 
