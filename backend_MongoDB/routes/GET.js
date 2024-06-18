@@ -104,6 +104,23 @@ router.get('/quotationinfo/event/:eventDate', async (req, res) => {
   }
 });
 
+// GET BBYE EVENT NAME 
+router.get('/quotationinfo/eventname/:eventName', async (req, res) => {
+  try {
+    const eventName = req.params.eventName;
+    const getByEventName = await QuatationInfo.findOne({ event_name: eventName });
+
+    if (getByEventName) {
+      res.status(200).json(getByEventName);
+    } else {
+      res.status(404).json({ message: 'Quotation not found for the given event date' });
+    }
+  } catch (e) {
+    console.error("Error fetching quotation information:", e);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 router.get('/quotationinfo/customer/:customerId', async (req, res) => {
   try {
     const { customerId } = req.params;
