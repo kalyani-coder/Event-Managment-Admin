@@ -301,10 +301,10 @@ function AdvancePaymnetCus() {
               </div>
             </div>
           </div>
-          <div className="row mb-2">
+          {/* <div className="row mb-2">
             <div className="col px-5">
               <div className="mb-3">
-                <label className="form-label">Event Requirements</label>
+                <label className="form-label">Event Budget</label>
                 <input
                   type="text"
                   className="form-control"
@@ -327,7 +327,7 @@ function AdvancePaymnetCus() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
 
 

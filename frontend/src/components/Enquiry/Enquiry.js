@@ -324,7 +324,7 @@ export default function Enquiry() {
                 </Form.Group>
               </div>
             </div>
-            <div className="row mb-2">
+            {/* <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_budget">Event Budget</label>
@@ -366,7 +366,7 @@ export default function Enquiry() {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
