@@ -12,6 +12,7 @@ const ViewInquiryPage = () => {
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showQutation, setShowQutationModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,6 +93,11 @@ const ViewInquiryPage = () => {
     setShowModal(true);
   };
 
+  const openPopupQutation = (enquiry) => {
+    setSelectedInquiry(enquiry);
+    setShowQutationModal(true);
+  };
+
   const closePopup = () => {
     setShowModal(false);
     setSelectedInquiry(null);
@@ -133,6 +139,7 @@ const ViewInquiryPage = () => {
                   <th scope="col">Action</th>
                   <th scope="col">Internal Costing</th>
                   <th scope="col"> Quotation</th>
+                  <th scope="col">View Quotation</th>
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
@@ -182,6 +189,14 @@ const ViewInquiryPage = () => {
                        Quotation
                       </button>
                     </td>
+                    <td>
+                      <button
+                        className="btn btn-primary ml-4"
+                        onClick={() => openPopupQutation(enquiry)}
+                      >
+                      View 
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -229,6 +244,27 @@ const ViewInquiryPage = () => {
                       </p>
                     </div>
                   )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closePopup}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
+          </div>
+          <div>
+            {selectedInquiry && (
+              <Modal
+                show={showQutation}
+                onHide={closePopup}
+                dialogClassName="modal-dialog-centered modal-dialog-responsive "
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Quotations</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                 
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={closePopup}>

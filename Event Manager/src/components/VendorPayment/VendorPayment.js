@@ -77,10 +77,10 @@ const VendorPayment = () => {
         console.error("Error fetching events for vendor:", error);
       }
     };
-
+  
     fetchEventsForVendor();
   }, [formData.selectedVendor]);
-
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -235,19 +235,20 @@ const VendorPayment = () => {
                 <div className="form-group">
                   <label htmlFor="selectedEvent">Event Name</label>
                   <select
-                    className="form-control mb-2"
-                    name="selectedEvent"
-                    onChange={handleEventChange}
-                    value={formData.selectedEvent}
-                    required
-                  >
-                    <option value="">Select event</option>
-                    {events.map((event) => (
-                      <option key={event._id} value={event.eventName}>
-                        {event.eventName}
-                      </option>
-                    ))}
-                  </select>
+  className="form-control mb-2"
+  name="selectedEvent"
+  onChange={handleEventChange}
+  value={formData.selectedEvent}
+  required
+>
+  <option value="">Select event</option>
+  {events.map((event) => (
+    <option key={event._id} value={event.eventName}>
+      {event.eventName}
+    </option>
+  ))}
+</select>
+
                 </div>
               </div>
             </div>

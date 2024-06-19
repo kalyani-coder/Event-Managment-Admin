@@ -27,6 +27,7 @@ function InternalCosting() {
   ]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
+  const [storeQuantity, setStoreQuantity] = useState(null);
 
   const [stockNames, setStockNames] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
@@ -56,11 +57,11 @@ function InternalCosting() {
   const [quotationData, setQuotationData] = useState({ requirements: [] });
   console.log("vedant new", quotationData);
 
-  useEffect(() => {
-    if (enquiry && enquiry._id) {
-      handleViewQuotation();
-    }
-  }, [enquiry]);
+  // useEffect(() => {
+  //   if (enquiry && enquiry._id) {
+  //     handleViewQuotation();
+  //   }
+  // }, [enquiry]);
 
   const handleViewQuotation = async () => {
     try {
@@ -79,12 +80,16 @@ function InternalCosting() {
   };
   const handleClose = () => setModalShow(false);
 
+ 
+ 
+
   useEffect(() => {
     axios
       .get("http://localhost:8888/api/inventory-stocks")
       .then((response) => {
         const data = response.data;
         const names = data.map((stock) => stock.Stock_Name);
+        console.log("names",data)
         setStockNames(names);
         setNewStocksData(data);
       })
@@ -166,6 +171,7 @@ function InternalCosting() {
     if (field === "qty" || field === "price" || field === "rateperdays") {
       newRows[index].total =
         newRows[index].qty * newRows[index].price * newRows[index].rateperdays;
+      setStoreQuantity(newRows[index].qty)
     }
 
     setRows(newRows);
@@ -533,27 +539,49 @@ function InternalCosting() {
       //   ]
       // );
 
-      tableData.push(
-        ["", "", "", "", "", "", "SubTotal", `${quotationData.sub_total || "-"} Rs`]
-      );
-  
+      tableData.push([
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "SubTotal",
+        `${quotationData.sub_total || "-"} Rs`,
+      ]);
+
       if (enquiry.state === "Maharashtra") {
         tableData.push(
           ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
           ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`]
         );
       } else {
-        tableData.push(
-          ["", "", "", "", "", "", "IGST", `${quotationData.igst || "18%"}`]
-        );
+        tableData.push([
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "IGST",
+          `${quotationData.igst || "18%"}`,
+        ]);
       }
-  
+
       tableData.push(
         ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
         ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
-        ["", "", "", "", "", "", "Amounts In Words", `${convertAmountToWords(totalAmount) || "-"}`]
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Amounts In Words",
+          `${convertAmountToWords(totalAmount) || "-"}`,
+        ]
       );
-  
 
       doc.autoTable({
         head: [
@@ -669,8 +697,6 @@ function InternalCosting() {
       alert("Error deleting requirement");
     }
   };
-
-
 
   return (
     <>
@@ -1101,20 +1127,20 @@ function InternalCosting() {
                     <strong>Sub Total:</strong>{" "}
                     {quotationData ? quotationData.sub_total : "Loading..."}
                   </div>
-                  {enquiry.state === 'Maharashtra' ? (
-                  <>
+                  {enquiry.state === "Maharashtra" ? (
+                    <>
+                      <div>
+                        <strong> CGST:</strong> 9 %
+                      </div>
+                      <div>
+                        <strong> SGST:</strong> 9 %
+                      </div>
+                    </>
+                  ) : (
                     <div>
-                      <strong> CGST:</strong> 9 %
+                      <strong> IGST:</strong> 18 %
                     </div>
-                    <div>
-                      <strong> SGST:</strong> 9 %
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    <strong> IGST:</strong> 18 %
-                  </div>
-                )}
+                  )}
                   <div>
                     <strong>Grand Total:</strong>{" "}
                     {grandTotal !== null ? grandTotal.toFixed(2) : "Loading..."}

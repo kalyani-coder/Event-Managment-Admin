@@ -55,11 +55,11 @@ function QuotationForm() {
     const [quotationData, setQuotationData] = useState({ requirements: [] });
     console.log("vedant new", quotationData)
 
-    useEffect(() => {
-        if (enquiry && enquiry._id) {
-            handleViewQuotation();
-        }
-    }, [enquiry]);
+    // useEffect(() => {
+    //     if (enquiry && enquiry._id) {
+    //         handleViewQuotation();
+    //     }
+    // }, [enquiry]);
 
     const handleViewQuotation = async () => {
         try {
@@ -624,6 +624,10 @@ function QuotationForm() {
                                             {" "}
                                             Amount{" "}
                                         </th>
+                                        <th className="text-center" style={{ width: "15%" }}>
+                                            {" "}
+                                            Profit {" "}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -729,6 +733,22 @@ function QuotationForm() {
                                             </td>
 
 
+                                            <td style={{ width: "10%" }}>
+                                                <input
+                                                    type="number"
+                                                    value={row.total}
+                                                    onChange={(e) =>
+                                                        handleChange(
+                                                            index,
+                                                            "total",
+                                                            parseInt(e.target.value)
+                                                        )
+                                                    }
+                                                    className="form-control total"
+                                                    step="0"
+                                                    min="0"
+                                                />
+                                            </td>
                                             <td style={{ width: "10%" }}>
                                                 <input
                                                     type="number"

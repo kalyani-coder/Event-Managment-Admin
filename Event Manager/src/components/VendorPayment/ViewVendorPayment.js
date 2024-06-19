@@ -87,10 +87,10 @@ const VendorPaymentView = () => {
                 <tr>
                   <th>First Name</th>
                   <th>Date</th>
-                  <th>Salary</th>
-                  <th>Paid Amount</th>
+                  <th>Amount</th>
                   <th>Remaining Amount</th>
                   <th>Description</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -98,7 +98,6 @@ const VendorPaymentView = () => {
                   <tr key={payment._id}>
                     <td>{payment.fname}</td>
                     <td>{payment.date}</td>
-                    <td>{payment.salary}</td>
                     <td>{payment.paid_amt}</td>
                     <td>{payment.rem_amt}</td>
                     <td>{payment.description}</td>
