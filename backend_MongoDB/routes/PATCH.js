@@ -6,8 +6,66 @@ const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster, advancePaymantManager } = require("../models/newModels")
-const { ManagerDetails, ManagerTask ,AdvanceExpence} = require("../models/newModels");
-const { QuatationInfo, allBanks, ExpenceForm } = require("../models/newModels")
+const { ManagerDetails, ManagerTask, AdvanceExpence } = require("../models/newModels");
+const { QuatationInfo, allBanks, ExpenceForm, VendorPayment } = require("../models/newModels")
+
+
+
+// PATCH VENDOR PAYMENT 
+router.patch("/vendorpayment/update/:id", async (req, res) => {
+  const id = req.params.id;
+  const { total_pay_amount, advance_payment } = req.body; // extract total_pay_amount and advance_payment from request body
+
+  try {
+    // Validate the Vendor ID
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: "Invalid Vendor Id" });
+    }
+
+    // Find the existing vendor payment
+    const existingVendorPayment = await VendorPayment.findById(id);
+    if (!existingVendorPayment) {
+      return res.status(404).json({ message: "Vendor Id not found" });
+    }
+
+    // Calculate the sum of total_pay_amount and advance_payment
+    const totalPayment = (total_pay_amount || 0) + (advance_payment || 0);
+
+    // Ensure the new totalPayment is not greater than rem_amt
+    if (totalPayment > existingVendorPayment.rem_amt) {
+      return res.status(400).json({ message: "Total payment amount cannot be greater than remaining amount" });
+    }
+
+    // Calculate the new rem_amt and update total_pay_amount
+    const new_rem_amt = existingVendorPayment.rem_amt - totalPayment;
+    const new_total_pay_amount = (existingVendorPayment.total_pay_amount || 0) + totalPayment;
+
+    // Determine the new status
+    const new_status = new_rem_amt === 0 ? "Payment Done" : "Payment Pending";
+
+    // Update the vendor payment record
+    const updatedVendorPayment = await VendorPayment.findByIdAndUpdate(
+      id,
+      {
+        total_pay_amount: new_total_pay_amount,
+        rem_amt: new_rem_amt,
+        advance_payment: (existingVendorPayment.advance_payment || 0) + (advance_payment || 0),
+        status: new_status
+      },
+      { new: true }
+    );
+
+    // Return the updated vendor payment record
+    res.status(200).json(updatedVendorPayment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+
 
 
 router.patch('/quotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
@@ -15,20 +73,20 @@ router.patch('/quotationinfo/customer/:customerId/requirements/:requirementId', 
   const updatedRequirement = req.body;
 
   try {
-      const quotation = await QuatationInfo.findOneAndUpdate(
-          { customer_Id: customerId, 'requirements._id': requirementId },
-          { $set: { 'requirements.$': updatedRequirement } },
-          { new: true }
-      );
+    const quotation = await QuatationInfo.findOneAndUpdate(
+      { customer_Id: customerId, 'requirements._id': requirementId },
+      { $set: { 'requirements.$': updatedRequirement } },
+      { new: true }
+    );
 
-      if (!quotation) {
-          return res.status(404).json({ message: 'Quotation not found' });
-      }
+    if (!quotation) {
+      return res.status(404).json({ message: 'Quotation not found' });
+    }
 
-      res.json(quotation);
+    res.json(quotation);
   } catch (error) {
-      console.error('Error updating requirement', error);
-      res.status(500).json({ message: 'Server error' });
+    console.error('Error updating requirement', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -124,7 +182,7 @@ router.patch('/savedquotation/:userId', async (req, res) => {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date , state} = req.body;
+    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
 
     existingQuotationInfo.transport = transport;
     existingQuotationInfo.transport_amount = transport_amount;

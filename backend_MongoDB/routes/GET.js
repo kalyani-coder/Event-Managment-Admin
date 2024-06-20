@@ -10,6 +10,25 @@ const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , ban
 
 const { FindTable } = require("../utils/utils");
 
+// ENquiry GET ROUTE
+router.get("enquiry/customers/:managerId" , async(req, res) => {
+
+  const managerId = req.params.managerId
+  try{
+
+    const getCustomerByManagerId = await Enquiry.find({managerId: managerId})
+    if(!getCustomerByManagerId === 0){
+      return res.status(404).json({message : "ManagerId not Found"})
+    }
+    res.status(201).json(getCustomerByManagerId)
+
+  }catch(err){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
+
+
 
 router.get("/advanceexpence" , async(req, res) => {
   try{
@@ -56,18 +75,20 @@ router.get("/expence/:id", async(req, res) =>{
 
 // GET EXPENCE BY MANAGER ID 
 
-router.get("/expence/manager/:managerId", async(req, res) =>{
-  const managerId = req.params.managerId
-  try{
-    const GetById = await ExpenceForm.findOne({managerId : managerId})
-    if(!GetById){
-      return res.status(404).json({message : "Manager ID not found "})
+router.get("/expence/manager/:managerId", async (req, res) => {
+  const managerId = req.params.managerId;
+  try {
+    const getById = await ExpenceForm.find({ managerId: managerId });
+    if (getById.length === 0) {
+      return res.status(404).json({ message: "Manager ID not found" });
     }
-    res.status(201).json(GetById)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+    res.status(200).json(getById);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
+
 
 
 // Get route for event 
