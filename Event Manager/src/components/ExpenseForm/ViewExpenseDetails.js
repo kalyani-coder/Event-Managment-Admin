@@ -6,33 +6,28 @@ import { Link } from 'react-router-dom';
 import "./ViewExpenseDetails.css";
 
 const ViewExpenseDetails = () => {
-  const [clientName, setClientName] = useState('');
-  const [expenseDate, setExpenseDate] = useState('');
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState('');
+  const managerId = localStorage.getItem('managerId');
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8888/api/expence', {
-        params: {
-          client_Name: clientName,
-          expence_date: expenseDate
-        }
-      });
+      const response = await axios.get(`http://localhost:8888/api/expence/manager/${managerId}`);
       setExpenses(response.data);
       setError('');
     } catch (err) {
-      setError('Error fetching expenses');
+      setExpenses([]); 
+      setError('Manager expense data not available');
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSearch = async () => {
-    await fetchData();
-  };
+    if (managerId) {
+      fetchData();
+    } else {
+      setError('Manager ID not found in localStorage');
+    }
+  }, [managerId]);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -63,7 +58,7 @@ const ViewExpenseDetails = () => {
 
           {error && <Alert variant="danger">{error}</Alert>}
           <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
-            {expenses.length > 0 && (
+            {expenses.length > 0 ? (
               <Table className="table">
                 <thead className="sticky top-0 bg-white">
                   <tr>
@@ -79,7 +74,7 @@ const ViewExpenseDetails = () => {
                 </thead>
                 <tbody style={{ background: "white", borderRadius: "10px" }}>
                   {expenses.map((expense, index) => (
-                    <tr key={expense.id}>
+                    <tr key={expense._id}>
                       <td>{index + 1}</td>
                       <td>{expense.client_Name}</td>
                       <td>{expense.client_contact}</td>
@@ -92,6 +87,8 @@ const ViewExpenseDetails = () => {
                   ))}
                 </tbody>
               </Table>
+            ) : (
+              <p>No expense data available for this manager.</p>
             )}
           </div>
         </div>

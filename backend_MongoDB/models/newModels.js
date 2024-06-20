@@ -325,9 +325,14 @@ const VendorPaymentSchema = new Schema({
   date: String,
   description: String,
   salary: Number,
-  advance_payment: String,
+  advance_payment: Number,
+  total_pay_amount : { type : Number, default : "" },
   time: String,
   bankAccount_Name: String,
+  status : {
+    type : String,
+    default : ""
+  }
 
 });
 
@@ -339,6 +344,7 @@ const VendorPaymentHistorySchema = new Schema({
   event_name: String,
   date: String,
   total_amount: Number,
+  total_pay_amount : Number,
 });
 
 const InventoryStockSchema = new Schema({
@@ -572,6 +578,7 @@ module.exports = {
     StaffSalaryDetailsSchema
   ),
   VendorPayment: mongoose.model("VendorPayment", VendorPaymentSchema),
+
   VendorPaymentHistory: mongoose.model(
     "VendorPaymentHistory",
     VendorPaymentHistorySchema
