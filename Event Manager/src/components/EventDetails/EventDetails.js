@@ -89,6 +89,11 @@ const EventDetails = () => {
     setEventDate(""); // Clear selected event date if event name is selected
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <>
       <Header />
@@ -139,6 +144,8 @@ const EventDetails = () => {
                 <thead className="sticky top-0 bg-white">
                   <tr>
                     <th>Sr. No</th>
+                    <th>Event Name</th>
+                    {/* <th>Date</th> */}
                     <th>Stock Name</th>
                     <th>Vendor Name</th>
                     <th>Purchase Quantity</th>
@@ -152,6 +159,8 @@ const EventDetails = () => {
                   {selectedEventDetails.requirements.map((req, index) => (
                     <tr key={req._id}>
                       <td>{index + 1}</td>
+                      <td>{selectedEventDetails.event_name}</td>
+                      {/* <td>{formatDate(eventDate)}</td>  */}
                       <td>{req.stockName}</td>
                       <td>{req.vendorName}</td>
                       <td>{req.purchaseQuantity}</td>
@@ -172,6 +181,7 @@ const EventDetails = () => {
                   <tr>
                     <th>Sr. No</th>
                     <th>Event Name</th>
+                    {/* <th>Date</th> */}
                     <th>Stock Name</th>
                     <th>Vendor Name</th>
                     <th>Purchase Quantity</th>
@@ -185,7 +195,8 @@ const EventDetails = () => {
                   {selectedEventNameDetails.requirements.map((req, index) => (
                     <tr key={req._id}>
                       <td>{index + 1}</td>
-                      <td>{selectedEvent}</td>
+                      <td>{selectedEventNameDetails.event_name}</td>
+                      {/* <td>{formatDate(selectedEventNameDetails.date)}</td>  */}
                       <td>{req.stockName}</td>
                       <td>{req.vendorName}</td>
                       <td>{req.purchaseQuantity}</td>

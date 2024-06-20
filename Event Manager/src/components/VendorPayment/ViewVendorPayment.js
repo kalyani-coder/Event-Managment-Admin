@@ -3,19 +3,23 @@ import axios from "axios";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
-import { Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Button, Modal, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { FaEdit } from "react-icons/fa"; // Import the edit icon from react-icons
 import myImage from "../VendorPayment/logo.png"; // Ensure the image path is correct
 
 const VendorPaymentView = () => {
   const [vendorPayments, setVendorPayments] = useState([]);
-  const [enquiry, setEnquiry] = useState({
-    customer_name: "John Doe",
-    address: "123 Main St, Anytown, USA",
-    event_date: "2023-01-01",
-    event_venue: "Community Hall"
+  const [showModal, setShowModal] = useState(false);
+  const [editPayment, setEditPayment] = useState({
+    _id: "",
+    fname: "",
+    date: "",
+    paid_amt: "",
+    rem_amt: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -33,26 +37,38 @@ const VendorPaymentView = () => {
     fetchVendorPayments();
   }, []);
 
+  const handleEdit = (payment) => {
+    setEditPayment(payment);
+    setShowModal(true);
+  };
+
+  const handleChange = (e) => {
+    setEditPayment({ ...editPayment, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:8888/api/vendorpayment/${editPayment._id}`,
+        editPayment
+      );
+      setShowModal(false);
+      setVendorPayments((prevPayments) =>
+        prevPayments.map((payment) =>
+          payment._id === editPayment._id ? editPayment : payment
+        )
+      );
+    } catch (error) {
+      console.error("Error updating vendor payment:", error);
+    }
+  };
+
   const downloadPDF = () => {
     const doc = new jsPDF();
 
-    // Add customer and company details
-    const customerData = [
-      // ["Vendor Name", enquiry.customer_name || "-"],
-      // ["Customer Address", enquiry.address || "-"],
-      // ["Event Date", enquiry.event_date || "-"],
-      // ["Event Venue", enquiry.event_venue || "-"],
-    ];
+    const customerData = [];
 
-    const companyData = [
-      ["Company Name", "Tutons Events LLP"],
-      [
-        "Company Address",
-        "Office No.6, Sai Heritage, Baner-Mahalunge Road, Baner, Pune 411045",
-      ],
-      ["Company Phone", "9225522123 / 9226061234"],
-      ["Company Email", "tutonsevents@gmail.com"],
-    ];
+    const companyData = [];
 
     const customerTableX = 10;
     const customerTableY = 40;
@@ -73,19 +89,16 @@ const VendorPaymentView = () => {
 
     const imageWidth = 40;
     const imageHeight = 30;
-    const imageX = 120;
-    const imageY = 10;
+    const imageX = 155;
+    const imageY = 2;
 
-    // Add a title for the vendor payment details table
-    doc.text("Vendor Payment Details", 20, doc.autoTable.previous.finalY + 20);
+    doc.text("Vendor Payment Details", 15, doc.autoTable.previous.finalY + 2);
 
-    // Ensure the image is loaded correctly
     const image = new Image();
     image.src = myImage;
     image.onload = () => {
       doc.addImage(image, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-      // Add company details table
       doc.autoTable({
         body: companyData,
         startY: companyTableY,
@@ -93,9 +106,8 @@ const VendorPaymentView = () => {
         margin: { left: companyTableX },
       });
 
-      // Add vendor payment details table
       doc.autoTable({
-        startY: doc.autoTable.previous.finalY + 30,
+        startY: doc.autoTable.previous.finalY + 10,
         head: [
           [
             "First Name",
@@ -172,6 +184,12 @@ const VendorPaymentView = () => {
                     <td>{payment.paid_amt}</td>
                     <td>{payment.rem_amt}</td>
                     <td>{payment.description}</td>
+                    <td>
+                      <FaEdit
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleEdit(payment)}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -191,6 +209,60 @@ const VendorPaymentView = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Payment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                name="date"
+                value={editPayment.date}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPaidAmount">
+              <Form.Label>Paid Amount</Form.Label>
+              <Form.Control
+                type="number"
+                name="paid_amt"
+                value={editPayment.paid_amt}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formRemAmount">
+              <Form.Label>Remaining Amount</Form.Label>
+              <Form.Control
+                type="number"
+                name="rem_amt"
+                value={editPayment.rem_amt}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                name="description"
+                value={editPayment.description}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
