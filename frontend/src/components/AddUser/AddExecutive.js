@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
-import "./AddExecutive.css";
+import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
-import { Link} from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 const AddExecutive = () => {
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, alert] = useState("");
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setemail] = useState("");
@@ -22,6 +18,7 @@ const AddExecutive = () => {
   const [branch_name, setbranch_name] = useState("");
   const [IFSC_code, setIFSC_code] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleDiscard = () => {
     setfname("");
@@ -36,14 +33,19 @@ const AddExecutive = () => {
     setIFSC_code("");
     setbank_name("");
     setbranch_name("");
+    setProfilePicture(null);
+    setErrors({});
   };
 
   const isValidForm = () => {
-    if (!fname || !lname || !contact) {
-      alert("Please fill out all required fields.");
-      return false;
-    }
-    return true;
+    const newErrors = {};
+    if (!fname) newErrors.fname = "First name is required";
+    if (!lname) newErrors.lname = "Last name is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!contact) newErrors.contact = "Phone is required";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (event) => {
@@ -76,15 +78,14 @@ const AddExecutive = () => {
       );
 
       if (response.status === 200) {
-        // Show success message
         alert("Data submitted successfully!");
-        setShowSuccessAlert(true);
         handleDiscard();
       } else {
         alert("Error while submitting data.");
       }
     } catch (error) {
       console.log("Error", error);
+      alert("Error submitting data. Please try again later.");
     }
   };
 
@@ -134,37 +135,29 @@ const AddExecutive = () => {
     "Uttarakhand",
     "West Bengal",
   ];
+
   return (
     <>
-      <Header />{" "}
-      <div className="w-full  h-screen  flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
-        {" "}
+      <Header />
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh]">
-          {showSuccessAlert && (
-            <Alert
-              variant="success"
-              onClose={() => setShowSuccessAlert(false)}
-              dismissible
-            >
-              {successMessage}
-            </Alert>
-          )}
           <Form onSubmit={handleSubmit} className="">
-          <div className="flex">
-            <Link to={'/addmanager'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
-            </Link>
-            <Link to={'/addaccountant'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
-            </Link>
-            <Link to={'/addexecutive'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
-            </Link>
-            <Link to={'/addvendor'}>
-              <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
-            </Link>
-          </div>
-            <h2 className="text-[30px] pl-[1em] ">Add Executive</h2>
+            <div className="flex">
+              <Link to={'/addmanager'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Manager</button>
+              </Link>
+              <Link to={'/addaccountant'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Accountant</button>
+              </Link>
+              <Link to={'/addexecutive'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
+              </Link>
+              <Link to={'/addvendor'}>
+                <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
+              </Link>
+            </div>
+            <h2 className="text-[30px] pl-[1em]">Add Executive</h2>
+
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="fname">
@@ -176,8 +169,10 @@ const AddExecutive = () => {
                     value={fname}
                     onChange={(e) => setfname(e.target.value)}
                     placeholder="Enter first name"
-                    required
+                  
+                    style={{ borderColor: errors.fname ? "red" : "" }}
                   />
+                  {errors.fname && <div style={{ color: "red" }}>{errors.fname}</div>}
                 </Form.Group>
               </div>
               <div className="col px-5">
@@ -185,41 +180,49 @@ const AddExecutive = () => {
                   <Form.Label>
                     Last Name <span style={{ color: "red" }}>*</span>
                   </Form.Label>
-
                   <Form.Control
                     type="text"
                     value={lname}
                     onChange={(e) => setlname(e.target.value)}
                     placeholder="Enter last name"
-                    required
+                  
+                    style={{ borderColor: errors.lname ? "red" : "" }}
                   />
+                  {errors.lname && <div style={{ color: "red" }}>{errors.lname}</div>}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>
+                    Email <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     type="email"
                     value={email}
                     onChange={(e) => setemail(e.target.value)}
                     placeholder="Enter email"
+            
+                    style={{ borderColor: errors.email ? "red" : "" }}
                   />
+                  {errors.email && <div style={{ color: "red" }}>{errors.email}</div>}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="contact">
                   <Form.Label>
-                    Phone<span style={{ color: "red" }}>*</span>
+                    Phone <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
                     type="tel"
                     value={contact}
                     onChange={(e) => setcontact(e.target.value)}
                     placeholder="Enter phone"
-                    required
+                  
+                    style={{ borderColor: errors.contact ? "red" : "" }}
                   />
+                  {errors.contact && <div style={{ color: "red" }}>{errors.contact}</div>}
                 </Form.Group>
               </div>
             </div>
