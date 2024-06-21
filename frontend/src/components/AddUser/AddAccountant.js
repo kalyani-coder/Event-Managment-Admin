@@ -156,9 +156,9 @@ const AddAccountant = () => {
               <Link to={'/addexecutive'}>
                 <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
               </Link>
-              <Link to={'/addvendor'}>
+              {/* <Link to={'/addvendor'}>
                 <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
-              </Link>
+              </Link> */}
             </div>
             <h2 className="text-[30px] pl-[1em]">Add Accountant</h2>
 
