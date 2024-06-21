@@ -13,8 +13,49 @@ const { Attendance } = require("../models/newModels");
 const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
-const { InventoryStocks,ExpenceForm ,AdvanceExpence} = require('../models/newModels')
+const { InventoryStocks,ExpenceForm ,AdvanceExpence,CustomerQuatationInfo} = require('../models/newModels')
 const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper, allBanks, venue } = require('../models/newModels')
+
+
+
+// NEW CUSTOMER QUATATIOINFO POST ROUTE 
+router.post('/customerquotationinfo', async (req, res) => {
+  try {
+    // Extract the requirements array from the request body
+    const { requirements, customer_Id, customerName } = req.body;
+
+    // Calculate subtotal based on the price of each requirement
+    const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    // Create the initial quotation information object with requirements, customer details, and calculated subtotal
+    const newQuotationInfo = new CustomerQuatationInfo({
+      requirements,
+      customer_Id,
+      customerName,
+      eventName: "",
+      total_days: 0,
+      transport: "",
+      transport_amount: 0,
+      description: "",
+      sub_total: subTotal, 
+      cgst: "",
+      sgst: "",
+      Total_Amount: "",
+      grand_total : "",
+      event_date : "",
+      event_name : "",
+    });
+
+    // Save the new quotation information to the database
+    const createdQuotationInfo = await newQuotationInfo.save();
+
+    // Respond with the created quotation information object
+    res.status(201).json(createdQuotationInfo);
+  } catch (error) {
+    console.error("Error creating quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
 
@@ -27,6 +68,7 @@ router.post("/advanceexpence" , async(req, res)=> {
     res.status(500).json({message : "Internal server error"})
   }
 })
+
 // POST route for the Expence 
 router.post("/expence" , async(req, res)=> {
   const expenceData = new ExpenceForm(req.body)
@@ -87,6 +129,7 @@ router.post("/banktransfer", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 // manager task api post route 
 router.post('/managertask', async (req, res) => {
   try {
@@ -166,8 +209,6 @@ router.post("/manager/login", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 
 // router.post('/addmanager', async (req, res) => {

@@ -4,11 +4,101 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const { QuatationInfo, Event,ExpenceForm ,AdvanceExpence} = require("../models/newModels");
+const { QuatationInfo, Event,ExpenceForm ,AdvanceExpence, CustomerQuatationInfo} = require("../models/newModels");
 const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry,allBanks, venue} = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+
+// NEW CUSTOMERQUOTATION 
+// GET ROUTE 
+router.get('/customerquotationinfo', async (req, res) => {
+  try {
+    const allQuatationInfo = await CustomerQuatationInfo.find();
+    res.status(200).json(allQuatationInfo);
+  } catch (err) {
+    console.error("Error fetching quotation info:", err);
+    res.status(500).json({ message: "Internal server error" });
+  } 
+});
+
+// GET BYE EVENT DATE /
+router.get('/customerquotationinfo/event/:eventDate', async (req, res) => {
+  try {
+    const eventDate = req.params.eventDate;
+    const getByEventName = await CustomerQuatationInfo.findOne({ event_date: eventDate });
+
+    if (getByEventName) {
+      res.status(200).json(getByEventName);
+    } else {
+      res.status(404).json({ message: 'Quotation not found for the given event date' });
+    }
+  } catch (e) {
+    console.error("Error fetching quotation information:", e);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET BBYE EVENT NAME 
+router.get('/customerquotationinfo/eventname/:eventName', async (req, res) => {
+  try {
+    const eventName = req.params.eventName;
+    const getByEventName = await CustomerQuatationInfo.findOne({ event_name: eventName });
+
+    if (getByEventName) {
+      res.status(200).json(getByEventName);
+    } else {
+      res.status(404).json({ message: 'Quotation not found for the given event date' });
+    }
+  } catch (e) {
+    console.error("Error fetching quotation information:", e);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET BY CUATOMER NAME 
+router.get('/customerquotationinfo/customer/:customerId', async (req, res) => {
+  try {
+    const { customerId } = req.params;
+    const quotationInfo = await CustomerQuatationInfo.findOne({ customer_Id: customerId });
+
+    if (quotationInfo) {
+      res.status(200).json(quotationInfo);
+    } else {
+      res.status(404).json({ error: 'Quotation information not found' });
+    }
+  } catch (error) {
+    console.error("Error fetching quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET BYE STOCK ID 
+router.get('/customerquotationinfo/stock/:stockId', async (req, res) => {
+  try {
+    const { stockId } = req.params;
+    const quotationInfo = await CustomerQuatationInfo.findOne({ 'requirements._id': stockId }, { 'requirements.$': 1 });
+    if (quotationInfo && quotationInfo.requirements && quotationInfo.requirements.length > 0) {
+      res.status(200).json(quotationInfo.requirements[0]);
+    } else {
+      res.status(404).json({ message: 'Stock object not found for the given _id' });
+    }
+  } catch (error) {
+    console.error("Error fetching stock object:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 // ENquiry GET ROUTE
 router.get("enquiry/customers/:managerId" , async(req, res) => {
@@ -28,8 +118,6 @@ router.get("enquiry/customers/:managerId" , async(req, res) => {
 })
 
 
-
-
 router.get("/advanceexpence" , async(req, res) => {
   try{
     const getbyExpence = await AdvanceExpence.find()
@@ -38,6 +126,8 @@ router.get("/advanceexpence" , async(req, res) => {
     res.status(500).json({message : "Internal server error"})
   }
 })
+
+
 router.get("/advanceexpence/:id", async(req, res) =>{
   const id = req.params.id
   try{
@@ -50,6 +140,7 @@ router.get("/advanceexpence/:id", async(req, res) =>{
     res.status(500).json({message : "Internal server error"})
   }
 })
+
 // Expence form get route 
 
 router.get("/expence" , async(req, res) => {
@@ -60,6 +151,8 @@ router.get("/expence" , async(req, res) => {
     res.status(500).json({message : "Internal server error"})
   }
 })
+
+
 router.get("/expence/:id", async(req, res) =>{
   const id = req.params.id
   try{
@@ -121,6 +214,10 @@ router.get("/event/manager/:managerId", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+
+
 
 
 // get quatationonfo 
@@ -198,6 +295,8 @@ router.get('/quotationinfo/stock/:stockId', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
 
 
 // venue get route 

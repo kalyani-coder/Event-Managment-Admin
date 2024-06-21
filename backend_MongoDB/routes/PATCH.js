@@ -5,9 +5,110 @@ const { AddVendor } = require('../models/newModels')
 const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
-const { AddEventMaster, advancePaymantManager } = require("../models/newModels")
+const { AddEventMaster, advancePaymantManager ,CustomerQuatationInfo} = require("../models/newModels")
 const { ManagerDetails, ManagerTask, AdvanceExpence } = require("../models/newModels");
 const { QuatationInfo, allBanks, ExpenceForm, VendorPayment } = require("../models/newModels")
+
+
+
+// NEW CUSTOMER QUOTATION INFO PATCH ROUTE 
+router.patch('/customerquotationinfo/:customerId', async (req, res) => {
+  try {
+    const { customerId } = req.params;
+    const newRequirements = req.body.requirements;
+
+    const quotationInfo = await CustomerQuatationInfo.findOne({ customer_Id: customerId });
+
+    if (!quotationInfo) {
+      return res.status(404).json({ error: 'Quotation information not found' });
+    }
+
+    const newSubtotal = newRequirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    quotationInfo.sub_total += newSubtotal;
+
+    quotationInfo.requirements = quotationInfo.requirements.concat(newRequirements);
+
+    const updatedQuotationInfo = await quotationInfo.save();
+
+    res.status(200).json(updatedQuotationInfo);
+  } catch (error) {
+    console.error("Error updating quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PATCH BY REQUIREENT ID 
+router.patch('/customerquotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
+  const { customerId, requirementId } = req.params;
+  const updatedRequirement = req.body;
+
+  try {
+    const quotation = await CustomerQuatationInfo.findOneAndUpdate(
+      { customer_Id: customerId, 'requirements._id': requirementId },
+      { $set: { 'requirements.$': updatedRequirement } },
+      { new: true }
+    );
+
+    if (!quotation) {
+      return res.status(404).json({ message: 'Quotation not found' });
+    }
+
+    res.json(quotation);
+  } catch (error) {
+    console.error('Error updating requirement', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+router.patch('/customersavedquotation/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    let existingQuotationInfo = await CustomerQuatationInfo.findOne({ customer_Id: userId });
+
+    if (!existingQuotationInfo) {
+      return res.status(404).json({ error: 'Quotation information not found' });
+    }
+
+    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
+
+    existingQuotationInfo.transport = transport;
+    existingQuotationInfo.transport_amount = transport_amount;
+    existingQuotationInfo.description = description;
+    existingQuotationInfo.grand_total = grand_total;
+    existingQuotationInfo.cgst = cgst;
+    existingQuotationInfo.sgst = sgst;
+    existingQuotationInfo.Total_Amount = Total_Amount;
+    existingQuotationInfo.event_name = event_name;
+    existingQuotationInfo.event_date = event_date;
+    existingQuotationInfo.state = state;
+
+
+
+    existingQuotationInfo = await existingQuotationInfo.save();
+
+    res.json(existingQuotationInfo);
+  } catch (error) {
+    console.error("Error updating quotation information:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -64,10 +165,6 @@ router.patch("/vendorpayment/update/:id", async (req, res) => {
 });
 
 
-
-
-
-
 router.patch('/quotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
   const { customerId, requirementId } = req.params;
   const updatedRequirement = req.body;
@@ -89,7 +186,6 @@ router.patch('/quotationinfo/customer/:customerId/requirements/:requirementId', 
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 
 router.patch("/advanceexpence/:id", async (req, res) => {

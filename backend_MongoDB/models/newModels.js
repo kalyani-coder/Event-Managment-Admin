@@ -395,6 +395,44 @@ const QuatationInfo = new Schema({
 
 })
 
+
+const CustomerQuotation = new Schema({
+
+  customerName: String,
+  customer_Id: String,
+  transport: String,
+  transport_amount: Number,
+  description: String,
+  grand_total: Number,
+  sub_total: Number,
+  cgst: String,
+  sgst: String,
+  Total_Amount: Number,
+  event_name: String,
+  event_date: String,
+  state : String,
+  igst : String,
+
+
+
+
+  requirements: [{
+    stockName: String,
+    stockId: String,
+    vendorName: String,
+    vendorId: String,
+    purchaseQuantity: Number,
+    rate_per_days: Number,
+    unit: String,
+    days: Number,
+    price: Number,
+
+  }]
+
+
+})
+
+
 const InventoryStocks = new Schema({
   Category: {
     type: String,
@@ -560,6 +598,7 @@ module.exports = {
   AddVendor: mongoose.model("AddVendor", AddVendor),
   AddEventMaster: mongoose.model("Addevent", AddEventMaster),
   QuatationInfo: mongoose.model("quatationinfo", QuatationInfo),
+  CustomerQuatationInfo: mongoose.model("CustomerQuatationinfo", CustomerQuotation),
   InventoryStocks: mongoose.model('inventory-stocks', InventoryStocks),
   Enquiry: mongoose.model("Enquiry", EnquirySchema),
   Quotation: mongoose.model("Quotation", QuotationSchema),
