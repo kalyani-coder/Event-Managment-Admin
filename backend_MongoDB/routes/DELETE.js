@@ -4,8 +4,63 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks,ExpenceForm} =  require('../models/newModels')
-const {AddEventMaster,advancePaymantManager,AdvanceExpence} =  require('../models/newModels')
+const {AddEventMaster,advancePaymantManager,AdvanceExpence,CustomerQuatationInfo} =  require('../models/newModels')
 const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper, allBanks, venue} = require("../models/newModels");
+
+// DELLETE FOR CUS QUOTATION INFO BY ID 
+router.delete('/customerquotationinfo/:id', async (req, res) => {
+  const deletedManagerId = req.params.id;
+
+  try {
+    const deletedManager = await CustomerQuatationInfo.findByIdAndDelete(deletedManagerId);
+
+    if (!deletedManager) {
+      return res.status(404).json({message: 'quatationinfo not found'});
+    }
+
+    res.status(200).json({ message: 'quatationinfo deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting Event by ID:', error);
+    res.status(500).json({ message: 'Internal server error'});
+  }
+});
+
+// DELETE BYE REQUIREMENT ID 
+router.delete('/customerquotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
+  const { customerId, requirementId } = req.params;
+
+  try {
+      const quotation = await CustomerQuatationInfo.findOneAndUpdate(
+          { customer_Id: customerId },
+          { $pull: { requirements: { _id: requirementId } } },
+          { new: true }
+      );
+
+      if (!quotation) {
+          return res.status(404).json({ message: 'Quotation not found' });
+      }
+
+      res.json(quotation);
+  } catch (error) {
+      console.error('Error deleting requirement', error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 router.delete("/advanceexpence/:id" , async(req, res) => {
