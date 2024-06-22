@@ -52,11 +52,12 @@ function InternalCosting() {
 
   const [newSelectedStockId, setNewSelectedStockId] = useState("");
   const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
+  const [VedorId, SetVedorId] = useState("");
 
   const [modalShow, setModalShow] = useState(false);
   const [quotationData, setQuotationData] = useState({ requirements: [] });
   console.log("vedant new", quotationData);
-
+  console.log("VedorId", VedorId);
   // useEffect(() => {
   //   if (enquiry && enquiry._id) {
   //     handleViewQuotation();
@@ -80,24 +81,38 @@ function InternalCosting() {
   };
   const handleClose = () => setModalShow(false);
 
- 
- 
-
   useEffect(() => {
     axios
       .get("http://localhost:8888/api/inventory-stocks")
       .then((response) => {
         const data = response.data;
         const names = data.map((stock) => stock.Stock_Name);
-        console.log("names",data)
+        console.log("names", data);
         setStockNames(names);
         setNewStocksData(data);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  useEffect(() => {
+    let newQuantity = 0;
+    const selectedVendorData = newstocksData.find(
+      (stock) =>
+        stock.Vendor_Name === newSelectedVendor &&
+        stock.Stock_Name === newSelectedStock
+    );
+
+    if (selectedVendorData && storeQuantity) {
+      newQuantity = selectedVendorData.Stock_Quantity - storeQuantity;
+      console.log("New quantity:", newQuantity);
+      setNewSelectedStockQuantityValue(newQuantity);
+    }
+  }, [storeQuantity]);
+
   const newhandleStockChange = (e) => {
     const selectedStockName = e.target.value;
+    console.log("selectedStockName", selectedStockName);
+
     const selectedStock = newstocksData.find(
       (stock) => stock.Stock_Name === selectedStockName
     );
@@ -124,6 +139,7 @@ function InternalCosting() {
 
   const newhandleVendorChange = async (e) => {
     const selectedVendorName = e.target.value;
+    console.log("selectedVender", selectedVendorName);
     setNewSelectedVendor(selectedVendorName);
 
     const selectedVendorId = e.target.value; // Assuming the value contains the ID of the selected vendor
@@ -138,6 +154,7 @@ function InternalCosting() {
     if (selectedVendorData) {
       setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
       setNewSelectedStockPriceValue(selectedVendorData.Price);
+      SetVedorId(selectedVendorData.Vendor_Id);
     } else {
       setNewSelectedStockQuantityValue("");
       setNewSelectedStockPriceValue("");
@@ -170,8 +187,10 @@ function InternalCosting() {
 
     if (field === "qty" || field === "price" || field === "rateperdays") {
       newRows[index].total =
-        newRows[index].qty * newRows[index].price * newRows[index].rateperdays;
-      setStoreQuantity(newRows[index].qty)
+        newRows[index].qty *
+        newSelectedStockPriceValue *
+        newRows[index].rateperdays;
+      setStoreQuantity(newRows[index].qty);
     }
 
     setRows(newRows);
@@ -287,10 +306,26 @@ function InternalCosting() {
       setNewSelectedStockId("");
       setNewSelectedVendor("");
       setNewSelectedVendorId("");
+      setNewSelectedStockPriceValue("");
+      setNewSelectedStockQuantityValue("");
     } catch (error) {
       console.error("Error adding/updating stock", error);
       alert("Error adding/updating stock");
     }
+
+    axios
+      .patch(
+        `http://localhost:8888/api/inventory-stocks/vendor/${VedorId}/stock/${newSelectedStock}`,
+        {
+          quantity: storeQuantity,
+        }
+      )
+      .then((response) => {
+        console.log("Stock quantity updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating stock quantity:", error);
+      });
   };
 
   const handleTransportChnage = (event) => {
@@ -811,7 +846,7 @@ function InternalCosting() {
                         />
                       </td>
                       <td style={{ width: "10%" }}>
-                        <input
+                        {/* <input
                           type="number"
                           value={row.price}
                           onChange={(e) =>
@@ -822,6 +857,14 @@ function InternalCosting() {
                             )
                           }
                           className="form-control price"
+                          step="0"
+                          min="0"
+                        /> */}
+                        <input
+                          type="number"
+                          value={newSelectedStockQuantityValue}
+                          readOnly
+                          className="form-control qty"
                           step="0"
                           min="0"
                         />
