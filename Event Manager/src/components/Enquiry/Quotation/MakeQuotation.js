@@ -226,7 +226,7 @@ function QuotationForm() {
         setIsFirstSubmission(false);
       } else {
         response = await axios.patch(
-          `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
+          `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
           data
         );
         alert("Stock updated successfully");
@@ -580,8 +580,12 @@ function QuotationForm() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8888/api/savedquotation/${customerId}`,
+        `http://localhost:8888/api/customerquotationinfo/${customerId}`,
         dataToUpdate
+      );
+      console.log(`http://localhost:8888/api/savedquotation/${customerId}`);
+      console.log(
+        `http://localhost:8888/api/customerquotationinfo/${customerId}`
       );
       alert("Quotation Created successfully");
       // Handle successful response
@@ -596,7 +600,7 @@ function QuotationForm() {
 
     try {
       await axios.delete(
-        `http://localhost:8888/api/quotationinfo/customer/${customerId}/requirements/${requirementId}`
+        `http://localhost:8888/api/customerquotationinfo/customer/${customerId}/requirements/${requirementId}`
       );
 
       // Update the local state to reflect the deletion

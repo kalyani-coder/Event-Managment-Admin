@@ -862,7 +862,7 @@ function InternalCosting() {
                         /> */}
                         <input
                           type="number"
-                          value={newSelectedStockQuantityValue}
+                          value={newSelectedStockPriceValue}
                           readOnly
                           className="form-control qty"
                           step="0"

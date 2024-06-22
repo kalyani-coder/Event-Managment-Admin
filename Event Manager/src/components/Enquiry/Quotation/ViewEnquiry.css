@@ -12,6 +12,11 @@
 .table-responsive {
   overflow-x: auto;
 }
+.modal-content {
+  width: 63em;
+  position: relative;
+  right: 210px;
+}
 
 @media (max-width: 768px) {
   .table th:nth-child(2),

@@ -150,7 +150,10 @@ const ViewInquiryPage = () => {
         `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
       );
       setEditedQuotationData(response.data);
-      console.log("Fetched Quotation Data:", response.data);
+      console.log(
+        "Fetched Quotation Data:",
+        `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
+      );
     } catch (error) {
       console.error("Error fetching quotation data:", error);
     }
@@ -344,231 +347,224 @@ const ViewInquiryPage = () => {
               <Modal
                 show={showQutation}
                 onHide={closePopup}
-                dialogClassName="modal-dialog-centered modal-dialog-responsive "
+                dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
                 <Modal.Header closeButton>
                   {/* <Modal.Title>Quotations</Modal.Title> */}
                 </Modal.Header>
-                <div style={{ display: "flex" }}>
-                  <div>
-                    <Modal.Body style={{ overflowY: "auto" }}>
-                      {quotationData && selectedInquiry ? (
-                        <div className="card">
-                          <div className="card-body">
-                            <div style={{ marginBottom: "20px" }}>
-                              <div>
-                                <strong>Client Name:</strong>{" "}
-                                {selectedInquiry.customer_name}
-                              </div>
-                              <div>
-                                <strong>Address:</strong>{" "}
-                                {selectedInquiry.address}
-                              </div>
-                              <div>
-                                <strong>Date:</strong>{" "}
-                                {selectedInquiry.event_date}
-                              </div>
-                              <div>
-                                <strong>Venue:</strong>{" "}
-                                {selectedInquiry.event_venue}
-                              </div>
-                              <div>
-                                <strong>State:</strong> {selectedInquiry.state}
-                              </div>
+                <Modal.Body style={{ display: "flex", overflowY: "auto" }}>
+                  <div style={{ flex: 1, paddingRight: "10px" }}>
+                    {quotationData && selectedInquiry ? (
+                      <div className="card">
+                        <div className="card-body">
+                          <div style={{ marginBottom: "20px" }}>
+                            <div>
+                              <strong>Client Name:</strong>{" "}
+                              {selectedInquiry.customer_name}
                             </div>
+                            <div>
+                              <strong>Address:</strong>{" "}
+                              {selectedInquiry.address}
+                            </div>
+                            <div>
+                              <strong>Date:</strong>{" "}
+                              {selectedInquiry.event_date}
+                            </div>
+                            <div>
+                              <strong>Venue:</strong>{" "}
+                              {selectedInquiry.event_venue}
+                            </div>
+                            <div>
+                              <strong>State:</strong> {selectedInquiry.state}
+                            </div>
+                          </div>
 
-                            <div className="table-responsive">
-                              <table className="table table-striped">
-                                <thead>
-                                  <tr>
-                                    <th>Sr.No.</th>
-                                    <th>Perticular</th>
-                                    {/* <th>Description</th> */}
-                                    <th>Per</th>
-                                    <th>Unit</th>
-                                    <th>Rate</th>
-                                    <th>Days</th>
-                                    <th>Amount</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {quotationData.requirements.map(
-                                    (req, index) => (
-                                      <tr key={req._id}>
-                                        <td>{index + 1}</td>
-                                        <td>{req.stockName}</td>
-                                        {/* <td>{req.description}</td> */}
-                                        <td>{req.purchaseQuantity}</td>
-                                        <td>{req.unit}</td>
-                                        <td>{req.rate_per_days}</td>
-                                        <td>{req.days}</td>
-                                        <td>{req.price} Rs</td>
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
+                          <div className="table-responsive">
+                            <table className="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Sr.No.</th>
+                                  <th>Particular</th>
+                                  <th>Per</th>
+                                  <th>Unit</th>
+                                  <th>Rate</th>
+                                  <th>Days</th>
+                                  <th>Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {quotationData.requirements.map(
+                                  (req, index) => (
+                                    <tr key={req._id}>
+                                      <td>{index + 1}</td>
+                                      <td>{req.stockName}</td>
+                                      <td>{req.purchaseQuantity}</td>
+                                      <td>{req.unit}</td>
+                                      <td>{req.rate_per_days}</td>
+                                      <td>{req.days}</td>
+                                      <td>{req.price} Rs</td>
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
 
+                          <div>
+                            <strong>Transport:</strong>{" "}
+                            {quotationData.transport}
+                          </div>
+                          <div>
+                            <strong>Transport Amount:</strong>{" "}
+                            {quotationData.transport_amount}
+                          </div>
+                          <div>
+                            <strong>Description:</strong>{" "}
+                            {quotationData.description}
+                          </div>
+                          <div style={{ marginTop: "20px" }}>
                             <div>
-                              <strong>Transport:</strong>{" "}
-                              {quotationData.transport}
+                              <strong>Sub Total:</strong>{" "}
+                              {quotationData
+                                ? quotationData.sub_total
+                                : "Loading..."}
                             </div>
-                            <div>
-                              <strong>Transport Amount:</strong>{" "}
-                              {quotationData.transport_amount}
-                            </div>
-                            <div>
-                              <strong>Description:</strong>{" "}
-                              {quotationData.description}
-                            </div>
-                            <div style={{ marginTop: "20px" }}>
-                              <div>
-                                <strong>Sub Total:</strong>{" "}
-                                {quotationData
-                                  ? quotationData.sub_total
-                                  : "Loading..."}
-                              </div>
-                              {selectedInquiry.state === "Maharashtra" ? (
-                                <>
-                                  <div>
-                                    <strong> CGST:</strong> 9 %
-                                  </div>
-                                  <div>
-                                    <strong> SGST:</strong> 9 %
-                                  </div>
-                                </>
-                              ) : (
+                            {selectedInquiry.state === "Maharashtra" ? (
+                              <>
                                 <div>
-                                  <strong> IGST:</strong> 18 %
+                                  <strong>CGST:</strong> 9 %
                                 </div>
-                              )}
+                                <div>
+                                  <strong>SGST:</strong> 9 %
+                                </div>
+                              </>
+                            ) : (
                               <div>
-                                <strong>Grand Total:</strong>{" "}
-                                {quotationData.grand_total}
+                                <strong>IGST:</strong> 18 %
                               </div>
-                              <div>
-                                <strong>Total Amount:</strong>{" "}
-                                {quotationData.Total_Amount}
-                              </div>
+                            )}
+                            <div>
+                              <strong>Grand Total:</strong>{" "}
+                              {quotationData.grand_total}
+                            </div>
+                            <div>
+                              <strong>Total Amount:</strong>{" "}
+                              {quotationData.Total_Amount}
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div>Loading...</div>
-                      )}
-                    </Modal.Body>
+                      </div>
+                    ) : (
+                      <div>Loading...</div>
+                    )}
                   </div>
-                  <div>
-                    <Modal.Body style={{ overflowY: "auto" }}>
-                      {editedQuotationData && selectedInquiry ? (
-                        <div className="card">
-                          <div className="card-body">
-                            <div style={{ marginBottom: "20px" }}>
-                              <div>
-                                <strong>Client Name:</strong>{" "}
-                                {selectedInquiry.customer_name}
-                              </div>
-                              <div>
-                                <strong>Address:</strong>{" "}
-                                {selectedInquiry.address}
-                              </div>
-                              <div>
-                                <strong>Date:</strong>{" "}
-                                {selectedInquiry.event_date}
-                              </div>
-                              <div>
-                                <strong>Venue:</strong>{" "}
-                                {selectedInquiry.event_venue}
-                              </div>
-                              <div>
-                                <strong>State:</strong> {selectedInquiry.state}
-                              </div>
-                            </div>
 
-                            <div className="table-responsive">
-                              <table className="table table-striped">
-                                <thead>
-                                  <tr>
-                                    <th>Sr.No.</th>
-                                    <th>Perticular</th>
-                                    {/* <th>Description</th> */}
-                                    <th>Per</th>
-                                    <th>Unit</th>
-                                    <th>Rate</th>
-                                    <th>Days</th>
-                                    <th>Amount</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {quotationData.requirements.map(
-                                    (req, index) => (
-                                      <tr key={req._id}>
-                                        <td>{index + 1}</td>
-                                        <td>{req.stockName}</td>
-                                        {/* <td>{req.description}</td> */}
-                                        <td>{req.purchaseQuantity}</td>
-                                        <td>{req.unit}</td>
-                                        <td>{req.rate_per_days}</td>
-                                        <td>{req.days}</td>
-                                        <td>{req.price} Rs</td>
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
+                  <div style={{ flex: 1, paddingLeft: "10px" }}>
+                    {editedQuotationData && selectedInquiry ? (
+                      <div className="card">
+                        <div className="card-body">
+                          <div style={{ marginBottom: "20px" }}>
+                            <div>
+                              <strong>Client Name:</strong>{" "}
+                              {selectedInquiry.customer_name}
                             </div>
+                            <div>
+                              <strong>Address:</strong>{" "}
+                              {selectedInquiry.address}
+                            </div>
+                            <div>
+                              <strong>Date:</strong>{" "}
+                              {selectedInquiry.event_date}
+                            </div>
+                            <div>
+                              <strong>Venue:</strong>{" "}
+                              {selectedInquiry.event_venue}
+                            </div>
+                            <div>
+                              <strong>State:</strong> {selectedInquiry.state}
+                            </div>
+                          </div>
 
+                          <div className="table-responsive">
+                            <table className="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Sr.No.</th>
+                                  <th>Particular</th>
+                                  <th>Per</th>
+                                  <th>Unit</th>
+                                  <th>Rate</th>
+                                  <th>Days</th>
+                                  <th>Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {editedQuotationData.requirements.map(
+                                  (req, index) => (
+                                    <tr key={req._id}>
+                                      <td>{index + 1}</td>
+                                      <td>{req.stockName}</td>
+                                      <td>{req.purchaseQuantity}</td>
+                                      <td>{req.unit}</td>
+                                      <td>{req.rate_per_days}</td>
+                                      <td>{req.days}</td>
+                                      <td>{req.price} Rs</td>
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <div>
+                            <strong>Transport:</strong>{" "}
+                            {editedQuotationData.transport}
+                          </div>
+                          <div>
+                            <strong>Transport Amount:</strong>{" "}
+                            {editedQuotationData.transport_amount}
+                          </div>
+                          <div>
+                            <strong>Description:</strong>{" "}
+                            {editedQuotationData.description}
+                          </div>
+                          <div style={{ marginTop: "20px" }}>
                             <div>
-                              <strong>Transport:</strong>{" "}
-                              {editedQuotationData.transport}
+                              <strong>Sub Total:</strong>{" "}
+                              {editedQuotationData
+                                ? editedQuotationData.sub_total
+                                : "Loading..."}
                             </div>
-                            <div>
-                              <strong>Transport Amount:</strong>{" "}
-                              {editedQuotationData.transport_amount}
-                            </div>
-                            <div>
-                              <strong>Description:</strong>{" "}
-                              {editedQuotationData.description}
-                            </div>
-                            <div style={{ marginTop: "20px" }}>
-                              <div>
-                                <strong>Sub Total:</strong>{" "}
-                                {quotationData
-                                  ? editedQuotationData.sub_total
-                                  : "Loading..."}
-                              </div>
-                              {selectedInquiry.state === "Maharashtra" ? (
-                                <>
-                                  <div>
-                                    <strong> CGST:</strong> 9 %
-                                  </div>
-                                  <div>
-                                    <strong> SGST:</strong> 9 %
-                                  </div>
-                                </>
-                              ) : (
+                            {selectedInquiry.state === "Maharashtra" ? (
+                              <>
                                 <div>
-                                  <strong> IGST:</strong> 18 %
+                                  <strong>CGST:</strong> 9 %
                                 </div>
-                              )}
+                                <div>
+                                  <strong>SGST:</strong> 9 %
+                                </div>
+                              </>
+                            ) : (
                               <div>
-                                <strong>Grand Total:</strong>{" "}
-                                {editedQuotationData.grand_total}
+                                <strong>IGST:</strong> 18 %
                               </div>
-                              <div>
-                                <strong>Total Amount:</strong>{" "}
-                                {editedQuotationData.Total_Amount}
-                              </div>
+                            )}
+                            <div>
+                              <strong>Grand Total:</strong>{" "}
+                              {editedQuotationData.grand_total}
+                            </div>
+                            <div>
+                              <strong>Total Amount:</strong>{" "}
+                              {editedQuotationData.Total_Amount}
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div>Loading...</div>
-                      )}
-                    </Modal.Body>
+                      </div>
+                    ) : (
+                      <div>Loading...</div>
+                    )}
                   </div>
-                </div>
+                </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={closePopup}>
                     Close
