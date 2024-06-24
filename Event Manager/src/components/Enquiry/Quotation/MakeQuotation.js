@@ -12,7 +12,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 function QuotationForm() {
   const location = useLocation();
   const { enquiry } = location.state || {};
-  console.log("vedant", enquiry);
+  // console.log("vedant", enquiry);
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -52,19 +52,14 @@ function QuotationForm() {
 
   const [modalShow, setModalShow] = useState(false);
   const [quotationData, setQuotationData] = useState({ requirements: [] });
-  console.log("vedant new", quotationData);
-
-  // useEffect(() => {
-  //     if (enquiry && enquiry._id) {
-  //         handleViewQuotation();
-  //     }
-  // }, [enquiry]);
+  console.log("vedant new", quotationData.requirements);
 
   const handleViewQuotation = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
+        ` http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
       );
+
       setQuotationData(response.data);
       console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
       setModalShow(true);
@@ -155,6 +150,7 @@ function QuotationForm() {
   }, [rows]);
 
   const handleChange = (index, field, value) => {
+    // console.log("index", index, field, value);
     const newRows = [...rows];
     newRows[index][field] = value;
 
@@ -183,8 +179,9 @@ function QuotationForm() {
     const fetchQuotationData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
+          ` http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
         );
+
         setQuotationData(response.data);
       } catch (error) {
         console.error("Error fetching quotation data", error);
@@ -223,7 +220,7 @@ function QuotationForm() {
         );
         console.log("response", response.data);
         alert("Stock added successfully");
-        setIsFirstSubmission(false);
+        // setIsFirstSubmission(false);
       } else {
         response = await axios.patch(
           `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
@@ -580,13 +577,10 @@ function QuotationForm() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8888/api/customerquotationinfo/${customerId}`,
+        ` http://localhost:8888/api/customersavedquotation/${customerId}`,
         dataToUpdate
       );
-      console.log(`http://localhost:8888/api/savedquotation/${customerId}`);
-      console.log(
-        `http://localhost:8888/api/customerquotationinfo/${customerId}`
-      );
+
       alert("Quotation Created successfully");
       // Handle successful response
     } catch (error) {
@@ -596,6 +590,7 @@ function QuotationForm() {
   };
 
   const handleDelete = async (requirementId) => {
+    console.log("rweb", requirementId);
     const customerId = quotationData.customer_Id;
 
     try {
@@ -608,6 +603,8 @@ function QuotationForm() {
         (req) => req._id !== requirementId
       );
       setQuotationData({ ...quotationData, requirements: updatedRequirements });
+      setGrandTotal(null);
+      setSubtotal(null);
 
       alert("Requirement deleted successfully");
     } catch (error) {
