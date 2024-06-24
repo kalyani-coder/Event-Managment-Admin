@@ -72,9 +72,9 @@ const EventDetails = ({ routes }) => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="filter-container">
-            <input type="text" placeholder="Search Event" value={searchTerm} onChange={handleSearchInputChange} />
-            <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-            <input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+            <input type="text" placeholder="Search Event by customer name or event name" value={searchTerm} onChange={handleSearchInputChange}/>
+          <span>Start date:</span> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+          <span>End date:</span><input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">View Events</h2>
