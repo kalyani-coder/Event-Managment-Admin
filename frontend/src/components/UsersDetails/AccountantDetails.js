@@ -7,7 +7,6 @@ import Header from "../Sidebar/Header";
 const AccountantDetails = () => {
   const [accountantData, setAccountantData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredAccountantData, setFilteredAccountantData] = useState([]);
 
   useEffect(() => {
     axios
@@ -20,33 +19,26 @@ const AccountantDetails = () => {
       });
   }, []);
 
-  useEffect(() => {
-    const filteredData = accountantData.filter((accountant) => {
-      const fname = accountant.fname || "";
-      const lname = accountant.lname || "";
-      const contact = accountant.contact || "";
-      const address = accountant.address || "";
+  const filteredAccountantData = accountantData.filter((accountant) => {
+    const fname = accountant.fname ? accountant.fname.toString() : "";
+    const lname = accountant.lname ? accountant.lname.toString() : "";
+    const contact = accountant.contact ? accountant.contact.toString() : "";
+    const address = accountant.address ? accountant.address.toString() : "";
 
-      return (
-        fname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        address.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
-
-    setFilteredAccountantData(filteredData);
-  }, [searchQuery, accountantData]);
+    return (
+      fname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   return (
     <>
       <Header />
-      <div
-        className="w-full  h-screen
-        flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
-      >
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-        <div className="flex">
+          <div className="flex">
             <Link to={'/managerdetails'}>
               <button className="btn btn-primary mr-4 mb-4">Manager Details</button>
             </Link>
@@ -56,9 +48,9 @@ const AccountantDetails = () => {
             <Link to={'/executicedetails'}>
               <button className="btn btn-primary mr-4 mb-4">Executive Details</button>
             </Link>
-            <Link to={'/vendordetails'}>
-              <button className="btn btn-primary mr-4 mb-4"> Vendor Details</button>
-            </Link>
+            {/* <Link to={'/vendordetails'}>
+              <button className="btn btn-primary mr-4 mb-4">Vendor Details</button>
+            </Link> */}
           </div>
           <h2 className="text-[30px]">Accountant Details</h2>
           <div className="mb-4">
@@ -72,31 +64,23 @@ const AccountantDetails = () => {
               />
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-md-3 overflow-y-auto h-[70vh]  md:mt-0 w-full">
+          <div className="row row-cols-1 row-cols-md-3 overflow-y-auto h-[70vh] md:mt-0 w-full">
             {filteredAccountantData.length > 0 ? (
               filteredAccountantData.map((accountant) => (
-                <div className="col mb-4">
-                  <Card
-                    key={accountant.id}
-                    style={{ width: "100%", marginBottom: "20px" }}
-                  >
+                <div className="col mb-4" key={accountant._id}>
+                  <Card style={{ width: "100%", marginBottom: "20px" }}>
                     <Card.Body>
                       <div className="d-flex align-items-center justify-content-between">
-                        <div className="">
-                          <Card.Title>{`${accountant.fname || ""} ${
-                            accountant.lname || ""
-                          }`}</Card.Title>
+                        <div>
+                          <Card.Title>{`${accountant.fname || ""} ${accountant.lname || ""}`}</Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">
                             Contact Number: {accountant.contact || ""}
                           </Card.Subtitle>
                           {/* <Card.Text>Address: {accountant.address || ''}</Card.Text> */}
                         </div>
-                        <div className="">
-                          {" "}
+                        <div>
                           <Link
-                            to={{
-                              pathname: `/accountant/${accountant._id}`,
-                            }}
+                            to={`/accountant/${accountant._id}`}
                             className="btn btn-info"
                             state={accountant}
                           >

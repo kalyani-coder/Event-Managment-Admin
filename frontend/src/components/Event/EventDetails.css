@@ -15,7 +15,11 @@
     font-size: 16px;
     transition: all 0.3s ease;
   }
-  
+  .filter-container input[type="text"]{
+  width: 370px;
+  }
+
+
   /* Focus effect */
   .filter-container input[type="text"]:focus,
   .filter-container input[type="date"]:focus {
@@ -31,4 +35,7 @@
     align-items: flex-start;
     margin-bottom: 20px;
   }
+
+ 
   
+ 

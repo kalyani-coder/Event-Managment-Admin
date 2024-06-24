@@ -66,13 +66,13 @@ const ViewSalary = () => {
                 {" "}
                 <tr>
                   {/* <th className="text-center">Staff ID</th> */}
-                  <th className="text-center">First Name</th>
-                  <th className="text-center">Last Name</th>
+                  <th className="text-center">Salary type</th>
+                  <th className="text-center"> Name</th>
                   <th className="text-center">Salary</th>
                   <th className="text-center">Date</th>
                   <th className="text-center">Month</th>
                   <th className="text-center">Advance Payment</th>
-                  <th className="text-center">Remaining Payment</th>
+                  <th className="text-center">Balance amount</th>
                   <th className="text-center">Incentive</th>
                   <th className="text-center">Deduct Amount</th>
                 </tr>
@@ -81,13 +81,13 @@ const ViewSalary = () => {
                 {filteredSalaryData.map((item) => (
                   <tr key={item.staff_id}>
                     {/* <td className="text-center">{item.staff_id}</td> */}
-                    <td className="text-center">{item.fname}</td>
-                    <td className="text-center">{item.lname}</td>
+                    <td className="text-center">{item.type_Of_Salary}</td>
+                    <td className="text-center">{item.salary_person_name}</td>
                     <td className="text-center">{item.salary}</td>
                     <td className="text-center">{item.date}</td>
                     <td className="text-center">{item.month}</td>
                     <td className="text-center">{item.adv_payment}</td>
-                    <td className="text-center">{item.rem_payment}</td>
+                    <td className="text-center">{item.balance_amount}</td>
                     <td className="text-center">{item.incentive}</td>
                     <td className="text-center">{item.deduct_amount}</td>
                   </tr>

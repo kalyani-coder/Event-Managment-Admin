@@ -26,6 +26,7 @@ export default function Enquiry() {
   const [contactError, setContactError] = useState("");
   const [venueError, setVenueError] = useState("");
   const [stateError, setStateError] = useState("");
+  const [selectedState, setSelectedState] = useState("");
 
   useEffect(() => {
     fetchEvents();
@@ -35,11 +36,8 @@ export default function Enquiry() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8888/api/addeventmaster"
-      );
+      const response = await axios.get("http://localhost:8888/api/addeventmaster");
       setEvents(response.data);
-      console.log("Fetched events: ", response.data); // Added logging
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -68,36 +66,22 @@ export default function Enquiry() {
   };
 
   useEffect(() => {
-    const customerNameTimeout = setTimeout(() => {
+    const errorTimeout = setTimeout(() => {
       setCustomerNameError("");
-    }, 3000);
-
-    const contactTimeout = setTimeout(() => {
       setContactError("");
-    }, 3000);
-
-    const venueTimeout = setTimeout(() => {
       setVenueError("");
-    }, 3000);
-
-    const stateTimeout = setTimeout(() => {
       setStateError("");
     }, 3000);
 
     return () => {
-      clearTimeout(customerNameTimeout);
-      clearTimeout(contactTimeout);
-      clearTimeout(venueTimeout);
-      clearTimeout(stateTimeout);
+      clearTimeout(errorTimeout);
     };
-  }, [customerNameError, contactError, venueError,stateError]);
+  }, [customerNameError, contactError, venueError, stateError]);
 
   const isContactValid = (contact) => {
     const contactPattern = /^\d{10}$/;
     return contactPattern.test(contact);
   };
-
-  const [selectedState, setSelectedState] = useState("");
 
   const handleSubmit = async () => {
     const invalidFields = [];
@@ -116,6 +100,7 @@ export default function Enquiry() {
       invalidFields.push("eventVenue");
       setVenueError("Event venue is required");
     }
+
     if (!selectedState) {
       invalidFields.push("selectedState");
       setStateError("State is required");
@@ -139,13 +124,34 @@ export default function Enquiry() {
         budget: eventRequirement,
         assign_manager_Id: selectedManagerId,
         assign_manager_name: selectedManagerName,
-        state : selectedState,
+        state: selectedState,
       });
       alert("Enquiry added & assigned to manager successfully");
       setShowModal(false);
+      resetForm();
     } catch (error) {
       console.error("Error adding enquiry:", error);
     }
+  };
+
+  const resetForm = () => {
+    setSelectedEvent("");
+    setCustomerName("");
+    setCustomerEmail("");
+    setContact("");
+    setAddress("");
+    setEventDate("");
+    setGuestQuantity("");
+    setEventVenue("");
+    setEventRequirement("");
+    setSelectedManagerId("");
+    setSelectedManagerName("");
+    setSelectedState("");
+    setValidatedFields([]);
+    setCustomerNameError("");
+    setContactError("");
+    setVenueError("");
+    setStateError("");
   };
 
   const handleCustomerNameChange = (e) => {
@@ -174,7 +180,6 @@ export default function Enquiry() {
       e.preventDefault();
     }
   };
-
 
   const indianStates = [
     "",
@@ -324,7 +329,7 @@ export default function Enquiry() {
                 </Form.Group>
               </div>
             </div>
-            {/* <div className="row mb-2">
+            <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="event_budget">Event Budget</label>
@@ -366,7 +371,7 @@ export default function Enquiry() {
                   )}
                 </div>
               </div>
-            </div> */}
+            </div> 
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
