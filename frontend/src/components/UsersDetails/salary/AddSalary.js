@@ -114,7 +114,7 @@ const AddSalary = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="typeOfSalary">Add Salary</label>
+                  <label htmlFor="typeOfSalary">Add Salary Type</label>
                   <select
                     className="form-control"
                     value={selectedOption}
@@ -131,7 +131,7 @@ const AddSalary = () => {
 
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="salaryType">Select Salary Type</label>
+                  <label htmlFor="salaryType">Select Name </label>
                   <select
                     className="form-control"
                     value={salaryType}
