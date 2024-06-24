@@ -70,19 +70,18 @@ const Login = () => {
                   />
                 </div>
                 <div className="login__field">
-                  <i className="login__icon fas fa-lock"></i>
                   <FaLock className="login__icon" />
-                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className="login__input"
                     placeholder="Password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                   />
+                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                 </div>
                 <button type="submit" className="button login__submit">
                   <span className="button__text-login">Log In Now</span>

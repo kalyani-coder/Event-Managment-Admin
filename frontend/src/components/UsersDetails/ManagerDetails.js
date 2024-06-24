@@ -56,9 +56,9 @@ const ManagerDetails = () => {
             <Link to={'/executicedetails'}>
               <button className="btn btn-primary mr-4 mb-4">Executive Details</button>
             </Link>
-            <Link to={'/vendordetails'}>
+            {/* <Link to={'/vendordetails'}>
               <button className="btn btn-primary mr-4 mb-4"> Vendor Details</button>
-            </Link>
+            </Link> */}
           </div>
             <h2 className="text-[30px]">Manager Details</h2>
             <div className="mb-4">
