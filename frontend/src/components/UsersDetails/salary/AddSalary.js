@@ -87,6 +87,20 @@ const AddSalary = () => {
       .then((response) => {
         console.log("Salary added successfully:", response.data);
         alert("Salary Added Successfully");
+
+        // Clear form fields after successful submission
+        setsalary("");
+        setadv_payment("");
+        setDate(getCurrentDate());
+        setTime(getCurrentTime());
+        setMonth("");
+        setSalaryTaken("");
+        setadv_taken("");
+        setincentive("");
+        setdeduct_amount("");
+        setBalanceAmount("");
+        setSelectedOption("");
+        setSalaryType("");
       })
       .catch((error) => {
         console.error("Error adding salary:", error);
