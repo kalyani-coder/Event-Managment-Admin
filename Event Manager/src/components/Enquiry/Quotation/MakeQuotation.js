@@ -12,7 +12,6 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 function QuotationForm() {
   const location = useLocation();
   const { enquiry } = location.state || {};
-  // console.log("vedant", enquiry);
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -29,8 +28,9 @@ function QuotationForm() {
   const [descriptionValue, setDescriptionValue] = useState("");
 
   const [stockNames, setStockNames] = useState([]);
+  const [stockid, setStockid] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
-  const [newstocksData, setNewStocksData] = useState([]);
+  const [stocksData, setStocksData] = useState([]);
   const [newSelectedStock, setNewSelectedStock] = useState("");
   const [newSelectedVendor, setNewSelectedVendor] = useState("");
   const [newSelectedStockQuantityValue, setNewSelectedStockQuantityValue] =
@@ -52,43 +52,47 @@ function QuotationForm() {
 
   const [modalShow, setModalShow] = useState(false);
   const [quotationData, setQuotationData] = useState({ requirements: [] });
-  console.log("vedant new", quotationData.requirements);
+  const [qty, setQty] = useState(0);
+  const [unit, setUnit] = useState("");
+  const [price, setPrice] = useState(0);
+  const [ratePerDays, setRatePerDays] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [requirements, setRequirements] = useState([]);
 
-  const handleViewQuotation = async () => {
-    try {
-      const response = await axios.get(
-        ` http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
-      );
+  // Calculate Total Amount
+  useEffect(() => {
+    const Total = ratePerDays * price * qty;
+    setTotal(Total);
+  }, [price, ratePerDays, qty]);
 
-      setQuotationData(response.data);
-      console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
-      setModalShow(true);
-    } catch (error) {
-      console.error("Failed to fetch quotation info:", error);
-    }
-  };
-  const handleClose = () => setModalShow(false);
-
+  //Fetching stock details
   useEffect(() => {
     axios
       .get("http://localhost:8888/api/inventory-stocks")
       .then((response) => {
         const data = response.data;
         const names = data.map((stock) => stock.Stock_Name);
+
+        const id = data.map((stock) => stock._id);
+
         setStockNames(names);
-        setNewStocksData(data);
+        setStocksData(data);
+        setStockid(id);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
-
+  // getting vendorname and stock name
   const newhandleStockChange = (e) => {
-    const selectedStockName = e.target.value;
-    const selectedStock = newstocksData.find(
-      (stock) => stock.Stock_Name === selectedStockName
-    );
-    console.log("selectedStock", selectedStock);
+    const selectedStockId = e.target.value;
+    // console.log("selectedStockId", selectedStockId);
 
-    setNewSelectedStock(selectedStockName);
+    const selectedStock = stocksData.find(
+      (stock) => stock._id === selectedStockId
+    );
+    // console.log("selectedStock", selectedStock);
+    // console.log("selectedStock.Stock_Name", selectedStock.Stock_Name);
+
+    setNewSelectedStock(selectedStock.Stock_Name);
 
     // Assuming the value contains the ID of the selected stock
     setNewSelectedStockId(selectedStock._id);
@@ -96,8 +100,8 @@ function QuotationForm() {
     setNewSelectedVendorId(selectedStock.Vendor_Id);
     console.log("vendorid", selectedStock.Vendor_Id);
 
-    const vendors = newstocksData
-      .filter((stock) => stock.Stock_Name === selectedStockName)
+    const vendors = stocksData
+      .filter((stock) => stock._id === selectedStockId)
       .map((stock) => stock.Vendor_Name);
     setVendorNames(vendors);
 
@@ -107,14 +111,12 @@ function QuotationForm() {
     setNewSelectedStockPriceValue("");
   };
 
-  const newhandleVendorChange = async (e) => {
+  const newhandleVendorChange = (e) => {
     const selectedVendorName = e.target.value;
+    console.log("selectedVendorName", selectedVendorName);
     setNewSelectedVendor(selectedVendorName);
 
-    const selectedVendorId = e.target.value; // Assuming the value contains the ID of the selected vendor
-    setNewSelectedVendorId(selectedVendorId);
-
-    const selectedVendorData = newstocksData.find(
+    const selectedVendorData = stocksData.find(
       (stock) =>
         stock.Vendor_Name === selectedVendorName &&
         stock.Stock_Name === newSelectedStock
@@ -129,51 +131,127 @@ function QuotationForm() {
     }
 
     // Fetch Stock Quantity and Price based on selected vendor
+  };
+  // handling values entered
+  const handleQtyChange = (e) => {
+    setQty(e.target.value);
+  };
+
+  const handleUnitChange = (e) => {
+    setUnit(e.target.value);
+  };
+
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+  };
+
+  const handleRatePerDaysChange = (e) => {
+    setRatePerDays(e.target.value);
+  };
+  // Add the stoock
+  const handleAddRequirement = async () => {
+    const data = {
+      customer_Id: enquiry._id,
+      customerName: enquiry.customer_name,
+      requirements: [
+        {
+          stockId: newSelectedStockId,
+          stockName: stocksData.find(
+            (stock) => stock._id === newSelectedStockId
+          )?.Stock_Name,
+          vendorName: newSelectedVendor,
+          vendorId: newSelectedVendorId,
+          purchaseQuantity: qty,
+          rate_per_days: price,
+          unit,
+          days: ratePerDays,
+          price: total,
+        },
+      ],
+    };
+
     try {
-      const response = await axios.get(
-        `http://localhost:8888/api/stock-details?vendor=${selectedVendorName}&stock=${newSelectedStock}`
+      const response = await axios.post(
+        "http://localhost:8888/api/customerquotationinfo",
+        data
       );
-      const { Stock_Quantity, Price } = response.data;
-      setNewSelectedStockQuantityValue(Stock_Quantity);
-      setNewSelectedStockPriceValue(Price);
+      console.log("Data posted successfully:", response.data);
     } catch (error) {
-      console.error("Error fetching stock details:", error);
+      console.error("Error posting data:", error);
     }
   };
 
-  const [isFirstSubmission, setIsFirstSubmission] = useState(true);
-  const [subtotal, setSubtotal] = useState(0);
+  const handleAddAndPostRequirement = async () => {
+    const stockName = stocksData.find(
+      (stock) => stock._id === newSelectedStockId
+    )?.Stock_Name;
 
-  useEffect(() => {
-    // Calculate subtotal whenever rows change
-    setSubtotal(calcTotal());
-  }, [rows]);
+    // Find if the requirement already exists
+    const existingRequirementIndex = requirements.findIndex(
+      (req) =>
+        req.stockId === newSelectedStockId &&
+        req.vendorId === newSelectedVendorId
+    );
 
-  const handleChange = (index, field, value) => {
-    // console.log("index", index, field, value);
-    const newRows = [...rows];
-    newRows[index][field] = value;
-
-    if (field === "qty" || field === "price" || field === "rateperdays") {
-      newRows[index].total =
-        newRows[index].qty * newRows[index].price * newRows[index].rateperdays;
+    if (existingRequirementIndex >= 0) {
+      // Update the existing requirement
+      requirements[existingRequirementIndex] = {
+        ...requirements[existingRequirementIndex],
+        purchaseQuantity: qty,
+        rate_per_days: price,
+        unit,
+        days: ratePerDays,
+        price: total,
+      };
+    } else {
+      // Add a new requirement
+      const newRequirement = {
+        stockId: newSelectedStockId,
+        stockName,
+        vendorName: newSelectedVendor,
+        vendorId: newSelectedVendorId,
+        purchaseQuantity: qty,
+        rate_per_days: price,
+        unit,
+        days: ratePerDays,
+        price: total,
+      };
+      requirements.push(newRequirement);
     }
 
-    setRows(newRows);
+    // Update the state to trigger a re-render
+    setRequirements([...requirements]);
+
+    // Prepare data for API post
+    const data = {
+      customer_Id: enquiry._id,
+      customerName: enquiry.customer_name,
+      requirements,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/customerquotationinfo",
+        data
+      );
+      console.log("Data posted successfully:", response.data);
+
+      // Clear form fields and reset state after successful post
+      setNewSelectedStockId("");
+      setNewSelectedVendor("");
+      setNewSelectedVendorId("");
+      setQty(0);
+      setUnit("");
+      setPrice(0);
+      setRatePerDays(0);
+      setTotal(0);
+      // setRequirements([]); // Retain requirements array after posting
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
   };
 
-  const calcTotal = () => {
-    return rows.reduce((acc, row) => acc + row.total, 0);
-  };
-
-  const calcTaxAmount = () => {
-    return subtotal * (tax / 100);
-  };
-
-  const [transportCharges, setTransportCharges] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(null);
-  const [transport, setTransport] = useState("");
-
+  // Fetch added posts
   useEffect(() => {
     // Fetch initial quotation data
     const fetchQuotationData = async () => {
@@ -181,100 +259,48 @@ function QuotationForm() {
         const response = await axios.get(
           ` http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
         );
-
+        console.log(
+          `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
+        );
         setQuotationData(response.data);
+        console.log("quotationData", response.data);
       } catch (error) {
         console.error("Error fetching quotation data", error);
       }
     };
 
     fetchQuotationData();
-  }, [enquiry._id]);
+  }, [enquiry._id, requirements]);
 
-  const handleAddRequirement = async () => {
-    const requirements = rows.map((row) => ({
-      stockName: newSelectedStock,
-      stockId: newSelectedStockId,
-      vendorName: newSelectedVendor,
-      vendorId: newSelectedVendorId,
-      unit: row.unit,
-      purchaseQuantity: row.qty,
-      rate_per_days: row.price,
-      days: row.rateperdays,
-      price: row.total,
-    }));
-
-    const data = {
-      requirements,
-      customer_Id: enquiry._id,
-      customerName: enquiry.customer_name,
-    };
-
+  //Delete the stock
+  const handleDelete = async (id) => {
+    const customerId = quotationData.customer_Id;
+    // console.log("customerId", customerId);
+    // console.log("id", id);
     try {
-      let response;
-
-      if (isFirstSubmission) {
-        response = await axios.post(
-          "http://localhost:8888/api/customerquotationinfo",
-          data
-        );
-        console.log("response", response.data);
-        alert("Stock added successfully");
-        // setIsFirstSubmission(false);
-      } else {
-        response = await axios.patch(
-          `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
-          data
-        );
-        alert("Stock updated successfully");
-      }
-
-      // Recalculate the subtotal
-      const newSubTotal = subtotal + calcTotal();
-
-      // Update the subtotal state
-      setSubtotal(newSubTotal);
-
-      // Update the quotationData state with the new subtotal
-      setQuotationData((prevData) => ({
-        ...prevData,
-        sub_total: newSubTotal,
-        requirements: [...prevData.requirements, ...requirements],
+      await axios.delete(
+        `http://localhost:8888/api/customerquotationinfo/customer/${customerId}/requirements/${id}`
+      );
+      setQuotationData((prevState) => ({
+        ...prevState,
+        requirements: prevState.requirements.filter((item) => item._id !== id),
       }));
-
-      // Clear inputs after successful submission
-      setRows([
-        {
-          id: 1,
-          stockName: "",
-          vendorName: "",
-          qty: 0,
-          unit: "",
-          price: 0,
-          rateperdays: 0,
-          total: 0,
-        },
-      ]);
-      setNewSelectedStock("");
-      setNewSelectedStockId("");
-      setNewSelectedVendor("");
-      setNewSelectedVendorId("");
     } catch (error) {
-      console.error("Error adding/updating stock", error);
-      alert("Error adding/updating stock");
+      console.error("Error deleting item", error);
     }
   };
-
-  const handleTransportChnage = (event) => {
-    setTransport(event.target.value);
-  };
-
-  const [grandTotal, setGrandTotal] = useState(null);
-  useEffect(() => {
-    if (quotationData) {
-      calculateGrandTotal();
+  const handleDelete2 = async (id) => {
+    const customerId = quotationData.customer_Id;
+    // console.log("customerId", customerId);
+    // console.log("id", id);
+    try {
+      await axios.delete(
+        ` http://localhost:8888/api/customerquotationinfo/${customerId}`
+      );
+    } catch (error) {
+      console.error("Error deleting item", error);
     }
-  }, [quotationData, cgstChecked, sgstChecked, transportCharges]);
+  };
 
   const calculateGrandTotal = () => {
     if (quotationData) {
@@ -290,15 +316,15 @@ function QuotationForm() {
       }
 
       const grandTotal = total + cgst + sgst;
-      setGrandTotal(grandTotal);
-      calculateTotalAmount(grandTotal);
+      // setGrandTotal(grandTotal);
+      // calculateTotalAmount(grandTotal);
     }
   };
 
-  const calculateTotalAmount = (grandTotal) => {
-    const total = grandTotal + Number(transportCharges);
-    setTotalAmount(total);
-  };
+  // const calculateTotalAmount = (grandTotal) => {
+  //   // const total = grandTotal + Number(transportCharges);
+  //   // setTotalAmount(total);
+  // };
 
   const handleCgstChange = () => {
     setCgstChecked(!cgstChecked);
@@ -309,7 +335,7 @@ function QuotationForm() {
   };
 
   const handleTransportChargesChange = (e) => {
-    setTransportCharges(e.target.value);
+    // setTransportCharges(e.target.value);
   };
 
   const convertAmountToWords = (amount) => {
@@ -485,8 +511,8 @@ function QuotationForm() {
         ],
         ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
         ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-        ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
-        ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+        // ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
+        // ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
         [
           "",
           "",
@@ -495,7 +521,7 @@ function QuotationForm() {
           "",
           "",
           "Amounts In Words",
-          `${convertAmountToWords(totalAmount) || "-"}`,
+          // `${convertAmountToWords(totalAmount) || "-"}`,
         ]
       );
 
@@ -525,8 +551,8 @@ function QuotationForm() {
 
       // Print Transport Type and Transport Charges as text
       doc.setFontSize(10);
-      doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
-      doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
+      // doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
+      // doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
       // doc.text(`Description : ${descriptionValue}`, 10, finalY + 15);
 
       // Print Terms and Conditions
@@ -557,60 +583,6 @@ function QuotationForm() {
     }
     doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
     alert("PDF file generated");
-  };
-
-  const handlePatchQuotation = async () => {
-    if (!quotationData) {
-      return;
-    }
-
-    const customerId = quotationData.customer_Id;
-    const dataToUpdate = {
-      transport: transport,
-      transport_amount: transportCharges,
-      description: descriptionValue,
-      grand_total: grandTotal,
-      cgst: "9%",
-      sgst: "9%",
-      total_amount: totalAmount,
-    };
-
-    try {
-      const response = await axios.patch(
-        ` http://localhost:8888/api/customersavedquotation/${customerId}`,
-        dataToUpdate
-      );
-
-      alert("Quotation Created successfully");
-      // Handle successful response
-    } catch (error) {
-      console.error("Error patching data:", error);
-      // Handle error response
-    }
-  };
-
-  const handleDelete = async (requirementId) => {
-    console.log("rweb", requirementId);
-    const customerId = quotationData.customer_Id;
-
-    try {
-      await axios.delete(
-        `http://localhost:8888/api/customerquotationinfo/customer/${customerId}/requirements/${requirementId}`
-      );
-
-      // Update the local state to reflect the deletion
-      const updatedRequirements = quotationData.requirements.filter(
-        (req) => req._id !== requirementId
-      );
-      setQuotationData({ ...quotationData, requirements: updatedRequirements });
-      setGrandTotal(null);
-      setSubtotal(null);
-
-      alert("Requirement deleted successfully");
-    } catch (error) {
-      console.error("Error deleting requirement", error);
-      alert("Error deleting requirement");
-    }
   };
 
   return (
@@ -663,121 +635,96 @@ function QuotationForm() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((row, index) => (
-                    <tr key={row.id}>
-                      <td style={{ width: "15%" }}>
-                        <select
-                          className="form-control"
-                          id="stockName"
-                          onChange={newhandleStockChange}
-                          value={newSelectedStock} // Ensure selected value is managed
-                        >
-                          <option value="">Select Stock</option>
-                          {stockNames.map((stockName) => (
-                            <option key={stockName} value={stockName}>
-                              {stockName}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td style={{ width: "10%" }}>
-                        <select
-                          className="form-control"
-                          id="vendorName"
-                          onChange={newhandleVendorChange}
-                          value={newSelectedVendor}
-                        >
-                          <option value="">Select Vendor</option>
-                          {vendorNames.map((vendor) => (
-                            <option key={vendor} value={vendor}>
-                              {vendor}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td style={{ width: "15%" }}>
-                        <input
-                          type="number"
-                          value={row.qty}
-                          onChange={(e) =>
-                            handleChange(index, "qty", parseInt(e.target.value))
-                          }
-                          className="form-control qty"
-                          step="0"
-                          min="0"
-                        />
-                        <div style={{ color: "green" }}>
-                          Avai Qty: {newSelectedStockQuantityValue}
-                        </div>
-                      </td>
+                  <tr>
+                    <td style={{ width: "15%" }}>
+                      <select
+                        className="form-control"
+                        id="stockName"
+                        onChange={newhandleStockChange}
+                        value={newSelectedStockId} // Ensure selected value is managed
+                      >
+                        <option value="">Select Stock</option>
+                        {stocksData.map((stock) => (
+                          <option key={stock._id} value={stock._id}>
+                            {stock.Stock_Name}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td style={{ width: "10%" }}>
+                      <select
+                        className="form-control"
+                        id="vendorName"
+                        onChange={newhandleVendorChange}
+                        value={newSelectedVendor}
+                      >
+                        <option value="">Select Vendor</option>
+                        {vendorNames.map((vendor) => (
+                          <option key={vendor} value={vendor}>
+                            {vendor}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td style={{ width: "15%" }}>
+                      <input
+                        type="number"
+                        className="form-control qty"
+                        step="0"
+                        min="0"
+                        value={qty}
+                        onChange={handleQtyChange}
+                      />
+                      <div style={{ color: "green" }}>
+                        Avai Qty: {newSelectedStockQuantityValue}
+                      </div>
+                    </td>
 
-                      <td style={{ width: "15%" }}>
-                        <input
-                          type="text"
-                          value={row.unit}
-                          onChange={(e) =>
-                            handleChange(index, "unit", e.target.value)
-                          }
-                          className="form-control unit"
-                          placeholder="Enter Unit"
-                          step="0"
-                          min="0"
-                        />
-                      </td>
-                      <td style={{ width: "10%" }}>
-                        <input
-                          type="number"
-                          value={row.price}
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "price",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="form-control price"
-                          step="0"
-                          min="0"
-                        />
-                        <div style={{ color: "green" }}>
-                          Price: {newSelectedStockPriceValue}
-                        </div>
-                      </td>
-                      <td style={{ width: "10%" }}>
-                        <input
-                          type="number"
-                          value={row.rateperdays}
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "rateperdays",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="form-control rateperdays"
-                          step="0"
-                          min="0"
-                        />
-                      </td>
+                    <td style={{ width: "15%" }}>
+                      <input
+                        type="text"
+                        className="form-control unit"
+                        placeholder="Enter Unit"
+                        step="0"
+                        min="0"
+                        value={unit}
+                        onChange={handleUnitChange}
+                      />
+                    </td>
+                    <td style={{ width: "10%" }}>
+                      <input
+                        type="number"
+                        className="form-control price"
+                        step="0"
+                        min="0"
+                        value={price}
+                        onChange={handlePriceChange}
+                      />
+                      <div style={{ color: "green" }}>
+                        Price: {newSelectedStockPriceValue}
+                      </div>
+                    </td>
+                    <td style={{ width: "10%" }}>
+                      <input
+                        type="number"
+                        className="form-control rateperdays"
+                        step="0"
+                        min="0"
+                        value={ratePerDays}
+                        onChange={handleRatePerDaysChange}
+                      />
+                    </td>
 
-                      <td style={{ width: "10%" }}>
-                        <input
-                          type="number"
-                          value={row.total}
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "total",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="form-control total"
-                          step="0"
-                          min="0"
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                    <td style={{ width: "10%" }}>
+                      <input
+                        type="number"
+                        className="form-control total"
+                        step="0"
+                        min="0"
+                        value={total}
+                      />
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -794,60 +741,53 @@ function QuotationForm() {
           </div>
 
           <div>
-            {quotationData ? (
-              <div className="card">
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Sr.No.</th>
-                          <th>Perticular</th>
-                          {/* <th>Description</th> */}
-                          <th>Per</th>
-                          <th>Unit</th>
-                          <th>Rate</th>
-                          <th>Days</th>
-                          <th>Amount</th>
-                          <th>Action</th>
+            <div className="card">
+              <div className="card-body">
+                <div className="table-responsive">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Sr.No.</th>
+                        <th>Perticular</th>
+                        {/* <th>Description</th> */}
+                        <th>Per</th>
+                        <th>Unit</th>
+                        <th>Rate</th>
+                        <th>Days</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {quotationData.requirements.map((item, index) => (
+                        <tr key={item._id}>
+                          <td>{index + 1}</td>
+                          <td>{item.stockName}</td>
+                          <td>{item.purchaseQuantity}</td>
+                          <td>{item.unit}</td>
+                          <td>{item.rate_per_days}</td>
+                          <td>{item.days}</td>
+                          <td>{item.price}</td>
+                          <td>
+                            {/* Add any action buttons or links here */}
+                            <button onClick={() => handleDelete(item._id)}>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </td>
+                          <td>
+                            {/* Add any action buttons or links here */}
+                            <button onClick={() => handleDelete2()}>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {quotationData.requirements.map((req, index) => (
-                          <tr key={req._id}>
-                            <td>{index + 1}</td>
-                            <td>{req.stockName}</td>
-                            {/* <td>{descriptionValue}</td> */}
-                            <td>{req.purchaseQuantity}</td>
-                            <td>{req.unit}</td>
-                            <td>{req.rate_per_days}</td>
-                            <td>{req.days}</td>
-                            <td>{req.price} Rs</td>
-                            <td>
-                              {/* <button
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleEdit(req)}
-                                                >
-                                                    <FontAwesomeIcon icon={faEdit} />
-                                                </button> */}
-
-                              <button
-                                className="btn btn-danger mr-2"
-                                onClick={() => handleDelete(req._id)}
-                              >
-                                <FontAwesomeIcon icon={faTrash} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            ) : (
-              <div>Loading...</div>
-            )}
+            </div>
+
             {/* Bootstrap Modal for Editing Requirement */}
           </div>
 
@@ -865,8 +805,8 @@ function QuotationForm() {
                         type="text"
                         className="form-control"
                         placeholder="Enter Transport Type..."
-                        onChange={handleTransportChnage}
-                        value={transport}
+                        // onChange={handleTransportChnage}
+                        // value={transport}
                       />
                     </td>
                   </tr>
@@ -876,7 +816,7 @@ function QuotationForm() {
                       <input
                         type="number"
                         className="form-control"
-                        value={transportCharges}
+                        // value={transportCharges}
                         onChange={handleTransportChargesChange}
                       />
                     </td>
@@ -897,7 +837,7 @@ function QuotationForm() {
               </table>
             </div>
             <div className="col-md-2"></div>
-            <div className="col-md-4">
+            {/* <div className="col-md-4">
               <table
                 className="table table-bordered table-hover"
                 id="tab_logic_total"
@@ -943,13 +883,11 @@ function QuotationForm() {
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> */}
           </div>
           <div className="row clearfix" style={{ marginTop: "20px" }}>
             <div className="col-md-12">
-              <Button variant="primary" onClick={handleViewQuotation}>
-                View
-              </Button>
+              <Button variant="primary">View</Button>
               <button className="btn btn-success ml-2" onClick={handlePrint}>
                 Print
               </button>
@@ -957,105 +895,6 @@ function QuotationForm() {
           </div>
         </div>
       </div>
-
-      <Modal show={modalShow} onHide={handleClose} size="lg">
-        <Modal.Header closeButton style={{ marginTop: "30px" }}>
-          <Modal.Title>Quotation Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ overflowY: "auto" }}>
-          {quotationData ? (
-            <div className="card">
-              <div className="card-body">
-                <div style={{ marginBottom: "20px" }}>
-                  <div>
-                    <strong>Client Name:</strong> {enquiry.customer_name}
-                  </div>
-                  <div>
-                    <strong>Address:</strong> {enquiry.address}
-                  </div>
-                  <div>
-                    <strong>Date:</strong> {enquiry.event_date}
-                  </div>
-                  <div>
-                    <strong>Venue:</strong> {enquiry.event_venue}
-                  </div>
-                </div>
-
-                <div className="table-responsive">
-                  <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Sr.No.</th>
-                        <th>Perticular</th>
-                        {/* <th>Description</th> */}
-                        <th>Per</th>
-                        <th>Unit</th>
-                        <th>Rate</th>
-                        <th>Days</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {quotationData.requirements.map((req, index) => (
-                        <tr key={req._id}>
-                          <td>{index + 1}</td>
-                          <td>{req.stockName}</td>
-                          {/* <td>{req.description}</td> */}
-                          <td>{req.purchaseQuantity}</td>
-                          <td>{req.unit}</td>
-                          <td>{req.rate_per_days}</td>
-                          <td>{req.days}</td>
-                          <td>{req.price} Rs</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div>
-                  <strong>Transport:</strong> {quotationData.transport}
-                </div>
-                <div>
-                  <strong>Transport Amount:</strong> {transportCharges}
-                </div>
-                <div>
-                  <strong>Description:</strong> {quotationData.description}
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <div>
-                    <strong>Sub Total:</strong>{" "}
-                    {quotationData ? quotationData.sub_total : "Loading..."}
-                  </div>
-                  <div>
-                    <strong>CGST:</strong> 9 %
-                  </div>
-                  <div>
-                    <strong>SGST:</strong> 9 %
-                  </div>
-                  <div>
-                    <strong>Grand Total:</strong>{" "}
-                    {grandTotal !== null ? grandTotal.toFixed(2) : "Loading..."}
-                  </div>
-                  <div>
-                    <strong>Total Amount:</strong>{" "}
-                    {totalAmount !== null
-                      ? totalAmount.toFixed(2)
-                      : "Loading..."}
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={handlePatchQuotation}
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>Loading...</div>
-          )}
-        </Modal.Body>
-      </Modal>
     </>
   );
 }
