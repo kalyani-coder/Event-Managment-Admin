@@ -33,7 +33,6 @@ const AdvPaymentManager = () => {
 
   const initialFormData = {
     selectedManager: "",
-    selectedManagerId: "",
     selectedEvent: "",
     fname: "",
     lname: "",
@@ -84,9 +83,9 @@ const AdvPaymentManager = () => {
   useEffect(() => {
     const fetchEventsForManager = async () => {
       try {
-        if (formData.selectedManagerId) {
+        if (formData.selectedManager) {
           const response = await axios.get(
-            `http://localhost:8888/api/event/manager/${formData.selectedManagerId}`
+            `http://localhost:8888/api/enquiry?assign_manager_name=${formData.selectedManager}`
           );
           setEvents(response.data);
         } else {
@@ -94,12 +93,11 @@ const AdvPaymentManager = () => {
         }
       } catch (error) {
         console.error("Error fetching events for manager:", error);
-        alert("Failed to fetch events for the selected manager.");
       }
     };
 
     fetchEventsForManager();
-  }, [formData.selectedManagerId]);
+  }, [formData.selectedManager]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -111,14 +109,10 @@ const AdvPaymentManager = () => {
 
   const handleManagerChange = (event) => {
     const { value } = event.target;
-    const selectedManagerData = managers.find(
-      (manager) => `${manager.fname} ${manager.lname}` === value
-    );
     setFormData((prevData) => ({
       ...prevData,
       selectedManager: value,
-      selectedManagerId: selectedManagerData ? selectedManagerData._id : "",
-      selectedEvent: "",
+      selectedEvent: "", // Reset selected event when manager changes
     }));
   };
 
@@ -130,20 +124,51 @@ const AdvPaymentManager = () => {
     }));
   };
 
-  const handlePaidAmountChange = (event) => {
-    const newPaidAmount = parseInt(event.target.value);
-    if (!isNaN(newPaidAmount)) {
-      setFormData((prevData) => ({
-        ...prevData,
-        paid_amt: newPaidAmount,
-        rem_amt: calculateRemainingAmount(newPaidAmount, prevData.advance_payment),
-      }));
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/advpaymanager",
+        {
+          manager_Name: formData.selectedManager,
+          EventName: formData.selectedEvent,
+          Date: formData.date,
+          Time: formData.time,
+          Bank_Name: selectedBank,
+          paid_Amount: formData.paid_amt,
+          adv_Payment: formData.advance_payment,
+          Pending_Amount: formData.rem_amt,
+          description: formData.description,
+        }
+      );
+
+      if (response.status === 200) {
+        setShowPopup(true);
+        setFormData(initialFormData);
+      }
+
+      console.log(response.data);
+      alert("Advance Payment to manager successfully.");
+
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Failed to advance payment.");
+
     }
   };
 
+  const handleDiscard = () => {
+    setFormData(initialFormData);
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
   const handleAdvancePaymentChange = (event) => {
-    const newAdvancePayment = event.target.value.trim(); // Trim whitespace
-    if (newAdvancePayment === '' || /^\d+$/.test(newAdvancePayment)) {
+    const newAdvancePayment = parseInt(event.target.value);
+    if (!isNaN(newAdvancePayment)) {
       setFormData((prevData) => ({
         ...prevData,
         advance_payment: newAdvancePayment,
@@ -163,49 +188,6 @@ const AdvPaymentManager = () => {
     } else {
       setAccountNumber('');
     }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8888/api/advpaymanager",
-        {
-          manager_Name: formData.selectedManager,
-          EventName: formData.selectedEvent,
-          Date: formData.date,
-          Time: formData.time,
-          Bank_Name: selectedBank,
-          paid_Amount: formData.paid_amt,
-          adv_Payment: formData.advance_payment,
-          Pending_Amount: formData.rem_amt,
-          description: formData.description,
-          manager_Id: formData.selectedManagerId,
-        }
-      );
-
-      if (response.status === 200) {
-        setShowPopup(true);
-        setFormData(initialFormData);
-      }
-
-      console.log(response.data);
-      alert("Advance Payment to manager successfully.");
-      
-    } catch (error) {
-      console.error("Error saving data:", error);
-      alert("Failed to advance payment.");
-      
-    }
-  };
-
-  const handleDiscard = () => {
-    setFormData(initialFormData);
-  };
-
-  const handlePopupClose = () => {
-    setShowPopup(false);
   };
 
   return (
@@ -300,7 +282,7 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-            <div className="row mb-2">
+             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="selectedBank">Select Bank</label>
@@ -337,19 +319,6 @@ const AdvPaymentManager = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="paid_amt">Paid Amount</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="paid_amt"
-                    placeholder="Paid Amount"
-                    onChange={handlePaidAmountChange}
-                    value={formData.paid_amt}
-                  />
-                </div>
-              </div>
-              <div className="col px-5">
-                <div className="form-group">
                   <label htmlFor="advance_payment">Advance Payment</label>
                   <input
                     className="form-control mb-2"
@@ -361,11 +330,7 @@ const AdvPaymentManager = () => {
                   />
                 </div>
               </div>
-              
-            </div>
-            <div className="row mb-2">
-
-            <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="rem_amt">Pending Amount</label>
                   <input
@@ -378,7 +343,8 @@ const AdvPaymentManager = () => {
                   />
                 </div>
               </div>
-
+            </div>
+            <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
@@ -393,6 +359,21 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
+            {/* <div className="row mb-2">
+              <div className="col px-5">
+                <button
+                  className="manager-btn ms-1 mb-3"
+                  type="button"
+                  onClick={handleDiscard}
+                >
+                  Discard
+                </button>
+
+                <button className="manager-btn ms-1 mb-3" type="submit">
+                  Save
+                </button>
+              </div>
+            </div> */}
             <div className="row mb-2">
               <div className="col px-5">
                 <Button
@@ -400,6 +381,7 @@ const AdvPaymentManager = () => {
                   type="button"
                   onClick={handleDiscard}
                 >
+                  {" "}
                   Discard
                 </Button>
 
