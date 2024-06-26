@@ -140,7 +140,7 @@ const ViewInquiryPage = () => {
         `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
       );
       setQuotationData(response.data);
-      // console.log("Fetched Quotation Data:", response.data);
+      console.log("Fetched Quotation Data:", response.data);
     } catch (error) {
       console.error("Error fetching quotation data:", error);
     }

@@ -46,6 +46,13 @@ function QuotationForm() {
   const [sgstChecked, setSgstChecked] = useState(false);
   const [cgst, setCgst] = useState(0);
   const [sgst, setSgst] = useState(0);
+  const [igstChecked, setIgstChecked] = useState(false);
+
+  const [transportCharges, setTransportCharges] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [transport, setTransport] = useState("");
+  const [grandTotal, setGrandTotal] = useState(null);
+  const [state, setState] = useState("Maharashtra");
 
   const [newSelectedStockId, setNewSelectedStockId] = useState("");
   const [newSelectedVendorId, setNewSelectedVendorId] = useState("");
@@ -58,6 +65,24 @@ function QuotationForm() {
   const [ratePerDays, setRatePerDays] = useState(0);
   const [total, setTotal] = useState(0);
   const [requirements, setRequirements] = useState([]);
+  const [isFirstSubmission, setIsFirstSubmission] = useState(true);
+
+  // Fetch added posts
+  const fetchQuotationData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
+      );
+      setQuotationData(response.data);
+      const subamount = quotationData.sub_total;
+      console.log("dskfjlsd", subamount);
+    } catch (error) {
+      console.error("Error fetching quotation data", error);
+    }
+  };
+  useEffect(() => {
+    fetchQuotationData();
+  }, []);
 
   // Calculate Total Amount
   useEffect(() => {
@@ -148,7 +173,21 @@ function QuotationForm() {
   const handleRatePerDaysChange = (e) => {
     setRatePerDays(e.target.value);
   };
-  // Add the stoock
+  //Active Button
+  const isButtonActive = () => {
+    // Check if all required fields have data
+    return (
+      newSelectedStockId !== "" &&
+      newSelectedVendor !== "" &&
+      qty !== 0 &&
+      unit !== "" &&
+      price !== 0 &&
+      ratePerDays !== 0 &&
+      total !== 0
+    );
+  };
+
+  //Add Stock
   const handleAddRequirement = async () => {
     const data = {
       customer_Id: enquiry._id,
@@ -171,72 +210,29 @@ function QuotationForm() {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8888/api/customerquotationinfo",
+      // Update the state immediately
+
+      // if (isFirstSubmission) {
+      //   await axios.post(
+      //     "http://localhost:8888/api/customerquotationinfo",
+      //     data
+      //   );
+      //   alert("Stock added successfully");
+      //   setIsFirstSubmission(false); // Update the state immediately
+      // } else {
+      //   await axios.patch(
+      //     `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
+      //     data
+      //   );
+      //   alert("Stock updated successfully");
+      // }
+
+      await axios.patch(
+        `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
         data
       );
-      console.log("Data posted successfully:", response.data);
-    } catch (error) {
-      console.error("Error posting data:", error);
-    }
-  };
+      alert("Stock updated successfully");
 
-  const handleAddAndPostRequirement = async () => {
-    const stockName = stocksData.find(
-      (stock) => stock._id === newSelectedStockId
-    )?.Stock_Name;
-
-    // Find if the requirement already exists
-    const existingRequirementIndex = requirements.findIndex(
-      (req) =>
-        req.stockId === newSelectedStockId &&
-        req.vendorId === newSelectedVendorId
-    );
-
-    if (existingRequirementIndex >= 0) {
-      // Update the existing requirement
-      requirements[existingRequirementIndex] = {
-        ...requirements[existingRequirementIndex],
-        purchaseQuantity: qty,
-        rate_per_days: price,
-        unit,
-        days: ratePerDays,
-        price: total,
-      };
-    } else {
-      // Add a new requirement
-      const newRequirement = {
-        stockId: newSelectedStockId,
-        stockName,
-        vendorName: newSelectedVendor,
-        vendorId: newSelectedVendorId,
-        purchaseQuantity: qty,
-        rate_per_days: price,
-        unit,
-        days: ratePerDays,
-        price: total,
-      };
-      requirements.push(newRequirement);
-    }
-
-    // Update the state to trigger a re-render
-    setRequirements([...requirements]);
-
-    // Prepare data for API post
-    const data = {
-      customer_Id: enquiry._id,
-      customerName: enquiry.customer_name,
-      requirements,
-    };
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8888/api/customerquotationinfo",
-        data
-      );
-      console.log("Data posted successfully:", response.data);
-
-      // Clear form fields and reset state after successful post
       setNewSelectedStockId("");
       setNewSelectedVendor("");
       setNewSelectedVendorId("");
@@ -245,35 +241,30 @@ function QuotationForm() {
       setPrice(0);
       setRatePerDays(0);
       setTotal(0);
-      // setRequirements([]); // Retain requirements array after posting
+
+      // Fetch the updated data after adding/updating the stock
+      await fetchQuotationData();
     } catch (error) {
-      console.error("Error posting data:", error);
+      console.error("Error adding/updating stock", error);
+      alert("Error adding/updating stock");
     }
   };
 
-  // Fetch added posts
+  const [ids, setIds] = useState([]);
+  const [subAmount, setsubAmount] = useState([]);
+
   useEffect(() => {
-    // Fetch initial quotation data
-    const fetchQuotationData = async () => {
-      try {
-        const response = await axios.get(
-          ` http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
-        );
-        console.log(
-          `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
-        );
-        setQuotationData(response.data);
-        console.log("quotationData", response.data);
-      } catch (error) {
-        console.error("Error fetching quotation data", error);
-      }
-    };
-
-    fetchQuotationData();
-  }, [enquiry._id, requirements]);
-
+    const newIds = quotationData.requirements.map((item) => item._id);
+    const amount = quotationData.requirements.reduce(
+      (total, item) => total + item.price,
+      0
+    );
+    setIds(newIds);
+    setsubAmount(amount);
+  }, [quotationData]);
   //Delete the stock
   const handleDelete = async (id) => {
+    console.log("id", id);
     const customerId = quotationData.customer_Id;
     // console.log("customerId", customerId);
     // console.log("id", id);
@@ -289,22 +280,17 @@ function QuotationForm() {
       console.error("Error deleting item", error);
     }
   };
-  const handleDelete2 = async (id) => {
-    const customerId = quotationData.customer_Id;
-    // console.log("customerId", customerId);
-    // console.log("id", id);
-    try {
-      await axios.delete(
-        ` http://localhost:8888/api/customerquotationinfo/${customerId}`
-      );
-    } catch (error) {
-      console.error("Error deleting item", error);
+
+  //calculate grandtotal
+  useEffect(() => {
+    if (quotationData) {
+      calculateGrandTotal();
     }
-  };
+  }, [quotationData, cgstChecked, sgstChecked, igstChecked, transportCharges]);
 
   const calculateGrandTotal = () => {
     if (quotationData) {
-      let total = quotationData.sub_total || 0;
+      let total = subAmount;
       let cgst = 0;
       let sgst = 0;
 
@@ -316,15 +302,20 @@ function QuotationForm() {
       }
 
       const grandTotal = total + cgst + sgst;
-      // setGrandTotal(grandTotal);
-      // calculateTotalAmount(grandTotal);
+      setGrandTotal(grandTotal);
+      calculateTotalAmount(grandTotal);
     }
   };
 
-  // const calculateTotalAmount = (grandTotal) => {
-  //   // const total = grandTotal + Number(transportCharges);
-  //   // setTotalAmount(total);
-  // };
+  useEffect(() => {
+    calculateGrandTotal();
+    // calculateTotalAmount();
+  }, [subAmount]);
+
+  const calculateTotalAmount = (grandTotal) => {
+    const total = grandTotal + Number(transportCharges);
+    setTotalAmount(total);
+  };
 
   const handleCgstChange = () => {
     setCgstChecked(!cgstChecked);
@@ -333,9 +324,12 @@ function QuotationForm() {
   const handleSgstChange = () => {
     setSgstChecked(!sgstChecked);
   };
+  const handleIgstChange = () => {
+    setIgstChecked(!igstChecked);
+  };
 
   const handleTransportChargesChange = (e) => {
-    // setTransportCharges(e.target.value);
+    setTransportCharges(e.target.value);
   };
 
   const convertAmountToWords = (amount) => {
@@ -427,6 +421,7 @@ function QuotationForm() {
     return toWords(integerPart);
   };
 
+  //print pdf
   const handlePrint = () => {
     const doc = new jsPDF();
 
@@ -441,6 +436,7 @@ function QuotationForm() {
       ["Customer Address", enquiry.address || "-"],
       ["Event Date", enquiry.event_date || "-"],
       ["Event Venue", enquiry.event_venue || "-"],
+      ["State", enquiry.state || "-"],
     ];
 
     const companyData = [
@@ -497,22 +493,70 @@ function QuotationForm() {
         `${req.price} Rs`,
       ]);
 
+      const roundedGrandTotal =
+        grandTotal !== null ? Math.round(grandTotal) : "-";
+      const roundedTotalAmount =
+        totalAmount !== null ? Math.round(totalAmount) : "-";
       // Append total rows
+      // tableData.push(
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "SubTotal",
+      //     `${quotationData.sub_total || "-"} Rs`,
+      //   ],
+      //   ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+      //   ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
+      //   ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
+      //   ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
+      //   [
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "",
+      //     "Amounts In Words",
+      //     `${convertAmountToWords(totalAmount) || "-"}`,
+      //   ]
+      // );
+
+      tableData.push([
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "SubTotal",
+        `${quotationData.sub_total || "-"} Rs`,
+      ]);
+
+      if (enquiry.state === "Maharashtra") {
+        tableData.push(
+          ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
+          ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`]
+        );
+      } else {
+        tableData.push([
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "IGST",
+          `${quotationData.igst || "18%"}`,
+        ]);
+      }
+
       tableData.push(
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "SubTotal",
-          `${quotationData.sub_total || "-"} Rs`,
-        ],
-        ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-        ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-        // ["", "", "", "", "", "", "Grand Total", `${grandTotal || "-"} Rs`],
-        // ["", "", "", "", "", "", "Total Amount", `${totalAmount || "-"} Rs`],
+        ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
+        ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
         [
           "",
           "",
@@ -521,7 +565,7 @@ function QuotationForm() {
           "",
           "",
           "Amounts In Words",
-          // `${convertAmountToWords(totalAmount) || "-"}`,
+          `${convertAmountToWords(totalAmount) || "-"}`,
         ]
       );
 
@@ -551,8 +595,8 @@ function QuotationForm() {
 
       // Print Transport Type and Transport Charges as text
       doc.setFontSize(10);
-      // doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
-      // doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
+      doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
+      doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
       // doc.text(`Description : ${descriptionValue}`, 10, finalY + 15);
 
       // Print Terms and Conditions
@@ -583,6 +627,53 @@ function QuotationForm() {
     }
     doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
     alert("PDF file generated");
+  };
+  const handleViewQuotation = () => {
+    // try {
+    //   const response = await axios.get(
+    //     `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
+    //   );
+    //   setQuotationData(response.data);
+    //   console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
+    setModalShow(true);
+    // if (response.data && response.data.state) {
+    //   setState(response.data.state);
+    // }
+    // } catch (error) {
+    //   console.error("Failed to fetch quotation info:", error);
+    // }
+  };
+  const handleClose = () => setModalShow(false);
+  const handlePatchQuotation = async () => {
+    if (!quotationData) {
+      return;
+    }
+
+    const customerId = quotationData.customer_Id;
+    const dataToUpdate = {
+      transport: transport,
+      transport_amount: transportCharges,
+      description: descriptionValue,
+      grand_total: grandTotal,
+      cgst: "9%",
+      sgst: "9%",
+      total_amount: totalAmount,
+      event_name: enquiry.event_name,
+      event_date: enquiry.event_date,
+      state: enquiry.state,
+    };
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:8888/api/savedquotation/${customerId}`,
+        dataToUpdate
+      );
+      alert("Quotation Created successfully");
+      // Handle successful response
+    } catch (error) {
+      console.error("Error patching data:", error);
+      // Handle error response
+    }
   };
 
   return (
@@ -734,6 +825,7 @@ function QuotationForm() {
               <button
                 className="btn btn-primary"
                 onClick={handleAddRequirement}
+                disabled={!isButtonActive()}
               >
                 Add/Update Stock
               </button>
@@ -771,12 +863,6 @@ function QuotationForm() {
                           <td>
                             {/* Add any action buttons or links here */}
                             <button onClick={() => handleDelete(item._id)}>
-                              <FontAwesomeIcon icon={faTrash} />
-                            </button>
-                          </td>
-                          <td>
-                            {/* Add any action buttons or links here */}
-                            <button onClick={() => handleDelete2()}>
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
                           </td>
@@ -837,7 +923,7 @@ function QuotationForm() {
               </table>
             </div>
             <div className="col-md-2"></div>
-            {/* <div className="col-md-4">
+            <div className="col-md-4">
               <table
                 className="table table-bordered table-hover"
                 id="tab_logic_total"
@@ -845,9 +931,7 @@ function QuotationForm() {
                 <tbody>
                   <tr>
                     <th className="text-center">Sub Total</th>
-                    <td className="text-center">
-                      {quotationData ? quotationData.sub_total : "Loading..."}
-                    </td>
+                    <td className="text-center">{subAmount}</td>
                   </tr>
                   <tr>
                     <th className="text-center">GST</th>
@@ -867,27 +951,21 @@ function QuotationForm() {
 
                   <tr>
                     <th className="text-center">Grand Total</th>
-                    <td className="text-center">
-                      {grandTotal !== null
-                        ? grandTotal.toFixed(2)
-                        : "Loading..."}
-                    </td>
+                    <td className="text-center">{grandTotal}</td>
                   </tr>
                   <tr>
                     <th className="text-center">Total Amount</th>
-                    <td className="text-center">
-                      {totalAmount !== null
-                        ? totalAmount.toFixed(2)
-                        : "Loading..."}
-                    </td>
+                    <td className="text-center">{totalAmount}</td>
                   </tr>
                 </tbody>
               </table>
-            </div> */}
+            </div>
           </div>
           <div className="row clearfix" style={{ marginTop: "20px" }}>
             <div className="col-md-12">
-              <Button variant="primary">View</Button>
+              <Button variant="primary" onClick={handleViewQuotation}>
+                View
+              </Button>
               <button className="btn btn-success ml-2" onClick={handlePrint}>
                 Print
               </button>
@@ -895,6 +973,111 @@ function QuotationForm() {
           </div>
         </div>
       </div>
+      <Modal show={modalShow} onHide={handleClose} size="lg">
+        <Modal.Header closeButton style={{ marginTop: "30px" }}>
+          <Modal.Title>Quotation Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ overflowY: "auto" }}>
+          {quotationData ? (
+            <div className="card">
+              <div className="card-body">
+                <div style={{ marginBottom: "20px" }}>
+                  <div>
+                    <strong>Client Name:</strong> {enquiry.customer_name}
+                  </div>
+                  <div>
+                    <strong>Address:</strong> {enquiry.address}
+                  </div>
+                  <div>
+                    <strong>Date:</strong> {enquiry.event_date}
+                  </div>
+                  <div>
+                    <strong>Venue:</strong> {enquiry.event_venue}
+                  </div>
+                  <div>
+                    <strong>State:</strong> {enquiry.state}
+                  </div>
+                </div>
+
+                <div className="table-responsive">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Sr.No.</th>
+                        <th>Perticular</th>
+                        {/* <th>Description</th> */}
+                        <th>Per</th>
+                        <th>Unit</th>
+                        <th>Rate</th>
+                        <th>Days</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {quotationData.requirements.map((req, index) => (
+                        <tr key={req._id}>
+                          <td>{index + 1}</td>
+                          <td>{req.stockName}</td>
+                          {/* <td>{req.description}</td> */}
+                          <td>{req.purchaseQuantity}</td>
+                          <td>{req.unit}</td>
+                          <td>{req.rate_per_days}</td>
+                          <td>{req.days}</td>
+                          <td>{req.price} Rs</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div>
+                  <strong>Transport:</strong> {quotationData.transport}
+                </div>
+                <div>
+                  <strong>Transport Amount:</strong> {transportCharges}
+                </div>
+                <div>
+                  <strong>Description:</strong> {quotationData.description}
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <div>
+                    <strong>Sub Total:</strong>{" "}
+                    {quotationData ? quotationData.sub_total : "Loading..."}
+                  </div>
+                  {enquiry.state === "Maharashtra" ? (
+                    <>
+                      <div>
+                        <strong> CGST:</strong> 9 %
+                      </div>
+                      <div>
+                        <strong> SGST:</strong> 9 %
+                      </div>
+                    </>
+                  ) : (
+                    <div>
+                      <strong> IGST:</strong> 18 %
+                    </div>
+                  )}
+                  <div>
+                    <strong>Grand Total:</strong> {grandTotal}
+                  </div>
+                  <div>
+                    <strong>Total Amount:</strong> {totalAmount}
+                  </div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handlePatchQuotation}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
