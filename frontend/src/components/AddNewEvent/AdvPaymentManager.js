@@ -124,6 +124,19 @@ const AdvPaymentManager = () => {
     }));
   };
 
+  const handlePaidAmountChange = (event) => {
+    const newPaidAmount = parseInt(event.target.value);
+    if (!isNaN(newPaidAmount)) {
+      setFormData((prevData) => ({
+        ...prevData,
+        paid_amt: newPaidAmount,
+        rem_amt: calculateRemainingAmount(newPaidAmount, prevData.advance_payment),
+      }));
+    }
+  };
+
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -317,6 +330,20 @@ const AdvPaymentManager = () => {
               )}
             </div>
             <div className="row mb-2">
+            <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="paid_amt">Paid Amount</label>
+                  <input
+                    className="form-control mb-2"
+                    type="text"
+                    name="paid_amt"
+                    placeholder="Paid Amount"
+                    onChange={handlePaidAmountChange}
+                    value={formData.paid_amt}
+                  />
+                </div>
+</div>
+
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="advance_payment">Advance Payment</label>
@@ -330,7 +357,10 @@ const AdvPaymentManager = () => {
                   />
                 </div>
               </div>
-              <div className="col px-5">
+              
+            <div className="row mb-2">
+          
+            <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="rem_amt">Pending Amount</label>
                   <input
@@ -344,7 +374,6 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-            <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
