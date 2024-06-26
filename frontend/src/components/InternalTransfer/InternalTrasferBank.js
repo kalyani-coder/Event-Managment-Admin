@@ -3,7 +3,6 @@ import Header from "../Sidebar/Header";
 import { Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-
 const InternalTransferFromBank = () => {
   const [fromBank, setFromBank] = useState('');
   const [fromAccountNumber, setFromAccountNumber] = useState('');
@@ -11,7 +10,7 @@ const InternalTransferFromBank = () => {
   const [toAccountNumber, setToAccountNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [successMessage, alert] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [bankNames, setBankNames] = useState([]);
 
   useEffect(() => {
@@ -31,6 +30,12 @@ const InternalTransferFromBank = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validate amount
+    if (parseFloat(amount) <= 0) {
+      window.alert("Amount must be greater than zero.");
+      return;
+    }
+
     const data = {
       from_bank: fromBank,
       from_bank_accountNu: fromAccountNumber,
@@ -48,15 +53,14 @@ const InternalTransferFromBank = () => {
     })
     .then(response => response.json())
     .then(data => {
-      // alert("Data Saved Successfully!");
-      // setShowSuccessAlert(true);
       console.log(data);
       setAmount("");
       setFromBank("");
       setFromAccountNumber("");
       setToBank("");
       setToAccountNumber("");
-      window.alert("Data Saved Successfully!");
+      setSuccessMessage("Data Saved Successfully!");
+      setShowSuccessAlert(true);
     })
     .catch(error => console.error('Error:', error));
   };
