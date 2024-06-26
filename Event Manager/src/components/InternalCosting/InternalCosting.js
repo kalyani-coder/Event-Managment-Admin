@@ -30,6 +30,8 @@ function InternalCosting() {
   const [storeQuantity, setStoreQuantity] = useState(null);
   const [stocksData, setStocksData] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [stockid, setStockid] = useState([]);
+
 
   const [stockNames, setStockNames] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
