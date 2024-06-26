@@ -266,9 +266,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                   )}
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={closePopup}>
-                    Close
-                  </Button>
+                <button type="button" className="btn btn-secondary" onClick={closePopup}>
+                        Close
+                      </button>
                 </Modal.Footer>
               </Modal>
             )}

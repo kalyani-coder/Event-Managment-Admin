@@ -24,18 +24,16 @@ const NewGodowns = () => {
 
       if (response.ok) {
         alert("Vendor added successfully.");
-        
+        setVendorName(""); // Clear vendor name
         setTimeout(() => {
           alert("");
         }, 3000);
       } else {
         alert("Failed to add vendor.");
-        
       }
     } catch (error) {
       console.error("Error adding vendor:", error);
       alert("Failed to add vendor. Please try again later.");
-      
     }
   };
 
@@ -97,7 +95,6 @@ const NewGodowns = () => {
 
     if (!selectedVendor) {
       alert("Please select a vendor.");
-      
       return;
     }
 
@@ -113,6 +110,16 @@ const NewGodowns = () => {
       if (response.ok) {
         window.alert("Stock added successfully.");
         console.log("Stock added successfully.");
+        // Reset formData and selectedVendor
+        setFormData({
+          Category: "",
+          Stock_Name: "",
+          Stock_Quantity: "",
+          Price: "",
+          Vendor_Id: "",
+          Vendor_Name: "",
+        });
+        setSelectedVendor(""); // Clear selected vendor
       } else {
         window.alert("Failed to add stock.");
       }
@@ -149,7 +156,6 @@ const NewGodowns = () => {
         setSelectedVendorId(null);
       } else {
         alert("Failed to delete vendor. Please try again later.");
-        
       }
     } catch (error) {
       console.error("Error deleting vendor:", error);
@@ -295,21 +301,19 @@ const NewGodowns = () => {
       if (response.ok) {
         console.log(responseData.message);
         alert(responseData.message);
-        
+        setEventName(""); // Clear event name
         setTimeout(() => {
           alert("");
         }, 3000);
       } else {
-        console.error(responseData.message);
-        alert(responseData.message);
-        setTimeout(() => {
-          alert("");
-        }, 3000);
+        console.error(responseData.error);
+        alert("Error adding event name");
       }
-    } catch (e) {
-      console.error(`Error posting event: ${e}`);
+    } catch (error) {
+      console.error("Error adding event name:", error);
     }
   };
+
 
   return (
     <>
@@ -534,7 +538,7 @@ const NewGodowns = () => {
         Cancel
       </button>
       <button
-        className="button button-save"
+        className="button-godown button-save"
         onClick={handleSaveEdit}
       >
         Save
