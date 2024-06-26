@@ -378,17 +378,20 @@ const AddManager = () => {
                 <Form.Group controlId="state">
                   <Form.Label>State</Form.Label>
                   <Form.Control
-                    as="select"
-                    value={state}
-                    placeholder="Select State"
-                    onChange={(e) => setState(e.target.value)}
-                  >
-                    {indianStates.map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </Form.Control>
+  as="select"
+  value={state}
+  onChange={(e) => setState(e.target.value)}
+  placeholder="Select State"
+>
+  <option value="" disabled>
+    Select State
+  </option>
+  {indianStates.map((state) => (
+    <option key={state} value={state}>
+      {state}
+    </option>
+  ))}
+</Form.Control>
                 </Form.Group>
               </div>
             </div>
