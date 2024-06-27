@@ -251,9 +251,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                         Number of Estimated Guests: {selectedInquiry.guest_quantity}
                         <br />
                         Event Venue: {selectedInquiry.event_venue}
-                        <br />
+                        {/* <br />
                         Event Requirement: {selectedInquiry.event_requirement}
-                        <br />
+                        <br /> */}
                         Customer Name: {selectedInquiry.customer_name}
                         <br />
                         Customer Email: {selectedInquiry.email}

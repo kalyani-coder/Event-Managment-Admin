@@ -58,7 +58,7 @@ const AccountantDetails = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search by first name, last name, phone, or address"
+                placeholder="Search by first name, last name, phone"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
