@@ -132,7 +132,6 @@ const AdvPaymentManager = () => {
       console.error("Error fetching events for manager:", error);
     }
   };
-  
 
   const handleEventChange = (event) => {
     const { value } = event.target;
@@ -147,15 +146,33 @@ const AdvPaymentManager = () => {
     }));
   };
   
-  
-
   const handlePaidAmountChange = (event) => {
-    const newPaidAmount = parseInt(event.target.value);
-    if (!isNaN(newPaidAmount)) {
+    const { value } = event.target;
+    if (/^-/.test(value)) { // Check if the value is negative
+      window.alert("Negative amounts are not allowed.");
+    } else if (/^\d*$/.test(value)) { // Only allow non-negative integers
+      const newPaidAmount = value === "" ? "" : parseInt(value);
       setFormData((prevData) => ({
         ...prevData,
         paid_amt: newPaidAmount,
         rem_amt: calculateRemainingAmount(newPaidAmount, prevData.advance_payment),
+      }));
+    }
+  };
+  
+  const handleAdvancePaymentChange = (event) => {
+    const { value } = event.target;
+    const newAdvancePayment = value === "" ? "" : parseInt(value);
+
+    if (/^-/.test(value)) { // Check if the value is negative
+      window.alert("Negative amounts are not allowed.");
+    } else if (newAdvancePayment > formData.paid_amt) { // Check if advance payment exceeds paid amount
+      window.alert("Advance payment cannot exceed paid amount.");
+    } else if (/^\d*$/.test(value)) { // Only allow non-negative integers
+      setFormData((prevData) => ({
+        ...prevData,
+        advance_payment: newAdvancePayment,
+        rem_amt: calculateRemainingAmount(prevData.paid_amt, newAdvancePayment),
       }));
     }
   };
@@ -200,17 +217,6 @@ const AdvPaymentManager = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
-  };
-
-  const handleAdvancePaymentChange = (event) => {
-    const newAdvancePayment = parseInt(event.target.value);
-    if (!isNaN(newAdvancePayment)) {
-      setFormData((prevData) => ({
-        ...prevData,
-        advance_payment: newAdvancePayment,
-        rem_amt: calculateRemainingAmount(prevData.paid_amt, newAdvancePayment),
-      }));
-    }
   };
 
   const handleBankSelect = (event) => {
