@@ -140,7 +140,7 @@ const EventDetails = ({ routes }) => {
                       <br />
                       Event Address: {selectedEvent.address}
                       <br />
-                      Budget: ${selectedEvent.budget}
+                      Budget: Rs.{selectedEvent.budget}
                     </p>
                   </div>
                 </Modal.Body>
