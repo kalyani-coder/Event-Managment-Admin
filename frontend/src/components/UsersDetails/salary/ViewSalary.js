@@ -22,7 +22,7 @@ const ViewSalary = () => {
   useEffect(() => {
     // Filter salaryData based on search query
     const filteredData = salaryData.filter((item) => {
-      const fullName = `${item.fname} ${item.lname}`.toLowerCase();
+      const fullName = item.salary_person_name.toLowerCase();
       return fullName.includes(searchQuery.toLowerCase());
     });
 

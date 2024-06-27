@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card, Modal, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
+import { format } from "date-fns";
 import axios from "axios";
 import * as XLSX from "xlsx";
-import { format } from "date-fns";
 import Header from "../Sidebar/Header";
 import './EventDetails.css'; // Import your CSS file
 
@@ -13,14 +12,12 @@ const EventDetails = ({ routes }) => {
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("http://localhost:8888/api/event")
       .then((response) => {
         setEventData(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching event data:", error);
@@ -61,7 +58,20 @@ const EventDetails = ({ routes }) => {
     XLSX.writeFile(wb, "EventDetails.xlsx");
   };
 
-  const filteredEvents = eventData.filter(event =>
+  const filteredEvents = eventData.filter((event) => {
+    const eventDate = new Date(event.event_date);
+    const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
+    const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
+
+    if (startDate && endDate) {
+      return eventDate >= startDate && eventDate <= endDate;
+    } else if (startDate) {
+      return eventDate >= startDate;
+    } else if (endDate) {
+      return eventDate <= endDate;
+    }
+    return true; // If no date range is set, return all events
+  }).filter(event =>
     (event.fname && event.fname.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (event.eventName && event.eventName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -72,9 +82,9 @@ const EventDetails = ({ routes }) => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="filter-container">
-            <input type="text" placeholder="Search Event by customer name or event name" value={searchTerm} onChange={handleSearchInputChange}/>
-          <span>Start date:</span> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-          <span>End date:</span><input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+            <input type="text" placeholder="Search Event by customer name or event name" value={searchTerm} onChange={handleSearchInputChange} />
+            <span>Start date:</span> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
+            <span>End date:</span><input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">View Events</h2>
@@ -144,10 +154,10 @@ const EventDetails = ({ routes }) => {
                     </p>
                   </div>
                 </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={closePopup}>
+                <Modal.Footer style={{ border: "none" }}>
+                  <button className="custom-close-button" onClick={closePopup}>
                     Close
-                  </Button>
+                  </button>
                 </Modal.Footer>
               </Modal>
             )}

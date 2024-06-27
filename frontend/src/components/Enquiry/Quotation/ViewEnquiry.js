@@ -92,7 +92,7 @@ const ViewInquiryPage = ({ enquiry }) => {
             <div className="w-full relative">
               <input
                 type="text"
-                placeholder="Search by Event, Company, or Customer Name"
+                placeholder="Search by Event or Customer Name"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
