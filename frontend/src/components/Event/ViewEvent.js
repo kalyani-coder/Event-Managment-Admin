@@ -87,9 +87,11 @@ const EventDetails = ({ routes }) => {
             <span>End date:</span><input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
           </div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-[30px]">View Events</h2>
-            <Button onClick={exportToExcel}>Export to Excel</Button>
-          </div>
+      <h2 className="text-3xl">View Events</h2>
+      <button className="export-button-viewevents" onClick={exportToExcel}>
+        Export to Excel
+      </button>
+    </div>
           <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
             <table className="table">
               <thead className="sticky top-0 bg-white">
@@ -125,7 +127,9 @@ const EventDetails = ({ routes }) => {
                 onHide={closePopup}
                 dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
-                <Modal.Header closeButton>
+                <Modal.Header>  <button className="header-close-button-popup">
+    x
+  </button>
                   <Modal.Title>Event Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -155,9 +159,9 @@ const EventDetails = ({ routes }) => {
                   </div>
                 </Modal.Body>
                 <Modal.Footer style={{ border: "none" }}>
-                  <button className="custom-close-button" onClick={closePopup}>
-                    Close
-                  </button>
+                <button className="close-button-popup" onClick={closePopup}>
+      Close
+    </button>
                 </Modal.Footer>
               </Modal>
             )}

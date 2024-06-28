@@ -89,7 +89,7 @@ const InternalTransferFromBank = () => {
       setFromAccountNumber("");
       setToBank("");
       setToAccountNumber("");
-      setSuccessMessage("Data Saved Successfully!");
+      alert("Data Saved Successfully!");
       setShowSuccessAlert(true);
       setErrors({
         fromBank: '',
@@ -138,15 +138,7 @@ const InternalTransferFromBank = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <div>
-            {showSuccessAlert && (
-              <Alert
-                variant="success"
-                onClose={() => setShowSuccessAlert(false)}
-                dismissible
-              >
-                {successMessage}
-              </Alert>
-            )}
+            
             <Link to={'/viewinternaltransfer'}>
               <button className="btn btn-primary mr-4 mb-4">View Transfer</button>
             </Link>

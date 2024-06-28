@@ -436,7 +436,9 @@ const ViewExpense = () => {
       </Modal>
 
       <Modal show={showDeclineModal} onHide={handleCloseDeclineModal} className="custom-modal">
-        <Modal.Header closeButton>
+        <Modal.Header ><button className="header-close-button-popup">
+    x
+  </button>
           <Modal.Title>Enter Reason for Decline</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -452,12 +454,12 @@ const ViewExpense = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDeclineModal}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSubmitDecline}>
-            Confirm Decline
-          </Button>
+        <button className="cancel-button-expense" onClick={handleCloseDeclineModal}>
+  Cancel
+</button>
+           <button className="confirm-decline-expense" onClick={handleSubmitDecline}>
+      Confirm Decline
+    </button>
         </Modal.Footer>
       </Modal>
     </>

@@ -233,7 +233,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                 onHide={closePopup}
                 dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
-                <Modal.Header closeButton>
+                <Modal.Header><button className="header-close-button-popup">
+    x
+  </button>
                   <Modal.Title>Inquiry Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -266,9 +268,10 @@ const ViewInquiryPage = ({ enquiry }) => {
                   )}
                 </Modal.Body>
                 <Modal.Footer>
-                <button  className="btn btn-secondary" onClick={closePopup}>
-                        Close
-                      </button>
+               
+                      <button className="close-button-popup" onClick={closePopup}>
+      Close
+    </button>
                 </Modal.Footer>
               </Modal>
             )}

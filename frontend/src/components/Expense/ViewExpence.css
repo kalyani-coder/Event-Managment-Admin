@@ -2,3 +2,33 @@
     margin-top: 26px;
   }
  
+  /* styles.css */
+.cancel-button-expense {
+  background-color: #6c757d; /* Bootstrap secondary button color */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancel-button-expense:hover {
+  opacity: 0.8;
+  background-color: #343a40;
+}
+
+/* styles.css */
+.confirm-decline-expense {
+  background-color: #0d6efd; /* Bootstrap primary button color */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirm-decline-expense:hover {
+  background-color: #0a58ca; /* Darker shade for hover effect */
+}

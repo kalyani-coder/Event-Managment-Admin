@@ -191,19 +191,7 @@ const EnquiryReport = () => {
                 ))}
               </div>
             </div>
-            {/* <div className="input-group">
-              <DatePicker
-                selected={selectedDate}
-                onChange={handleDateChange}
-                dateFormat="dd-MM-yyyy"
-                placeholderText="Select Date"
-                className="form-control"
-              />
-              <button className="btn btn-primary ml-2" onClick={clearFilters}>
-      Clear Filters
-    </button>
-            </div> */}
-            {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '5px', marginTop: '17px' }}> */}
+           
             <div className="grid md:flex items-center">
               <label style={{ marginRight: "10px" }}>Start Date:</label>
               <input
@@ -294,7 +282,6 @@ const EnquiryReport = () => {
                   </th>
                   <th scope="col">Guest Quantity</th>
                   <th scope="col">Event Venue</th>
-                  <th scope="col">Event Requirement</th>
                   <th scope="col">Customer Name</th>
                   <th scope="col">Contact</th>
                   <th scope="col">Address</th>
@@ -308,7 +295,6 @@ const EnquiryReport = () => {
                     <td>{enquiry.event_date}</td>
                     <td>{enquiry.guest_quantity}</td>
                     <td>{enquiry.event_venue}</td>
-                    <td>{enquiry.event_requirement}</td>
                     <td>{enquiry.customer_name}</td>
                     <td>{enquiry.contact}</td>
                     <td>{enquiry.address}</td>

@@ -53,7 +53,7 @@ import CustomerReport from "./components/DownloadReport/CustomerReport";
 import PaymentReport from "./components/DownloadReport/PaymentReport";
 import CostingForm from "./components/AddNewEvent/CostingForm";
 import Header from "./components/Sidebar/Header";
-// import "./App.css";
+import "./App.css";
 import { Divider } from "@mui/material/Divider";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Master from "./components/master/Master";

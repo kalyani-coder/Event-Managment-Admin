@@ -199,8 +199,10 @@ const Master = () => {
       return;
     }
 
-    if (banks.some(bank => bank.Account_Number === accountNumber)) {
-      alert("Account number already exists. Please enter a unique account number.");
+    if (banks.some((bank) => bank.Account_Number === accountNumber)) {
+      alert(
+        "Account number already exists. Please enter a unique account number."
+      );
       return;
     }
 
@@ -210,7 +212,10 @@ const Master = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ Bank_Name: bankName, Account_Number: accountNumber }),
+        body: JSON.stringify({
+          Bank_Name: bankName,
+          Account_Number: accountNumber,
+        }),
       });
 
       if (response.ok) {
@@ -263,13 +268,13 @@ const Master = () => {
 
   const handleVenueSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Check if the venue name already exists
     if (venues.some((v) => v.venue === venue)) {
       alert("Venue name already exists. Please enter a unique venue name.");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:8888/api/venue", {
         method: "POST",
@@ -278,7 +283,7 @@ const Master = () => {
         },
         body: JSON.stringify({ venue }),
       });
-  
+
       if (response.ok) {
         alert("Venue added successfully.");
         setVenue("");
@@ -367,8 +372,10 @@ const Master = () => {
               </Form>
             </div>
           </div>
-          <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
-          <Modal.Header closeButton>
+          <Modal show={showVendorModal} onHide={handleCloseVendorModal} className="top-[10%]">
+            <Modal.Header>
+             
+              <button className="header-close-button-popup">x</button>
               <Modal.Title>Vendors List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -430,8 +437,11 @@ const Master = () => {
               </Form>
             </div>
           </div>
-          <Modal show={showEventModal} onHide={handleCloseEventModal}>
-            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+          <Modal show={showEventModal} onHide={handleCloseEventModal} 
+          className="top-[10%]">
+            <Modal.Header>
+              {" "}
+              <button className="header-close-button-popup">x</button>
               <Modal.Title>Events List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -502,15 +512,22 @@ const Master = () => {
               </Form>
             </div>
           </div>
-          <Modal show={showBankModal} onHide={handleCloseBankModal}>
-            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+          <Modal
+            show={showBankModal}
+            onHide={handleCloseBankModal}
+           
+            className="top-[10%]"
+          >
+            <Modal.Header>
+              {" "}
+              <button className="header-close-button-popup">x</button>
               <Modal.Title>Bank List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <div>Bank Name</div>
                 <div>Action</div>
-              </div>
+              </div>  
               {banks.map((bank) => (
                 <div
                   key={bank._id}
@@ -565,8 +582,11 @@ const Master = () => {
               </Form>
             </div>
           </div>
-          <Modal show={showVenueModal} onHide={handleCloseVenueModal}>
-            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+          <Modal show={showVenueModal} onHide={handleCloseVenueModal} 
+          className="top-[10%]">
+            <Modal.Header>
+              {" "}
+              <button className="header-close-button-popup">x</button>
               <Modal.Title>Venue List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -592,7 +612,6 @@ const Master = () => {
               ))}
             </Modal.Body>
           </Modal>
-          
         </div>
       </div>
     </>

@@ -66,7 +66,6 @@ const EventReport = () => {
   const exportToExcel = () => {
     const filteredData = filteredEvents.map((event) => ({
       EventName: event.eventName,
-      Company_Name: event.company_name,
       Venue: event.venue,
       Subvenue: event.subvenue,
       Event_Date: event.event_date,
@@ -319,7 +318,6 @@ const EventReport = () => {
               <thead className="sticky top-0 bg-white">
                 <tr>
                   <th scope="col">Sr. No.</th>
-                  <th scope="col">Company Name</th>
                   <th scope="col">Event</th>
                   <th scope="col">Venue</th>
                   <th scope="col">Subvenue</th>
@@ -340,7 +338,6 @@ const EventReport = () => {
                 {filteredEvents.map((event, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{event.company_name}</td>
                     <td>{event.eventName}</td>
                     <td>{event.venue}</td>
                     <td>{event.subvenue}</td>

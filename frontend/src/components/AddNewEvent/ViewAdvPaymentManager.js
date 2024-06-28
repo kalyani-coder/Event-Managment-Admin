@@ -156,13 +156,13 @@ const ViewAdvPaymentManager = () => {
                     <td>{payment.Bank_Name}</td>
                     <td>{payment.description}</td>
                     <td>
-                      <Button
-                        variant="info"
-                        onClick={() => openPopup(payment)}
-                      >
-                        View More
-                      </Button>
-                    </td>
+      <button
+        className="custom-button-advpay"
+        onClick={() => openPopup(payment)}
+      >
+        View More
+      </button>
+    </td>
                   </tr>
                 ))}
               </tbody>
@@ -176,7 +176,9 @@ const ViewAdvPaymentManager = () => {
               onHide={closePopup}
               dialogClassName="modal-dialog-centered modal-dialog-responsive"
             >
-              <Modal.Header closeButton>
+              <Modal.Header> <button className="header-close-button-popup">
+    x
+  </button>
                 <Modal.Title>Payment Details</Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -202,9 +204,12 @@ const ViewAdvPaymentManager = () => {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={closePopup}>
+                {/* <Button variant="secondary" onClick={closePopup}>
                   Close
-                </Button>
+                </Button> */}
+                <button className="close-button-popup" onClick={closePopup}>
+      Close
+    </button>
               </Modal.Footer>
             </Modal>
           )}

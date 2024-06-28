@@ -1,3 +1,47 @@
 /* .PReadd {
   background-color: #ad789fef;
 } */
+
+.button-view{
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.button-view:hover {
+  background-color: #0a58ca;
+}
+
+/* styles.css */
+.close-button-popup {
+  background-color: #6c757d; /* Bootstrap danger color */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.close-button-popup:hover {
+  background-color: #5a6268; /* Darker shade for hover effect */
+}
+
+.header-close-button-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #000;
+}
+
+.header-close-button-popup:hover {
+  color: #555;
+}

@@ -58,3 +58,17 @@
     }
   }
   
+  /* styles.css */
+.custom-button-advpay {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.custom-button-advpay:hover {
+  background-color: #0a58ca;
+}

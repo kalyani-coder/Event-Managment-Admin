@@ -93,7 +93,7 @@ const ExecutiveDetails = () => {
                             className="btn btn-info"
                             state={executive}
                           >
-                            Know more
+                            View more
                           </Link>
                         </div>
                       </div>
