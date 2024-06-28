@@ -125,7 +125,7 @@ const ExpenseForm = () => {
             </Link>
             <input
               type="text"
-              placeholder="Search by Event Name, Date or Venue"
+              placeholder="Search by Event Name or Venue"
               value={searchTerm}
               onChange={handleSearchInputChange}
               className="form-control w-1/3"

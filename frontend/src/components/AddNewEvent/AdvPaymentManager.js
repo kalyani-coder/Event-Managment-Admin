@@ -33,7 +33,9 @@ const AdvPaymentManager = () => {
 
   const initialFormData = {
     selectedManager: "",
+    managerName: "",
     selectedEvent: "",
+    eventName: "",
     date: getCurrentDate(),
     time: getCurrentTime(),
     paid_amt: "",
@@ -109,10 +111,16 @@ const AdvPaymentManager = () => {
   const handleManagerChange = async (event) => {
     const { value } = event.target;
     console.log("Selected manager ID:", value); // Log the selected manager ID
+
+    const selectedManagerObj = managers.find(manager => manager._id === value);
+    const managerName = selectedManagerObj ? `${selectedManagerObj.fname} ${selectedManagerObj.lname}` : '';
+
     setFormData((prevData) => ({
       ...prevData,
       selectedManager: value,
+      managerName: managerName,
       selectedEvent: "", // Reset selected event when manager changes
+      eventName: "",     // Reset event name when manager changes
     }));
   
     try {
@@ -133,16 +141,17 @@ const AdvPaymentManager = () => {
   const handleEventChange = (event) => {
     const { value } = event.target;
     const selectedEvent = events.find(event => event._id === value);
-  
+
     // Log the selected event name
     console.log("Selected Event Name:", selectedEvent ? selectedEvent.eventName : "");
-  
+
     setFormData((prevData) => ({
       ...prevData,
       selectedEvent: value,
+      eventName: selectedEvent ? selectedEvent.eventName : ''
     }));
   };
-  
+
   const handlePaidAmountChange = (event) => {
     const { value } = event.target;
     if (/^-/.test(value)) { // Check if the value is negative
@@ -156,7 +165,7 @@ const AdvPaymentManager = () => {
       }));
     }
   };
-  
+
   const handleAdvancePaymentChange = (event) => {
     const { value } = event.target;
     const newAdvancePayment = value === "" ? "" : parseInt(value);
@@ -206,8 +215,10 @@ const AdvPaymentManager = () => {
       const response = await axios.post(
         "http://localhost:8888/api/advpaymanager",
         {
-          manager_Name: formData.selectedManager,
-          EventName: formData.selectedEvent,
+          manager_Id: formData.selectedManager,
+          manager_Name: formData.managerName,
+          EventId: formData.selectedEvent,
+          EventName: formData.eventName,
           Date: formData.date,
           Time: formData.time,
           Bank_Name: selectedBank,
@@ -261,216 +272,189 @@ const AdvPaymentManager = () => {
           <form className="order" onSubmit={handleSubmit}>
             <div className="flex">
               <Link to={'/advpaymentmanager'}>
-                <Button className="mr-4 mb-4">Advance Payment Manager</Button>
+                <Button className="mr-4 mb-4" variant="primary">
+                  Advance Payment to Manager
+                </Button>
               </Link>
+
               <Link to={'/viewadvpaymentmanager'}>
                 <Button className="mr-4 mb-4">View Advance Payment Manager</Button>
               </Link>
             </div>
-            <h2 className="text-[30px] pl-[1em]">Advance Payment to Manager</h2>
-
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <Form.Group controlId="SelectManager">
-                    <Form.Label>Select Manager:<span style={{ color: "red" }}>*</span></Form.Label>
-                    <div className="relative">
-                      <Form.Select
-                        className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${formErrors.selectedManager ? "border-red-500" : ""}`}
-                        aria-label="Select Manager"
-                        name="selectedManager"
-                        onChange={handleManagerChange}
-                        value={formData.selectedManager}
-                        placeholder="Select Manager"
-                      >
-                        <option value="">Select Manager</option>
-                        {managers.map((manager) => (
-                          <option
-                            key={manager._id}
-                            value={manager._id} // Use _id as the value
-                          >
-                            {manager.fname} {manager.lname}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      {formErrors.selectedManager && <span className="text-red-500">{formErrors.selectedManager}</span>}
-                    </div>
-                  </Form.Group>
-                </div>
-              </div>
-
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="selectedEvent">Event Name:<span style={{ color: "red" }}>*</span></label>
-                  <select
-                    className={`form-control mb-2 ${formErrors.selectedEvent ? "border-red-500" : ""}`}
-                    name="selectedEvent"
-                    onChange={handleEventChange}
-                    value={formData.selectedEvent}
-                    
-                  >
-                    <option value="">Select event</option>
-                    {events.map((event) => (
-                      <option key={event._id} value={event._id}>
-                        {event.eventName}
-                      </option>
-                    ))}
-                  </select>
-                  {formErrors.selectedEvent && <span className="text-red-500">{formErrors.selectedEvent}</span>}
-                </div>
-              </div>
-            </div>
-
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="date">Date</label>
-                  <input
-                    className="form-control"
-                    type="date"
-                    name="date"
-                    onChange={handleChange}
-                    value={formData.date}
-                  />
-                </div>
-              </div>
-              <div className="col px-5">
-                {" "}
-                <div className="form-group">
-                  <label htmlFor="time">Time</label>
-                  <input
-                    className="form-control"
-                    type="time"
-                    name="time"
-                    onChange={handleChange}
-                    value={formData.time}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="selectedBank">Select Bank:<span style={{ color: "red" }}>*</span></label>
-                  <select
-                    className={`form-control mb-2 ${formErrors.selectedBank ? "border-red-500" : ""}`}
-                    name="Selectedbank"
-                    value={selectedBank}
-                    onChange={handleBankSelect}
-                    
-                  >
-                    <option value="">Select Bank</option>
-                    {bankNames.map((bank) => (
-                      <option key={bank._id} value={bank.Bank_Name}>
-                        {bank.Bank_Name}
-                      </option>
-                    ))}
-                  </select>
-                  {formErrors.selectedBank && <span className="text-red-500">{formErrors.selectedBank}</span>}
-                </div>
-              </div>
-              {selectedBank && (
-                <div className="col px-5">
-                  <div className="form-group">
-                    <label htmlFor="accountNumber">Account Number</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={accountNumber}
-                      readOnly
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="paid_amt">Paid Amount:<span style={{ color: "red" }}>*</span></label>
-                  <input
-                    className={`form-control mb-2 ${formErrors.paid_amt ? "border-red-500" : ""}`}
-                    type="text"
-                    name="paid_amt"
-                    placeholder="Paid Amount"
-                    onChange={handlePaidAmountChange}
-                    value={formData.paid_amt}
-                  />
-                  {formErrors.paid_amt && <span className="text-red-500">{formErrors.paid_amt}</span>}
-                </div>
-              </div>
-
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="advance_payment">Advance Payment:<span style={{ color: "red" }}>*</span></label>
-                  <input
-                    className={`form-control mb-2 ${formErrors.advance_payment ? "border-red-500" : ""}`}
-                    type="text"
-                    name="advance_payment"
-                    placeholder="Advance Payment"
-                    onChange={handleAdvancePaymentChange}
-                    value={formData.advance_payment}
-                  />
-                  {formErrors.advance_payment && <span className="text-red-500">{formErrors.advance_payment}</span>}
-                </div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="rem_amt">Pending Amount</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="rem_amt"
-                    placeholder="Remaining Amount"
-                    value={formData.rem_amt}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
-                  <input
-                    className="form-control mb-2"
-                    type="text"
-                    name="description"
-                    placeholder="Description"
-                    onChange={handleChange}
-                    value={formData.description}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <Button
-                  className="manager-btn ms-1"
-                  type="button"
-                  onClick={handleDiscard}
+            <h4 className="title mt-1">Advance Payment</h4>
+            <div className="card">
+              <Form.Group controlId="manager">
+                <Form.Label>Manager Name</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="selectedManager"
+                  value={formData.selectedManager}
+                  onChange={handleManagerChange}
+                  isInvalid={formErrors.selectedManager}
                 >
-                  Discard
-                </Button>
+                  <option value="">Select Manager</option>
+                  {managers.map((manager) => (
+                    <option key={manager._id} value={manager._id}>
+                      {manager.fname} {manager.lname}
+                    </option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.selectedManager}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                <Button className="manager-btn ms-3" type="submit">
-                  Save
-                </Button>
-              </div>
+              <Form.Group controlId="event">
+                <Form.Label>Event Name</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="selectedEvent"
+                  value={formData.selectedEvent}
+                  onChange={handleEventChange}
+                  isInvalid={formErrors.selectedEvent}
+                  disabled={!formData.selectedManager}
+                >
+                  <option value="">Select Event</option>
+                  {events.map((event) => (
+                    <option key={event._id} value={event._id}>
+                      {event.eventName}
+                    </option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.selectedEvent}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="date">
+                <Form.Label>Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="time">
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  type="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="bankName">
+                <Form.Label>Bank Name</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={selectedBank}
+                  onChange={handleBankSelect}
+                  isInvalid={formErrors.selectedBank}
+                >
+                  <option value="">Select Bank</option>
+                  {bankNames.map((bank) => (
+                    <option key={bank.Bank_Name} value={bank.Bank_Name}>
+                      {bank.Bank_Name}
+                    </option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.selectedBank}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="accountNumber">
+                <Form.Label>Account Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={accountNumber}
+                  readOnly
+                />
+              </Form.Group>
+
+              <Form.Group controlId="paidAmount">
+                <Form.Label>Paid Amount</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="paid_amt"
+                  value={formData.paid_amt}
+                  onChange={handlePaidAmountChange}
+                  isInvalid={formErrors.paid_amt}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.paid_amt}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="advancePayment">
+                <Form.Label>Advance Payment</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="advance_payment"
+                  value={formData.advance_payment}
+                  onChange={handleAdvancePaymentChange}
+                  isInvalid={formErrors.advance_payment}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.advance_payment}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="remainingAmount">
+                <Form.Label>Remaining Amount</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="rem_amt"
+                  value={formData.rem_amt}
+                  readOnly
+                />
+              </Form.Group>
+
+              <Form.Group controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                />
+              </Form.Group>
             </div>
-          </form>
-          {showPopup && (
-            <div className="alert alert-success mt-3">
-              Data saved successfully!
+
+            <div className="flex items-center justify-center">
               <button
-                type="button"
-                className="close"
-                onClick={handlePopupClose}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="submit"
               >
-                <span aria-hidden="true">&times;</span>
+                Submit
+              </button>
+              <button
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
+                type="button"
+                onClick={handleDiscard}
+              >
+                Discard
               </button>
             </div>
-          )}
+          </form>
         </div>
+
+        {showPopup && (
+          <div className="popup">
+            <div className="popup-content">
+              <h3>Advance Payment Successfully Added!</h3>
+              <button
+                className="popup-close"
+                onClick={handlePopupClose}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

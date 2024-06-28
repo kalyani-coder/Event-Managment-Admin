@@ -86,8 +86,8 @@ const ViewAdvPaymentManager = () => {
   };
 
   const filteredPayments = payments.filter((payment) =>
-    payment.manager_fname &&
-    payment.manager_fname.toLowerCase().includes(searchTerm.toLowerCase())
+    payment.manager_Name &&
+    payment.manager_Name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -150,7 +150,7 @@ const ViewAdvPaymentManager = () => {
               <tbody style={{ background: "white", borderRadius: "10px" }}>
                 {filteredPayments.map((payment, index) => (
                   <tr key={payment._id}>
-                    <td>{`${payment.manager_fname} ${payment.manager_lname}`}</td>
+                    <td>{`${payment.manager_Name} `}</td>
                     <td>{payment.EventName}</td>
                     <td>{formatDate(payment.Date)}</td>
                     <td>{payment.Bank_Name}</td>

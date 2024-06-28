@@ -88,12 +88,12 @@ const ViewEvent = () => {
               value={searchTerm}
               onChange={handleSearchInputChange}
             />
-            <input
+          <span>Start Date:</span>  <input
               type="date"
               value={dateRange.startDate}
               onChange={handleStartDateChange}
             />
-            <input
+           <span>End Date:</span> <input
               type="date"
               value={dateRange.endDate}
               onChange={handleEndDateChange}

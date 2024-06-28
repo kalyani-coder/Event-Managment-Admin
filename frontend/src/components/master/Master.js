@@ -368,7 +368,7 @@ const Master = () => {
             </div>
           </div>
           <Modal show={showVendorModal} onHide={handleCloseVendorModal}>
-            <Modal.Header closeButton style={{ marginTop: "30px" }}>
+          <Modal.Header closeButton>
               <Modal.Title>Vendors List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
