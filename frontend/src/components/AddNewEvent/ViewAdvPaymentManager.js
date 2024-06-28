@@ -4,7 +4,7 @@ import axios from "axios";
 import Header from "../Sidebar/Header";
 import { format } from "date-fns";
 import "./AdvPaymentManager.css";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ViewAdvPaymentManager = () => {
   const [payments, setPayments] = useState([]);
@@ -14,15 +14,47 @@ const ViewAdvPaymentManager = () => {
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
   useEffect(() => {
+    fetchPayments();
+  }, []);
+
+  const fetchPayments = () => {
     axios
       .get("http://localhost:8888/api/advpaymanager")
       .then((response) => {
-        setPayments(response.data);
+        const paymentData = response.data;
+        // Fetch manager details for each payment
+        const promises = paymentData.map(payment => {
+          return axios.get(`http://localhost:8888/api/addmanager/${payment.manager_Id}`)
+            .then(managerResponse => {
+              const managerData = managerResponse.data;
+              return {
+                ...payment,
+                manager_fname: managerData.fname,
+                manager_lname: managerData.lname
+              };
+            })
+            .catch(error => {
+              console.error("Error fetching manager data:", error);
+              return {
+                ...payment,
+                manager_fname: "Unknown",
+                manager_lname: "Manager"
+              };
+            });
+        });
+
+        Promise.all(promises)
+          .then(updatedPayments => {
+            setPayments(updatedPayments);
+          })
+          .catch(error => {
+            console.error("Error fetching manager details for payments:", error);
+          });
       })
       .catch((error) => {
         console.error("Error fetching payment data:", error);
       });
-  }, []);
+  };
 
   const openPopup = (payment) => {
     setSelectedPayment(payment);
@@ -36,11 +68,8 @@ const ViewAdvPaymentManager = () => {
 
   const handleSearch = () => {
     const searchTermLower = searchTerm.toLowerCase();
-    const filtered = payments.filter(payment => 
-      (payment.manager_Name && payment.manager_Name.toLowerCase().includes(searchTermLower)) 
-      // (payment.EventName && payment.EventName.toLowerCase().includes(searchTermLower)) ||
-      // (payment.Date && payment.Date.toString().toLowerCase().includes(searchTermLower)) ||
-      // (payment.description && payment.description.toLowerCase().includes(searchTermLower))
+    const filtered = payments.filter(payment =>
+      (payment.manager_fname && payment.manager_fname.toLowerCase().includes(searchTermLower))
     );
     setPayments(filtered);
   };
@@ -53,19 +82,12 @@ const ViewAdvPaymentManager = () => {
     setSearchTerm("");
     setDateRange({ startDate: "", endDate: "" });
     // Refetch original payments data
-    axios
-      .get("http://localhost:8888/api/advpaymanager")
-      .then((response) => {
-        setPayments(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching payment data:", error);
-      });
+    fetchPayments();
   };
-  
+
   const filteredPayments = payments.filter((payment) =>
-    payment.manager_Name &&
-    payment.manager_Name.toLowerCase().includes(searchTerm.toLowerCase())
+    payment.manager_fname &&
+    payment.manager_fname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -73,14 +95,13 @@ const ViewAdvPaymentManager = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-        <div className="flex">
+          <div className="flex">
             <Link to={'/advpaymentmanager'}>
               <button className="btn btn-primary mr-4 mb-4">Advance Payment Manager</button>
             </Link>
             <Link to={'/viewadvpaymentmanager'}>
               <button className="btn btn-primary mr-4 mb-4">View Advance Payment Manager</button>
             </Link>
-            
           </div>
           <h2 className="text-[30px]">Advance Payment Manager Details</h2>
           <div className="d-flex flex-wrap align-items-center">
@@ -116,7 +137,7 @@ const ViewAdvPaymentManager = () => {
           </div>
           <div className="table-responsive w-[105%] md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0 ">
             <table className="table">
-              <thead className=" sticky top-0 bg-white">
+              <thead className="sticky top-0 bg-white">
                 <tr>
                   <th scope="col">Manager Name</th>
                   <th scope="col">Event Name</th>
@@ -129,7 +150,7 @@ const ViewAdvPaymentManager = () => {
               <tbody style={{ background: "white", borderRadius: "10px" }}>
                 {filteredPayments.map((payment, index) => (
                   <tr key={payment._id}>
-                    <td>{payment.manager_Name}</td>
+                    <td>{`${payment.manager_fname} ${payment.manager_lname}`}</td>
                     <td>{payment.EventName}</td>
                     <td>{formatDate(payment.Date)}</td>
                     <td>{payment.Bank_Name}</td>
@@ -162,7 +183,7 @@ const ViewAdvPaymentManager = () => {
                 <div>
                   <h2>{selectedPayment.EventName}</h2>
                   <p style={{ lineHeight: "35px" }}>
-                    Manager Name: {selectedPayment.manager_Name}
+                    Manager Name: {`${selectedPayment.manager_fname} ${selectedPayment.manager_lname}`}
                     <br />
                     Event Name: {selectedPayment.EventName || ""}
                     <br />

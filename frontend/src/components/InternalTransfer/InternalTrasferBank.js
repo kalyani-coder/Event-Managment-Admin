@@ -12,6 +12,11 @@ const InternalTransferFromBank = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [bankNames, setBankNames] = useState([]);
+  const [errors, setErrors] = useState({
+    fromBank: '',
+    toBank: '',
+    amount: '',
+  });
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -30,9 +35,34 @@ const InternalTransferFromBank = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate amount
-    if (parseFloat(amount) <= 0) {
-      window.alert("Amount must be greater than zero.");
+    // Validate form fields
+    let formValid = true;
+
+    if (!fromBank) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        fromBank: 'From Bank is required.',
+      }));
+      formValid = false;
+    }
+
+    if (!toBank) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        toBank: 'To Bank is required.',
+      }));
+      formValid = false;
+    }
+
+    if (parseFloat(amount) <= 0 || isNaN(parseFloat(amount))) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        amount: 'Amount must be a valid number greater than zero.',
+      }));
+      formValid = false;
+    }
+
+    if (!formValid) {
       return;
     }
 
@@ -61,6 +91,11 @@ const InternalTransferFromBank = () => {
       setToAccountNumber("");
       setSuccessMessage("Data Saved Successfully!");
       setShowSuccessAlert(true);
+      setErrors({
+        fromBank: '',
+        toBank: '',
+        amount: '',
+      });
     })
     .catch(error => console.error('Error:', error));
   };
@@ -74,6 +109,11 @@ const InternalTransferFromBank = () => {
     } else {
       setFromAccountNumber('');
     }
+    // Clear error if bank is selected
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      fromBank: '',
+    }));
   };
 
   const handleToBankSelect = (event) => {
@@ -85,6 +125,11 @@ const InternalTransferFromBank = () => {
     } else {
       setToAccountNumber('');
     }
+    // Clear error if bank is selected
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      toBank: '',
+    }));
   };
 
   return (
@@ -109,10 +154,10 @@ const InternalTransferFromBank = () => {
             <form onSubmit={handleSubmit}>
               <div className="row mb-2">
                 <div className="col px-5">
-                  <div className="mb-3">
-                    <label className="form-label">From Select Bank:</label>
+                  <div className={`mb-3 ${errors.fromBank ? 'has-error' : ''}`}>
+                    <label className="form-label">From Select Bank:<span style={{ color: "red" }}>*</span></label>
                     <select
-                      className="form-control"
+                      className={`form-control ${errors.fromBank ? 'is-invalid' : ''}`}
                       value={fromBank}
                       onChange={handleFromBankSelect}
                     >
@@ -123,6 +168,7 @@ const InternalTransferFromBank = () => {
                         </option>
                       ))}
                     </select>
+                    {errors.fromBank && <div className="invalid-feedback">{errors.fromBank}</div>}
                   </div>
                 </div>
                 <div className="col px-5">
@@ -139,10 +185,10 @@ const InternalTransferFromBank = () => {
               </div>
               <div className="row mb-2">
                 <div className="col px-5">
-                  <div className="mb-3">
-                    <label className="form-label">To Select Bank:</label>
+                  <div className={`mb-3 ${errors.toBank ? 'has-error' : ''}`}>
+                    <label className="form-label">To Select Bank:<span style={{ color: "red" }}>*</span></label>
                     <select
-                      className="form-control"
+                      className={`form-control ${errors.toBank ? 'is-invalid' : ''}`}
                       value={toBank}
                       onChange={handleToBankSelect}
                     >
@@ -153,6 +199,7 @@ const InternalTransferFromBank = () => {
                         </option>
                       ))}
                     </select>
+                    {errors.toBank && <div className="invalid-feedback">{errors.toBank}</div>}
                   </div>
                 </div>
                 <div className="col px-5">
@@ -168,16 +215,17 @@ const InternalTransferFromBank = () => {
                 </div>
               </div>
               <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="amount">Amount</label>
+                <div className={`form-group ${errors.amount ? 'has-error' : ''}`}>
+                  <label htmlFor="amount">Amount<span style={{ color: "red" }}>*</span></label>
                   <input
                     type="number"
-                    className="form-control"
+                    className={`form-control ${errors.amount ? 'is-invalid' : ''}`}
                     placeholder="Amount"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    required
+                    
                   />
+                  {errors.amount && <div className="invalid-feedback">{errors.amount}</div>}
                 </div>
               </div>
               <div className="row mb-2">

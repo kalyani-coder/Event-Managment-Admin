@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import axios from "axios";
 import Header from "../../Sidebar/Header";
+import "./ExecutiveDetailPage.css"; // Import the custom CSS file
 
 const ExecutiveDetailPage = () => {
   const { _id } = useParams();
@@ -78,19 +79,12 @@ const ExecutiveDetailPage = () => {
                 <hr />
               </div>
               <div className="my-3 grid gap-1 md:flex">
-                <Button variant="primary" onClick={handleEdit}>
-                  Edit
-                </Button>{" "}
-                <Button
-                  variant="danger"
-                  className="mx-1"
+                <button
+                  className="custom-button-executive"
                   onClick={handleDelete}
                 >
                   Delete
-                </Button>
-                <Button variant="info" className="mx-1" onClick={handleSalary}>
-                  Add Salary
-                </Button>
+                </button>
               </div>
             </Card.Body>
           </Card>

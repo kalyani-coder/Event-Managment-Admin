@@ -34,12 +34,8 @@ const AdvPaymentManager = () => {
   const initialFormData = {
     selectedManager: "",
     selectedEvent: "",
-    fname: "",
-    lname: "",
-    event_name: "",
     date: getCurrentDate(),
     time: getCurrentTime(),
-    bankaccount: "",
     paid_amt: "",
     advance_payment: "",
     rem_amt: 0,
@@ -53,6 +49,7 @@ const AdvPaymentManager = () => {
   const [accountNumber, setAccountNumber] = useState('');
   const [selectedBank, setSelectedBank] = useState('');
   const [bankNames, setBankNames] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -84,9 +81,11 @@ const AdvPaymentManager = () => {
     const fetchEventsForManager = async () => {
       try {
         if (formData.selectedManager) {
+          console.log("Fetching events for manager:", formData.selectedManager);
           const response = await axios.get(
-            `http://localhost:8888/api/enquiry?assign_manager_name=${formData.selectedManager}`
+            `http://localhost:8888/api/event/manager/${formData.selectedManager}`
           );
+          console.log("Events response:", response.data);
           setEvents(response.data);
         } else {
           setEvents([]); // Clear events if no manager is selected
@@ -107,26 +106,49 @@ const AdvPaymentManager = () => {
     }));
   };
 
-  const handleManagerChange = (event) => {
+  const handleManagerChange = async (event) => {
     const { value } = event.target;
+    console.log("Selected manager ID:", value); // Log the selected manager ID
     setFormData((prevData) => ({
       ...prevData,
       selectedManager: value,
       selectedEvent: "", // Reset selected event when manager changes
     }));
+  
+    try {
+      if (value) {
+        const response = await axios.get(
+          `http://localhost:8888/api/event/manager/${value}`
+        );
+        console.log("Events for manager:", response.data);
+        setEvents(response.data);
+      } else {
+        setEvents([]); // Clear events if no manager is selected
+      }
+    } catch (error) {
+      console.error("Error fetching events for manager:", error);
+    }
   };
 
   const handleEventChange = (event) => {
     const { value } = event.target;
+    const selectedEvent = events.find(event => event._id === value);
+  
+    // Log the selected event name
+    console.log("Selected Event Name:", selectedEvent ? selectedEvent.eventName : "");
+  
     setFormData((prevData) => ({
       ...prevData,
       selectedEvent: value,
     }));
   };
-
+  
   const handlePaidAmountChange = (event) => {
-    const newPaidAmount = parseInt(event.target.value);
-    if (!isNaN(newPaidAmount)) {
+    const { value } = event.target;
+    if (/^-/.test(value)) { // Check if the value is negative
+      window.alert("Negative amounts are not allowed.");
+    } else if (/^\d*$/.test(value)) { // Only allow non-negative integers
+      const newPaidAmount = value === "" ? "" : parseInt(value);
       setFormData((prevData) => ({
         ...prevData,
         paid_amt: newPaidAmount,
@@ -134,11 +156,51 @@ const AdvPaymentManager = () => {
       }));
     }
   };
-
   
+  const handleAdvancePaymentChange = (event) => {
+    const { value } = event.target;
+    const newAdvancePayment = value === "" ? "" : parseInt(value);
+
+    if (/^-/.test(value)) { // Check if the value is negative
+      window.alert("Negative amounts are not allowed.");
+    } else if (newAdvancePayment > formData.paid_amt) { // Check if advance payment exceeds paid amount
+      window.alert("Advance payment cannot exceed paid amount.");
+    } else if (/^\d*$/.test(value)) { // Only allow non-negative integers
+      setFormData((prevData) => ({
+        ...prevData,
+        advance_payment: newAdvancePayment,
+        rem_amt: calculateRemainingAmount(prevData.paid_amt, newAdvancePayment),
+      }));
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validate form fields
+    const errors = {};
+    if (!formData.selectedManager) {
+      errors.selectedManager = "This field is required";
+    }
+    if (!formData.selectedEvent) {
+      errors.selectedEvent = "This field is required";
+    }
+    if (!selectedBank) {
+      errors.selectedBank = "This field is required";
+    }
+    if (!formData.paid_amt) {
+      errors.paid_amt = "This field is required";
+    }
+    if (!formData.advance_payment) {
+      errors.advance_payment = "This field is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    } else {
+      setFormErrors({});
+    }
 
     try {
       const response = await axios.post(
@@ -167,7 +229,6 @@ const AdvPaymentManager = () => {
     } catch (error) {
       console.error("Error saving data:", error);
       alert("Failed to advance payment.");
-
     }
   };
 
@@ -177,17 +238,6 @@ const AdvPaymentManager = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
-  };
-
-  const handleAdvancePaymentChange = (event) => {
-    const newAdvancePayment = parseInt(event.target.value);
-    if (!isNaN(newAdvancePayment)) {
-      setFormData((prevData) => ({
-        ...prevData,
-        advance_payment: newAdvancePayment,
-        rem_amt: calculateRemainingAmount(prevData.paid_amt, newAdvancePayment),
-      }));
-    }
   };
 
   const handleBankSelect = (event) => {
@@ -223,47 +273,50 @@ const AdvPaymentManager = () => {
               <div className="col px-5">
                 <div className="form-group">
                   <Form.Group controlId="SelectManager">
-                    <Form.Label>Select Manager:</Form.Label>
+                    <Form.Label>Select Manager:<span style={{ color: "red" }}>*</span></Form.Label>
                     <div className="relative">
                       <Form.Select
-                        className="w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+                        className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${formErrors.selectedManager ? "border-red-500" : ""}`}
                         aria-label="Select Manager"
                         name="selectedManager"
                         onChange={handleManagerChange}
                         value={formData.selectedManager}
                         placeholder="Select Manager"
                       >
-                        <option>Select Manager</option>
+                        <option value="">Select Manager</option>
                         {managers.map((manager) => (
                           <option
                             key={manager._id}
-                            value={`${manager.fname} ${manager.lname}`}
+                            value={manager._id} // Use _id as the value
                           >
                             {manager.fname} {manager.lname}
                           </option>
                         ))}
                       </Form.Select>
+                      {formErrors.selectedManager && <span className="text-red-500">{formErrors.selectedManager}</span>}
                     </div>
                   </Form.Group>
                 </div>
               </div>
+
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="selectedEvent">Event Name</label>
+                  <label htmlFor="selectedEvent">Event Name:<span style={{ color: "red" }}>*</span></label>
                   <select
-                    className="form-control mb-2"
+                    className={`form-control mb-2 ${formErrors.selectedEvent ? "border-red-500" : ""}`}
                     name="selectedEvent"
                     onChange={handleEventChange}
                     value={formData.selectedEvent}
-                    required
+                    
                   >
                     <option value="">Select event</option>
                     {events.map((event) => (
-                      <option key={event._id} value={event.event_name}>
-                        {event.event_name}
+                      <option key={event._id} value={event._id}>
+                        {event.eventName}
                       </option>
                     ))}
                   </select>
+                  {formErrors.selectedEvent && <span className="text-red-500">{formErrors.selectedEvent}</span>}
                 </div>
               </div>
             </div>
@@ -295,16 +348,16 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-             <div className="row mb-2">
+            <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="selectedBank">Select Bank</label>
+                  <label htmlFor="selectedBank">Select Bank:<span style={{ color: "red" }}>*</span></label>
                   <select
-                    className="form-control mb-2"
+                    className={`form-control mb-2 ${formErrors.selectedBank ? "border-red-500" : ""}`}
                     name="Selectedbank"
                     value={selectedBank}
                     onChange={handleBankSelect}
-                    required
+                    
                   >
                     <option value="">Select Bank</option>
                     {bankNames.map((bank) => (
@@ -313,6 +366,7 @@ const AdvPaymentManager = () => {
                       </option>
                     ))}
                   </select>
+                  {formErrors.selectedBank && <span className="text-red-500">{formErrors.selectedBank}</span>}
                 </div>
               </div>
               {selectedBank && (
@@ -330,37 +384,38 @@ const AdvPaymentManager = () => {
               )}
             </div>
             <div className="row mb-2">
-            <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="paid_amt">Paid Amount</label>
+                  <label htmlFor="paid_amt">Paid Amount:<span style={{ color: "red" }}>*</span></label>
                   <input
-                    className="form-control mb-2"
+                    className={`form-control mb-2 ${formErrors.paid_amt ? "border-red-500" : ""}`}
                     type="text"
                     name="paid_amt"
                     placeholder="Paid Amount"
                     onChange={handlePaidAmountChange}
                     value={formData.paid_amt}
                   />
+                  {formErrors.paid_amt && <span className="text-red-500">{formErrors.paid_amt}</span>}
                 </div>
-</div>
+              </div>
 
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="advance_payment">Advance Payment</label>
+                  <label htmlFor="advance_payment">Advance Payment:<span style={{ color: "red" }}>*</span></label>
                   <input
-                    className="form-control mb-2"
+                    className={`form-control mb-2 ${formErrors.advance_payment ? "border-red-500" : ""}`}
                     type="text"
                     name="advance_payment"
                     placeholder="Advance Payment"
                     onChange={handleAdvancePaymentChange}
                     value={formData.advance_payment}
                   />
+                  {formErrors.advance_payment && <span className="text-red-500">{formErrors.advance_payment}</span>}
                 </div>
               </div>
-              
+            </div>
             <div className="row mb-2">
-          
-            <div className="col px-5">
+              <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="rem_amt">Pending Amount</label>
                   <input
@@ -373,7 +428,6 @@ const AdvPaymentManager = () => {
                   />
                 </div>
               </div>
-            </div>
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
@@ -388,21 +442,6 @@ const AdvPaymentManager = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="row mb-2">
-              <div className="col px-5">
-                <button
-                  className="manager-btn ms-1 mb-3"
-                  type="button"
-                  onClick={handleDiscard}
-                >
-                  Discard
-                </button>
-
-                <button className="manager-btn ms-1 mb-3" type="submit">
-                  Save
-                </button>
-              </div>
-            </div> */}
             <div className="row mb-2">
               <div className="col px-5">
                 <Button
@@ -410,7 +449,6 @@ const AdvPaymentManager = () => {
                   type="button"
                   onClick={handleDiscard}
                 >
-                  {" "}
                   Discard
                 </Button>
 

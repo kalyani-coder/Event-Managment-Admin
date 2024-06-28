@@ -88,9 +88,6 @@ const AddAccountant = () => {
       console.error("Error:", error);
       window.alert("Error submitting data. Please try again later.");
     }
-
-    // Clear form fields and profile picture state
-    handleDiscard();
   };
 
   const handleFileChange = (event) => {
@@ -156,9 +153,6 @@ const AddAccountant = () => {
               <Link to={'/addexecutive'}>
                 <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
               </Link>
-              {/* <Link to={'/addvendor'}>
-                <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
-              </Link> */}
             </div>
             <h2 className="text-[30px] pl-[1em]">Add Accountant</h2>
 
@@ -173,7 +167,6 @@ const AddAccountant = () => {
                     value={fname}
                     onChange={(e) => setfname(e.target.value)}
                     placeholder="Enter first name"
-                    
                     style={{ borderColor: errors.fname ? "red" : "" }}
                   />
                   {errors.fname && <div style={{ color: "red" }}>{errors.fname}</div>}
@@ -189,7 +182,6 @@ const AddAccountant = () => {
                     value={lname}
                     onChange={(e) => setlname(e.target.value)}
                     placeholder="Enter last name"
-                    
                     style={{ borderColor: errors.lname ? "red" : "" }}
                   />
                   {errors.lname && <div style={{ color: "red" }}>{errors.lname}</div>}
@@ -207,7 +199,6 @@ const AddAccountant = () => {
                     value={email}
                     onChange={(e) => setemail(e.target.value)}
                     placeholder="Enter email"
-                    
                     style={{ borderColor: errors.email ? "red" : "" }}
                   />
                   {errors.email && <div style={{ color: "red" }}>{errors.email}</div>}
@@ -223,7 +214,6 @@ const AddAccountant = () => {
                     value={contact}
                     onChange={(e) => setcontact(e.target.value)}
                     placeholder="Enter phone"
-                    
                     style={{ borderColor: errors.contact ? "red" : "" }}
                   />
                   {errors.contact && <div style={{ color: "red" }}>{errors.contact}</div>}
