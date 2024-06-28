@@ -10,7 +10,8 @@ import "react-datepicker/dist/react-datepicker.css";
 const BankwiseReport = () => {
   const [transfers, setTransfers] = useState([]);
   const [filteredTransfers, setFilteredTransfers] = useState([]);
-  const [selectedBank, setSelectedBank] = useState("");
+  const [selectedFromBank, setSelectedFromBank] = useState("");
+  const [selectedToBank, setSelectedToBank] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
   useEffect(() => {
@@ -37,7 +38,8 @@ const BankwiseReport = () => {
       return (
         (!startDate || transferDate >= startDate) &&
         (!endDate || transferDate <= endDate) &&
-        (!selectedBank || transfer.from_bank === selectedBank || transfer.to_bank === selectedBank)
+        ((!selectedFromBank || transfer.from_bank === selectedFromBank) &&
+        (!selectedToBank || transfer.to_bank === selectedToBank))
       );
     });
 
@@ -45,7 +47,8 @@ const BankwiseReport = () => {
   };
 
   const clearFilters = () => {
-    setSelectedBank("");
+    setSelectedFromBank("");
+    setSelectedToBank("");
     setDateRange({ startDate: "", endDate: "" });
     setFilteredTransfers(transfers);
   };
@@ -82,10 +85,23 @@ const BankwiseReport = () => {
     // Write the workbook to a file
     XLSX.writeFile(wb, "bank_transfer_report.xlsx");
   };
-  
 
-  const handleBankFilterChange = (bank) => {
-    setSelectedBank(bank);
+  const handleFromBankFilterChange = (bank) => {
+    setSelectedFromBank(bank);
+    filterTransfers(bank, selectedToBank);
+  };
+
+  const handleToBankFilterChange = (bank) => {
+    setSelectedToBank(bank);
+    filterTransfers(selectedFromBank, bank);
+  };
+
+  const filterTransfers = (fromBank, toBank) => {
+    let filtered = transfers.filter((transfer) => {
+      return (!fromBank || transfer.from_bank === fromBank) &&
+             (!toBank || transfer.to_bank === toBank);
+    });
+    setFilteredTransfers(filtered);
   };
 
   const bankOptions = [
@@ -97,7 +113,7 @@ const BankwiseReport = () => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-        <div className="flex">
+          <div className="flex">
             <Link to={'/eventreport'}>
               <button className="btn btn-primary mr-4 mb-4">Event Report</button>
             </Link>
@@ -117,21 +133,33 @@ const BankwiseReport = () => {
               <button className="btn btn-primary mr-3 mb-4">Vendor Report</button>
             </Link>
             <Link to={'/bankwisereport'}>
-            <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
             </Link>
             <Link to={'/oustandingpaymentreport'}>
-            <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
+              <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
           <h2 className="text-[30px]">Bankwise Report</h2>
           <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
             <div className="dropdown">
-              <button className="btn btn-primary dropdown-toggle mr-2 flex items-center content-center justify-center gap-1" type="button" id="bankFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <FaFilter /> Filter By Bank
+              <button className="custom-button-reports dropdown-toggle mr-2 flex items-center content-center justify-center gap-1" type="button" id="fromBankFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <FaFilter /> Filter By From Bank
               </button>
-              <div className="dropdown-menu" aria-labelledby="bankFilterDropdown">
+              <div className="dropdown-menu" aria-labelledby="fromBankFilterDropdown">
                 {bankOptions.map((option, index) => (
-                  <button key={index} className="dropdown-item" onClick={() => handleBankFilterChange(option)}>
+                  <button key={index} className="dropdown-item" onClick={() => handleFromBankFilterChange(option)}>
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="dropdown">
+              <button className="custom-button-reports dropdown-toggle mr-2 flex items-center content-center justify-center gap-1" type="button" id="toBankFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <FaFilter /> Filter By To Bank
+              </button>
+              <div className="dropdown-menu" aria-labelledby="toBankFilterDropdown">
+                {bankOptions.map((option, index) => (
+                  <button key={index} className="dropdown-item" onClick={() => handleToBankFilterChange(option)}>
                     {option}
                   </button>
                 ))}
@@ -180,7 +208,7 @@ const BankwiseReport = () => {
                     <td>{transfer.to_bank}</td>
                     <td>{transfer.to_bank_accountNu}</td>
                     <td>{transfer.amount}</td>
-                    <td>{new Date(transfer.date).toLocaleDateString()}</td>
+                    <td>{transfer.date}</td>
                   </tr>
                 ))}
               </tbody>

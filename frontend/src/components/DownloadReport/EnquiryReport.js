@@ -42,9 +42,9 @@ const EnquiryReport = () => {
     }
   };
 
-  const handleSearchInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  // const handleSearchInputChange = (e) => {
+  //   setSearchQuery(e.target.value);
+  // };
 
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -162,20 +162,21 @@ const EnquiryReport = () => {
             <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px] ">Enquiry Report</h2>
+          <h2 className="text-[25px] ">Enquiry Report</h2>
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}
             <div className="dropdown">
-              <button
-                className="btn btn-primary dropdown-toggle mr-2 flex items-center content-center justify-center gap-1"
-                type="button"
-                id="venueFilterDropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FaFilter /> Filter By Venue
-              </button>
+            <button
+  className="custom-button-reports"
+  type="button"
+  id="venueFilterDropdown"
+  data-toggle="dropdown"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  <FaFilter /> Filter By Venue
+</button>
+
               <div
                 className="dropdown-menu"
                 aria-labelledby="venueFilterDropdown"

@@ -117,26 +117,26 @@ const CustomerReport = () => {
               <button className="btn btn-primary mr-3 mb-4">Enquiry Report</button>
             </Link>
             <Link to={'/customerreport'}>
-              <button className="btn btn-primary mr-3 mb-4">Customer Report</button>
+              <button className="btn btn-primary mr-3 mb-2">Customer Report</button>
             </Link>
             <Link to={'/managerreport'}>
-              <button className="btn btn-primary mr-3 mb-4">Manager Report</button>
+              <button className="btn btn-primary mr-3 mb-2">Manager Report</button>
             </Link>
             <Link to={'/paymentreport'}>
-              <button className="btn btn-primary mr-3 mb-4">Payment Report</button>
+              <button className="btn btn-primary mr-3 mb-2">Payment Report</button>
             </Link>
             <Link to={'/vendorpaymentreport'}>
-              <button className="btn btn-primary mr-3 mb-4">Vendor Report</button>
+              <button className="btn btn-primary mr-3 mb-2">Vendor Report</button>
             </Link>
             <Link to={'/bankwisereport'}>
-            <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
+            <button className="btn btn-primary mr-3 mb-2">Bankwise Report</button>
             </Link>
             <Link to={'/oustandingpaymentreport'}>
-            <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
+            <button className="btn btn-primary mr-4 mb-2">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px] ">Customer Wise Report</h2>
-          <div className="mb-3  align-items-center grid md:flex gap-2">
+          <h2 className="text-[25px] ">Customer Wise Report</h2>
+          <div className="mb-2  align-items-center grid md:flex gap-2">
             <select
               className="form-control mr-2"
               onChange={handleCustomerChange}

@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const VendorPaymentReport = () => {
   const [payments, setPayments] = useState([]);
@@ -17,6 +17,7 @@ const VendorPaymentReport = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedEvent, setSelectedEvent] = useState("");
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetchPaymentData();
@@ -33,9 +34,15 @@ const VendorPaymentReport = () => {
 
       // Extract vendors from payment data
       const uniqueVendors = [
-        ...new Set(paymentData.map((payment) => payment.vendor)),
+        ...new Set(paymentData.map((payment) => payment.fname)),
       ];
       setVendors(uniqueVendors);
+
+      // Extract events from payment data
+      const uniqueEvents = [
+        ...new Set(paymentData.map((payment) => payment.event_name)),
+      ];
+      setEvents(uniqueEvents);
     } catch (error) {
       console.error("Error fetching payment data:", error);
     }
@@ -184,7 +191,7 @@ const VendorPaymentReport = () => {
       return (
         payment.fname && // Check if payment.fname is defined
         payment.fname.toLowerCase().includes(query.toLowerCase()) &&
-        (vendor === "" || payment.vendor === vendor) &&
+        (vendor === "" || payment.fname === vendor) &&
         (paidAmtFilter === "" ||
           parseFloat(payment.paid_amt) >= parseFloat(paidAmtFilter)) &&
         (remAmtFilter === "" ||
@@ -235,6 +242,7 @@ const VendorPaymentReport = () => {
     XLSX.writeFile(wb, "payment_report.xlsx");
   };
 
+
   return (
     <>
       <Header />
@@ -272,63 +280,63 @@ const VendorPaymentReport = () => {
           <h2 className="text-[30px] ">Vendor Payment Report</h2>
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}
-            <div className="d-flex flex-grow-1 mr-2">
-              <div className="dropdown">
+            <div className="dropdown">
+              <button
+                className="custom-button-reports dropdown-toggle"
+                type="button"
+                id="vendorDropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Filter By Vendor
+              </button>
+              <div className="dropdown-menu" aria-labelledby="vendorDropdown">
                 <button
-                  className="btn btn-primary dropdown-toggle"
-                  type="button"
-                  id="vendorDropdown"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  className="dropdown-item"
+                  onClick={() => handleNameFilterChange("")}
                 >
-                  Filter By Vendor
+                  All Vendors
                 </button>
-                <div className="dropdown-menu" aria-labelledby="vendorDropdown">
+                {vendors.map((vendor, index) => (
                   <button
+                    key={index}
                     className="dropdown-item"
-                    onClick={() => handleNameFilterChange("")}
+                    onClick={() => handleNameFilterChange(vendor)}
                   >
-                    All Vendors
+                    {vendor}
                   </button>
-                  {payments.map((payment, index) => (
-                    <button
-                      key={index}
-                      className="dropdown-item"
-                      onClick={() => handleNameFilterChange(payment.fname)}
-                    >
-                      {payment.fname}
-                    </button>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
-            <div className="d-flex flex-grow-1 mr-2">
-              <div className="dropdown ml-2">
+
+            <div className="dropdown">
+              <button
+                className="custom-button-reports dropdown-toggle"
+                type="button"
+                id="eventDropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Filter By Event
+              </button>
+              <div className="dropdown-menu" aria-labelledby="eventDropdown">
                 <button
-                  className="btn btn-primary dropdown-toggle"
-                  type="button"
-                  id="eventDropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  className="dropdown-item"
+                  onClick={() => handleEventFilter("")}
                 >
-                  Filter By Event
+                  All Events
                 </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="eventDropdownMenuButton"
-                >
-                  {payments.map((payment, index) => (
-                    <button
-                      key={index}
-                      className="dropdown-item"
-                      onClick={() => handleEventFilter(payment.event_name)}
-                    >
-                      {payment.event_name}
-                    </button>
-                  ))}
-                </div>
+                {events.map((event, index) => (
+                  <button
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handleEventFilter(event)}
+                  >
+                    {event}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="grid md:flex items-center">

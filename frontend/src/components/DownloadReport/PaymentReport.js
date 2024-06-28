@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import Header from "../Sidebar/Header";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const PaymentReport = () => {
   const [salaryData, setSalaryData] = useState([]);
@@ -85,7 +85,7 @@ const PaymentReport = () => {
         flex items-center justify-center main-container-for-Addaccount overflow-y-auto "
       >
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%] ">
-        <div className="flex">
+          <div className="flex">
             <Link to={'/eventreport'}>
               <button className="btn btn-primary mr-4 mb-4">Event Report</button>
             </Link>
@@ -105,48 +105,15 @@ const PaymentReport = () => {
               <button className="btn btn-primary mr-3 mb-4">Vendor Report</button>
             </Link>
             <Link to={'/bankwisereport'}>
-            <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
+              <button className="btn btn-primary mr-3 mb-4">Bankwise Report</button>
             </Link>
             <Link to={'/oustandingpaymentreport'}>
-            <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
+              <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px] ">Payment Report</h2>
-          <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
-            {" "}
-            <div className="dropdown ">
-              <button
-                className="btn btn-primary dropdown-toggle mr-2"
-                onChange={(e) => setFilterType(e.target.value)}
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                style={{ minWidth: "150px" }}
-              >
-                Filter
-              </button>
-              <div
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <a className="dropdown-item">Type of Salary</a>
-                <a className="dropdown-item">Manager</a>
-                <a className="dropdown-item">Accountant</a>
-                <a className="dropdown-item">Executive</a>
-              </div>
-            </div>
-            {/* <select
-                className="form-select mr-2"
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <option value="">Type of Salary</option>
-                <option value="manager">Manager</option>
-                <option value="accountant">Accountant</option>
-                <option value="executive">Executive</option>
-              </select> */}
+          <h2 className="text-[25px] ">Payment Report</h2>
+          <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
+            
             <div className="grid md:flex items-center">
               <label className="mr-1">Start Date:</label>
               <input
@@ -178,11 +145,10 @@ const PaymentReport = () => {
                   borderRadius: "5px",
                   border: "1px solid #ddd",
                   fontSize: "16px",
-                  // Set a fixed width to ensure consistency with the dropdown button
                 }}
               />
             </div>
-            <div className=" grid md:flex mt-1 gap-1">
+            <div className="grid md:flex mt-1 gap-1">
               <button className="btn btn-primary" onClick={applyFilter}>
                 Apply
               </button>
@@ -197,7 +163,7 @@ const PaymentReport = () => {
               </button>
             </div>
           </div>
-          <div className="overflow-y-auto h-[60vh]  md:mt-0 w-full">
+          <div className="overflow-y-auto h-[60vh] md:mt-0 w-full">
             <table className="table table-bordered bg-white">
               <thead className="sticky top-0 bg-white">
                 <tr>
