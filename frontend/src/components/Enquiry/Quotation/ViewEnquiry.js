@@ -233,9 +233,7 @@ const ViewInquiryPage = ({ enquiry }) => {
                 onHide={closePopup}
                 dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
-                <Modal.Header><button className="header-close-button-popup">
-    x
-  </button>
+                <Modal.Header>
                   <Modal.Title>Inquiry Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

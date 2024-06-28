@@ -176,9 +176,7 @@ const ViewAdvPaymentManager = () => {
               onHide={closePopup}
               dialogClassName="modal-dialog-centered modal-dialog-responsive"
             >
-              <Modal.Header> <button className="header-close-button-popup">
-    x
-  </button>
+              <Modal.Header> 
                 <Modal.Title>Payment Details</Modal.Title>
               </Modal.Header>
               <Modal.Body>

@@ -127,8 +127,8 @@ const EventDetails = ({ routes }) => {
                 onHide={closePopup}
                 dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
-                <Modal.Header>  <button className="header-close-button-popup">
-    x
+                <Modal.Header>  <button className="header-close-button-popup" onClick={closePopup}>
+    &times;
   </button>
                   <Modal.Title>Event Details</Modal.Title>
                 </Modal.Header>

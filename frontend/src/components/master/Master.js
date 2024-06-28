@@ -96,6 +96,12 @@ const Master = () => {
   const handleViewVendors = () => {
     setShowVendorModal(true);
   };
+  const handleClose = () => {
+    setShowVendorModal(false)
+    setShowBankModal(false)
+    setShowVenueModal(false)
+    setShowEventModal(false)
+  }
 
   const handleDeleteVendor = async (vendorId) => {
     const confirmDelete = window.confirm(
@@ -375,7 +381,7 @@ const Master = () => {
           <Modal show={showVendorModal} onHide={handleCloseVendorModal} className="top-[10%]">
             <Modal.Header>
              
-              <button className="header-close-button-popup">x</button>
+              <button className="header-close-button-popup" onClick={handleClose}>x</button>
               <Modal.Title>Vendors List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -441,7 +447,7 @@ const Master = () => {
           className="top-[10%]">
             <Modal.Header>
               {" "}
-              <button className="header-close-button-popup">x</button>
+              <button className="header-close-button-popup"onClick={handleClose}>x</button>
               <Modal.Title>Events List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -520,7 +526,7 @@ const Master = () => {
           >
             <Modal.Header>
               {" "}
-              <button className="header-close-button-popup">x</button>
+              <button className="header-close-button-popup"onClick={handleClose}>x</button>
               <Modal.Title>Bank List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -582,11 +588,11 @@ const Master = () => {
               </Form>
             </div>
           </div>
-          <Modal show={showVenueModal} onHide={handleCloseVenueModal} 
+          <Modal show={showVenueModal} 
           className="top-[10%]">
             <Modal.Header>
               {" "}
-              <button className="header-close-button-popup">x</button>
+              <button className="header-close-button-popup"onClick={handleClose}>x</button>
               <Modal.Title>Venue List</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
