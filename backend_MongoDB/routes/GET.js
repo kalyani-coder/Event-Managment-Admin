@@ -4,8 +4,8 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const { QuatationInfo, Event,ExpenceForm ,AdvanceExpence, CustomerQuatationInfo} = require("../models/newModels");
-const { AddEventMaster, advancePaymantManager, ManagerDetails ,ManagerTask , bankTransper, Enquiry,allBanks, venue} = require("../models/newModels");
+const { QuatationInfo, Event, ExpenceForm, AdvanceExpence, CustomerQuatationInfo } = require("../models/newModels");
+const { AddEventMaster, advancePaymantManager, ManagerDetails, ManagerTask, bankTransper, Enquiry, allBanks, venue } = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
@@ -20,7 +20,7 @@ router.get('/customerquotationinfo', async (req, res) => {
   } catch (err) {
     console.error("Error fetching quotation info:", err);
     res.status(500).json({ message: "Internal server error" });
-  } 
+  }
 });
 
 // GET BYE EVENT DATE /
@@ -101,68 +101,68 @@ router.get('/customerquotationinfo/stock/:stockId', async (req, res) => {
 
 
 // ENquiry GET ROUTE
-router.get("enquiry/customers/:managerId" , async(req, res) => {
+router.get("enquiry/customers/:managerId", async (req, res) => {
 
   const managerId = req.params.managerId
-  try{
+  try {
 
-    const getCustomerByManagerId = await Enquiry.find({managerId: managerId})
-    if(!getCustomerByManagerId === 0){
-      return res.status(404).json({message : "ManagerId not Found"})
+    const getCustomerByManagerId = await Enquiry.find({ managerId: managerId })
+    if (!getCustomerByManagerId === 0) {
+      return res.status(404).json({ message: "ManagerId not Found" })
     }
     res.status(201).json(getCustomerByManagerId)
 
-  }catch(err){
-    res.status(500).json({message : "Internal server error"})
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
 
-router.get("/advanceexpence" , async(req, res) => {
-  try{
+router.get("/advanceexpence", async (req, res) => {
+  try {
     const getbyExpence = await AdvanceExpence.find()
     res.status(201).json(getbyExpence)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
 
-router.get("/advanceexpence/:id", async(req, res) =>{
+router.get("/advanceexpence/:id", async (req, res) => {
   const id = req.params.id
-  try{
+  try {
     const GetById = await AdvanceExpence.findById(id)
-    if(!GetById){
-      return res.status(404).json({message : "Advance Expence ID not found "})
+    if (!GetById) {
+      return res.status(404).json({ message: "Advance Expence ID not found " })
     }
     res.status(201).json(GetById)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
 // Expence form get route 
 
-router.get("/expence" , async(req, res) => {
-  try{
+router.get("/expence", async (req, res) => {
+  try {
     const getbyExpence = await ExpenceForm.find()
     res.status(201).json(getbyExpence)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
 
-router.get("/expence/:id", async(req, res) =>{
+router.get("/expence/:id", async (req, res) => {
   const id = req.params.id
-  try{
+  try {
     const GetById = await ExpenceForm.findById(id)
-    if(!GetById){
-      return res.status(404).json({message : "Expence ID not found "})
+    if (!GetById) {
+      return res.status(404).json({ message: "Expence ID not found " })
     }
     res.status(201).json(GetById)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
@@ -185,17 +185,17 @@ router.get("/expence/manager/:managerId", async (req, res) => {
 
 
 // Get route for event 
-router.get("/event/:id" , async(req, res) => {
-  const Id = req.params.id 
-  try{
+router.get("/event/:id", async (req, res) => {
+  const Id = req.params.id
+  try {
     const getById = await Event.findById(Id)
-    if(!Id){
-      res.status(404).json({message : "Id Not found"})
-      
+    if (!Id) {
+      res.status(404).json({ message: "Id Not found" })
+
     }
     res.status(201).json(getById)
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
@@ -278,7 +278,7 @@ router.get('/quotationinfo', async (req, res) => {
   } catch (err) {
     console.error("Error fetching quotation info:", err);
     res.status(500).json({ message: "Internal server error" });
-  } 
+  }
 });
 
 router.get('/quotationinfo/stock/:stockId', async (req, res) => {
@@ -300,38 +300,38 @@ router.get('/quotationinfo/stock/:stockId', async (req, res) => {
 
 
 // venue get route 
-router.get("/venue" , async(req, res) => {
-  try{
+router.get("/venue", async (req, res) => {
+  try {
 
     const getVenue = await venue.find()
     res.status(201).json(getVenue)
 
-  }catch(e){
-    res.status(500).json({message : "internal server error"})
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" })
   }
 })
 // All Banks accounts get route 
-router.get("/allbanks" , async(req, res) => {
-  try{
+router.get("/allbanks", async (req, res) => {
+  try {
 
     const banks = await allBanks.find()
     res.status(201).json(banks)
-    
-  }catch(e){
-    res.status(500).json({message : "Internal Server error"})
+
+  } catch (e) {
+    res.status(500).json({ message: "Internal Server error" })
   }
 })
 
-router.get("/allbanks/:id" , async(req, res) => {
+router.get("/allbanks/:id", async (req, res) => {
 
   const bankId = req.params.id
-  try{
+  try {
 
     const getDataById = await allBanks.findById(bankId)
     res.status(201).json(getDataById)
 
-  }catch(e){
-    res.status(500).json({message : "Internal server Error"})
+  } catch (e) {
+    res.status(500).json({ message: "Internal server Error" })
   }
 })
 
@@ -363,14 +363,14 @@ router.get("/:table/:assign_manager_Id", async (req, res) => {
   }
 });
 // Bank Transfer api 
-router.get("/banktransfer" , async(req, res) => {
-  try{
+router.get("/banktransfer", async (req, res) => {
+  try {
 
     const BankTransper = await bankTransper.find()
     res.status(201).json(BankTransper)
-    
-  }catch(e){
-    res.status(500).json({message : "Internal server error"})
+
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
@@ -403,6 +403,19 @@ router.get("/advpaymanager", async (req, res) => {
     const advpayManager = await advancePaymantManager.find()
     res.status(201).json(advpayManager)
 
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+
+router.get("/advpaymanager/manager/:managerId", async (req, res) => {
+  try {
+    const managerId = req.params.managerId
+    const managerData = await advancePaymantManager.find({ manager_Id: managerId })
+    if (!managerData) {
+      res.status(404).json({ message: "Data not found By Id" })
+    }
+    res.status(201).json(managerData)
   } catch (err) {
     res.status(500).json({ message: "Internal server error" })
   }
