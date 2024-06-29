@@ -25,6 +25,7 @@ function InternalCosting() {
       total: 0,
     },
   ]);
+  const [ids, setIds] = useState([]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
   const [storeQuantity, setStoreQuantity] = useState(null);
@@ -129,6 +130,21 @@ function InternalCosting() {
       setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
     }
   }, [stocksData, newSelectedVendor, newSelectedStock]);
+
+  useEffect(() => {
+    const apiUrl = "http://localhost:8888/api/quotationinfo";
+
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        // Assuming response.data is an array of objects containing `_id` fields
+        const extractedIds = response.data.map((item) => item.customer_Id);
+        setIds(extractedIds);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [quotationData]);
   const newhandleStockChange = (e) => {
     const selectedStockId = e.target.value;
     // console.log("selectedStockId", selectedStockId);
@@ -292,7 +308,7 @@ function InternalCosting() {
     // Update the state immediately
 
     try {
-      if (enquiry._id.includes(enquiry._id)) {
+      if (ids.includes(enquiry._id)) {
         // If enquiry._id exists in ids, send a PATCH request
         await axios.patch(
           `http://localhost:8888/api/quotationinfo/${enquiry._id}`,

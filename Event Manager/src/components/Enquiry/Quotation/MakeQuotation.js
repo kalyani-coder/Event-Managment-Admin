@@ -225,7 +225,7 @@ function QuotationForm() {
     };
 
     try {
-      if (enquiry._id === ids) {
+      if (ids.includes(enquiry._id)) {
         // If enquiry._id exists in ids, send a PATCH request
         await axios.patch(
           `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
@@ -280,7 +280,7 @@ function QuotationForm() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []); // Empty dependency array ensures useEffect runs only once on component mount
+  }, [quotationData]); // Empty dependency array ensures useEffect runs only once on component mount
   //Delete the stock
   const handleDelete = async (id) => {
     const customerId = quotationData.customer_Id;
