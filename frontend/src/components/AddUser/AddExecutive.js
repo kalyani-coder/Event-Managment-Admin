@@ -43,7 +43,12 @@ const AddExecutive = () => {
     if (!lname) newErrors.lname = "Last name is required";
     if (!email) newErrors.email = "Email is required";
     if (!contact) newErrors.contact = "Phone is required";
-    
+    if (!account_number) newErrors.account_number = "Account number is required";
+    if (!bank_name) newErrors.bank_name = "Bank name is required";
+    if (!holder_name) newErrors.holder_name = "Account holder name is required";
+    if (!IFSC_code) newErrors.IFSC_code = "IFSC code is required";
+    if (!branch_name) newErrors.branch_name = "Branch name is required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -169,7 +174,6 @@ const AddExecutive = () => {
                     value={fname}
                     onChange={(e) => setfname(e.target.value)}
                     placeholder="Enter first name"
-                  
                     style={{ borderColor: errors.fname ? "red" : "" }}
                   />
                   {errors.fname && <div style={{ color: "red" }}>{errors.fname}</div>}
@@ -185,7 +189,6 @@ const AddExecutive = () => {
                     value={lname}
                     onChange={(e) => setlname(e.target.value)}
                     placeholder="Enter last name"
-                  
                     style={{ borderColor: errors.lname ? "red" : "" }}
                   />
                   {errors.lname && <div style={{ color: "red" }}>{errors.lname}</div>}
@@ -203,7 +206,6 @@ const AddExecutive = () => {
                     value={email}
                     onChange={(e) => setemail(e.target.value)}
                     placeholder="Enter email"
-            
                     style={{ borderColor: errors.email ? "red" : "" }}
                   />
                   {errors.email && <div style={{ color: "red" }}>{errors.email}</div>}
@@ -219,7 +221,6 @@ const AddExecutive = () => {
                     value={contact}
                     onChange={(e) => setcontact(e.target.value)}
                     placeholder="Enter phone"
-                  
                     style={{ borderColor: errors.contact ? "red" : "" }}
                   />
                   {errors.contact && <div style={{ color: "red" }}>{errors.contact}</div>}
@@ -267,64 +268,73 @@ const AddExecutive = () => {
                   </Form.Control>
                 </Form.Group>
               </div>
-
               <div className="col px-5">
                 <Form.Group controlId="holder_name">
-                  <Form.Label>Account Holder Name</Form.Label>
+                  <Form.Label>Account Holder Name <span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     value={holder_name}
                     onChange={(e) => setholder_name(e.target.value)}
                     placeholder="Enter account holder name"
+                    style={{ borderColor: errors.holder_name ? "red" : "" }}
                   />
+                  {errors.holder_name && <div style={{ color: "red" }}>{errors.holder_name}</div>}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="account_number">
-                  <Form.Label>Account Number</Form.Label>
+                  <Form.Label>Account Number <span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     value={account_number}
                     onChange={(e) => setaccount_number(e.target.value)}
                     placeholder="Enter account number"
+                    style={{ borderColor: errors.account_number ? "red" : "" }}
                   />
+                  {errors.account_number && <div style={{ color: "red" }}>{errors.account_number}</div>}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="IFSC_code">
-                  <Form.Label>IFSC Code</Form.Label>
+                  <Form.Label>IFSC Code <span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     value={IFSC_code}
                     onChange={(e) => setIFSC_code(e.target.value)}
                     placeholder="Enter IFSC code"
+                    style={{ borderColor: errors.IFSC_code ? "red" : "" }}
                   />
+                  {errors.IFSC_code && <div style={{ color: "red" }}>{errors.IFSC_code}</div>}
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="bank_name">
-                  <Form.Label>Bank Name</Form.Label>
+                  <Form.Label>Bank Name <span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     value={bank_name}
                     onChange={(e) => setbank_name(e.target.value)}
                     placeholder="Enter bank name"
+                    style={{ borderColor: errors.bank_name ? "red" : "" }}
                   />
+                  {errors.bank_name && <div style={{ color: "red" }}>{errors.bank_name}</div>}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="branch_name">
-                  <Form.Label>Branch Name</Form.Label>
+                  <Form.Label>Branch Name <span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     value={branch_name}
                     onChange={(e) => setbranch_name(e.target.value)}
                     placeholder="Enter branch name"
+                    style={{ borderColor: errors.branch_name ? "red" : "" }}
                   />
+                  {errors.branch_name && <div style={{ color: "red" }}>{errors.branch_name}</div>}
                 </Form.Group>
               </div>
             </div>
@@ -332,49 +342,27 @@ const AddExecutive = () => {
               <div className="col px-5">
                 <Form.Group controlId="profilePicture">
                   <Form.Label>Profile Picture</Form.Label>
-                  <div className="custom-file ">
-                    {" "}
-                    <Form.Control
-                      type="file"
-                      className="custom-file-input"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                    />
-                    <Form.Label className="custom-file-label">
-                      {profilePicture ? profilePicture.name : "Choose File"}
-                    </Form.Label>
-                    <div className="">
-                      {profilePicture && (
-                        <Button
-                          type="button"
-                          onClick={handleRemoveProfilePicture}
-                        >
-                          Remove
-                        </Button>
-                      )}
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                  {profilePicture && (
+                    <div>
+                      <p>{profilePicture.name}</p>
+                      <Button variant="link" onClick={handleRemoveProfilePicture}>
+                        Remove
+                      </Button>
                     </div>
-                  </div>
+                  )}
                 </Form.Group>
               </div>
             </div>
-            <div className="row mb-2 py-2">
-              <div className="col px-5">
-                <Button
-                  className="manager-btn ms-1"
-                  variant="info"
-                  type="submit"
-                >
-                  Submit
-                </Button>
-                <Button
-                  variant="info"
-                  className="manager-btn ms-1"
-                  onClick={handleDiscard}
-                >
-                  Discard
-                </Button>
-              </div>
-            </div>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+            <Button variant="secondary" onClick={handleDiscard} className="ml-2">
+              Discard
+            </Button>
           </Form>
         </div>
       </div>
