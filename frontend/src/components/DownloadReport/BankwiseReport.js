@@ -139,7 +139,7 @@ const BankwiseReport = () => {
               <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px]">Bankwise Report</h2>
+          <h2 className="text-[25px]">Bankwise Report</h2>
           <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
             <div className="dropdown">
               <button className="custom-button-reports dropdown-toggle mr-2 flex items-center content-center justify-center gap-1" type="button" id="fromBankFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
