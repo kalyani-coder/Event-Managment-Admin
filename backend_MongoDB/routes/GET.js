@@ -385,6 +385,21 @@ router.get("/managertask", async (req, res) => {
   }
 })
 
+router.get("/managertask/manager/:managerId", async (req, res) => {
+  try {
+
+    const managerId = req.params.managerId
+    const data = await ManagerTask.find({manager_Id : managerId})
+   if(!data){
+    res.status(404).json({message : "Data not found for this ID"})
+   }
+   res.status(201).json(data)
+
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+
 // GEt  for manager all 
 router.get("/addmanager", async (req, res) => {
   try {
