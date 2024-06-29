@@ -321,8 +321,6 @@ const ViewInquiryPage = () => {
                         <br />
                         Event Venue: {selectedInquiry.event_venue}
                         <br />
-                        {/* Event Requirement: {selectedInquiry.event_requirement} */}
-                        {/* <br /> */}
                         Customer Name: {selectedInquiry.customer_name}
                         <br />
                         Customer Email: {selectedInquiry.email}
@@ -432,10 +430,16 @@ const ViewInquiryPage = () => {
                             {selectedInquiry.state === "Maharashtra" ? (
                               <>
                                 <div>
-                                  <strong>CGST:</strong> 9 %
+                                  <strong>CGST:</strong>{" "}
+                                  {quotationData
+                                    ? quotationData.cgst
+                                    : "Loading..."}
                                 </div>
                                 <div>
-                                  <strong>SGST:</strong> 9 %
+                                  <strong>SGST:</strong>{" "}
+                                  {quotationData
+                                    ? quotationData.sgst
+                                    : "Loading..."}
                                 </div>
                               </>
                             ) : (
@@ -538,10 +542,16 @@ const ViewInquiryPage = () => {
                             {selectedInquiry.state === "Maharashtra" ? (
                               <>
                                 <div>
-                                  <strong>CGST:</strong> 9 %
+                                  <strong>CGST:</strong>{" "}
+                                  {quotationData
+                                    ? quotationData.cgst
+                                    : "Loading..."}
                                 </div>
                                 <div>
-                                  <strong>SGST:</strong> 9 %
+                                  <strong>SGST:</strong>
+                                  {quotationData
+                                    ? quotationData.sgst
+                                    : "Loading..."}
                                 </div>
                               </>
                             ) : (
