@@ -45,3 +45,30 @@
 .header-close-button-popup:hover {
   color: #555;
 }
+
+.custom-button-reports {
+  background-color: #007bff; /* Replace with your desired color */
+  color: white; /* Text color */
+  padding: 10px 20px; /* Padding inside the button */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  display: flex; /* Flexbox for layout */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  gap: 5px; /* Space between icon and text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.custom-button-reports:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.custom-button-reports:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus shadow */
+}
+
+.reports{
+  width: 500px;
+}

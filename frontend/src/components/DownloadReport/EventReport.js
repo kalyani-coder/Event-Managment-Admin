@@ -190,13 +190,13 @@ const EventReport = () => {
             <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px] ">Event Report</h2>
+          <h2 className="text-[25px] ">Event Report</h2>
 
           <div className=" flex items-center justify-between w-full  p-2 flex-wrap gap-2">
             {" "}
             <div className="dropdown ">
               <button
-                className="btn btn-primary dropdown-toggle mr-2"
+                className="custom-button-reports dropdown-toggle mr-2"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -232,7 +232,7 @@ const EventReport = () => {
                   className="dropdown-item"
                   onClick={() => handleStatusChange("Hot")}
                 >
-                  <FaFire /> Hot
+                  <FaFire /> Work Not Received
                 </a>
               </div>
             </div>

@@ -123,29 +123,31 @@ const ManagerReport = () => {
             <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[30px] ">Manager Report</h2>
-          <div className="mb-3  align-items-center grid md:flex gap-2">
+          <h2 className="text-[25px] ">Manager Report</h2>
+          <div className="mb-2  align-items-center grid md:flex gap-1">
             <input
               type="text"
-              className="form-control mr-2" // Added margin to the right
+              className="form-control reports mr-2" // Added margin to the right
               placeholder="Search by First Name, Last Name, Address, City, State"
               value={searchQuery}
               onChange={handleSearchInputChange}
             />
             <div className="input-group-append">
               <button
-                className="btn btn-primary"
+                className="custom-button-reports"
                 type="button"
                 onClick={() => filterEvents(searchQuery)}
               >
                 Search
               </button>
             </div>
-          </div>
-          <p>Total number of managers: {filteredEvents.length}</p>
-          <button className="btn btn-primary mb-3" onClick={exportToExcel}>
+            
+            <p className="para-report ml-20">Total number of managers: {filteredEvents.length}</p>
+          <button className="btn btn-primary mb-2 ml-14" onClick={exportToExcel}>
             Export to Excel
           </button>
+          </div>
+         
           <div className="overflow-y-auto h-[60vh]  md:mt-0 w-full">
             <table className="table table-bordered bg-white">
               <thead className="sticky top-0 bg-white">
@@ -158,11 +160,7 @@ const ManagerReport = () => {
                   <th scope="col">Address</th>
                   <th scope="col">City</th>
                   <th scope="col">State</th>
-                  {/* <th scope="col">Holder Name</th>
-            <th scope="col">Account Number</th>
-            <th scope="col">IFSC Code</th>
-            <th scope="col">Bank Name</th>
-            <th scope="col">Branch Name</th> */}
+                 
                 </tr>
               </thead>
               <tbody>
