@@ -16,13 +16,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import AccountBalanceWalletTwoToneIcon from "@mui/icons-material/AccountBalanceWalletTwoTone";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import TaskTwoToneIcon from "@mui/icons-material/TaskTwoTone";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Scrollbars from "react-custom-scrollbars";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Link, useNavigate } from "react-router-dom";
 
 import "./Header.css";
@@ -118,7 +117,9 @@ const CustomScrollbars = styled(Scrollbars)`
 
 export default function Sidenav() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState();
+  const [open, setOpen] = React.useState(false);
+  const [activetab, setActivetab] = React.useState("");
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -128,8 +129,6 @@ export default function Sidenav() {
     setOpen(false);
   };
 
-  const [activetab, setActivetab] = React.useState();
-  const navigate = useNavigate();
   const handleClick = (event, tab) => {
     setActivetab(tab);
   };
@@ -200,11 +199,7 @@ export default function Sidenav() {
 
             <Divider />
             <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Enquiry")}
-              >
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <div className="menuitems-of-header ">
                   <Link
                     to="/quotation"
@@ -221,6 +216,7 @@ export default function Sidenav() {
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
+                      onClick={(event) => handleClick(event, "Enquiry")}
                     >
                       <ListItemIcon
                         sx={{
@@ -230,12 +226,7 @@ export default function Sidenav() {
                         }}
                       >
                         <Tooltip title="Enquiry">
-                          <span>
-                            <TaskTwoToneIcon
-                              sx={{ color: "#9b59b6" }}
-                              title="Enquiry"
-                            />
-                          </span>
+                          <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />
                         </Tooltip>
                       </ListItemIcon>
                       <ListItemText
@@ -248,15 +239,11 @@ export default function Sidenav() {
               </ListItem>
             </List>
 
-              {/* <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Advance Payment")}
-              >
-                <div className="menuitems-of-header">
+            <List>
+              <ListItem disablePadding sx={{ display: "block" }}>
+                <div className="menuitems-of-header ">
                   <Link
-                    to="/advpaycus"
+                    to="/viewtask"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton
@@ -266,10 +253,11 @@ export default function Sidenav() {
                         px: 2.5,
                       }}
                       className={
-                        activetab === "Advance Payment"
+                        activetab === "Update Task"
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
+                      onClick={(event) => handleClick(event, "Update Task")}
                     >
                       <ListItemIcon
                         sx={{
@@ -278,31 +266,22 @@ export default function Sidenav() {
                           justifyContent: "center",
                         }}
                       >
-                        <Tooltip title="Advance Payment">
-                          <span>
-                            <AccountBalanceWalletTwoToneIcon
-                              sx={{ color: "#9b59b6" }}
-                              title="Advance Payment"
-                            />
-                          </span>
+                        <Tooltip title="Update Task">
+                          <ReceiptIcon sx={{ color: "#9b59b6" }} />
                         </Tooltip>
                       </ListItemIcon>
                       <ListItemText
-                        primary="Advance Payment"
+                        primary="Update Task"
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
                   </Link>
                 </div>
               </ListItem>
-            </List>   */}
+            </List>
 
             <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Vendor Payment")}
-              >
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <div className="menuitems-of-header ">
                   <Link
                     to="/vendorpayment"
@@ -319,6 +298,7 @@ export default function Sidenav() {
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
+                      onClick={(event) => handleClick(event, "Vendor Payment")}
                     >
                       <ListItemIcon
                         sx={{
@@ -328,12 +308,7 @@ export default function Sidenav() {
                         }}
                       >
                         <Tooltip title="Vendor Payment">
-                          <span>
-                            <TaskTwoToneIcon
-                              sx={{ color: "#9b59b6" }}
-                              title="Vendor Payment"
-                            />
-                          </span>
+                          <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />
                         </Tooltip>
                       </ListItemIcon>
                       <ListItemText
@@ -345,58 +320,50 @@ export default function Sidenav() {
                 </div>
               </ListItem>
             </List>
-            <List>
-  <ListItem
-    disablePadding
-    sx={{ display: "block" }}
-    onClick={(event) => handleClick(event, "Expense Form")}
-  >
-    <div className="menuitems-of-header ">
-      <Link
-        to="/expenseform"
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
-        <ListItemButton
-          sx={{
-            minHeight: 48,
-            justifyContent: open ? "initial" : "center",
-            px: 2.5,
-          }}
-          className={
-            activetab === "Expense Form"
-              ? "menuitems-of-header active"
-              : "menuitems-of-header"
-          }
-        >
-          <ListItemIcon
-            sx={{
-              minWidth: 0,
-              mr: open ? 3 : "auto",
-              justifyContent: "center",
-            }}
-          >
-            <Tooltip title="Expense Form">
-              <span>
-                <ReceiptIcon sx={{ color: "#9b59b6" }} /> {/* Use the new icon */}
-              </span>
-            </Tooltip>
-          </ListItemIcon>
-          <ListItemText
-            primary="Expense Form"
-            sx={{ opacity: open ? 1 : 0 }}
-          />
-        </ListItemButton>
-      </Link>
-    </div>
-  </ListItem>
-</List>
 
             <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Event Details")}
-              >
+              <ListItem disablePadding sx={{ display: "block" }}>
+                <div className="menuitems-of-header ">
+                  <Link
+                    to="/expenseform"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                      className={
+                        activetab === "Expense Form"
+                          ? "menuitems-of-header active"
+                          : "menuitems-of-header"
+                      }
+                      onClick={(event) => handleClick(event, "Expense Form")}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Tooltip title="Expense Form">
+                          <ReceiptIcon sx={{ color: "#9b59b6" }} />
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Expense Form"
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </div>
+              </ListItem>
+            </List>
+
+            <List>
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <div className="menuitems-of-header ">
                   <Link
                     to="/eventdetails"
@@ -413,6 +380,7 @@ export default function Sidenav() {
                           ? "menuitems-of-header active"
                           : "menuitems-of-header"
                       }
+                      onClick={(event) => handleClick(event, "Event Details")}
                     >
                       <ListItemIcon
                         sx={{
@@ -422,12 +390,7 @@ export default function Sidenav() {
                         }}
                       >
                         <Tooltip title="Event Details">
-                          <span>
-                            <TaskTwoToneIcon
-                              sx={{ color: "#9b59b6" }}
-                              title="Event Details"
-                            />
-                          </span>
+                          <TaskTwoToneIcon sx={{ color: "#9b59b6" }} />
                         </Tooltip>
                       </ListItemIcon>
                       <ListItemText
@@ -439,18 +402,16 @@ export default function Sidenav() {
                 </div>
               </ListItem>
             </List>
+
             <List>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Logout")}
-              >
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
                     px: 2.5,
                   }}
+                  onClick={handleLogout}
                 >
                   <ListItemIcon
                     sx={{
@@ -460,18 +421,14 @@ export default function Sidenav() {
                     }}
                   >
                     <Tooltip title="Logout">
-                      <span>
-                        <LogoutOutlinedIcon
-                          size="lg"
-                          sx={{
-                            color: "red",
-                            "&:hover": {
-                              color: " rgba(201, 141, 141)",
-                            },
-                          }}
-                          onClick={handleLogout}
-                        />
-                      </span>
+                      <LogoutOutlinedIcon
+                        sx={{
+                          color: "red",
+                          "&:hover": {
+                            color: " rgba(201, 141, 141)",
+                          },
+                        }}
+                      />
                     </Tooltip>
                   </ListItemIcon>
                   <ListItemText

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Form, Button, Modal } from "react-bootstrap";
 import { format } from "date-fns";
 import Header from "../Sidebar/Header";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ExpenseForm = () => {
   const [events, setEvents] = useState([]);
@@ -17,6 +17,7 @@ const ExpenseForm = () => {
   const [expenseDate, setExpenseDate] = useState("");
   const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [clientName, setClientName] = useState("");
+  const [formErrors, setFormErrors] = useState({ particular: false, amount: false });
 
   const managerData = async () => {
     const managerId = localStorage.getItem("managerId");
@@ -70,10 +71,16 @@ const ExpenseForm = () => {
   };
 
   const handleExpenseSubmit = async () => {
-    if (!selectedEvent) return;
+    if (!selectedEvent || !particular || !amount) {
+      setFormErrors({
+        particular: !particular,
+        amount: !amount
+      });
+      return;
+    }
 
     const expenseData = {
-      prticular: particular,
+      particular: particular,
       amount: parseFloat(amount),
       client_Name: selectedEvent.fname,
       client_contact: selectedEvent.contact,
@@ -92,16 +99,14 @@ const ExpenseForm = () => {
         expenseData
       );
       console.log(response.data);
-      alert("Expense Addes Successfully.");
+      alert("Expense Added Successfully.");
       // Clear form fields after successful submission
       setParticular("");
       setExpenseDate("");
       setAmount("");
       setShowExpenseModal(false);
-      setShowExpenseModal(false);
     } catch (error) {
       console.error(error);
-
       // Handle error - e.g., show an error message
     }
   };
@@ -121,7 +126,7 @@ const ExpenseForm = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">Expense Form</h2>
             <Link to="/viewexpensedetails">
-            <button className="btn btn-primary">View Expense</button>
+              <button className="btn btn-primary">View Expense</button>
             </Link>
             <input
               type="text"
@@ -191,20 +196,34 @@ const ExpenseForm = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="particular">
-                  <Form.Label>Particular</Form.Label>
+                  <Form.Label>
+                    Particular{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     value={particular}
                     onChange={(e) => setParticular(e.target.value)}
+                    isInvalid={formErrors.particular}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter a particular.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="amount">
-                  <Form.Label>Amount</Form.Label>
+                  <Form.Label>
+                    Amount{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                    isInvalid={formErrors.amount}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter an amount.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Form>
             </Modal.Body>
