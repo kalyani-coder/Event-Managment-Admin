@@ -302,7 +302,6 @@ const ViewExpense = () => {
                     <th scope="col">Event Name</th>
                     <th scope="col">Event Date</th>
                     <th scope="col">Particular</th>
-                    <th scope="col">Expense Date</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Proceed</th>
                     <th scope="col">Decline</th>
@@ -317,7 +316,6 @@ const ViewExpense = () => {
                       <td>{expense.event_name}</td>
                       <td>{expense.event_Date}</td>
                       <td>{expense.prticular}</td>
-                      <td>{expense.expence_date}</td>
                       <td>{expense.amount} Rs.</td>
 
                       <td>
