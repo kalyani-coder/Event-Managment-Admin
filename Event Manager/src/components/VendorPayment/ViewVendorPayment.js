@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { FaEdit } from "react-icons/fa";
-
+import "./ViewVendorPay.css";
 const VendorPaymentView = () => {
   const [vendorPayments, setVendorPayments] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -200,7 +200,7 @@ const VendorPaymentView = () => {
             </div>
           </div>
 
-          <Modal show={showPopup} onHide={handleCancel}>
+          <Modal show={showPopup} onHide={handleCancel} className="model-payment-vendor">
             <Modal.Header closeButton>
               <Modal.Title>Edit Payment</Modal.Title>
             </Modal.Header>

@@ -99,6 +99,14 @@ const VendorPayment = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    // Ensure paid_amt and advance_payment are not negative
+    if (name === "paid_amt" || name === "advance_payment") {
+      if (parseInt(value) < 0) {
+        return; // Do not update state for negative values
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -181,7 +189,9 @@ const VendorPayment = () => {
 
   const handleAdvancePaymentChange = (event) => {
     const newAdvancePayment = parseInt(event.target.value);
-    if (!isNaN(newAdvancePayment)) {
+
+    // Ensure advance_payment is not negative and not greater than paid_amt
+    if (!isNaN(newAdvancePayment) && newAdvancePayment >= 0 && newAdvancePayment <= parseInt(formData.paid_amt)) {
       setFormData((prevData) => ({
         ...prevData,
         advance_payment: newAdvancePayment,
@@ -206,9 +216,7 @@ const VendorPayment = () => {
   return (
     <>
       <Header />
-      <div
-        className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto"
-      >
+      <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount overflow-y-auto">
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
           <Form className="" onSubmit={handleSubmit}>
             <div className="flex">
