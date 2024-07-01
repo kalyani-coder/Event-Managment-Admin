@@ -462,7 +462,7 @@ const NewGodowns = () => {
                 striped
                 bordered
                 hover
-                style={{ width: "50%" }}
+                style={{ width: "100%" }}
                 className="mt-2"
               >
                 <thead>
