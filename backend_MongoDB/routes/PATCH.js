@@ -72,12 +72,13 @@ router.patch('/customersavedquotation/:userId', async (req, res) => {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
+    const { sub_total, transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
 
     existingQuotationInfo.transport = transport;
     existingQuotationInfo.transport_amount = transport_amount;
     existingQuotationInfo.description = description;
     existingQuotationInfo.grand_total = grand_total;
+    existingQuotationInfo.sub_total = sub_total;
     existingQuotationInfo.cgst = cgst;
     existingQuotationInfo.sgst = sgst;
     existingQuotationInfo.Total_Amount = Total_Amount;
@@ -278,13 +279,14 @@ router.patch('/savedquotation/:userId', async (req, res) => {
       return res.status(404).json({ error: 'Quotation information not found' });
     }
 
-    const { transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
+    const { sub_total, transport, transport_amount, description, grand_total, cgst, sgst, Total_Amount, event_name, event_date, state } = req.body;
 
     existingQuotationInfo.transport = transport;
     existingQuotationInfo.transport_amount = transport_amount;
     existingQuotationInfo.description = description;
     existingQuotationInfo.grand_total = grand_total;
     existingQuotationInfo.cgst = cgst;
+    existingQuotationInfo.sub_total = sub_total;
     existingQuotationInfo.sgst = sgst;
     existingQuotationInfo.Total_Amount = Total_Amount;
     existingQuotationInfo.event_name = event_name;

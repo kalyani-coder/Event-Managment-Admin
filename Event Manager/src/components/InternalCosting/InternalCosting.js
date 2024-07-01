@@ -25,14 +25,14 @@ function InternalCosting() {
       total: 0,
     },
   ]);
+  const [ids, setIds] = useState([]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
   const [storeQuantity, setStoreQuantity] = useState(null);
   const [stocksData, setStocksData] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [stockid, setStockid] = useState([]);
-
-
+  const [initialStockQuantity, setInitialStockQuantity] = useState(0);
   const [stockNames, setStockNames] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
   const [newstocksData, setNewStocksData] = useState([]);
@@ -42,9 +42,10 @@ function InternalCosting() {
     useState("");
   const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] =
     useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   // Define tax state
   const [tax, setTax] = useState(0);
+  const [subAmount, setsubAmount] = useState(0);
 
   // Define CGST and SGST states
   const [cgstChecked, setCgstChecked] = useState(false);
@@ -72,21 +73,29 @@ function InternalCosting() {
   //     handleViewQuotation();
   //   }
   // }, [enquiry]);
+  useEffect(() => {
+    const newIds = quotationData.requirements.map((item) => item._id);
+    const amount = quotationData.requirements.reduce(
+      (total, item) => total + item.price,
+      0
+    );
+    setsubAmount(amount);
+  }, [quotationData]);
 
   const handleViewQuotation = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
-      );
-      setQuotationData(response.data);
-      console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
-      setModalShow(true);
-      if (response.data && response.data.state) {
-        setState(response.data.state);
-      }
-    } catch (error) {
-      console.error("Failed to fetch quotation info:", error);
-    }
+    // try {
+    //   const response = await axios.get(
+    //     `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
+    //   );
+    //   setQuotationData(response.data);
+    //   console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
+    setModalShow(true);
+    //     if (response.data && response.data.state) {
+    //       setState(response.data.state);
+    //     }
+    //   } catch (error) {
+    //     console.error("Failed to fetch quotation info:", error);
+    //   }
   };
   const handleClose = () => setModalShow(false);
 
@@ -106,24 +115,36 @@ function InternalCosting() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
   useEffect(() => {
-    const Total = ratePerDays * price * qty;
+    const Total = ratePerDays * newSelectedStockPriceValue * qty;
     setTotal(Total);
   }, [price, ratePerDays, qty]);
   useEffect(() => {
-    let newQuantity = 0;
     const selectedVendorData = stocksData.find(
       (stock) =>
         stock.Vendor_Name === newSelectedVendor &&
         stock.Stock_Name === newSelectedStock
     );
 
-    if (selectedVendorData && qty) {
-      newQuantity = selectedVendorData.Stock_Quantity - qty;
-      console.log("New quantity:", newQuantity);
-      setNewSelectedStockQuantityValue(newQuantity);
+    if (selectedVendorData) {
+      setInitialStockQuantity(selectedVendorData.Stock_Quantity);
+      setNewSelectedStockQuantityValue(selectedVendorData.Stock_Quantity);
     }
-  }, [qty]);
+  }, [stocksData, newSelectedVendor, newSelectedStock]);
 
+  useEffect(() => {
+    const apiUrl = "http://localhost:8888/api/quotationinfo";
+
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        // Assuming response.data is an array of objects containing `_id` fields
+        const extractedIds = response.data.map((item) => item.customer_Id);
+        setIds(extractedIds);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [quotationData]);
   const newhandleStockChange = (e) => {
     const selectedStockId = e.target.value;
     // console.log("selectedStockId", selectedStockId);
@@ -176,16 +197,28 @@ function InternalCosting() {
   };
   // handling values entered
   const handleQtyChange = (e) => {
-    setQty(e.target.value);
+    const value = parseFloat(e.target.value);
+
+    if (value < 0) {
+      setErrorMessage("Quantity cannot be less than 0");
+    } else if (value > initialStockQuantity) {
+      setErrorMessage(
+        `Quantity cannot be greater than available stock (${initialStockQuantity})`
+      );
+    } else {
+      setErrorMessage("");
+      setQty(value);
+      setNewSelectedStockQuantityValue(initialStockQuantity - value);
+    }
   };
 
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
   };
 
-  const handlePriceChange = (e) => {
-    setPrice(e.target.value);
-  };
+  useEffect(() => {
+    setPrice(newSelectedStockPriceValue);
+  }, [newSelectedStockPriceValue]);
 
   const handleRatePerDaysChange = (e) => {
     setRatePerDays(e.target.value);
@@ -197,10 +230,7 @@ function InternalCosting() {
       newSelectedStockId !== "" &&
       newSelectedVendor !== "" &&
       qty !== 0 &&
-      unit !== "" &&
-      price !== 0 &&
-      ratePerDays !== 0 &&
-      total !== 0
+      unit !== ""
     );
   };
 
@@ -254,110 +284,6 @@ function InternalCosting() {
     fetchQuotationData();
   }, []);
 
-  // const handleAddRequirement = async () => {
-  //   // Check if any required fields are empty
-  //   // const isEmpty = rows.some(
-  //   //   (row) =>
-  //   //     !row.stockName ||
-  //   //     !row.vendorName ||
-  //   //     row.qty === 0 ||
-  //   //     !row.unit ||
-  //   //     row.price === 0 ||
-  //   //     row.rateperdays === 0 ||
-  //   //     row.total === 0
-  //   // );
-
-  //   // if (isEmpty) {
-  //   //   alert("Please fill stock .");
-  //   //   return;
-  //   // }
-  //   const requirements = rows.map((row) => ({
-  //     stockName: newSelectedStock,
-  //     stockId: newSelectedStockId,
-  //     vendorName: newSelectedVendor,
-  //     vendorId: newSelectedVendorId,
-  //     unit: row.unit,
-  //     purchaseQuantity: row.qty,
-  //     rate_per_days: row.price,
-  //     days: row.rateperdays,
-  //     price: row.total,
-  //   }));
-
-  //   const data = {
-  //     requirements,
-  //     customer_Id: enquiry._id,
-  //     customerName: enquiry.customer_name,
-  //   };
-
-  //   try {
-  //     let response;
-  //     if (isFirstSubmission) {
-  //       response = await axios.post(
-  //         "http://localhost:8888/api/quotationinfo",
-  //         data
-  //       );
-  //       // alert("Stock added successfully");
-  //       setIsFirstSubmission(false);
-  //     } else {
-  //       response = await axios.patch(
-  //         `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
-  //         data
-  //       );
-  //       alert("Stock updated successfully");
-  //     }
-
-  //     // Recalculate the subtotal
-  //     const newSubTotal = subtotal + calcTotal();
-
-  //     // Update the subtotal state
-  //     setSubtotal(newSubTotal);
-
-  //     // Update the quotationData state with the new subtotal
-  //     setQuotationData((prevData) => ({
-  //       ...prevData,
-  //       sub_total: newSubTotal,
-  //       requirements: [...prevData.requirements, ...requirements],
-  //     }));
-
-  //     // Clear inputs after successful submission
-  //     setRows([
-  //       {
-  //         id: 1,
-  //         stockName: "",
-  //         vendorName: "",
-  //         qty: 0,
-  //         unit: "",
-  //         price: 0,
-  //         rateperdays: 0,
-  //         total: 0,
-  //       },
-  //     ]);
-  //     setNewSelectedStock("");
-  //     setNewSelectedStockId("");
-  //     setNewSelectedVendor("");
-  //     setNewSelectedVendorId("");
-  //     setNewSelectedStockPriceValue("");
-  //     setNewSelectedStockQuantityValue("");
-  //   } catch (error) {
-  //     console.error("Error adding/updating stock", error);
-  //     alert("Error adding/updating stock");
-  //   }
-
-  //   axios
-  //     .patch(
-  //       `http://localhost:8888/api/inventory-stocks/vendor/${VedorId}/stock/${newSelectedStock}`,
-  //       {
-  //         quantity: storeQuantity,
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log("Stock quantity updated successfully:", response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating stock quantity:", error);
-  //     });
-  // };
-
   const handleAddRequirement = async () => {
     const data = {
       customer_Id: enquiry._id,
@@ -379,29 +305,21 @@ function InternalCosting() {
       ],
     };
 
+    // Update the state immediately
+
     try {
-      // Update the state immediately
-
-      // if (isFirstSubmission) {
-      //   await axios.post(
-      //   "http://localhost:8888/api/quotationinfo",
-      //     data
-      //   );
-      //   alert("Stock added successfully");
-      //   setIsFirstSubmission(false); // Update the state immediately
-      // } else {
-      //   await axios.patch(
-      //     `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
-      //     data
-      //   );
-      //   alert("Stock updated successfully");
-      // }
-
-      await axios.patch(
-        `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
-        data
-      );
-      alert("Stock updated successfully");
+      if (ids.includes(enquiry._id)) {
+        // If enquiry._id exists in ids, send a PATCH request
+        await axios.patch(
+          `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
+          data
+        );
+        alert("Stock updated successfully");
+      } else {
+        // If enquiry._id does not exist in ids, send a POST request
+        await axios.post("http://localhost:8888/api/quotationinfo", data);
+        alert("Stock added successfully");
+      }
 
       setNewSelectedStockId("");
       setNewSelectedVendor("");
@@ -447,7 +365,7 @@ function InternalCosting() {
 
   const calculateGrandTotal = () => {
     if (quotationData) {
-      let total = quotationData.sub_total || 0;
+      let total = subAmount;
       let cgst = 0;
       let sgst = 0;
       let igst = 0;
@@ -467,7 +385,10 @@ function InternalCosting() {
       calculateTotalAmount(grandTotal);
     }
   };
-
+  useEffect(() => {
+    calculateGrandTotal();
+    // calculateTotalAmount();
+  }, [subAmount]);
   const calculateTotalAmount = (grandTotal) => {
     const total = grandTotal + Number(transportCharges);
     setTotalAmount(total);
@@ -688,7 +609,7 @@ function InternalCosting() {
         "",
         "",
         "SubTotal",
-        `${quotationData.sub_total || "-"} Rs`,
+        `${subAmount || "-"} Rs`,
       ]);
 
       if (enquiry.state === "Maharashtra") {
@@ -797,9 +718,11 @@ function InternalCosting() {
       transport_amount: transportCharges,
       description: descriptionValue,
       grand_total: grandTotal,
-      cgst: "9%",
-      sgst: "9%",
-      total_amount: totalAmount,
+      sub_total: subAmount,
+
+      cgst: cgstChecked ? "9%" : "",
+      sgst: sgstChecked ? "9%" : "",
+      Total_Amount: totalAmount,
       event_name: enquiry.event_name,
       event_date: enquiry.event_date,
       state: enquiry.state,
@@ -925,7 +848,7 @@ function InternalCosting() {
                       <input
                         type="number"
                         className="form-control qty"
-                        step="0"
+                        step="1"
                         min="0"
                         value={qty}
                         onChange={handleQtyChange}
@@ -933,6 +856,9 @@ function InternalCosting() {
                       <div style={{ color: "green" }}>
                         Avai Qty: {newSelectedStockQuantityValue}
                       </div>
+                      {errorMessage && (
+                        <div style={{ color: "red" }}>{errorMessage}</div>
+                      )}
                     </td>
 
                     <td style={{ width: "15%" }}>
@@ -952,12 +878,13 @@ function InternalCosting() {
                         className="form-control price"
                         step="0"
                         min="0"
-                        value={price}
-                        onChange={handlePriceChange}
+                        value={newSelectedStockPriceValue}
+                        // onChange={handlePriceChange}
+                        disabled
                       />
-                      <div style={{ color: "green" }}>
+                      {/* <div style={{ color: "green" }}>
                         Price: {newSelectedStockPriceValue}
-                      </div>
+                      </div> */}
                     </td>
                     <td style={{ width: "10%" }}>
                       <input
@@ -977,6 +904,7 @@ function InternalCosting() {
                         step="0"
                         min="0"
                         value={total}
+                        disabled
                       />
                     </td>
                   </tr>
@@ -1106,9 +1034,7 @@ function InternalCosting() {
                 <tbody>
                   <tr>
                     <th className="text-center">Sub Total</th>
-                    <td className="text-center">
-                      {quotationData ? quotationData.sub_total : "Loading..."}
-                    </td>
+                    <td className="text-center">{subAmount}</td>
                   </tr>
                   <tr>
                     <th className="text-center">GST</th>
@@ -1142,19 +1068,11 @@ function InternalCosting() {
 
                   <tr>
                     <th className="text-center">Grand Total</th>
-                    <td className="text-center">
-                      {grandTotal !== null
-                        ? grandTotal.toFixed(2)
-                        : "Loading..."}
-                    </td>
+                    <td className="text-center">{grandTotal}</td>
                   </tr>
                   <tr>
                     <th className="text-center">Total Amount</th>
-                    <td className="text-center">
-                      {totalAmount !== null
-                        ? totalAmount.toFixed(2)
-                        : "Loading..."}
-                    </td>
+                    <td className="text-center">{totalAmount}</td>
                   </tr>
                 </tbody>
               </table>
@@ -1167,6 +1085,12 @@ function InternalCosting() {
               </Button>
               <button className="btn btn-success ml-2" onClick={handlePrint}>
                 Print
+              </button>
+              <button
+                className="btn btn-primary ml-2"
+                onClick={handlePatchQuotation}
+              >
+                Save
               </button>
             </div>
           </div>
@@ -1237,20 +1161,19 @@ function InternalCosting() {
                   <strong>Transport Amount:</strong> {transportCharges}
                 </div>
                 <div>
-                  <strong>Description:</strong> {quotationData.description}
+                  <strong>Description:</strong> {descriptionValue}
                 </div>
                 <div style={{ marginTop: "20px" }}>
                   <div>
-                    <strong>Sub Total:</strong>{" "}
-                    {quotationData ? quotationData.sub_total : "Loading..."}
+                    <strong>Sub Total:</strong> {subAmount}
                   </div>
                   {enquiry.state === "Maharashtra" ? (
                     <>
                       <div>
-                        <strong> CGST:</strong> 9 %
+                        <strong> CGST:</strong> {cgstChecked ? "9%" : ""}
                       </div>
                       <div>
-                        <strong> SGST:</strong> 9 %
+                        <strong> SGST:</strong> {sgstChecked ? "9%" : ""}
                       </div>
                     </>
                   ) : (
@@ -1259,14 +1182,10 @@ function InternalCosting() {
                     </div>
                   )}
                   <div>
-                    <strong>Grand Total:</strong>{" "}
-                    {grandTotal !== null ? grandTotal.toFixed(2) : "Loading..."}
+                    <strong>Grand Total:</strong> {grandTotal}
                   </div>
                   <div>
-                    <strong>Total Amount:</strong>{" "}
-                    {totalAmount !== null
-                      ? totalAmount.toFixed(2)
-                      : "Loading..."}
+                    <strong>Total Amount:</strong> {totalAmount}
                   </div>
                   <button
                     className="btn btn-primary"

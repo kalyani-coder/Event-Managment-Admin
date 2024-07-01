@@ -8,8 +8,24 @@ import "jspdf-autotable";
 import myImage from "../Quotation/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { getRequest, urlVariables } from "../../../axiosClient";
 
 function QuotationForm() {
+  const fetchInventoryStocks = async () => {
+    try {
+      const response = await getRequest(urlVariables.inventory_stocks, {
+        stockId: "6668320f7bac8483195abbb9",
+      });
+      console.log("axios response", response.data);
+    } catch (error) {
+      console.error("Error fetching inventory stocks", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInventoryStocks();
+  }, []);
+
   const location = useLocation();
   const { enquiry } = location.state || {};
   const [rows, setRows] = useState([
@@ -37,7 +53,8 @@ function QuotationForm() {
     useState("");
   const [newSelectedStockPriceValue, setNewSelectedStockPriceValue] =
     useState("");
-
+  const [ids, setIds] = useState([]);
+  const [subAmount, setsubAmount] = useState(0);
   // Define tax state
   const [tax, setTax] = useState(0);
 
@@ -66,7 +83,7 @@ function QuotationForm() {
   const [total, setTotal] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [isFirstSubmission, setIsFirstSubmission] = useState(true);
-
+  console.log("enquiry", enquiry._id);
   // Fetch added posts
   const fetchQuotationData = async () => {
     try {
@@ -74,8 +91,6 @@ function QuotationForm() {
         `http://localhost:8888/api/customerquotationinfo/customer/${enquiry._id}`
       );
       setQuotationData(response.data);
-      const subamount = quotationData.sub_total;
-      console.log("dskfjlsd", subamount);
     } catch (error) {
       console.error("Error fetching quotation data", error);
     }
@@ -210,28 +225,21 @@ function QuotationForm() {
     };
 
     try {
-      // Update the state immediately
-
-      // if (isFirstSubmission) {
-      //   await axios.post(
-      //     "http://localhost:8888/api/customerquotationinfo",
-      //     data
-      //   );
-      //   alert("Stock added successfully");
-      //   setIsFirstSubmission(false); // Update the state immediately
-      // } else {
-      //   await axios.patch(
-      //     `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
-      //     data
-      //   );
-      //   alert("Stock updated successfully");
-      // }
-
-      await axios.patch(
-        `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
-        data
-      );
-      alert("Stock updated successfully");
+      if (ids.includes(enquiry._id)) {
+        // If enquiry._id exists in ids, send a PATCH request
+        await axios.patch(
+          `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
+          data
+        );
+        alert("Stock updated successfully");
+      } else {
+        // If enquiry._id does not exist in ids, send a POST request
+        await axios.post(
+          "http://localhost:8888/api/customerquotationinfo",
+          data
+        );
+        alert("Stock added successfully");
+      }
 
       setNewSelectedStockId("");
       setNewSelectedVendor("");
@@ -250,21 +258,31 @@ function QuotationForm() {
     }
   };
 
-  const [ids, setIds] = useState([]);
-  const [subAmount, setsubAmount] = useState([]);
-
   useEffect(() => {
     const newIds = quotationData.requirements.map((item) => item._id);
     const amount = quotationData.requirements.reduce(
       (total, item) => total + item.price,
       0
     );
-    setIds(newIds);
     setsubAmount(amount);
   }, [quotationData]);
+
+  useEffect(() => {
+    const apiUrl = "http://localhost:8888/api/customerquotationinfo";
+
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        // Assuming response.data is an array of objects containing `_id` fields
+        const extractedIds = response.data.map((item) => item.customer_Id);
+        setIds(extractedIds);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [quotationData]); // Empty dependency array ensures useEffect runs only once on component mount
   //Delete the stock
   const handleDelete = async (id) => {
-    console.log("id", id);
     const customerId = quotationData.customer_Id;
     // console.log("customerId", customerId);
     // console.log("id", id);
@@ -276,6 +294,8 @@ function QuotationForm() {
         ...prevState,
         requirements: prevState.requirements.filter((item) => item._id !== id),
       }));
+      alert("Stock Deleted successfully");
+      // await handlePatchQuotation();
     } catch (error) {
       console.error("Error deleting item", error);
     }
@@ -330,6 +350,10 @@ function QuotationForm() {
 
   const handleTransportChargesChange = (e) => {
     setTransportCharges(e.target.value);
+  };
+
+  const handleTransportCharge = (e) => {
+    setTransport(e.target.value);
   };
 
   const convertAmountToWords = (amount) => {
@@ -533,7 +557,7 @@ function QuotationForm() {
         "",
         "",
         "SubTotal",
-        `${quotationData.sub_total || "-"} Rs`,
+        `${subAmount || "-"} Rs`,
       ]);
 
       if (enquiry.state === "Maharashtra") {
@@ -655,9 +679,10 @@ function QuotationForm() {
       transport_amount: transportCharges,
       description: descriptionValue,
       grand_total: grandTotal,
-      cgst: "9%",
-      sgst: "9%",
-      total_amount: totalAmount,
+      sub_total: subAmount,
+      cgst: cgstChecked ? "9%" : "",
+      sgst: sgstChecked ? "9%" : "",
+      Total_Amount: totalAmount,
       event_name: enquiry.event_name,
       event_date: enquiry.event_date,
       state: enquiry.state,
@@ -665,10 +690,11 @@ function QuotationForm() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8888/api/savedquotation/${customerId}`,
+        `http://localhost:8888/api//customersavedquotation/${customerId}`,
         dataToUpdate
       );
-      alert("Quotation Created successfully");
+      // Log the data to ensure it's fetched correctly
+      alert(" Saved successfully");
       // Handle successful response
     } catch (error) {
       console.error("Error patching data:", error);
@@ -766,9 +792,9 @@ function QuotationForm() {
                         value={qty}
                         onChange={handleQtyChange}
                       />
-                      <div style={{ color: "green" }}>
+                      {/* <div style={{ color: "green" }}>
                         Avai Qty: {newSelectedStockQuantityValue}
-                      </div>
+                      </div> */}
                     </td>
 
                     <td style={{ width: "15%" }}>
@@ -791,9 +817,9 @@ function QuotationForm() {
                         value={price}
                         onChange={handlePriceChange}
                       />
-                      <div style={{ color: "green" }}>
+                      {/* <div style={{ color: "green" }}>
                         Price: {newSelectedStockPriceValue}
-                      </div>
+                      </div> */}
                     </td>
                     <td style={{ width: "10%" }}>
                       <input
@@ -862,7 +888,10 @@ function QuotationForm() {
                           <td>{item.price}</td>
                           <td>
                             {/* Add any action buttons or links here */}
-                            <button onClick={() => handleDelete(item._id)}>
+                            <button
+                              className="btn btn-danger mr-2"
+                              onClick={() => handleDelete(item._id)}
+                            >
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
                           </td>
@@ -891,8 +920,8 @@ function QuotationForm() {
                         type="text"
                         className="form-control"
                         placeholder="Enter Transport Type..."
-                        // onChange={handleTransportChnage}
-                        // value={transport}
+                        onChange={handleTransportCharge}
+                        value={transport}
                       />
                     </td>
                   </tr>
@@ -902,7 +931,7 @@ function QuotationForm() {
                       <input
                         type="number"
                         className="form-control"
-                        // value={transportCharges}
+                        value={transportCharges}
                         onChange={handleTransportChargesChange}
                       />
                     </td>
@@ -969,6 +998,12 @@ function QuotationForm() {
               <button className="btn btn-success ml-2" onClick={handlePrint}>
                 Print
               </button>
+              <button
+                className="btn btn-primary ml-2"
+                onClick={handlePatchQuotation}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
@@ -1031,26 +1066,26 @@ function QuotationForm() {
                 </div>
 
                 <div>
-                  <strong>Transport:</strong> {quotationData.transport}
+                  <strong>Transport:</strong> {transport}
                 </div>
                 <div>
                   <strong>Transport Amount:</strong> {transportCharges}
                 </div>
                 <div>
-                  <strong>Description:</strong> {quotationData.description}
+                  <strong>Description:</strong> {descriptionValue}
                 </div>
                 <div style={{ marginTop: "20px" }}>
                   <div>
-                    <strong>Sub Total:</strong>{" "}
-                    {quotationData ? quotationData.sub_total : "Loading..."}
+                    <strong>Sub Total:</strong>
+                    {subAmount}
                   </div>
                   {enquiry.state === "Maharashtra" ? (
                     <>
                       <div>
-                        <strong> CGST:</strong> 9 %
+                        <strong> CGST:</strong> {cgstChecked ? "9%" : ""}
                       </div>
                       <div>
-                        <strong> SGST:</strong> 9 %
+                        <strong> SGST:</strong> {sgstChecked ? "9%" : ""}
                       </div>
                     </>
                   ) : (
