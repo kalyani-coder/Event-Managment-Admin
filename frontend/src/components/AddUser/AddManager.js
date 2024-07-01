@@ -174,6 +174,24 @@ const AddManager = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
         <div className="md:h-[80vh] h-[80vh] ">
           <Form onSubmit={handleSubmit} className="">
+           <div className="flex">
+              <Link to={"/addmanager"}>
+                <button className="btn btn-primary mr-4 mb-4">
+                  Add Manager
+                </button>
+              </Link>
+              <Link to={"/addaccountant"}>
+                <button className="btn btn-primary mr-4 mb-4">
+                  Add Accountant
+                </button>
+              </Link>
+              <Link to={"/addexecutive"}>
+                <button className="btn btn-primary mr-4 mb-4">
+                  Add Executive
+                </button>
+              </Link>
+             
+            </div>
             <h2 className="text-[30px] pl-[1em] ">Add Manager</h2>
 
             <div className="row mb-2">
@@ -477,15 +495,21 @@ const AddManager = () => {
                 </Form.Group>
               </div>
             </div>
-            <div className="row mb-2">
+             <div className="row mb-2">
               <div className="col px-5">
-                <Button variant="secondary" onClick={handleDiscard}>
-                  Discard
+                <Button
+                  className="manager-btn my-1"
+                  variant="info"
+                  type="submit"
+                >
+                  Submit
                 </Button>
-              </div>
-              <div className="col px-5">
-                <Button variant="primary" type="submit">
-                  Save
+                <Button
+                  variant="info"
+                  className="manager-btn ms-1"
+                  onClick={handleDiscard}
+                >
+                  Discard
                 </Button>
               </div>
             </div>

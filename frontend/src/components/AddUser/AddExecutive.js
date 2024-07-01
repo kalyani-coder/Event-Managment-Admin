@@ -157,9 +157,7 @@ const AddExecutive = () => {
               <Link to={'/addexecutive'}>
                 <button className="btn btn-primary mr-4 mb-4">Add Executive</button>
               </Link>
-              {/* <Link to={'/addvendor'}>
-                <button className="btn btn-primary mr-4 mb-4">Add Vendor</button>
-              </Link> */}
+             
             </div>
             <h2 className="text-[30px] pl-[1em]">Add Executive</h2>
 
@@ -357,12 +355,24 @@ const AddExecutive = () => {
                 </Form.Group>
               </div>
             </div>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-            <Button variant="secondary" onClick={handleDiscard} className="ml-2">
-              Discard
-            </Button>
+            <div className="row mb-2 py-2">
+              <div className="col px-5">
+                <Button
+                  className="manager-btn ms-1"
+                  variant="info"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+                <Button
+                  variant="info"
+                  className="manager-btn ms-1"
+                  onClick={handleDiscard}
+                >
+                  Discard
+                </Button>
+              </div>
+            </div>
           </Form>
         </div>
       </div>

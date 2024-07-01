@@ -4,6 +4,7 @@ import Header from "../Sidebar/Header";
 import { Form, Button } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./AdvPayManager.css";
+
 const AdvPaymentManager = () => {
   const getCurrentDate = () => {
     const today = new Date();
@@ -185,7 +186,7 @@ const AdvPaymentManager = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     // Validate form fields
     const errors = {};
     if (!formData.selectedManager) {
@@ -203,14 +204,14 @@ const AdvPaymentManager = () => {
     if (!formData.advance_payment) {
       errors.advance_payment = "This field is required";
     }
-
+  
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     } else {
       setFormErrors({});
     }
-
+  
     try {
       const response = await axios.post(
         "http://localhost:8888/api/advpaymanager",
@@ -228,15 +229,19 @@ const AdvPaymentManager = () => {
           description: formData.description,
         }
       );
-
+  
       if (response.status === 200) {
         setShowPopup(true);
+        // Clear the form by resetting the state to initial values
         setFormData(initialFormData); // Reset form data to initial state
+        setSelectedBank(''); // Reset selected bank
+        setAccountNumber(''); // Reset account number
+        setFormErrors({}); // Clear any existing form errors
       }
-
+  
       console.log(response.data);
       alert("Advance Payment to manager successfully.");
-
+      handleDiscard();
     } catch (error) {
       console.error("Error saving data:", error);
       alert("Failed to advance payment.");
@@ -245,6 +250,8 @@ const AdvPaymentManager = () => {
 
   const handleDiscard = () => {
     setFormData(initialFormData);
+    setSelectedBank(''); // Reset selected bank
+    setAccountNumber(''); // Reset account number
   };
 
   const handlePopupClose = () => {
@@ -263,7 +270,6 @@ const AdvPaymentManager = () => {
       setAccountNumber('');
     }
   };
-
   return (
    
     <>
@@ -272,11 +278,8 @@ const AdvPaymentManager = () => {
       <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
         <form className="order" onSubmit={handleSubmit}>
           <div className="flex">
-            <Link to={'/advpaymentmanager'}>
-            <button className="button-heading mr-4 mb-4">
-      Advance Payment Manager
-    </button>
-            </Link>
+           
+          
             <Link to={'/viewadvpaymentmanager'}>
               <Button className="button-heading mr-4 mb-4">View Advance Payment Manager</Button>
             </Link>
@@ -293,8 +296,8 @@ const AdvPaymentManager = () => {
                       className={`w-full py-2 pl-3 pr-10 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${formErrors.selectedManager ? "border-red-500" : ""}`}
                       aria-label="Select Manager"
                       name="selectedManager"
-                      onChange={handleManagerChange}
                       value={formData.selectedManager}
+                      onChange={handleManagerChange}
                       isInvalid={formErrors.selectedManager}
                       placeholder="Select Manager"
                     >
@@ -318,10 +321,11 @@ const AdvPaymentManager = () => {
               <div className="form-group">
                 <label htmlFor="selectedEvent">Event Name:<span style={{ color: "red" }}>*</span></label>
                 <select
-                  className={`form-control mb-2 ${formErrors.selectedEvent ? "border-red-500" : ""}`}
+                  className={`form-control mb-2 ${formErrors.selectedEvent ? "border-red-500" : ""}`} 
                   name="selectedEvent"
-                  onChange={handleEventChange}
                   value={formData.selectedEvent}
+                  onChange={handleEventChange}
+                 
                   isInvalid={formErrors.selectedEvent}
                  disabled={!formData.selectedManager}
                   
@@ -346,8 +350,8 @@ const AdvPaymentManager = () => {
                   className="form-control"
                   type="date"
                   name="date"
-                  onChange={handleChange}
                   value={formData.date}
+                  onChange={handleChange}
                 />
               </div>
             </div>

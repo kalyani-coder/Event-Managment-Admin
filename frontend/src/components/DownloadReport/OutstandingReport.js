@@ -148,7 +148,7 @@ const OutstandingReport = () => {
             <button className="btn btn-primary mr-4 mb-4">Outstanding Report </button>
             </Link>
           </div>
-          <h2 className="text-[25px] ">Vendor Payment Report</h2>
+          <h2 className="text-[25px] ">Outstanding Report</h2>
           <div className="flex items-center justify-between w-full p-2 flex-wrap gap-2">
             <div className="dropdown">
               <button
