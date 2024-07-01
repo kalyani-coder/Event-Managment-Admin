@@ -334,10 +334,12 @@ const AddSalary = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary">
-                Add Salary
-              </button>
+            <div className="row mb-2">
+              <div className="col px-5">
+                <button className="manager-btn ms-1" type="submit">
+                  Add Salary
+                </button>
+              </div>
             </div>
           </form>
         </div>
