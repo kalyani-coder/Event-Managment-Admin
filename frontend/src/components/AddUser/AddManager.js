@@ -321,19 +321,19 @@ const AddManager = () => {
                   )}
                 </Form.Group>
               </div>
+             
               <div className="col px-5">
                 <Form.Group controlId="address">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
-                    className="input-area"
-                    as="textarea"
-                    rows={3}
+                    type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Enter address"
                   />
                 </Form.Group>
               </div>
+
             </div>
             <div className="row mb-2">
               <div className="col px-5">

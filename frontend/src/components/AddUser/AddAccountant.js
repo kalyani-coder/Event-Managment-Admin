@@ -104,6 +104,14 @@ const AddAccountant = () => {
     setProfilePicture(null);
   };
 
+  const handlePhoneChange = (e) => {
+    const phoneRegex = /^[0-9]{0,10}$/; // Regex to allow only digits and max length 10
+    const value = e.target.value;
+    if (phoneRegex.test(value)) {
+      setcontact(value);
+    }
+  };
+
   const indianStates = [
     "",
     "Andaman and Nicobar Islands",
@@ -217,7 +225,7 @@ const AddAccountant = () => {
                   <Form.Control
                     type="tel"
                     value={contact}
-                    onChange={(e) => setcontact(e.target.value)}
+                    onChange={handlePhoneChange}
                     placeholder="Enter phone"
                     style={{ borderColor: errors.contact ? "red" : "" }}
                   />

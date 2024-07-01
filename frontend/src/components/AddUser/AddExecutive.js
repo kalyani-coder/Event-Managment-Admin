@@ -140,6 +140,13 @@ const AddExecutive = () => {
     "Uttarakhand",
     "West Bengal",
   ];
+   const handlePhoneChange = (e) => {
+    const input = e.target.value;
+    // Validate if input is a number and limit to 10 digits
+    if (/^\d*$/.test(input) && input.length <= 10) {
+      setcontact(input);
+    }
+  };
 
   return (
     <>
@@ -215,9 +222,9 @@ const AddExecutive = () => {
                     Phone <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
-                    type="tel"
+                    type="text"
                     value={contact}
-                    onChange={(e) => setcontact(e.target.value)}
+                    onChange={handlePhoneChange}
                     placeholder="Enter phone"
                     style={{ borderColor: errors.contact ? "red" : "" }}
                   />
