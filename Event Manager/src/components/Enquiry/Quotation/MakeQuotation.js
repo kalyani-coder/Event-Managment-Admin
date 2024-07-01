@@ -888,7 +888,10 @@ function QuotationForm() {
                           <td>{item.price}</td>
                           <td>
                             {/* Add any action buttons or links here */}
-                            <button onClick={() => handleDelete(item._id)}>
+                            <button
+                              className="btn btn-danger mr-2"
+                              onClick={() => handleDelete(item._id)}
+                            >
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
                           </td>
