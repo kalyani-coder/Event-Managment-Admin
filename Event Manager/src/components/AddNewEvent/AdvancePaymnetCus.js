@@ -47,21 +47,33 @@ function AdvancePaymentCus() {
 
   const handleTotalAmountChange = (event) => {
     const value = parseFloat(event.target.value);
-    setTotalAmount(value);
-    if (advancePayment) {
-      setRemainingAmount(value - advancePayment);
+    if (value < 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, totalAmount: "Total amount cannot be negative." }));
+    } else {
+      setTotalAmount(value);
+      setErrors((prevErrors) => ({ ...prevErrors, totalAmount: "" }));
+      if (advancePayment > value) {
+        setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "Advance payment cannot exceed total amount." }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "" }));
+        setRemainingAmount(value - advancePayment);
+      }
     }
-    setErrors((prevErrors) => ({ ...prevErrors, totalAmount: "" }));
   };
 
   const handleAdvancePaymentChange = (event) => {
     const value = parseFloat(event.target.value);
-    setAdvancePayment(value);
-    if (totalAmount) {
+    if (value < 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "Advance payment cannot be negative." }));
+    } else if (value > totalAmount) {
+      setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "Advance payment cannot exceed total amount." }));
+    } else {
+      setAdvancePayment(value);
+      setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "" }));
       setRemainingAmount(totalAmount - value);
     }
-    setErrors((prevErrors) => ({ ...prevErrors, advancePayment: "" }));
   };
+
 
   const handlePaymentMethodChange = (event) => {
     setPaymentMethod(event.target.value);
