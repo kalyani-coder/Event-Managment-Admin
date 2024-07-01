@@ -22,8 +22,8 @@ const AddSalary = () => {
     return `${hh}:${mm}`;
   };
 
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
   const [salary, setSalary] = useState("");
   const [adv_payment, setAdvPayment] = useState("");
   const [date, setDate] = useState(getCurrentDate());
@@ -49,45 +49,23 @@ const AddSalary = () => {
 
   useEffect(() => {
     if (managerDetails) {
-      setFname(managerDetails.fname);
-      setLname(managerDetails.lname);
+      setfname(managerDetails.fname);
+      setlname(managerDetails.lname);
     }
   }, [managerDetails]);
 
   useEffect(() => {
-    const fetchManagerOptions = async () => {
-      try {
-        const response = await fetch("http://localhost:8888/api/managerdetails");
-        const data = await response.json();
-        setManagerOptions(data);
-      } catch (error) {
-        console.error("Error fetching manager options:", error);
-      }
-    };
+    fetch("http://localhost:8888/api/managerdetails")
+      .then((response) => response.json())
+      .then((data) => setManagerOptions(data));
 
-    const fetchAccountantOptions = async () => {
-      try {
-        const response = await fetch("http://localhost:8888/api/accountant");
-        const data = await response.json();
-        setAccountantOptions(data);
-      } catch (error) {
-        console.error("Error fetching accountant options:", error);
-      }
-    };
+    fetch("http://localhost:8888/api/accountant")
+      .then((response) => response.json())
+      .then((data) => setAccountantOptions(data));
 
-    const fetchExecutiveOptions = async () => {
-      try {
-        const response = await fetch("http://localhost:8888/api/executive");
-        const data = await response.json();
-        setExecutiveOptions(data);
-      } catch (error) {
-        console.error("Error fetching executive options:", error);
-      }
-    };
-
-    fetchManagerOptions();
-    fetchAccountantOptions();
-    fetchExecutiveOptions();
+    fetch("http://localhost:8888/api/executive")
+      .then((response) => response.json())
+      .then((data) => setExecutiveOptions(data));
   }, []);
 
   const handleSubmit = (e) => {
@@ -114,13 +92,19 @@ const AddSalary = () => {
       formValid = false;
     }
 
-    if (!salary) {
+    if (!salary || parseFloat(salary) < 0) {
       setErrors((prevErrors) => ({ ...prevErrors, salary: true }));
       formValid = false;
     }
 
-    if (!adv_payment) {
+    if (!adv_payment || parseFloat(adv_payment) < 0) {
       setErrors((prevErrors) => ({ ...prevErrors, adv_payment: true }));
+      formValid = false;
+    }
+
+    if (parseFloat(adv_payment) > parseFloat(salary)) {
+      setErrors((prevErrors) => ({ ...prevErrors, adv_payment: true }));
+      alert("Advance payment cannot be greater than salary amount");
       formValid = false;
     }
 
@@ -175,10 +159,10 @@ const AddSalary = () => {
         <div className="md:h-[80vh] h-[80vh] md:w-[50%] w-full">
           <form className="" onSubmit={handleSubmit}>
             <div className="flex">
-              <Link to="/addsalary">
+              <Link to={'/addsalary'}>
                 <button className="btn btn-primary mr-4 mb-4">Add Salary</button>
               </Link>
-              <Link to="/viewsalary">
+              <Link to={'/viewsalary'}>
                 <button className="btn btn-primary mr-4 mb-4">View Salary</button>
               </Link>
             </div>
@@ -188,7 +172,7 @@ const AddSalary = () => {
                 <div className={`form-group ${errors.selectedOption ? 'has-error' : ''}`}>
                   <label htmlFor="typeOfSalary">Add Salary Type <span style={{ color: "red" }}>*</span></label>
                   <select
-                    className={`form-control ${errors.selectedOption ? 'is-invalid' : ''}`}
+                    className={`form-control ${errors.salary ? 'is-invalid' : ''}`}
                     value={selectedOption}
                     onChange={(e) => setSelectedOption(e.target.value)}
                   >
@@ -205,7 +189,7 @@ const AddSalary = () => {
                 <div className={`form-group ${errors.salaryType ? 'has-error' : ''}`}>
                   <label htmlFor="salaryType">Select Name <span style={{ color: "red" }}>*</span></label>
                   <select
-                    className={`form-control ${errors.salaryType ? 'is-invalid' : ''}`}
+                    className={`form-control ${errors.salary ? 'is-invalid' : ''}`}
                     value={salaryType}
                     onChange={(e) => setSalaryType(e.target.value)}
                   >
@@ -275,45 +259,37 @@ const AddSalary = () => {
                 <div className={`form-group ${errors.salary ? 'has-error' : ''}`}>
                   <label htmlFor="salary">Salary Amount <span style={{ color: "red" }}>*</span></label>
                   <input
-                    type="text"
+                    type="number"
                     className={`form-control ${errors.salary ? 'is-invalid' : ''}`}
                     value={salary}
                     onChange={(e) => setSalary(e.target.value)}
                   />
-                  {errors.salary && <span className="error-message" style={{ color: "red" }}>This field is required</span>}
+                  {errors.salary && <span className="error-message" style={{ color: "red" }}>Salary amount cannot be negative</span>}
                 </div>
               </div>
             </div>
+
             <div className="row mb-2">
               <div className="col px-5">
                 <div className={`form-group ${errors.adv_payment ? 'has-error' : ''}`}>
                   <label htmlFor="adv_payment">Advance Payment <span style={{ color: "red" }}>*</span></label>
                   <input
-                    type="text"
+                    type="number"
                     className={`form-control ${errors.adv_payment ? 'is-invalid' : ''}`}
                     value={adv_payment}
                     onChange={(e) => setAdvPayment(e.target.value)}
                   />
-                  {errors.adv_payment && <span className="error-message" style={{ color: "red" }}>This field is required</span>}
+                  {errors.adv_payment && <span className="error-message" style={{ color: "red" }}>Advance payment cannot be negative or greater than salary amount</span>}
                 </div>
               </div>
             </div>
-            <div className="row mb-2">
-              <div className="col px-5">
-                <button className="manager-btn ms-1" type="submit">
-                  Add Salary
-                </button>
-              </div>
-            </div>
-          </form>
-          <div>
-            <h5 className="text-[35px] pl-5 ">Salary Details</h5>
+
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="adv_taken">Advance Taken</label>
+                  <label htmlFor="salaryTaken">Advance Taken</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     value={adv_taken}
                     onChange={(e) => setAdvTaken(e.target.value)}
@@ -322,9 +298,9 @@ const AddSalary = () => {
               </div>
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="incentive">Incentive Amount</label>
+                  <label htmlFor="incentive">Incentive</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     value={incentive}
                     onChange={(e) => setIncentive(e.target.value)}
@@ -332,12 +308,13 @@ const AddSalary = () => {
                 </div>
               </div>
             </div>
+
             <div className="row mb-2">
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="deduct_amount">Deduct Amount</label>
+                  <label htmlFor="deduct_amount">Deduction Amount</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     value={deduct_amount}
                     onChange={(e) => setDeductAmount(e.target.value)}
@@ -348,7 +325,7 @@ const AddSalary = () => {
                 <div className="form-group">
                   <label htmlFor="balance_amount">Balance Amount</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     value={balance_amount}
                     onChange={(e) => setBalanceAmount(e.target.value)}
@@ -356,7 +333,13 @@ const AddSalary = () => {
                 </div>
               </div>
             </div>
-          </div>
+
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary">
+                Add Salary
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
