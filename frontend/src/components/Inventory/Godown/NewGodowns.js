@@ -97,6 +97,23 @@ const NewGodowns = () => {
       alert("Please select a vendor.");
       return;
     }
+    if (!formData.Category) {
+      alert("Please add category.");
+      return;
+    }
+
+    if (!formData.Stock_Name) {
+      alert("Please add Stock name.");
+      return;
+    }
+    if (!formData.Stock_Quantity) {
+      alert("Please add Quantity.");
+      return;
+    }
+    if (!formData.Price) {
+      alert("Please add price.");
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:8888/api/inventory-stocks", {
@@ -334,7 +351,7 @@ const NewGodowns = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="Category">
-                  <Form.Label>Product Category:</Form.Label>
+                  <Form.Label>Product Category:<span className="text-danger">*</span></Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="text"
@@ -342,14 +359,14 @@ const NewGodowns = () => {
                       name="Category"
                       value={formData.Category}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="Stock_Name">
-                  <Form.Label>Stock Name:</Form.Label>
+                  <Form.Label>Stock Name:<span className="text-danger">*</span></Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="text"
@@ -357,7 +374,7 @@ const NewGodowns = () => {
                       name="Stock_Name"
                       value={formData.Stock_Name}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
@@ -366,7 +383,7 @@ const NewGodowns = () => {
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="Stock_Quantity">
-                  <Form.Label>Quantity:</Form.Label>
+                  <Form.Label>Quantity:<span className="text-danger">*</span></Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="number"
@@ -374,14 +391,14 @@ const NewGodowns = () => {
                       name="Stock_Quantity"
                       value={formData.Stock_Quantity}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="Price">
-                  <Form.Label>Price/Quantity:</Form.Label>
+                  <Form.Label>Price/Quantity:<span className="text-danger">*</span></Form.Label>
                   <div className="relative">
                     <Form.Control
                       type="number"
@@ -389,7 +406,7 @@ const NewGodowns = () => {
                       name="Price"
                       value={formData.Price}
                       onChange={handleInputChange}
-                      required
+                      
                     />
                   </div>
                 </Form.Group>
@@ -408,7 +425,7 @@ const NewGodowns = () => {
                       name="vendor"
                       value={selectedVendor}
                       onChange={handleVendorChange}
-                      required
+                      
                     >
                       <option value="">Select Vendor</option>
                       {vendors.map((vendor) => (

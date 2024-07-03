@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import { Link } from "react-router-dom";
 import "./AddManager.css";
 
 const AddManager = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -19,13 +21,15 @@ const AddManager = () => {
   const [bankName, setBankName] = useState("");
   const [branchName, setBranchName] = useState("");
   const [ifscCode, setIfscCode] = useState("");
+  
 
   const [validationMessages, setValidationMessages] = useState({});
 
   const isValidForm = () => {
     const namePattern = /^[A-Za-z\s]+$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    const passwordPattern =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
     let newValidationMessages = {};
 
@@ -36,11 +40,6 @@ const AddManager = () => {
       { value: email, field: "email", label: "Email" },
       { value: password, field: "password", label: "Password" },
       { value: contact, field: "contact", label: "Phone" },
-      { value: accountNumber, field: "accountNumber", label: "Account Number" },
-      { value: holderName, field: "holderName", label: "Account Holder Name" },
-      { value: bankName, field: "bankName", label: "Bank Name" },
-      { value: branchName, field: "branchName", label: "Branch Name" },
-      { value: ifscCode, field: "ifscCode", label: "IFSC Code" },
     ];
 
     requiredFields.forEach(({ value, field, label }) => {
@@ -108,11 +107,11 @@ const AddManager = () => {
       address,
       city,
       state,
-      accountNumber,
       holderName,
+      accountNumber,
+      ifscCode,
       bankName,
       branchName,
-      ifscCode,
     };
 
     try {
@@ -124,6 +123,7 @@ const AddManager = () => {
 
       alert("Manager Added successfully!");
 
+      setShowSuccessAlert(true);
       handleDiscard();
     } catch (error) {
       console.error("Error posting data:", error);
@@ -167,6 +167,12 @@ const AddManager = () => {
     "Uttarakhand",
     "West Bengal",
   ];
+  const handleAlphaInputChange = (setter) => (event) => {
+    const { value } = event.target;
+    if (/^[A-Za-z\s]*$/.test(value)) {
+      setter(value);
+    }
+  };
 
   return (
     <>
@@ -174,24 +180,11 @@ const AddManager = () => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount  overflow-y-auto ">
         <div className="md:h-[80vh] h-[80vh] ">
           <Form onSubmit={handleSubmit} className="">
-           <div className="flex">
-              <Link to={"/addmanager"}>
-                <button className="btn btn-primary mr-4 mb-4">
-                  Add Manager
-                </button>
-              </Link>
-              <Link to={"/addaccountant"}>
-                <button className="btn btn-primary mr-4 mb-4">
-                  Add Accountant
-                </button>
-              </Link>
-              <Link to={"/addexecutive"}>
-                <button className="btn btn-primary mr-4 mb-4">
-                  Add Executive
-                </button>
-              </Link>
-             
-            </div>
+            <div className="flex">
+              <Link to={"/addmanager"}> <button className="btn btn-primary mr-4 mb-4"> Add Manager </button> </Link>
+              <Link to={"/addaccountant"}><button className="btn btn-primary mr-4 mb-4"> Add Accountant</button></Link>
+              <Link to={"/addexecutive"}>  <button className="btn btn-primary mr-4 mb-4">  Add Executive </button></Link>
+              </div>
             <h2 className="text-[30px] pl-[1em] ">Add Manager</h2>
 
             <div className="row mb-2">
@@ -208,7 +201,7 @@ const AddManager = () => {
                     }`}
                     type="text"
                     value={fname}
-                    onChange={(e) => setFname(e.target.value)}
+                    onChange={handleAlphaInputChange(setFname)}
                     placeholder="Enter first name"
                     pattern="[A-Za-z\s]+"
                   />
@@ -232,7 +225,7 @@ const AddManager = () => {
                     }`}
                     type="text"
                     value={lname}
-                    onChange={(e) => setLname(e.target.value)}
+                    onChange={handleAlphaInputChange(setLname)}
                     placeholder="Enter last name"
                     pattern="[A-Za-z\s]+"
                   />
@@ -302,7 +295,7 @@ const AddManager = () => {
                       validationMessages.contact ? "label-invalid" : ""
                     }
                   >
-                    Phone <span style={{ color: "red" }}>*</span>
+                    Phone<span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
                     className={`input-area ${
@@ -310,9 +303,13 @@ const AddManager = () => {
                     }`}
                     type="tel"
                     value={contact}
-                    onChange={(e) => setContact(e.target.value)}
-                    placeholder="Enter phone number"
-                    pattern="[0-9]{10}"
+                    onChange={(e) => {
+                      const input = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10); // Remove non-digit characters and limit to 10 digits
+                      setContact(input);
+                    }}
+                    placeholder="Enter phone"
                   />
                   {validationMessages.contact && (
                     <div className="invalid-feedback">
@@ -321,7 +318,6 @@ const AddManager = () => {
                   )}
                 </Form.Group>
               </div>
-             
               <div className="col px-5">
                 <Form.Group controlId="address">
                   <Form.Label>Address</Form.Label>
@@ -333,40 +329,78 @@ const AddManager = () => {
                   />
                 </Form.Group>
               </div>
-
             </div>
             <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="city">
-                  <Form.Label>City</Form.Label>
+                  <Form.Label
+                    className={validationMessages.city ? "label-invalid" : ""}
+                  >
+                    City
+                  </Form.Label>
                   <Form.Control
-                    className="input-area"
+                    className={`input-area ${
+                      validationMessages.city ? "is-invalid" : ""
+                    }`}
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={handleAlphaInputChange(setCity)}
                     placeholder="Enter city"
                   />
+                  {validationMessages.city && (
+                    <div className="invalid-feedback">
+                      {validationMessages.city}
+                    </div>
+                  )}
                 </Form.Group>
               </div>
               <div className="col px-5">
                 <Form.Group controlId="state">
                   <Form.Label>State</Form.Label>
                   <Form.Control
-                    className="input-area"
-                    as="select"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                  >
-                    {indianStates.map((state, index) => (
-                      <option key={index} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </Form.Control>
+  as="select"
+  value={state}
+  onChange={(e) => setState(e.target.value)}
+  placeholder="Select State"
+>
+  <option value="" disabled>
+    Select State
+  </option>
+  {indianStates.map((state) => (
+    <option key={state} value={state}>
+      {state}
+    </option>
+  ))}
+</Form.Control>
                 </Form.Group>
               </div>
             </div>
             <div className="row mb-2">
+              <div className="col px-5">
+                <Form.Group controlId="holder_name">
+                  <Form.Label
+                    className={
+                      validationMessages.holderName ? "label-invalid" : ""
+                    }
+                  >
+                    Account Holder Name
+                  </Form.Label>
+                  <Form.Control
+                    className={`input-area ${
+                      validationMessages.holderName ? "is-invalid" : ""
+                    }`}
+                    type="text"
+                    value={holderName}
+                    onChange={handleAlphaInputChange(setHolderName)}
+                    placeholder="Enter account holder name"
+                  />
+                  {validationMessages.holderName && (
+                    <div className="invalid-feedback">
+                      {validationMessages.holderName}
+                    </div>
+                  )}
+                </Form.Group>
+              </div>
               <div className="col px-5">
                 <Form.Group controlId="account_number">
                   <Form.Label
@@ -374,7 +408,7 @@ const AddManager = () => {
                       validationMessages.accountNumber ? "label-invalid" : ""
                     }
                   >
-                    Account Number <span style={{ color: "red" }}>*</span>
+                    Account Number
                   </Form.Label>
                   <Form.Control
                     className={`input-area ${
@@ -392,31 +426,6 @@ const AddManager = () => {
                   )}
                 </Form.Group>
               </div>
-              <div className="col px-5">
-                <Form.Group controlId="holder_name">
-                  <Form.Label
-                    className={
-                      validationMessages.holderName ? "label-invalid" : ""
-                    }
-                  >
-                    Account Holder Name <span style={{ color: "red" }}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className={`input-area ${
-                      validationMessages.holderName ? "is-invalid" : ""
-                    }`}
-                    type="text"
-                    value={holderName}
-                    onChange={(e) => setHolderName(e.target.value)}
-                    placeholder="Enter account holder name"
-                  />
-                  {validationMessages.holderName && (
-                    <div className="invalid-feedback">
-                      {validationMessages.holderName}
-                    </div>
-                  )}
-                </Form.Group>
-              </div>
             </div>
             <div className="row mb-2">
               <div className="col px-5">
@@ -426,7 +435,7 @@ const AddManager = () => {
                       validationMessages.bankName ? "label-invalid" : ""
                     }
                   >
-                    Bank Name <span style={{ color: "red" }}>*</span>
+                    Bank Name
                   </Form.Label>
                   <Form.Control
                     className={`input-area ${
@@ -434,7 +443,7 @@ const AddManager = () => {
                     }`}
                     type="text"
                     value={bankName}
-                    onChange={(e) => setBankName(e.target.value)}
+                    onChange={handleAlphaInputChange(setBankName)}
                     placeholder="Enter bank name"
                   />
                   {validationMessages.bankName && (
@@ -451,7 +460,7 @@ const AddManager = () => {
                       validationMessages.branchName ? "label-invalid" : ""
                     }
                   >
-                    Branch Name <span style={{ color: "red" }}>*</span>
+                    Branch Name
                   </Form.Label>
                   <Form.Control
                     className={`input-area ${
@@ -459,7 +468,7 @@ const AddManager = () => {
                     }`}
                     type="text"
                     value={branchName}
-                    onChange={(e) => setBranchName(e.target.value)}
+                    onChange={handleAlphaInputChange(setBranchName)}
                     placeholder="Enter branch name"
                   />
                   {validationMessages.branchName && (
@@ -472,11 +481,13 @@ const AddManager = () => {
             </div>
             <div className="row mb-2">
               <div className="col px-5">
-                <Form.Group controlId="ifsc_code">
+                <Form.Group controlId="IFSC_code">
                   <Form.Label
-                    className={validationMessages.ifscCode ? "label-invalid" : ""}
+                    className={
+                      validationMessages.ifscCode ? "label-invalid" : ""
+                    }
                   >
-                    IFSC Code <span style={{ color: "red" }}>*</span>
+                    IFSC Code
                   </Form.Label>
                   <Form.Control
                     className={`input-area ${
@@ -495,7 +506,7 @@ const AddManager = () => {
                 </Form.Group>
               </div>
             </div>
-             <div className="row mb-2">
+            <div className="row mb-2">
               <div className="col px-5">
                 <Button
                   className="manager-btn my-1"
