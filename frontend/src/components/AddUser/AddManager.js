@@ -174,6 +174,13 @@ const AddManager = () => {
     }
   };
 
+  const handleNumericInputChange = (setter, maxLength) => (event) => {
+    const { value } = event.target;
+    if (/^\d*$/.test(value) && value.length <= maxLength) {
+      setter(value);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -303,12 +310,7 @@ const AddManager = () => {
                     }`}
                     type="tel"
                     value={contact}
-                    onChange={(e) => {
-                      const input = e.target.value
-                        .replace(/\D/g, "")
-                        .slice(0, 10); // Remove non-digit characters and limit to 10 digits
-                      setContact(input);
-                    }}
+                    onChange={handleNumericInputChange(setContact, 10)}
                     placeholder="Enter phone"
                   />
                   {validationMessages.contact && (

@@ -143,6 +143,13 @@ const AddExecutive = () => {
     }
   };
 
+  const handleNumericInputChange = (setter, maxLength) => (event) => {
+    const { value } = event.target;
+    if (/^\d*$/.test(value) && value.length <= maxLength) {
+      setter(value);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -224,7 +231,7 @@ const AddExecutive = () => {
                   <Form.Control
                     type="tel"
                     value={contact}
-                    onChange={(e) => setcontact(e.target.value)}
+                    onChange={handleNumericInputChange(setcontact, 10)}
                     placeholder="Enter phone"
                   
                     style={{ borderColor: errors.contact ? "red" : "" }}
