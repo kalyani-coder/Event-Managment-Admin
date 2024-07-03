@@ -1,45 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Alert, Modal, Table } from "react-bootstrap";
+import { Form, Button, Table, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Header from "../../Sidebar/Header";
 import "./NewGodown.css";
 
 const NewGodowns = () => {
-  const [vendorName, setVendorName] = useState("");
-  const [alertMessage, alert] = useState("");
-  const [alertVariant, setAlertVariant] = useState("");
+  const [formData, setFormData] = useState({
+    Category: "",
+    Stock_Name: "",
+    Stock_Quantity: "",
+    Price: "",
+    Vendor_Id: "",
+    Vendor_Name: "",
+  });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const [selectedVendor, setSelectedVendor] = useState("");
+  const [vendors, setVendors] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [product, setProduct] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editProductData, setEditProductData] = useState(null);
+  const [newPrice, setNewPrice] = useState("");
+  const [newQuantity, setNewQuantity] = useState("");
 
-    try {
-      const response = await fetch("http://localhost:8888/api/addvendor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Vendor_Name: vendorName }),
-      });
+  const [errors, setErrors] = useState({});
 
-      if (response.ok) {
-        alert("Vendor added successfully.");
-        setVendorName(""); // Clear vendor name
-        setTimeout(() => {
-          alert("");
-        }, 3000);
-      } else {
-        alert("Failed to add vendor.");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8888/api/inventory-stocks"
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error(`Error in data fetching: ${error}`);
       }
-    } catch (error) {
-      console.error("Error adding vendor:", error);
-      alert("Failed to add vendor. Please try again later.");
-    }
-  };
+    };
 
-  const handleChange = (event) => {
-    setVendorName(event.target.value);
-  };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchVendors = async () => {
@@ -58,18 +62,6 @@ const NewGodowns = () => {
 
     fetchVendors();
   }, []);
-
-  const [selectedVendor, setSelectedVendor] = useState("");
-  const [vendors, setVendors] = useState([]);
-
-  const [formData, setFormData] = useState({
-    Category: "",
-    Stock_Name: "",
-    Stock_Quantity: "",
-    Price: "",
-    Vendor_Id: "",
-    Vendor_Name: "",
-  });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -90,28 +82,43 @@ const NewGodowns = () => {
     }
   };
 
+  const handleSelecteChange = async (e) => {
+    const selectedName = e.target.value;
+    console.log(selectedName);
+    try {
+      const response = await fetch(
+        `http://localhost:8888/api/inventory-stocks/stock/${selectedName}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      const selectedProducts = data.filter(
+        (product) => product.Stock_Name === selectedName
+      );
+      setSelectedProduct(selectedProducts);
+    } catch (error) {
+      console.error(`Error fetching selected product: ${error}`);
+    }
+  };
+
+  const isValidForm = () => {
+    const newErrors = {};
+    if (!formData.Category) newErrors.Category = "Category name is required";
+    if (!formData.Stock_Name) newErrors.Stock_Name = "Stock name is required";
+    if (!formData.Stock_Quantity) newErrors.Stock_Quantity = "Quantity is required";
+    if (!formData.Price) newErrors.Price = "Price/quantity is required";
+    if (!selectedVendor) newErrors.Vendor_Name = "Vendor is required";
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmitformData = async (event) => {
     event.preventDefault();
 
-    if (!selectedVendor) {
-      alert("Please select a vendor.");
-      return;
-    }
-    if (!formData.Category) {
-      alert("Please add category.");
-      return;
-    }
-
-    if (!formData.Stock_Name) {
-      alert("Please add Stock name.");
-      return;
-    }
-    if (!formData.Stock_Quantity) {
-      alert("Please add Quantity.");
-      return;
-    }
-    if (!formData.Price) {
-      alert("Please add price.");
+    if (!isValidForm()) {
+      console.log("Form validation failed");
       return;
     }
 
@@ -123,7 +130,7 @@ const NewGodowns = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         window.alert("Stock added successfully.");
         console.log("Stock added successfully.");
@@ -146,105 +153,10 @@ const NewGodowns = () => {
     }
   };
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleViewVendors = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  const [selectedVendorId, setSelectedVendorId] = useState(null);
-
-  const handleDeleteVendor = async (vendorId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8888/api/addvendor/${vendorId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (response.ok) {
-        alert("Vendor deleted successfully.");
-        setTimeout(() => {
-          alert("");
-        }, 3000);
-        setSelectedVendorId(null);
-      } else {
-        alert("Failed to delete vendor. Please try again later.");
-      }
-    } catch (error) {
-      console.error("Error deleting vendor:", error);
-    }
-  };
-  const handleTrashIconClick = (vendorId) => {
-    setSelectedVendorId(vendorId);
-    const confirmation = window.confirm(
-      "Are you sure you want to delete this vendor?"
-    );
-    if (confirmation) {
-      handleDeleteVendor(vendorId);
-    }
-  };
-
-  const [product, setProduct] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8888/api/inventory-stocks"
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error(`Error in data fetching: ${error}`);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handleSelecteChange = async (e) => {
-    const selectedName = e.target.value;
-    console.log(selectedName);
-    try {
-      const response = await fetch(
-        `http://localhost:8888/api/inventory-stocks/stock/${selectedName}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      const selectedProducts = data.filter(
-        (product) => product.Stock_Name === selectedName
-      );
-      setSelectedProduct(selectedProducts);
-    } catch (error) {
-      console.error(`Error fetching selected product: ${error}`);
-    }
-  };
-
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editProductData, setEditProductData] = useState(null);
-  const [newPrice, setNewPrice] = useState("");
-
-  const [newQuantity, setNewQuantity] = useState(
-    editProductData?.Stock_Quantity || ""
-  );
-
-  const handleQuantityChange = (e) => {
-    setNewQuantity(e.target.value);
-  };
-
   const handleEditProduct = (productData) => {
     setEditProductData(productData);
     setNewPrice(productData.Price);
+    setNewQuantity(productData.Stock_Quantity.toString());
     setShowEditModal(true);
   };
 
@@ -294,41 +206,7 @@ const NewGodowns = () => {
     setShowEditModal(false);
     setEditProductData(null);
     setNewPrice("");
-  };
-
-  const [eventName, setEventName] = useState("");
-
-  const handleEventChange = (event) => {
-    setEventName(event.target.value);
-  };
-
-  const handleSaveEventName = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8888/api/addeventmaster", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ eventName: eventName }),
-      });
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        console.log(responseData.message);
-        alert(responseData.message);
-        setEventName(""); // Clear event name
-        setTimeout(() => {
-          alert("");
-        }, 3000);
-      } else {
-        console.error(responseData.error);
-        alert("Error adding event name");
-      }
-    } catch (error) {
-      console.error("Error adding event name:", error);
-    }
+    setNewQuantity("");
   };
 
 
@@ -343,9 +221,7 @@ const NewGodowns = () => {
       >
         {" "}
         <div className="md:h-[80vh] h-[80vh] md:w-[50%]">
-          <Form onSubmit={handleSubmit}>
-           
-          </Form>
+          
           <h4 className="text-[30px] pl-[1em]">Add Stocks</h4>
           <Form onSubmit={handleSubmitformData}>
             <div className="row mb-2">
@@ -358,9 +234,14 @@ const NewGodowns = () => {
                       placeholder="Product Category"
                       name="Category"
                       value={formData.Category}
-                      onChange={handleInputChange}
+                    onChange={handleInputChange}
+                    isInvalid={!!errors.Category}
                       
                     />
+                     <Form.Control.Feedback type="invalid">
+                                 {errors.Category} {/* Display error message if Category is invalid */}
+                           </Form.Control.Feedback>
+                     
                   </div>
                 </Form.Group>
               </div>
@@ -373,9 +254,13 @@ const NewGodowns = () => {
                       placeholder="Stock Name"
                       name="Stock_Name"
                       value={formData.Stock_Name}
-                      onChange={handleInputChange}
-                      
-                    />
+                    onChange={handleInputChange}
+                    isInvalid={!!errors.Stock_Name}
+                       />
+                       <Form.Control.Feedback type="invalid">
+                        {errors.Stock_Name} {/* Display error message if Stock_Name is invalid */}
+                         </Form.Control.Feedback>
+                     
                   </div>
                 </Form.Group>
               </div>
@@ -390,9 +275,14 @@ const NewGodowns = () => {
                       placeholder="Add Quantity"
                       name="Stock_Quantity"
                       value={formData.Stock_Quantity}
-                      onChange={handleInputChange}
+                    onChange={handleInputChange}
+                    isInvalid={!!errors.Stock_Quantity}
                       
                     />
+                    <Form.Control.Feedback type="invalid">
+                    {errors.Stock_Quantity} {/* Display error message if Stock_Quantity is invalid */}
+                   </Form.Control.Feedback>
+                     
                   </div>
                 </Form.Group>
               </div>
@@ -405,9 +295,13 @@ const NewGodowns = () => {
                       placeholder="Price/Quantity"
                       name="Price"
                       value={formData.Price}
-                      onChange={handleInputChange}
-                      
+                    onChange={handleInputChange}
+                    isInvalid={!!errors.Price}
                     />
+                       <Form.Control.Feedback type="invalid">
+    {errors.Price} {/* Display error message if Price is invalid */}
+  </Form.Control.Feedback>
+
                   </div>
                 </Form.Group>
               </div>
@@ -424,9 +318,10 @@ const NewGodowns = () => {
                       aria-label="Select Vendor"
                       name="vendor"
                       value={selectedVendor}
-                      onChange={handleVendorChange}
-                      
+                    onChange={handleVendorChange}
+                    isInvalid={!!errors.Vendor_Name}
                     >
+                     
                       <option value="">Select Vendor</option>
                       {vendors.map((vendor) => (
                         <option key={vendor._id} value={vendor.Vendor_Name}>
@@ -434,6 +329,9 @@ const NewGodowns = () => {
                         </option>
                       ))}
                     </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                     {errors.Vendor_Name} {/* Display error message if Vendor_Name is invalid */}
+                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </div>
@@ -539,7 +437,7 @@ const NewGodowns = () => {
                               id="stockQuantity"
                               type="number"
                               value={newQuantity}
-                              onChange={handleQuantityChange}
+                              onChange={(e) => setNewQuantity(e.target.value)}
                               style={{ borderRadius: "7px" }}
                             />
                           </div>
