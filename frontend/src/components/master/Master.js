@@ -335,6 +335,19 @@ const Master = () => {
       }
     }
   };
+  const handleAlphaInputChange = (setter) => (event) => {
+    const { value } = event.target;
+    if (/^[A-Za-z\s]*$/.test(value)) {
+      setter(value);
+    }
+  };
+
+  const handleNumericInputChange = (setter, maxLength) => (event) => {
+    const { value } = event.target;
+    if (/^\d*$/.test(value) && value.length <= maxLength) {
+      setter(value);
+    }
+  };
 
   return (
     <>
@@ -352,7 +365,7 @@ const Master = () => {
                       type="text"
                       placeholder="Add Vendor"
                       value={vendorName}
-                      onChange={(e) => setVendorName(e.target.value)}
+                      onChange={handleAlphaInputChange(setVendorName)}
                       required
                     />
                   </div>
@@ -417,7 +430,7 @@ const Master = () => {
                     <Form.Control
                       placeholder="Add Event Name Here..."
                       value={eventName}
-                      onChange={(e) => setEventName(e.target.value)}
+                      onChange={handleAlphaInputChange(setEventName)}
                       required
                     />
                   </div>
@@ -483,7 +496,7 @@ const Master = () => {
                     <Form.Control
                       placeholder="Add Bank Name Here..."
                       value={bankName}
-                      onChange={(e) => setBankName(e.target.value)}
+                      onChange={handleAlphaInputChange(setBankName)}
                       required
                     />
                   </div>
@@ -492,7 +505,7 @@ const Master = () => {
                     <Form.Control
                       placeholder="Add Account Number Here..."
                       value={accountNumber}
-                      onChange={(e) => setAccountNumber(e.target.value)}
+                      onChange={handleNumericInputChange(setAccountNumber, 18)}
                       required
                     />
                   </div>
@@ -562,7 +575,7 @@ const Master = () => {
                     <Form.Control
                       placeholder="Add Venue Name Here..."
                       value={venue}
-                      onChange={(e) => setVenue(e.target.value)}
+                      onChange={handleAlphaInputChange(setVenue)}
                       required
                     />
                   </div>
