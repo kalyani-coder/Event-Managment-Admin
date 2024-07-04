@@ -27,7 +27,7 @@ export default function Enquiry() {
   const [venueError, setVenueError] = useState("");
   const [stateError, setStateError] = useState("");
   const [selectedState, setSelectedState] = useState("");
-
+  const [eventRequirementError, setEventRequirementError] = useState("");
   useEffect(() => {
     fetchEvents();
     fetchManagers();
@@ -104,6 +104,10 @@ export default function Enquiry() {
     if (!selectedState) {
       invalidFields.push("selectedState");
       setStateError("State is required");
+    }
+    if (!eventRequirement || eventRequirement < 0) {
+      invalidFields.push("eventRequirement");
+      setEventRequirementError("Event budget must be a positive number");
     }
 
     if (invalidFields.length > 0) {
@@ -331,17 +335,30 @@ export default function Enquiry() {
             </div>
             <div className="row mb-2">
               <div className="col px-5">
-                <div className="form-group">
-                  <label htmlFor="event_budget">Event Budget</label>
+              <div className="form-group">
+                  <label htmlFor="budget">
+                    Event Budget
+                  </label>
                   <input
                     type="number"
-                    className="form-control"
-                    name="event_requirement"
-                    id="event_requirement"
-                    placeholder="Event Budget"
+                    className={`form-control ${
+                      validatedFields.includes("eventRequirement")
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    name="budget"
+                    id="budget"
+                    placeholder="Event budget"
                     value={eventRequirement}
                     onChange={(e) => setEventRequirement(e.target.value)}
+                    
                   />
+                  {validatedFields.includes("eventRequirement") &&
+                    (!eventRequirement || eventRequirement < 0) && (
+                      <div className="invalid-feedback">
+                        Event budget must be a positive number
+                      </div>
+                    )}
                 </div>
               </div>
 
