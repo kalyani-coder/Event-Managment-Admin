@@ -301,7 +301,7 @@ const AddExecutive = () => {
                   <Form.Control
                     type="text"
                     value={account_number}
-                    onChange={(e) => setaccount_number(e.target.value)}
+                    onChange={handleNumericInputChange(setaccount_number, 18)}
                     placeholder="Enter account number"
                   />
                 </Form.Group>
