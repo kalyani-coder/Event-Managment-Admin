@@ -11,11 +11,10 @@ const ExpenseForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [particular, setParticular] = useState("");
   const [amount, setAmount] = useState("");
   const [expenseDate, setExpenseDate] = useState("");
-  const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [clientName, setClientName] = useState("");
   const [formErrors, setFormErrors] = useState({ particular: false, amount: false });
 
@@ -71,17 +70,19 @@ const ExpenseForm = () => {
   };
 
   const handleExpenseSubmit = async () => {
-    if (!selectedEvent || !particular || !amount) {
+    const amountValue = parseFloat(amount);
+
+    if (!selectedEvent || !particular || amountValue <= 0) {
       setFormErrors({
         particular: !particular,
-        amount: !amount
+        amount: amountValue <= 0
       });
       return;
     }
 
     const expenseData = {
       particular: particular,
-      amount: parseFloat(amount),
+      amount: amountValue,
       client_Name: selectedEvent.fname,
       client_contact: selectedEvent.contact,
       event_name: selectedEvent.eventName,
@@ -116,6 +117,17 @@ const ExpenseForm = () => {
     setSelectedEvent(event);
     setClientName(event.fname);
     setShowExpenseModal(true);
+  };
+
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+    setAmount(value);
+
+    if (parseFloat(value) <= 0) {
+      setFormErrors((prevErrors) => ({ ...prevErrors, amount: true }));
+    } else {
+      setFormErrors((prevErrors) => ({ ...prevErrors, amount: false }));
+    }
   };
 
   return (
@@ -218,11 +230,11 @@ const ExpenseForm = () => {
                   <Form.Control
                     type="number"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={handleAmountChange}
                     isInvalid={formErrors.amount}
                   />
                   <Form.Control.Feedback type="invalid">
-                    Please enter an amount.
+                    Please enter amount greater than zero.
                   </Form.Control.Feedback>
                 </Form.Group>
               </Form>

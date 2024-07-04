@@ -14,6 +14,7 @@ const AddNewEvent = () => {
   const [budget, setBudget] = useState("");
   const [customerError, setCustomerError] = useState("");
   const [eventTypeError, setEventTypeError] = useState("");
+  const [budgetError, setBudgetError] = useState("");
   const managerId = localStorage.getItem("managerId");
 
   const handleEventTypeChange = (event) => {
@@ -66,6 +67,16 @@ const AddNewEvent = () => {
     setSelectedEvent(event.target.value);
   };
 
+  const handleBudgetChange = (event) => {
+    const value = event.target.value;
+    setBudget(value);
+    if (value < 0) {
+      setBudgetError("Budget must not be negative");
+    } else {
+      setBudgetError("");
+    }
+  };
+
   const handleSubmit = async () => {
     let valid = true;
     if (!selectedCustomer) {
@@ -75,6 +86,11 @@ const AddNewEvent = () => {
 
     if (!selectedEventType) {
       setEventTypeError("Event type is required");
+      valid = false;
+    }
+
+    if (budget < 0) {
+      setBudgetError("Budget must not be negative");
       valid = false;
     }
 
@@ -312,13 +328,14 @@ const AddNewEvent = () => {
               <div className="form-group">
                 <label htmlFor="budget">Budget</label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type="number" // Changed to number for better validation
+                  className={`form-control ${budgetError ? 'border-red-500' : ''}`}
                   placeholder="Enter Budget"
                   id="budget"
                   value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
+                  onChange={handleBudgetChange}
                 />
+                {budgetError && <span className="text-red-500">{budgetError}</span>}
               </div>
             </div>
           </div>
