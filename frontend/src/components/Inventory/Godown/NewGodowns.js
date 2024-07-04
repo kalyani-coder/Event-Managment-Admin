@@ -104,12 +104,40 @@ const NewGodowns = () => {
 
   const isValidForm = () => {
     const newErrors = {};
-    if (!formData.Category) newErrors.Category = "Category name is required";
-    if (!formData.Stock_Name) newErrors.Stock_Name = "Stock name is required";
-    if (!formData.Stock_Quantity) newErrors.Stock_Quantity = "Quantity is required";
-    if (!formData.Price) newErrors.Price = "Price/quantity is required";
-    if (!selectedVendor) newErrors.Vendor_Name = "Vendor is required";
-  
+
+    // Validate Product Category
+    if (!formData.Category) {
+      newErrors.Category = "Category name is required";
+    } else if (!/^[a-zA-Z]+$/.test(formData.Category)) {
+      newErrors.Category = "Category should contain only alphabets";
+    }
+
+    // Validate Stock Name
+    if (!formData.Stock_Name) {
+      newErrors.Stock_Name = "Stock name is required";
+    } else if (!/^[a-zA-Z]+$/.test(formData.Stock_Name)) {
+      newErrors.Stock_Name = "Stock name should contain only alphabets";
+    }
+
+    // Validate Quantity
+    if (!formData.Stock_Quantity) {
+      newErrors.Stock_Quantity = "Quantity is required";
+    } else if (!/^[1-9][0-9]*$/.test(formData.Stock_Quantity)) {
+      newErrors.Stock_Quantity = "Quantity should be a positive integer";
+    }
+
+    // Validate Price/Quantity
+    if (!formData.Price) {
+      newErrors.Price = "Price/quantity is required";
+    } else if (!/^[1-9][0-9]*$/.test(formData.Price)) {
+      newErrors.Price = "Price/quantity should be a positive integer";
+    }
+
+    // Validate Vendor
+    if (!selectedVendor) {
+      newErrors.Vendor_Name = "Vendor is required";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -208,7 +236,7 @@ const NewGodowns = () => {
     setNewPrice("");
     setNewQuantity("");
   };
-
+  
 
   return (
     <>
