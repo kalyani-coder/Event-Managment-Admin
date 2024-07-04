@@ -97,6 +97,7 @@ const AddManager = () => {
     if (!isValidForm()) {
       return;
     }
+    
 
     const formData = {
       fname,
@@ -418,7 +419,7 @@ const AddManager = () => {
                     }`}
                     type="text"
                     value={accountNumber}
-                    onChange={(e) => setAccountNumber(e.target.value)}
+                    onChange={handleNumericInputChange(setAccountNumber, 18)}
                     placeholder="Enter account number"
                   />
                   {validationMessages.accountNumber && (

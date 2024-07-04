@@ -94,6 +94,14 @@ const AddManager = () => {
     setProfilePicture(null);
   };
 
+  const handleAccountNumberChange = (event) => {
+    const value = event.target.value;
+    const filteredValue = value.replace(/\D/g, ""); // Remove non-digit characters
+    if (filteredValue.length <= 18) {
+      setAccountNumber(filteredValue);
+    }
+  };
+
   const indianStates = [
     "",
     "Andaman and Nicobar Islands",
@@ -131,7 +139,7 @@ const AddManager = () => {
     "Uttarakhand",
     "West Bengal",
   ];
-
+ 
   return (
     <>
       <Header />

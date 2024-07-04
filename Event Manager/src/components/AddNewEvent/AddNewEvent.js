@@ -125,6 +125,8 @@ const AddNewEvent = () => {
     }
   };
 
+ 
+
   return (
     <>
       <Header />
