@@ -343,7 +343,7 @@ const AddNewEvent = () => {
           </div>
           <div className="row mb-2">
             <div className="col px-5">
-              <Button onClick={handleSubmit} className="manager-btn ms-1">
+              <Button onClick={handleSubmit} className="manager-btn ">
                 Save Event
               </Button>
             </div>
