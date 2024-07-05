@@ -13,6 +13,7 @@ const ManagerDetailPage = () => {
   const [manager, setManager] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (location.state) {
@@ -38,13 +39,54 @@ const ManagerDetailPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const isValid = validateField(name, value);
+    if (isValid || value === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
+      }));
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `Invalid ${name}`,
+      }));
+    }
+  };
+
+  const validateField = (name, value) => {
+    const charOnlyFields = ["city", "state", "branch_name", "holder_name", "bank_name"];
+    const intOnlyFields = ["contact", "account_number"];
+    
+    if (charOnlyFields.includes(name)) {
+      const regex = /^[A-Za-z\s]+$/;
+      return regex.test(value);
+    }
+
+    if (intOnlyFields.includes(name)) {
+      const regex = /^\d*$/;
+      if (name === "contact" && value.length > 10) {
+        return false; // Contact number must be at most 10 digits
+      }
+      if (name === "account_number" && value.length > 18) {
+        return false; // Account number must be at most 18 digits
+      }
+      return regex.test(value);
+    }
+
+    return true;
   };
 
   const handleSave = () => {
+    // Check for errors before sending data
+    if (Object.values(errors).some((error) => error !== "")) {
+      alert("Please fix the errors before saving.");
+      return;
+    }
+
     // Update manager details on the backend
     axios
       .patch(`http://localhost:8888/api/addmanager/${_id}`, formData)
@@ -61,10 +103,6 @@ const ManagerDetailPage = () => {
 
   const handleCancel = () => {
     setShowModal(false);
-  };
-
-  const handleSalary = () => {
-    navigate("/addsalary", { state: manager });
   };
 
   const handleDelete = () => {
@@ -88,7 +126,6 @@ const ManagerDetailPage = () => {
   if (!manager) {
     return <p>Loading...</p>;
   }
-
   return (
     <>
       <Header />
