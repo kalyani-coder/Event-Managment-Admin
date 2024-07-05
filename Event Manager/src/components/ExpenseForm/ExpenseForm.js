@@ -72,10 +72,10 @@ const ExpenseForm = () => {
   const handleExpenseSubmit = async () => {
     const amountValue = parseFloat(amount);
 
-    if (!selectedEvent || !particular || amountValue <= 0) {
+    if (!selectedEvent || !particular || amount === "" || amountValue <= 0 || isNaN(amountValue)) {
       setFormErrors({
         particular: !particular,
-        amount: amountValue <= 0
+        amount: amount === "" || amountValue <= 0 || isNaN(amountValue)
       });
       return;
     }
@@ -117,19 +117,36 @@ const ExpenseForm = () => {
     setSelectedEvent(event);
     setClientName(event.fname);
     setShowExpenseModal(true);
+
+    // Initialize particular field state and validation
+    setParticular("");
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      particular: true,
+    }));
   };
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
 
-    if (parseFloat(value) <= 0) {
+    if (value === "") {
       setFormErrors((prevErrors) => ({ ...prevErrors, amount: true }));
     } else {
-      setFormErrors((prevErrors) => ({ ...prevErrors, amount: false }));
+      const amountValue = parseFloat(value);
+      if (amountValue <= 0 || isNaN(amountValue)) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, amount: true }));
+      } else {
+        setFormErrors((prevErrors) => ({ ...prevErrors, amount: false }));
+      }
     }
   };
 
+  const handleParticularChange = (e) => {
+    const value = e.target.value;
+    setParticular(value);
+    setFormErrors((prevErrors) => ({ ...prevErrors, particular: value === "" }));
+  };
   return (
     <>
       <Header />
@@ -215,7 +232,7 @@ const ExpenseForm = () => {
                   <Form.Control
                     type="text"
                     value={particular}
-                    onChange={(e) => setParticular(e.target.value)}
+                    onChange={handleParticularChange}
                     isInvalid={formErrors.particular}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -234,7 +251,7 @@ const ExpenseForm = () => {
                     isInvalid={formErrors.amount}
                   />
                   <Form.Control.Feedback type="invalid">
-                    Please enter amount greater than zero.
+                    {amount === "" ? "Please enter an amount." : "Please enter an amount greater than zero."}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Form>
