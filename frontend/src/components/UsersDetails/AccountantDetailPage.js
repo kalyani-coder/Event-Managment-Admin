@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Card } from "react-bootstrap";
+import { Card, Button, Modal, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import Header from "../Sidebar/Header";
 import "./AccountantDetailPage.css"; // Import the custom CSS file
@@ -10,14 +10,44 @@ const AccountantDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state;
-  console.log(data);
+  
   const [accountant, setAccountant] = useState(data);
+  const [formData, setFormData] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setAccountant(data);
+    setFormData(data);
+  }, [data]);
 
   const handleEdit = () => {
-    console.log("function is coming");
+    setShowModal(true);
   };
-  const handleSalary = () => {
-    navigate("/addsalary");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+
+  const handleSave = () => {
+    axios
+      .patch(`http://localhost:8888/api/accountant/${_id}`, formData)
+      .then((response) => {
+        console.log("Accountant data updated successfully:", response.data);
+        setAccountant(formData); // Update local state with new data
+        setShowModal(false); // Close modal after saving
+        alert("Accountant data updated successfully!");
+      })
+      .catch((error) => {
+        console.error("Error updating accountant data:", error);
+      });
   };
 
   const handleDelete = () => {
@@ -78,17 +108,161 @@ const AccountantDetailPage = () => {
                 <hr />
               </div>
               <div className="my-3 grid gap-1 md:flex">
-                <button
-                  className="custom-button-accountant"
+             
+              <Button className="manager-btn" onClick={handleEdit}>
+                  Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  className="manager-btn"
                   onClick={handleDelete}
                 >
                   Delete
-                </button>
+                </Button>
               </div>
             </Card.Body>
           </Card>
         </div>
       </div>
+      {showModal && (
+        <Modal show={showModal} onHide={handleCancel} className="Model-mdp">
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Accountant Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formContact">
+                    <Form.Label>Contact Number</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="contact"
+                      value={formData.contact || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formAddress">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="address"
+                      value={formData.address || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={formData.email || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formCity">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="city"
+                      value={formData.city || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formState">
+                    <Form.Label>State</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="state"
+                      value={formData.state || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formHolderName">
+                    <Form.Label>Account Holder Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="holder_name"
+                      value={formData.holder_name || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formAccountNumber">
+                    <Form.Label>Account Number</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="account_number"
+                      value={formData.account_number || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formIFSC">
+                    <Form.Label>IFSC Code</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="IFSC_code"
+                      value={formData.IFSC_code || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formBankName">
+                    <Form.Label>Bank Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="bank_name"
+                      value={formData.bank_name || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formBranchName">
+                    <Form.Label>Branch Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="branch_name"
+                      value={formData.branch_name || ""}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 };
