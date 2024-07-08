@@ -70,7 +70,7 @@ const ViewSalary = () => {
                   <th className="text-center"> Name</th>
                   <th className="text-center">Salary</th>
                   <th className="text-center">Date</th>
-                  <th className="text-center">Month</th>
+                  {/* <th className="text-center">Month</th> */}
                   <th className="text-center">Advance Payment</th>
                   <th className="text-center">Balance amount</th>
                   <th className="text-center">Incentive</th>
@@ -85,7 +85,7 @@ const ViewSalary = () => {
                     <td className="text-center">{item.salary_person_name}</td>
                     <td className="text-center">{item.salary}</td>
                     <td className="text-center">{item.date}</td>
-                    <td className="text-center">{item.month}</td>
+                    {/* <td className="text-center">{item.month}</td> */}
                     <td className="text-center">{item.adv_payment}</td>
                     <td className="text-center">{item.balance_amount}</td>
                     <td className="text-center">{item.incentive}</td>
