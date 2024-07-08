@@ -16,7 +16,7 @@ export default function Enquiry() {
   const [eventDate, setEventDate] = useState("");
   const [guestQuantity, setGuestQuantity] = useState("");
   const [eventVenue, setEventVenue] = useState("");
-  const [eventRequirement, setEventRequirement] = useState("");
+  // const [eventRequirement, setEventRequirement] = useState("");
   const [managers, setManagers] = useState([]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
   const [selectedManagerName, setSelectedManagerName] = useState("");
@@ -27,9 +27,8 @@ export default function Enquiry() {
   const [venueError, setVenueError] = useState("");
   const [stateError, setStateError] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const [eventRequirementError, setEventRequirementError] = useState("");
-  const [eventBudget, setEventBudget] = useState('')
-
+  const [eventBudget, setEventBudget] = useState("");
+  const [eventBudgetError, setEventBudgetError] = useState("");
 
   useEffect(() => {
     fetchEvents();
@@ -74,12 +73,13 @@ export default function Enquiry() {
       setContactError("");
       setVenueError("");
       setStateError("");
+      setEventBudgetError("");
     }, 3000);
 
     return () => {
       clearTimeout(errorTimeout);
     };
-  }, [customerNameError, contactError, venueError, stateError]);
+  }, [customerNameError, contactError, venueError, stateError, eventBudgetError]);
 
   const isContactValid = (contact) => {
     const contactPattern = /^\d{10}$/;
@@ -108,9 +108,10 @@ export default function Enquiry() {
       invalidFields.push("selectedState");
       setStateError("State is required");
     }
-    if (!eventRequirement || eventRequirement < 0) {
-      invalidFields.push("eventRequirement");
-      setEventRequirementError("Event budget must be a positive number");
+
+    if (!eventBudget || isNaN(eventBudget) || eventBudget <= 0) {
+      invalidFields.push("eventBudget");
+      setEventBudgetError("Event budget is required and must be a positive number");
     }
 
     if (invalidFields.length > 0) {
@@ -150,7 +151,7 @@ export default function Enquiry() {
     setEventDate("");
     setGuestQuantity("");
     setEventVenue("");
-    setEventRequirement("");
+    setEventBudget("");
     setSelectedManagerId("");
     setSelectedManagerName("");
     setSelectedState("");
@@ -159,6 +160,7 @@ export default function Enquiry() {
     setContactError("");
     setVenueError("");
     setStateError("");
+    setEventBudgetError("");
   };
 
   const handleCustomerNameChange = (e) => {
@@ -337,23 +339,32 @@ export default function Enquiry() {
               </div>
             </div>
             <div className="row mb-2">
-              <div className="col px-5">
-              <div className="form-group">
-                  <label htmlFor="budget">
-                    Event Budget
+            <div className="col px-5">
+                <div className="form-group">
+                  <label htmlFor="eventBudget">
+                    Event Budget <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
-                    type="text"
-                    className="form-control"
-                    name="guest_quantity"
-                    id="guest_quantity"
-                    placeholder=" Estimated Number of Guests"
+                    type="number"
+                    className={`form-control ${
+                      validatedFields.includes("eventBudget")
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    name="eventBudget"
+                    id="eventBudget"
+                    placeholder="Event Budget"
                     value={eventBudget}
                     onChange={(e) => setEventBudget(e.target.value)}
+                    required
                   />
+                  {validatedFields.includes("eventBudget") && (
+                    <div className="invalid-feedback">
+                      Event Budget is required and must be a positive number
+                    </div>
+                  )}
                 </div>
-              </div>
-
+                </div>
               <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="contact">

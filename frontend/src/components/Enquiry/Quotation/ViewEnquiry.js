@@ -87,7 +87,7 @@ const ViewInquiryPage = ({ enquiry }) => {
       <Header />
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
-          <h2 className="text-[35px]">View Enquiry</h2>
+          <h2 className="text-[30px]">View Enquiry</h2>
           <div className="d-flex flex-wrap align-items-center">
             <div className="w-full relative">
               <input
@@ -251,9 +251,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                         Number of Estimated Guests: {selectedInquiry.guest_quantity}
                         <br />
                         Event Venue: {selectedInquiry.event_venue}
-                        {/* <br />
-                        Event Requirement: {selectedInquiry.event_requirement}
-                        <br /> */}
+                        <br />
+                        Event Budget: {selectedInquiry.budget}
+                        <br />
                         Customer Name: {selectedInquiry.customer_name}
                         <br />
                         Customer Email: {selectedInquiry.email}
