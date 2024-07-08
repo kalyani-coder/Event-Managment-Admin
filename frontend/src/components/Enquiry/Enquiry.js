@@ -11,12 +11,12 @@ export default function Enquiry() {
   const [showModal, setShowModal] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerEmailError, setCustomerEmailError] = useState("");
   const [contact, setContact] = useState("");
   const [address, setAddress] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [guestQuantity, setGuestQuantity] = useState("");
   const [eventVenue, setEventVenue] = useState("");
-  // const [eventRequirement, setEventRequirement] = useState("");
   const [managers, setManagers] = useState([]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
   const [selectedManagerName, setSelectedManagerName] = useState("");
@@ -74,16 +74,23 @@ export default function Enquiry() {
       setVenueError("");
       setStateError("");
       setEventBudgetError("");
+      setCustomerEmailError("");
     }, 3000);
 
     return () => {
       clearTimeout(errorTimeout);
     };
-  }, [customerNameError, contactError, venueError, stateError, eventBudgetError]);
+  }, [customerNameError, contactError, venueError, stateError, eventBudgetError, customerEmailError]);
 
   const isContactValid = (contact) => {
     const contactPattern = /^\d{10}$/;
     return contactPattern.test(contact);
+  };
+
+  const isEmailValid = (email) => {
+    // Simple email validation pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
   };
 
   const handleSubmit = async () => {
@@ -112,6 +119,11 @@ export default function Enquiry() {
     if (!eventBudget || isNaN(eventBudget) || eventBudget <= 0) {
       invalidFields.push("eventBudget");
       setEventBudgetError("Event budget is required and must be a positive number");
+    }
+
+    if (!customerEmail || !isEmailValid(customerEmail)) {
+      invalidFields.push("customerEmail");
+      setCustomerEmailError("Valid email address is required");
     }
 
     if (invalidFields.length > 0) {
@@ -161,6 +173,7 @@ export default function Enquiry() {
     setVenueError("");
     setStateError("");
     setEventBudgetError("");
+    setCustomerEmailError("");
   };
 
   const handleCustomerNameChange = (e) => {
@@ -227,6 +240,14 @@ export default function Enquiry() {
     "Uttarakhand",
     "West Bengal",
   ];
+
+
+  const handleNumericInputChange = (setter, maxLength) => (event) => {
+    const { value } = event.target;
+    if (/^\d*$/.test(value) && value.length <= maxLength) {
+      setter(value);
+    }
+  };
 
   return (
     <>
@@ -405,23 +426,30 @@ export default function Enquiry() {
                     id="guest_quantity"
                     placeholder=" Estimated Number of Guests"
                     value={guestQuantity}
-                    onChange={(e) => setGuestQuantity(e.target.value)}
+                    onChange={handleNumericInputChange(setGuestQuantity, 10)}
                   />
                 </div>
               </div>
 
               <div className="col px-5">
                 <div className="form-group">
-                  <label htmlFor="email">Client Email</label>
+                  <label htmlFor="email">Email Address <span style={{ color: "red" }}>*</span></label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${
+                      validatedFields.includes("customerEmail")
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     name="email"
                     id="email"
-                    placeholder="Client Email"
+                    placeholder="Email Address"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
                   />
+                  {validatedFields.includes("customerEmail") && (
+                    <div className="invalid-feedback">{customerEmailError}</div>
+                  )}
                 </div>
               </div>
             </div>
