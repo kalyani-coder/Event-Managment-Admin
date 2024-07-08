@@ -18,6 +18,7 @@ const AddExecutive = () => {
   const [branch_name, setbranch_name] = useState("");
   const [IFSC_code, setIFSC_code] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+
   const [errors, setErrors] = useState({});
 
   const handleDiscard = () => {
@@ -28,11 +29,11 @@ const AddExecutive = () => {
     setaddress("");
     setcity("");
     setstate("");
-    setholder_name("");
     setaccount_number("");
-    setIFSC_code("");
+    setholder_name("");
     setbank_name("");
     setbranch_name("");
+    setIFSC_code("");
     setProfilePicture(null);
     setErrors({});
   };
@@ -50,7 +51,6 @@ const AddExecutive = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!isValidForm()) {
       return;
     }
@@ -78,14 +78,15 @@ const AddExecutive = () => {
       );
 
       if (response.status === 200) {
-        alert("Data submitted successfully!");
+        console.log("Data successfully submitted:", response.data);
+        window.alert("Data submitted successfully!");
         handleDiscard();
       } else {
-        alert("Error while submitting data.");
+        console.log("Error submitting data.");
       }
     } catch (error) {
-      console.log("Error", error);
-      alert("Error submitting data. Please try again later.");
+      console.error("Error:", error);
+      window.alert("Error submitting data. Please try again later.");
     }
   };
 

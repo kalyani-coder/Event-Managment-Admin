@@ -226,7 +226,11 @@ const ExecutiveSchema = new Schema({
   city: String,
   state: String,
   address: String,
-  blood_group: String,
+  holder_name: String,
+  account_number: Number,
+  IFSC_code: String,
+  bank_name: String,
+  branch_name: String,
 });
 
 const VendorSchema = new Schema({
