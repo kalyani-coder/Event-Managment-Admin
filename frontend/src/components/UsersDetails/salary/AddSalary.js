@@ -244,7 +244,7 @@ const AddSalary = () => {
             </div>
 
             <div className="row mb-2">
-              <div className="col px-5">
+              {/* <div className="col px-5">
                 <div className="form-group">
                   <label htmlFor="month">Salary of Month</label>
                   <input
@@ -254,7 +254,7 @@ const AddSalary = () => {
                     onChange={(e) => setMonth(e.target.value)}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="col px-5">
                 <div className={`form-group ${errors.salary ? 'has-error' : ''}`}>
                   <label htmlFor="salary">Salary Amount <span style={{ color: "red" }}>*</span></label>
@@ -267,9 +267,6 @@ const AddSalary = () => {
                   {errors.salary && <span className="error-message" style={{ color: "red" }}>Salary amount cannot be negative</span>}
                 </div>
               </div>
-            </div>
-
-            <div className="row mb-2">
               <div className="col px-5">
                 <div className={`form-group ${errors.adv_payment ? 'has-error' : ''}`}>
                   <label htmlFor="adv_payment">Advance Payment <span style={{ color: "red" }}>*</span></label>
@@ -282,6 +279,10 @@ const AddSalary = () => {
                   {errors.adv_payment && <span className="error-message" style={{ color: "red" }}>Advance payment cannot be negative or greater than salary amount</span>}
                 </div>
               </div>
+            </div>
+
+            <div className="row mb-2">
+             
             </div>
 
             <div className="row mb-2">
