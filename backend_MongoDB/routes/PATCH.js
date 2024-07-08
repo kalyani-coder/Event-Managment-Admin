@@ -6,9 +6,44 @@ const { InventoryStocks } = require('../models/newModels')
 const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster, advancePaymantManager ,CustomerQuatationInfo} = require("../models/newModels")
-const { ManagerDetails, ManagerTask, AdvanceExpence } = require("../models/newModels");
-const { QuatationInfo, allBanks, ExpenceForm, VendorPayment } = require("../models/newModels")
+const { ManagerDetails, ManagerTask, AdvanceExpence ,Executive} = require("../models/newModels");
+const { QuatationInfo, allBanks, ExpenceForm, VendorPayment, Accountant } = require("../models/newModels")
 
+
+// Accountant Update route 
+
+router.patch("/accountant/:id" , async(req, res) => {
+  try{
+    const id = req.params.id
+    const update = req.body
+    const updateAccountant = await Accountant.findByIdAndUpdate(id , update,{new : true})
+    if(!updateAccountant){
+      return res.status(404).json({message : "Accountant Id not Found"})
+    }
+    res.status(200).json({message : " Accountant Updated Successfully "})
+  }catch(e){
+    res.status(500).json({message : "Internla server error"})
+  }
+})
+
+router.patch("/executive/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updates = req.body;
+
+    // Find the executive by ID and update their details
+    const updateExecutive = await Executive.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!updateExecutive) {
+      return res.status(404).json({ message: "Executive ID not found" });
+    }
+
+    res.status(200).json({ message: "Executive updated successfully"});
+  } catch (error) {
+    console.error('Error updating executive:', error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+});
 
 
 // NEW CUSTOMER QUOTATION INFO PATCH ROUTE 
@@ -96,21 +131,6 @@ router.patch('/customersavedquotation/:userId', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // PATCH VENDOR PAYMENT 
