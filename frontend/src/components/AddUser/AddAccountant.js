@@ -335,7 +335,7 @@ const AddAccountant = () => {
                 </Form.Group>
               </div>
             </div>
-            <div className="row mb-2">
+            {/* <div className="row mb-2">
               <div className="col px-5">
                 <Form.Group controlId="profilePicture">
                   <Form.Label>Profile Picture</Form.Label>
@@ -362,7 +362,7 @@ const AddAccountant = () => {
                   </div>
                 </Form.Group>
               </div>
-            </div>
+            </div> */}
             <div className="row mb-2 py-2">
               <div className="col px-5">
                 <Button
