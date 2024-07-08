@@ -319,6 +319,9 @@ const ViewInquiryPage = () => {
                         Number of Estimated Guests:{" "}
                         {selectedInquiry.guest_quantity}
                         <br />
+                        Event Budget:{" "}
+                        {selectedInquiry.budget}
+                        <br />
                         Event Venue: {selectedInquiry.event_venue}
                         <br />
                         Customer Name: {selectedInquiry.customer_name}
