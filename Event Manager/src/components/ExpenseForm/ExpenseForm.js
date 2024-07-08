@@ -11,12 +11,13 @@ const ExpenseForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showExpenseModal, setShowExpenseModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [particular, setParticular] = useState("");
   const [amount, setAmount] = useState("");
   const [expenseDate, setExpenseDate] = useState("");
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [clientName, setClientName] = useState("");
-  const [formErrors, setFormErrors] = useState({ particular: false, amount: false });
+  const [formErrors, setFormErrors] = useState({ amount: false });
 
   const managerData = async () => {
     const managerId = localStorage.getItem("managerId");
@@ -70,19 +71,17 @@ const ExpenseForm = () => {
   };
 
   const handleExpenseSubmit = async () => {
-    const amountValue = parseFloat(amount);
+    if (!selectedEvent) return;
 
-    if (!selectedEvent || !particular || amount === "" || amountValue <= 0 || isNaN(amountValue)) {
-      setFormErrors({
-        particular: !particular,
-        amount: amount === "" || amountValue <= 0 || isNaN(amountValue)
-      });
+    // Validate amount
+    if (!amount || parseFloat(amount) <= 0) {
+      setFormErrors((prevErrors) => ({ ...prevErrors, amount: true }));
       return;
     }
 
     const expenseData = {
       particular: particular,
-      amount: amountValue,
+      amount: parseFloat(amount),
       client_Name: selectedEvent.fname,
       client_contact: selectedEvent.contact,
       event_name: selectedEvent.eventName,
@@ -103,27 +102,19 @@ const ExpenseForm = () => {
       alert("Expense Added Successfully.");
       // Clear form fields after successful submission
       setParticular("");
-      setExpenseDate("");
       setAmount("");
       setShowExpenseModal(false);
     } catch (error) {
       console.error(error);
+
       // Handle error - e.g., show an error message
     }
   };
-
   const handleGetExpenseClick = (event) => {
     console.log("Event selected:", event); // Debugging line
     setSelectedEvent(event);
     setClientName(event.fname);
     setShowExpenseModal(true);
-
-    // Initialize particular field state and validation
-    setParticular("");
-    setFormErrors((prevErrors) => ({
-      ...prevErrors,
-      particular: true,
-    }));
   };
 
   const handleAmountChange = (e) => {
@@ -141,12 +132,6 @@ const ExpenseForm = () => {
       }
     }
   };
-
-  const handleParticularChange = (e) => {
-    const value = e.target.value;
-    setParticular(value);
-    setFormErrors((prevErrors) => ({ ...prevErrors, particular: value === "" }));
-  };
   return (
     <>
       <Header />
@@ -155,11 +140,11 @@ const ExpenseForm = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">Expense Form</h2>
             <Link to="/viewexpensedetails">
-              <button className="btn btn-primary">View Expense</button>
+            <button className="btn btn-primary">View Expense</button>
             </Link>
             <input
               type="text"
-              placeholder="Search by Event Name or Venue"
+              placeholder="Search by Event Name, Date or Venue"
               value={searchTerm}
               onChange={handleSearchInputChange}
               className="form-control w-1/3"
@@ -216,33 +201,25 @@ const ExpenseForm = () => {
                   <Form.Label>Select Client</Form.Label>
                   <Form.Control type="text" value={clientName} readOnly />
                 </Form.Group>
-                <Form.Group controlId="expenseDate">
+                {/* <Form.Group controlId="expenseDate">
                   <Form.Label>Expense Date</Form.Label>
                   <Form.Control
                     type="date"
-                    value={expenseDate}
+                    value={expensedate}
                     onChange={(e) => setExpenseDate(e.target.value)}
                   />
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group controlId="particular">
-                  <Form.Label>
-                    Particular{" "}
-                    <span style={{ color: "red" }}>*</span>
-                  </Form.Label>
+                  <Form.Label>Particular</Form.Label>
                   <Form.Control
                     type="text"
                     value={particular}
-                    onChange={handleParticularChange}
-                    isInvalid={formErrors.particular}
+                    onChange={(e) => setParticular(e.target.value)}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    Please enter a particular.
-                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="amount">
                   <Form.Label>
-                    Amount{" "}
-                    <span style={{ color: "red" }}>*</span>
+                    Amount <span style={{ color: "red" }}>*</span>
                   </Form.Label>
                   <Form.Control
                     type="number"
@@ -251,7 +228,9 @@ const ExpenseForm = () => {
                     isInvalid={formErrors.amount}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {amount === "" ? "Please enter an amount." : "Please enter an amount greater than zero."}
+                    {amount === ""
+                      ? "Please enter an amount."
+                      : "Please enter an amount greater than zero."}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Form>

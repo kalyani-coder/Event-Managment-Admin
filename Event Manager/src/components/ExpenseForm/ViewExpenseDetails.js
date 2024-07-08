@@ -65,7 +65,7 @@ const ViewExpenseDetails = () => {
                     <th scope="col">Sr No</th>
                     <th scope="col">Client Name</th>
                     <th scope="col">Client Contact</th>
-                    <th scope="col">Expense Date</th>
+                    <th scope="col">Event Date</th>
                     <th scope="col">Particular</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Status</th>
@@ -78,7 +78,7 @@ const ViewExpenseDetails = () => {
                       <td>{index + 1}</td>
                       <td>{expense.client_Name}</td>
                       <td>{expense.client_contact}</td>
-                      <td>{expense.expence_date}</td>
+                      <td>{expense.event_Date}</td>
                       <td>{expense.prticular}</td>
                       <td>{expense.amount} Rs.</td>
                       <td>{getStatusBadge(expense.status)}</td>
