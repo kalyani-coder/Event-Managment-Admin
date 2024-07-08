@@ -28,6 +28,9 @@ export default function Enquiry() {
   const [stateError, setStateError] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [eventRequirementError, setEventRequirementError] = useState("");
+  const [eventBudget, setEventBudget] = useState('')
+
+
   useEffect(() => {
     fetchEvents();
     fetchManagers();
@@ -125,7 +128,7 @@ export default function Enquiry() {
         event_date: eventDate,
         guest_quantity: guestQuantity,
         event_venue: eventVenue,
-        budget: eventRequirement,
+        budget: eventBudget,
         assign_manager_Id: selectedManagerId,
         assign_manager_name: selectedManagerName,
         state: selectedState,
@@ -340,25 +343,14 @@ export default function Enquiry() {
                     Event Budget
                   </label>
                   <input
-                    type="number"
-                    className={`form-control ${
-                      validatedFields.includes("eventRequirement")
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    name="budget"
-                    id="budget"
-                    placeholder="Event budget"
-                    value={eventRequirement}
-                    onChange={(e) => setEventRequirement(e.target.value)}
-                    
+                    type="text"
+                    className="form-control"
+                    name="guest_quantity"
+                    id="guest_quantity"
+                    placeholder=" Estimated Number of Guests"
+                    value={eventBudget}
+                    onChange={(e) => setEventBudget(e.target.value)}
                   />
-                  {validatedFields.includes("eventRequirement") &&
-                    (!eventRequirement || eventRequirement < 0) && (
-                      <div className="invalid-feedback">
-                        Event budget must be a positive number
-                      </div>
-                    )}
                 </div>
               </div>
 
