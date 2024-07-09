@@ -9,22 +9,31 @@ const PaymentReport = () => {
   const [filterType, setFilterType] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [totalPayments, setTotalPayments] = useState(0);
+  const [totalPaymentsCount, setTotalPaymentsCount] = useState(0);
 
   useEffect(() => {
     fetchSalaryData();
   }, []);
 
+  useEffect(() => {
+    calculateTotalPayments();
+  }, [filteredData]);
+
   const fetchSalaryData = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8888/api/staffsalary"
-      );
+      const response = await fetch("http://localhost:8888/api/staffsalary");
       const salaryData = await response.json();
       setSalaryData(salaryData);
       setFilteredData(salaryData); // Initially display all data
     } catch (error) {
       console.error("Error fetching salary data:", error);
     }
+  };
+
+  const calculateTotalPayments = () => {
+    const total = filteredData.reduce((acc, entry) => acc + entry.salary, 0);
+    setTotalPayments(total);
+    setTotalPaymentsCount(filteredData.length); // Update the count of payments
   };
 
   const exportToExcel = () => {
@@ -76,7 +85,6 @@ const PaymentReport = () => {
     setDateRange({ startDate: "", endDate: "" });
     setFilteredData(salaryData); // Reset filtered data to show all data
   };
-
   return (
     <>
       <Header />
@@ -157,7 +165,7 @@ const PaymentReport = () => {
               </button>
             </div>
             <div>
-              <p>Total Payments: {totalPayments}</p>
+              <p>Total Payments: {totalPaymentsCount}</p>
               <button className="btn btn-primary mb-3" onClick={exportToExcel}>
                 Export to Excel
               </button>
