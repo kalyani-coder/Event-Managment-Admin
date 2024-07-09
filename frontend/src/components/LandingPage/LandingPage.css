@@ -63,3 +63,70 @@
   .login-button:hover {
     background-color: #0056b3;
   }
+
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .landing-page-box {
+    width: 80%;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .landing-page-image {
+    width: 100%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  
+  .landing-page-form {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .login-select {
+    width: 100%;
+  }
+  
+  .login-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-page-box {
+    width: 99%;
+  }
+  
+  .heading-em {
+    font-size: 18px;
+  }
+  
+  .login-select {
+    font-size: 14px;
+  }
+  
+  .login-button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-page-box {
+    width: 99%;
+  }
+  
+  .heading-em {
+    font-size: 16px;
+  }
+  
+  .login-select {
+    font-size: 12px;
+  }
+  
+  .login-button {
+    font-size: 12px;
+  }
+}

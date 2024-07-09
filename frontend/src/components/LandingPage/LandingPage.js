@@ -10,10 +10,8 @@ const LandingPage = () => {
     setSelectedOption(e.target.value);
     if (e.target.value === 'Admin') {
       navigate('/login');
-    }
-    else if(e.target.value === "Manager"){
-      window.location.href = "https://manager.ssdpune.org"
-
+    } else if (e.target.value === 'Manager') {
+      window.location.href = 'https://manager.ssdpune.org';
     }
   };
 
@@ -26,17 +24,16 @@ const LandingPage = () => {
           alt="Your Image"
         />
         <form className="landing-page-form">
-          <h3 className='text-center heading-em'>Welcome To Event Management</h3>
+          <h3 className="text-center heading-em">Welcome To Event Management</h3>
           <select
             className="login-select"
             value={selectedOption}
-            onChange={handleChange} // Change event handler
+            onChange={handleChange}
           >
             <option value="">Select Role</option>
             <option value="Manager">Manager</option>
             <option value="Admin">Admin</option>
           </select>
-          {/* <button type="button" className='login-button' onClick={handleLogin}>Login</button> */}
         </form>
       </div>
     </div>
