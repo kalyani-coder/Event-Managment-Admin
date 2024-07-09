@@ -279,12 +279,12 @@ const AccountantDetailPage = () => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button variant="primary" onClick={handleSave}>
-              Save Changes
-            </Button>
+          <button className="custom-btn-mdp" onClick={handleCancel}>
+    Cancel
+  </button>
+  <button className="custom-btn-mdp secondary" onClick={handleSave}>
+    Save
+  </button>
           </Modal.Footer>
         </Modal>
       )}
