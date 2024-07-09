@@ -47,7 +47,7 @@ const EventDetails = ({ routes }) => {
       Subvenue: event.subvenue,
       "Event Date": event.event_date,
       "Guest Number": event.guest_number,
-      Budget: `$${event.budget}`,
+      Budget: `Rs.{event.budget}`,
       Date: event.event_date,
       Time: event.currentTime,
     }));

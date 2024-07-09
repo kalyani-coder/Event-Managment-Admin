@@ -26,6 +26,31 @@ const AccountantDetailPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    if (["city", "state", "holder_name", "bank_name", "branch_name"].includes(name)) {
+      // Allow only characters and spaces
+      const charOnlyPattern = /^[a-zA-Z\s]*$/;
+      if (!charOnlyPattern.test(value)) {
+        return;
+      }
+    }
+
+    if (name === "contact") {
+      // Allow only numeric values and limit to 10 digits
+      const numericPattern = /^\d{0,10}$/;
+      if (!numericPattern.test(value)) {
+        return;
+      }
+    }
+
+    if (name === "account_number") {
+      // Allow only numeric values and limit to 18 digits
+      const numericPattern = /^\d{0,18}$/;
+      if (!numericPattern.test(value)) {
+        return;
+      }
+    }
+
     setFormData({
       ...formData,
       [name]: value
@@ -264,7 +289,7 @@ const AccountantDetailPage = () => {
         </Modal>
       )}
     </>
-  );
+  )
 };
 
 export default AccountantDetailPage;

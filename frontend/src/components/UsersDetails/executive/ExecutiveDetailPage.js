@@ -20,14 +20,30 @@ const ExecutiveDetailPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Validation logic
+    if (
+      ["city", "state", "holder_name", "bank_name", "branch_name"].includes(name) &&
+      !/^[a-zA-Z\s]*$/.test(value)
+    ) {
+      return; // If the value contains non-alphabetic characters, do nothing
+    }
+
+    if (name === "contact" && (!/^\d*$/.test(value) || value.length > 10)) {
+      return; // If the value contains non-numeric characters or exceeds 10 digits, do nothing
+    }
+
+    if (name === "account_number" && (!/^\d*$/.test(value) || value.length > 18)) {
+      return; // If the value contains non-numeric characters or exceeds 18 digits, do nothing
+    }
+
     setFormData({ ...formData, [name]: value });
   };
 
   const handleCancel = () => {
     setShowModal(false);
     setFormData({});
-  };  
-  
+  };
+
   const handleSave = async () => {
     try {
       await axios.patch(`http://localhost:8888/api/executive/${_id}`, formData);

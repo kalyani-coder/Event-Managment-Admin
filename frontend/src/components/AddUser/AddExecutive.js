@@ -17,7 +17,7 @@ const AddExecutive = () => {
   const [bank_name, setbank_name] = useState("");
   const [branch_name, setbranch_name] = useState("");
   const [IFSC_code, setIFSC_code] = useState("");
-  const [profilePicture, setProfilePicture] = useState(null);
+  
 
   const [errors, setErrors] = useState({});
 
@@ -34,7 +34,6 @@ const AddExecutive = () => {
     setbank_name("");
     setbranch_name("");
     setIFSC_code("");
-    setProfilePicture(null);
     setErrors({});
   };
 
@@ -68,7 +67,6 @@ const AddExecutive = () => {
       IFSC_code,
       bank_name,
       branch_name,
-      profilePicture: profilePicture ? profilePicture.name : null,
     };
 
     try {
@@ -90,14 +88,7 @@ const AddExecutive = () => {
     }
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setProfilePicture(file);
-  };
-
-  const handleRemoveProfilePicture = () => {
-    setProfilePicture(null);
-  };
+  
 
   const indianStates = [
     "",
@@ -343,35 +334,7 @@ const AddExecutive = () => {
                 </Form.Group>
               </div>
             </div>
-            {/* <div className="row mb-2">
-              <div className="col px-5">
-                <Form.Group controlId="profilePicture">
-                  <Form.Label>Profile Picture</Form.Label>
-                  <div className="custom-file ">
-                    {" "}
-                    <Form.Control
-                      type="file"
-                      className="custom-file-input"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                    />
-                    <Form.Label className="custom-file-label">
-                      {profilePicture ? profilePicture.name : "Choose File"}
-                    </Form.Label>
-                    <div className="">
-                      {profilePicture && (
-                        <Button className="custom-button-reports"
-                          type="button"
-                          onClick={handleRemoveProfilePicture}
-                        >
-                          Remove
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </Form.Group>
-              </div>
-            </div> */}
+          
             <div className="row mb-2 py-2">
               <div className="col px-5">
                 <Button
