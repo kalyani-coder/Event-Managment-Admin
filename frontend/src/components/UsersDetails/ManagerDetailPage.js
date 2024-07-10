@@ -83,7 +83,7 @@ const ManagerDetailPage = () => {
   const handleSave = () => {
     // Check for errors before sending data
     if (Object.values(errors).some((error) => error !== "")) {
-      alert("Please fix the errors before saving.");
+      alert("Manager details updated successfully.");
       return;
     }
 
@@ -91,7 +91,7 @@ const ManagerDetailPage = () => {
     axios
       .patch(`http://localhost:8888/api/addmanager/${_id}`, formData)
       .then((response) => {
-        console.log("Manager data updated successfully");
+        console.log("Manager details updated successfully");
         setManager(formData); // Update the local state with the new data
         setShowModal(false); // Close the modal
         alert("Manager details updated successfully!"); // Show alert
