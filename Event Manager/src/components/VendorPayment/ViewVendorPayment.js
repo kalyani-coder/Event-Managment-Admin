@@ -97,24 +97,26 @@ const VendorPaymentView = () => {
 
   const downloadPDF = () => {
     const doc = new jsPDF();
-    const data = vendorPayments.map(payment => ({
-      "First Name": payment.fname,
-      "Date": payment.date,
-      "Amount": payment.paid_amt,
-      "Remaining Amount": payment.rem_amt,
-      "Description": payment.description,
-      "Status": payment.status // Include status in PDF
-    }));
+    const columns = ["First Name", "Date", "Amount", "Remaining Amount", "Description", "Status"];
+    const data = vendorPayments.map(payment => [
+      payment.fname,
+      payment.date,
+      payment.paid_amt,
+      payment.rem_amt,
+      payment.description,
+      payment.status,
+    ]);
 
     doc.autoTable({
-      head: [["First Name", "Date", "Amount", "Remaining Amount", "Description", "Status"]],
+      head: [columns],
       body: data,
       theme: "grid",
-      startY: 20
+      startY: 20,
     });
 
     doc.save("vendor_payments.pdf");
   };
+
 
   const downloadExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(vendorPayments);
