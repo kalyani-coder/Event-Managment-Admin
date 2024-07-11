@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import { FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import "./Login.css";
 
@@ -11,6 +12,7 @@ const Login = () => {
     password: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -19,33 +21,28 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const { email, password } = formData;
-
-    // Validation checks
-    if (!email && !password) {
-      window.alert("Please enter your email and password.");
-    } else if (!email) {
-      window.alert("Please enter your email.");
-    } else if (!password) {
-      window.alert("Please enter your password.");
-    } else if (email !== "test@gmail.com" && password !== "test") {
-      window.alert("Email is incorrect.\nPassword is incorrect.");
-    } else if (email !== "test@gmail.com") {
-      window.alert("Email is incorrect.");
-    } else if (password !== "test") {
-      window.alert("Password is incorrect.");
-    } else {
-      console.log("Login successful");
-      navigate("/dashboard");
+    try {
+      const response = await axios.post('http://localhost:8888/api/admin/login', formData);
+      // If login is successful
+      const { token, adminId } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('adminId', adminId);
+      alert("Login Successfull")
+      navigate('/dashboard'); 
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert("An unknown error occurred. Please try again.");
+      }
     }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    navigate('/'); // Navigate to home or any other page on close
+    navigate('/');
   };
 
   if (!isModalOpen) return null;
@@ -58,6 +55,7 @@ const Login = () => {
             <div className="screen__content">
               <form className="login" onSubmit={handleSubmit}>
                 <h3 className="fw-bold">Admin Login</h3>
+                {error && <div className="error-message">{error}</div>}
                 <div className="login__field">
                   <i className="login__icon fas fa-user"></i>
                   <input

@@ -1,8 +1,9 @@
 const express = require("express");
 // const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose")
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-JWT_SECRET = "vedant"
+JWT_SECRET = "eventmanagement"
 
 const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
@@ -13,9 +14,46 @@ const { Attendance } = require("../models/newModels");
 const { ManagerDetails } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require('../models/newModels')
-const { InventoryStocks,ExpenceForm ,AdvanceExpence,CustomerQuatationInfo} = require('../models/newModels')
+const { InventoryStocks,ExpenceForm ,AdvanceExpence,CustomerQuatationInfo, AdminLogin} = require('../models/newModels')
 const { QuatationInfo, advancePaymantManager, ManagerTask, bankTransper, allBanks, venue } = require('../models/newModels')
 
+// ADMIN REGISTER ROUTE 
+router.post("/admin/register", async (req, res) => {
+  try {
+    const newAdmin = new AdminLogin(req.body);
+    await newAdmin.save();
+    res.status(201).json({ message: "Admin registered successfully" });
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      const validationErrors = {};
+      for (let key in e.errors) {
+        validationErrors[key] = e.errors[key].message;
+      }
+      return res.status(400).json({ message: "Validation errors", errors: validationErrors });
+    }
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Admin Login Route /
+router.post("/admin/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const admin = await AdminLogin.findOne({ email });
+    if (!admin) {
+      return res.status(400).json({ message: "Email does not exist" });
+    }
+
+    if (password !== admin.password) {
+      return res.status(400).json({ message: "Password does not match" });
+    }
+    const token = jwt.sign({ id: admin._id }, JWT_SECRET);
+    res.status(200).json({ message: "Login successful", token, adminId: admin._id });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 // NEW CUSTOMER QUATATIOINFO POST ROUTE 

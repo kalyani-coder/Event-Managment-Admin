@@ -26,7 +26,7 @@ const Login = () => {
         alert('Login successful');
 
         localStorage.setItem('managerId', data._id);
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('managertoken', data.token);
         navigate('/quotation');
       } else {
         if (response.status === 404) {

@@ -163,7 +163,7 @@ export default function Sidenav() {
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    // window.location.href = 'https://eventmanagement-qaii.onrender.com';
+   localStorage.clear()
     navigate("/");
   };
 

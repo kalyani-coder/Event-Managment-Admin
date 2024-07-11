@@ -4,11 +4,27 @@ const { Attendance } = require("../models/newModels");
 const { ExecutiveDetails } = require("../models/newModels");
 const { AddVendor } = require("../models/newModels");
 const { InventoryStocks } = require("../models/newModels");
-const { QuatationInfo, Event, ExpenceForm, AdvanceExpence, CustomerQuatationInfo } = require("../models/newModels");
+const { QuatationInfo, Event, ExpenceForm, AdvanceExpence, CustomerQuatationInfo, AdminLogin } = require("../models/newModels");
 const { AddEventMaster, advancePaymantManager, ManagerDetails, ManagerTask, bankTransper, Enquiry, allBanks, venue } = require("../models/newModels");
 
 
 const { FindTable } = require("../utils/utils");
+
+
+// GET ROUTE FOR ADMINLOGIN /
+
+router.get("/admin" , async(req, res) => {
+  try{
+    const getAdmin = await AdminLogin.find()
+    if(!getAdmin){
+      return res.status(404).json({message : "Not Found"})
+    }
+    res.status(200).json(getAdmin)
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
 
 
 // NEW CUSTOMERQUOTATION 

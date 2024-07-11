@@ -589,9 +589,38 @@ const advanceExpence = new Schema({
 
 })
 
+// ADMIN LOGIN SCHEMA 
+const adminLogin = new Schema({
+  name: {
+    type: String,
+    required: [true, "Name is required"],
+    minlength: [2, "Name must be at least 2 characters long"],
+    maxlength: [50, "Name must be less than 50 characters long"]
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    match: [/\S+@\S+\.\S+/, "Email format is invalid"],
+    unique: true
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [4, "Password must be at least 4 characters long"],
+    maxlength: [100, "Password must be less than 100 characters long"]
+  },
+  address: {
+    type: String,
+    required: [true, "Address is required"],
+    minlength: [10, "Address must be at least 10 characters long"],
+    maxlength: [100, "Address must be less than 100 characters long"]
+  }
+});
+
 
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
+  AdminLogin : mongoose.model("AdminLogin", adminLogin),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   venue: mongoose.model("allvenue", venueSchema),
   AdvanceExpence: mongoose.model("ExpenceAdvance", advanceExpence),
@@ -630,5 +659,4 @@ module.exports = {
   InventoryStock: mongoose.model("InventoryStock", InventoryStockSchema),
   Accountant: mongoose.model("Accountant", AccountantDetailsSchema),
   ManagerLogin: mongoose.model("ManagerLogin", ManagerLoginSchema),
-  // ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
 };

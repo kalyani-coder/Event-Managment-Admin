@@ -4,8 +4,25 @@ const router = express.Router();
 const { FindTable } = require("../utils/utils");
 const {AddVendor} = require('../models/newModels')
 const {InventoryStocks,ExpenceForm} =  require('../models/newModels')
-const {AddEventMaster,advancePaymantManager,AdvanceExpence,CustomerQuatationInfo} =  require('../models/newModels')
+const {AddEventMaster,advancePaymantManager,AdvanceExpence,CustomerQuatationInfo, AdminLogin} =  require('../models/newModels')
 const { ManagerDetails , ManagerTask,QuatationInfo, bankTransper, allBanks, venue} = require("../models/newModels");
+
+
+// Admin LDelete Route /
+router.delete("/admin/:id", async(req, res)=>{
+  try{
+    const id = req.params.id
+    const deletedAdmin = await AdminLogin.findByIdAndDelete(id)
+    if(!deletedAdmin){
+      return res.status(404).json({message : "Admin NOt Found"})
+    }
+    res.status(202).json(deletedAdmin)
+
+  }catch(e){
+    res.status(500).json({message : "Internal server error"})
+  }
+})
+
 
 // DELLETE FOR CUS QUOTATION INFO BY ID 
 router.delete('/customerquotationinfo/:id', async (req, res) => {
