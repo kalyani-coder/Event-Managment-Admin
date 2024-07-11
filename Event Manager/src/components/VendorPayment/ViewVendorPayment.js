@@ -95,7 +95,7 @@ const VendorPaymentView = () => {
     }
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = () => { //this pdf function
     const doc = new jsPDF();
     const columns = ["First Name", "Date", "Amount", "Remaining Amount", "Description", "Status"];
     const data = vendorPayments.map(payment => [
