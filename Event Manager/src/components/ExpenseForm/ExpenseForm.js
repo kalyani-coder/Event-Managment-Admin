@@ -11,11 +11,9 @@ const ExpenseForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [particular, setParticular] = useState("");
-  const [amount, setAmount] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
   const [showExpenseModal, setShowExpenseModal] = useState(false);
+  const [prticular, setParticular] = useState("");
+  const [amount, setAmount] = useState("");
   const [clientName, setClientName] = useState("");
   const [formErrors, setFormErrors] = useState({ amount: false });
 
@@ -80,7 +78,7 @@ const ExpenseForm = () => {
     }
 
     const expenseData = {
-      particular: particular,
+      prticular: prticular,
       amount: parseFloat(amount),
       client_Name: selectedEvent.fname,
       client_contact: selectedEvent.contact,
@@ -106,10 +104,10 @@ const ExpenseForm = () => {
       setShowExpenseModal(false);
     } catch (error) {
       console.error(error);
-
       // Handle error - e.g., show an error message
     }
   };
+
   const handleGetExpenseClick = (event) => {
     console.log("Event selected:", event); // Debugging line
     setSelectedEvent(event);
@@ -132,6 +130,7 @@ const ExpenseForm = () => {
       }
     }
   };
+
   return (
     <>
       <Header />
@@ -140,7 +139,7 @@ const ExpenseForm = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[30px]">Expense Form</h2>
             <Link to="/viewexpensedetails">
-            <button className="btn btn-primary">View Expense</button>
+              <button className="btn btn-primary">View Expense</button>
             </Link>
             <input
               type="text"
@@ -163,27 +162,33 @@ const ExpenseForm = () => {
                 </tr>
               </thead>
               <tbody style={{ background: "white", borderRadius: "10px" }}>
-                {filteredEvents.map((event) => (
-                  <tr key={event._id}>
-                    <td>{event.fname}</td>
-                    <td>{event.eventName}</td>
-                    <td>
-                      {event.event_date
-                        ? format(new Date(event.event_date), "dd/MM/yyyy")
-                        : ""}
-                    </td>
-                    <td>{event.venue}</td>
-                    <td>{event.contact}</td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => handleGetExpenseClick(event)}
-                      >
-                        Get Expense
-                      </button>
-                    </td>
+                {Array.isArray(filteredEvents) && filteredEvents.length > 0 ? (
+                  filteredEvents.map((event) => (
+                    <tr key={event._id}>
+                      <td>{event.fname}</td>
+                      <td>{event.eventName}</td>
+                      <td>
+                        {event.event_date
+                          ? format(new Date(event.event_date), "dd/MM/yyyy")
+                          : ""}
+                      </td>
+                      <td>{event.venue}</td>
+                      <td>{event.contact}</td>
+                      <td>
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => handleGetExpenseClick(event)}
+                        >
+                          Get Expense
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">No events found.</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -201,19 +206,11 @@ const ExpenseForm = () => {
                   <Form.Label>Select Client</Form.Label>
                   <Form.Control type="text" value={clientName} readOnly />
                 </Form.Group>
-                {/* <Form.Group controlId="expenseDate">
-                  <Form.Label>Expense Date</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={expensedate}
-                    onChange={(e) => setExpenseDate(e.target.value)}
-                  />
-                </Form.Group> */}
                 <Form.Group controlId="particular">
                   <Form.Label>Particular</Form.Label>
                   <Form.Control
                     type="text"
-                    value={particular}
+                    value={prticular}
                     onChange={(e) => setParticular(e.target.value)}
                   />
                 </Form.Group>
