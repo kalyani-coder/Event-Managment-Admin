@@ -825,7 +825,7 @@ export default function Sidenav() {
               <ListItem
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={(event) => handleClick(event, "Download Report")}
+                onClick={(event) => handleClick(event, " Report")}
               >
                 <div className="menuitems-of-header">
                 <Link
@@ -839,7 +839,7 @@ export default function Sidenav() {
                       px: 2.5,
                     }}
                     className={
-                      activetab === "Download Report"
+                      activetab === "Report"
                         ? "menuitems-of-header active"
                         : "menuitems-of-header"
                     }
@@ -851,7 +851,7 @@ export default function Sidenav() {
                         justifyContent: "center",
                       }}
                     >
-                      <Tooltip title="Download Report">
+                      <Tooltip title=" Report">
                         <span>
                           <FontAwesomeIcon
                             icon={faFileDownload}
@@ -862,7 +862,7 @@ export default function Sidenav() {
                       </Tooltip>
                     </ListItemIcon>
                     <ListItemText
-                      primary="Download Report"
+                      primary="Report"
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
