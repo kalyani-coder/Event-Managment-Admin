@@ -56,10 +56,10 @@ const ViewExpense = () => {
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case "Decline":
+      case "declined":
         return (
           <Badge bg="danger" className="status-badge">
-            Decline
+            Declined
           </Badge>
         );
       case "Approved":
@@ -68,7 +68,7 @@ const ViewExpense = () => {
             Approved
           </Badge>
         );
-      case "pending":
+      case "Pending":
         return (
           <Badge bg="warning" className="status-badge">
             Pending
@@ -82,6 +82,7 @@ const ViewExpense = () => {
         );
     }
   };
+  
 
   const handleShowEventModal = (expense) => {
     setSelectedExpense(expense);
@@ -303,6 +304,7 @@ const ViewExpense = () => {
                     <th scope="col">Event Date</th>
                     <th scope="col">Particular</th>
                     <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Proceed</th>
                     <th scope="col">Decline</th>
                     
@@ -317,7 +319,7 @@ const ViewExpense = () => {
                       <td>{expense.event_Date}</td>
                       <td>{expense.prticular}</td>
                       <td>{expense.amount} Rs.</td>
-
+                       <td>{getStatusBadge(expense.status)}</td>
                       <td>
                         <button
                           className="btn btn-primary"
@@ -330,6 +332,7 @@ const ViewExpense = () => {
 
                       <button
                     className="btn btn-danger ms-4"
+                     
                     onClick={() => handleDecline(expense._id)}
                   >
                     Decline
