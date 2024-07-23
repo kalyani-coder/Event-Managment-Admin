@@ -16,6 +16,7 @@ const ExpenseForm = () => {
   const [amount, setAmount] = useState("");
   const [clientName, setClientName] = useState("");
   const [formErrors, setFormErrors] = useState({ amount: false });
+  const [addedExpenses, setAddedExpenses] = useState([]);
 
   const managerData = async () => {
     const managerId = localStorage.getItem("managerId");
@@ -98,6 +99,8 @@ const ExpenseForm = () => {
       );
       console.log(response.data);
       alert("Expense Added Successfully.");
+      // Update the added expenses list
+      setAddedExpenses((prev) => [...prev, selectedEvent._id]);
       // Clear form fields after successful submission
       setParticular("");
       setAmount("");
@@ -178,8 +181,11 @@ const ExpenseForm = () => {
                         <button
                           className="btn btn-primary"
                           onClick={() => handleGetExpenseClick(event)}
+                          disabled={addedExpenses.includes(event._id)}
                         >
-                          Get Expense
+                          {addedExpenses.includes(event._id)
+                            ? "Expense Added"
+                            : "Get Expense"}
                         </button>
                       </td>
                     </tr>

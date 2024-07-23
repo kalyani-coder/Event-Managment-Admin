@@ -5,7 +5,7 @@ import Header from "../../Sidebar/Header";
 import { Button, Modal } from "react-bootstrap";
 import "./ViewEnquiry.css";
 
-const ViewInquiryPage = ({ enquiry }) => {
+const ViewInquiryPage = () => {
   const [inquiries, setInquiries] = useState([]);
   const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,9 +20,9 @@ const ViewInquiryPage = ({ enquiry }) => {
         const response = await fetch("http://localhost:8888/api/enquiry");
         const data = await response.json();
 
-        // Sort inquiries based on event date in descending order
+        // Sort inquiries based on creation date in ascending order
         const sortedInquiries = data.sort(
-          (a, b) => new Date(b.event_date) - new Date(a.event_date)
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
         );
 
         setInquiries(sortedInquiries);
@@ -266,10 +266,9 @@ const ViewInquiryPage = ({ enquiry }) => {
                   )}
                 </Modal.Body>
                 <Modal.Footer>
-               
-                      <button className="close-button-popup" onClick={closePopup}>
-      Close
-    </button>
+                  <button className="close-button-popup" onClick={closePopup}>
+                    Close
+                  </button>
                 </Modal.Footer>
               </Modal>
             )}
