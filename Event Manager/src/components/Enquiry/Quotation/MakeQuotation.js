@@ -454,12 +454,12 @@ function QuotationForm() {
   const formattedDate = today.toLocaleDateString(); // Format date as needed
 
   // Generate quotation serial number (you can replace this with your own logic)
-  const serialNumber = `QS-${new Date().getTime()}`; // Using timestamp as serial number
+  const serialNumber = `QS${new Date().getTime()}`; // Using timestamp as serial number
 
    // Add Date and Serial Number
    doc.setFontSize(10);
    doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
-   doc.text(`Quotation No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
+   doc.text(`Quotation Sr. No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
 
     const customerData = [
       ["Customer Name", enquiry.customer_name || "-"],
