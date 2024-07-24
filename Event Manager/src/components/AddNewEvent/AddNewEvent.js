@@ -16,6 +16,7 @@ const AddNewEvent = () => {
   const [eventTypeError, setEventTypeError] = useState("");
   const [budgetError, setBudgetError] = useState("");
   const managerId = localStorage.getItem("managerId");
+  const managerName = localStorage.getItem("managerName")
 
   const handleEventTypeChange = (event) => {
     setSelectedEventType(event.target.value);
@@ -110,6 +111,7 @@ const AddNewEvent = () => {
           budget: budget,
           status: selectedCustomer.status,
           managerId: managerId,
+          managerName: managerName,
         });
         alert("Event created successfully");
         // Clear the form

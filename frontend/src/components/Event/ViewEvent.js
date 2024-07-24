@@ -98,6 +98,7 @@ const EventDetails = ({ routes }) => {
                 <tr>
                   <th scope="col">Customer Name</th>
                   <th scope="col">Event Name</th>
+                  <th scope="col">Manager Name</th>
                   <th scope="col">Event Date</th>
                   <th scope="col">Contact No.</th>
                   <th scope="col">Action</th>
@@ -108,6 +109,7 @@ const EventDetails = ({ routes }) => {
                   <tr key={event._id}>
                     <td>{event.fname}</td>
                     <td>{event.eventName}</td>
+                    <td>{event.managerName}</td>
                     <td>{event.event_date ? format(new Date(event.event_date), "dd/MM/yyyy") : ""}</td>
                     <td>{event.contact}</td>
                     <td>

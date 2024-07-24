@@ -241,7 +241,7 @@ router.post("/manager/login", async (req, res) => {
 
     const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
 
-    res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token });
+    res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token , managerName: manager.fname  + " " + manager.lname});
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Internal server error" });

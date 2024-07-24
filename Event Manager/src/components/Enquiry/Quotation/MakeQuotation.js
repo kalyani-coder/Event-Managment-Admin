@@ -42,7 +42,7 @@ function QuotationForm() {
   ]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
-
+  const managerName = localStorage.getItem('managerName') || "Unknown";
   const [stockNames, setStockNames] = useState([]);
   const [stockid, setStockid] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
@@ -641,17 +641,25 @@ function QuotationForm() {
         "9. 18% GST is applicable on Total Billing.",
       ];
 
-      let termY = finalY + 40; // Adjust Y position as needed
+      let termY = finalY + 40;
       terms.forEach((term) => {
         doc.text(term, 10, termY);
-        termY += 6; // Increment Y position for the next line
+        termY += 6;
       });
+  
+      const createdByY = termY + 20;
+      doc.setFontSize(10);
+      doc.text("Created by:", 10, createdByY);
+      doc.text(`Name: ${managerName}`, 10, createdByY + 5); // Insert manager's name
+      doc.text("Designation: [Your Designation]", 10, createdByY + 10); // Replace with actual designation
+  
+      doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
+      alert("PDF file generated");
     } else {
       alert("Quotation details are not available.");
     }
-    doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-    alert("PDF file generated");
   };
+  
   const handleViewQuotation = () => {
     // try {
     //   const response = await axios.get(

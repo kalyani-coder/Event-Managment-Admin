@@ -223,6 +223,7 @@ const FilterBodyByTable = ({ req, table }) => {
         status,
         managerId,
         managerName,
+        
       } = req.body;
       return {
         eventName,
