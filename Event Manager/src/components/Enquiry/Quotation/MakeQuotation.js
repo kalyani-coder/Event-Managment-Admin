@@ -295,7 +295,7 @@ function QuotationForm() {
         requirements: prevState.requirements.filter((item) => item._id !== id),
       }));
       alert("Stock Deleted successfully");
-      // await handlePatchQuotation();
+      
     } catch (error) {
       console.error("Error deleting item", error);
     }
@@ -449,11 +449,17 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    // doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
+      // Get system date
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(); // Format date as needed
 
-    // Print Customer Data
-    // const pageWidth = doc.internal.pageSize.width;
-    // const customerTableWidth = pageWidth * 0.2;
+  // Generate quotation serial number (you can replace this with your own logic)
+  const serialNumber = `QS-${new Date().getTime()}`; // Using timestamp as serial number
+
+   // Add Date and Serial Number
+   doc.setFontSize(10);
+   doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
+   doc.text(`Quotation No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
 
     const customerData = [
       ["Customer Name", enquiry.customer_name || "-"],
@@ -513,7 +519,7 @@ function QuotationForm() {
         req.unit,
         req.rate_per_days,
         req.days,
-        // req.price,
+        
         `${req.price} Rs`,
       ]);
 
@@ -521,33 +527,7 @@ function QuotationForm() {
         grandTotal !== null ? Math.round(grandTotal) : "-";
       const roundedTotalAmount =
         totalAmount !== null ? Math.round(totalAmount) : "-";
-      // Append total rows
-      // tableData.push(
-      //   [
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "SubTotal",
-      //     `${quotationData.sub_total || "-"} Rs`,
-      //   ],
-      //   ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-      //   ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-      //   ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
-      //   ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
-      //   [
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "Amounts In Words",
-      //     `${convertAmountToWords(totalAmount) || "-"}`,
-      //   ]
-      // );
+      
 
       tableData.push([
         "",
@@ -611,9 +591,7 @@ function QuotationForm() {
         theme: "grid",
       });
 
-      //    doc.setFontSize(12);
-      //    doc.text(`Transport Type: ${transport}`, 10, finalY + 10); // Adjust Y position as needed
-      //    doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 20); // Adjust Y position as needed
+      
 
       const finalY = doc.lastAutoTable.finalY + 10;
 
@@ -621,7 +599,7 @@ function QuotationForm() {
       doc.setFontSize(10);
       doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
       doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
-      // doc.text(`Description : ${descriptionValue}`, 10, finalY + 15);
+      
 
       // Print Terms and Conditions
       doc.setFontSize(12);
@@ -649,9 +627,9 @@ function QuotationForm() {
   
       const createdByY = termY + 20;
       doc.setFontSize(10);
-      doc.text("Created by:", 10, createdByY);
-      doc.text(`Name: ${managerName}`, 10, createdByY + 5); // Insert manager's name
-      doc.text("Designation: [Your Designation]", 10, createdByY + 10); // Replace with actual designation
+      doc.text(`Created by: ${managerName}`, 10, createdByY);
+      
+      
   
       doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
       alert("PDF file generated");
@@ -661,19 +639,9 @@ function QuotationForm() {
   };
   
   const handleViewQuotation = () => {
-    // try {
-    //   const response = await axios.get(
-    //     `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
-    //   );
-    //   setQuotationData(response.data);
-    //   console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
+    
     setModalShow(true);
-    // if (response.data && response.data.state) {
-    //   setState(response.data.state);
-    // }
-    // } catch (error) {
-    //   console.error("Failed to fetch quotation info:", error);
-    // }
+   
   };
   const handleClose = () => setModalShow(false);
   const handlePatchQuotation = async () => {
