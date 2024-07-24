@@ -47,7 +47,7 @@ const EventDetails = ({ routes }) => {
       Subvenue: event.subvenue,
       "Event Date": event.event_date,
       "Guest Number": event.guest_number,
-      Budget: `Rs.{event.budget}`,
+      Budget: `Rs.${event.budget}`,
       Date: event.event_date,
       Time: event.currentTime,
     }));
@@ -64,17 +64,20 @@ const EventDetails = ({ routes }) => {
     const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
 
     if (startDate && endDate) {
-      return eventDate >= startDate && eventDate <= endDate;
+      if (eventDate < startDate || eventDate > endDate) return false;
     } else if (startDate) {
-      return eventDate >= startDate;
+      if (eventDate < startDate) return false;
     } else if (endDate) {
-      return eventDate <= endDate;
+      if (eventDate > endDate) return false;
     }
-    return true; // If no date range is set, return all events
-  }).filter(event =>
-    (event.fname && event.fname.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (event.eventName && event.eventName.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      (event.fname && event.fname.toLowerCase().includes(searchTermLower)) ||
+      (event.eventName && event.eventName.toLowerCase().includes(searchTermLower)) ||
+      (event.managerName && event.managerName.toLowerCase().includes(searchTermLower))
+    );
+  });
 
   return (
     <>
@@ -82,16 +85,32 @@ const EventDetails = ({ routes }) => {
       <div className="w-full h-screen flex items-center justify-center main-container-for-Addaccount">
         <div className="md:h-[80vh] h-[80vh] md:mt-0 w-[80%]">
           <div className="filter-container">
-            <input type="text" placeholder="Search Event by customer name or event name" value={searchTerm} onChange={handleSearchInputChange} />
-            <span>Start date:</span> <input type="date" value={dateRange.startDate} onChange={handleStartDateChange} />
-            <span>End date:</span><input type="date" value={dateRange.endDate} onChange={handleEndDateChange} />
+            <input 
+              type="text" 
+              style={{width:"490px"}} 
+              placeholder="Search by customer name, event name, or manager name" 
+              value={searchTerm} 
+              onChange={handleSearchInputChange} 
+            />
+            <span className="ml-16">Start date:</span> 
+            <input 
+              type="date" 
+              value={dateRange.startDate} 
+              onChange={handleStartDateChange} 
+            />
+            <span>End date:</span>
+            <input 
+              type="date" 
+              value={dateRange.endDate} 
+              onChange={handleEndDateChange} 
+            />
           </div>
           <div className="flex justify-between items-center mb-4">
-      <h2 className="text-3xl">View Events</h2>
-      <button className="export-button-viewevents" onClick={exportToExcel}>
-        Export to Excel
-      </button>
-    </div>
+            <h2 className="text-3xl">View Events</h2>
+            <button className="export-button-viewevents" onClick={exportToExcel}>
+              Export to Excel
+            </button>
+          </div>
           <div className="table-responsive md:w-full overflow-y-auto md:h-[60vh] h-[50vh] md:mt-0">
             <table className="table">
               <thead className="sticky top-0 bg-white">
@@ -129,9 +148,10 @@ const EventDetails = ({ routes }) => {
                 onHide={closePopup}
                 dialogClassName="modal-dialog-centered modal-dialog-responsive"
               >
-                <Modal.Header>  <button className="header-close-button-popup" onClick={closePopup}>
-    &times;
-  </button>
+                <Modal.Header>
+                  <button className="header-close-button-popup" onClick={closePopup}>
+                    &times;
+                  </button>
                   <Modal.Title>Event Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -161,9 +181,9 @@ const EventDetails = ({ routes }) => {
                   </div>
                 </Modal.Body>
                 <Modal.Footer style={{ border: "none" }}>
-                <button className="close-button-popup" onClick={closePopup}>
-      Close
-    </button>
+                  <button className="close-button-popup" onClick={closePopup}>
+                    Close
+                  </button>
                 </Modal.Footer>
               </Modal>
             )}
