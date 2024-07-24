@@ -132,7 +132,7 @@ const EventDetails = ({ routes }) => {
                     <td>{event.event_date ? format(new Date(event.event_date), "dd/MM/yyyy") : ""}</td>
                     <td>{event.contact}</td>
                     <td>
-                      <button className="btn btn-primary" onClick={() => handleViewMore(event)}>
+                      <button className="button-view" onClick={() => handleViewMore(event)}>
                         View More
                       </button>
                     </td>
