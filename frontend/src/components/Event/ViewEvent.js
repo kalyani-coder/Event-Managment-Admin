@@ -87,7 +87,7 @@ const EventDetails = ({ routes }) => {
           <div className="filter-container">
             <input 
               type="text" 
-              style={{width:"490px"}} 
+              style={{width:"450px"}} 
               placeholder="Search by customer name, event name, or manager name" 
               value={searchTerm} 
               onChange={handleSearchInputChange} 
