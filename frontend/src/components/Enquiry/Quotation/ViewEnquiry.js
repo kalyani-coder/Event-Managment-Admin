@@ -20,9 +20,9 @@ const ViewInquiryPage = () => {
         const response = await fetch("http://localhost:8888/api/enquiry");
         const data = await response.json();
 
-        // Sort inquiries based on creation date in ascending order
+        // Sort inquiries based on event date in descending order
         const sortedInquiries = data.sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+          (a, b) => new Date(b.event_date) - new Date(a.event_date)
         );
 
         setInquiries(sortedInquiries);

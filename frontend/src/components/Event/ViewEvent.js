@@ -58,7 +58,10 @@ const EventDetails = ({ routes }) => {
     XLSX.writeFile(wb, "EventDetails.xlsx");
   };
 
-  const filteredEvents = eventData.filter((event) => {
+  // Sorting events by date in descending order (latest first)
+  const sortedEvents = eventData.sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
+
+  const filteredEvents = sortedEvents.filter((event) => {
     const eventDate = new Date(event.event_date);
     const startDate = dateRange.startDate ? new Date(dateRange.startDate) : null;
     const endDate = dateRange.endDate ? new Date(dateRange.endDate) : null;
