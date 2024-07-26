@@ -12,7 +12,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 function InternalCosting() {
   const location = useLocation();
   const { enquiry } = location.state || {};
-  console.log("vedant", enquiry);
+  // console.log("vedant", enquiry);
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -66,8 +66,8 @@ function InternalCosting() {
   const [price, setPrice] = useState(0);
   const [ratePerDays, setRatePerDays] = useState(0);
   const [total, setTotal] = useState(0);
-  console.log("vedant new", quotationData);
-  console.log("VedorId", VedorId);
+  // console.log("vedant new", quotationData);
+  // console.log("VedorId", VedorId);
   // useEffect(() => {
   //   if (enquiry && enquiry._id) {
   //     handleViewQuotation();
@@ -159,9 +159,9 @@ function InternalCosting() {
 
     // Assuming the value contains the ID of the selected stock
     setNewSelectedStockId(selectedStock._id);
-    console.log("stockid ", selectedStock._id);
+    // console.log("stockid ", selectedStock._id);
     setNewSelectedVendorId(selectedStock.Vendor_Id);
-    console.log("vendorid", selectedStock.Vendor_Id);
+    // console.log("vendorid", selectedStock.Vendor_Id);
 
     const vendors = stocksData
       .filter((stock) => stock._id === selectedStockId)
@@ -176,7 +176,7 @@ function InternalCosting() {
 
   const newhandleVendorChange = (e) => {
     const selectedVendorName = e.target.value;
-    console.log("selectedVendorName", selectedVendorName);
+    // console.log("selectedVendorName", selectedVendorName);
     setNewSelectedVendor(selectedVendorName);
 
     const selectedVendorData = stocksData.find(
@@ -346,7 +346,7 @@ function InternalCosting() {
         }
       )
       .then((response) => {
-        console.log("Stock quantity updated successfully:", response.data);
+        // console.log("Stock quantity updated successfully:", response.data);
       })
       .catch((error) => {
         console.error("Error updating stock quantity:", error);
@@ -372,12 +372,15 @@ function InternalCosting() {
 
       if (cgstChecked) {
         cgst = (total * 9) / 100;
+        setCgst(cgst);
       }
       if (sgstChecked) {
         sgst = (total * 9) / 100;
+        setSgst(sgst);
       }
       if (igstChecked) {
         igst = (total * 18) / 100;
+        setIgst(igst);
       }
 
       const grandTotal = total + cgst + sgst + igst;
@@ -396,13 +399,16 @@ function InternalCosting() {
 
   const handleCgstChange = () => {
     setCgstChecked(!cgstChecked);
+    setCgst(!cgst);
   };
 
   const handleSgstChange = () => {
     setSgstChecked(!sgstChecked);
+    setSgst(!sgst);
   };
   const handleIgstChange = () => {
     setIgstChecked(!igstChecked);
+    setIgst(!igst);
   };
 
   const handleTransportChargesChange = (e) => {
@@ -1037,8 +1043,7 @@ function InternalCosting() {
                     <td className="text-center">{subAmount}</td>
                   </tr>
                   <tr>
-                    <th className="text-center">GST</th>
-                    <td className="text-center">
+                    <th className="text-center">
                       {enquiry.state === "Maharashtra" ? (
                         <>
                           <label>
@@ -1063,7 +1068,23 @@ function InternalCosting() {
                           IGST 18 %
                         </label>
                       )}
+                    </th>
+                    <td className="text-center border-hidden">
+                      {cgst || sgst ? (
+                        <>
+                          {cgst}
+                          <br className="gap-[50px]" />
+
+                          {sgst}
+                        </>
+                      ) : (
+                        <>{igst}</>
+                      )}
                     </td>
+                  </tr>
+                  <tr>
+                    <th className="text-center"> Total GST</th>
+                    <td className="text-center">{cgst + sgst || igst}</td>
                   </tr>
 
                   <tr>

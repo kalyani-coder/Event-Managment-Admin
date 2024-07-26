@@ -42,7 +42,7 @@ function QuotationForm() {
   ]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
-  const managerName = localStorage.getItem('managerName') || "Unknown";
+  const managerName = localStorage.getItem("managerName") || "Unknown";
   const [stockNames, setStockNames] = useState([]);
   const [stockid, setStockid] = useState([]);
   const [vendorNames, setVendorNames] = useState([]);
@@ -63,6 +63,8 @@ function QuotationForm() {
   const [sgstChecked, setSgstChecked] = useState(false);
   const [cgst, setCgst] = useState(0);
   const [sgst, setSgst] = useState(0);
+  const [igst, setIgst] = useState(0);
+
   const [igstChecked, setIgstChecked] = useState(false);
 
   const [transportCharges, setTransportCharges] = useState(0);
@@ -295,7 +297,6 @@ function QuotationForm() {
         requirements: prevState.requirements.filter((item) => item._id !== id),
       }));
       alert("Stock Deleted successfully");
-      
     } catch (error) {
       console.error("Error deleting item", error);
     }
@@ -316,9 +317,15 @@ function QuotationForm() {
 
       if (cgstChecked) {
         cgst = (total * 9) / 100;
+        setCgst(cgst);
       }
       if (sgstChecked) {
         sgst = (total * 9) / 100;
+        setSgst(sgst);
+      }
+      if (igstChecked) {
+        igst = (total * 18) / 100;
+        setIgst(igst);
       }
 
       const grandTotal = total + cgst + sgst;
@@ -339,13 +346,16 @@ function QuotationForm() {
 
   const handleCgstChange = () => {
     setCgstChecked(!cgstChecked);
+    setCgst(!cgst);
   };
 
   const handleSgstChange = () => {
     setSgstChecked(!sgstChecked);
+    setSgst(!sgst);
   };
   const handleIgstChange = () => {
     setIgstChecked(!igstChecked);
+    setIgst(!igst);
   };
 
   const handleTransportChargesChange = (e) => {
@@ -449,17 +459,17 @@ function QuotationForm() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-      // Get system date
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString(); // Format date as needed
+    // Get system date
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString(); // Format date as needed
 
-  // Generate quotation serial number (you can replace this with your own logic)
-  const serialNumber = `QS${new Date().getTime()}`; // Using timestamp as serial number
+    // Generate quotation serial number (you can replace this with your own logic)
+    const serialNumber = `QS${new Date().getTime()}`; // Using timestamp as serial number
 
-   // Add Date and Serial Number
-   doc.setFontSize(10);
-   doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
-   doc.text(`Quotation Sr. No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
+    // Add Date and Serial Number
+    doc.setFontSize(10);
+    doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
+    doc.text(`Quotation Sr. No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
 
     const customerData = [
       ["Customer Name", enquiry.customer_name || "-"],
@@ -519,7 +529,7 @@ function QuotationForm() {
         req.unit,
         req.rate_per_days,
         req.days,
-        
+
         `${req.price} Rs`,
       ]);
 
@@ -527,7 +537,6 @@ function QuotationForm() {
         grandTotal !== null ? Math.round(grandTotal) : "-";
       const roundedTotalAmount =
         totalAmount !== null ? Math.round(totalAmount) : "-";
-      
 
       tableData.push([
         "",
@@ -591,15 +600,12 @@ function QuotationForm() {
         theme: "grid",
       });
 
-      
-
       const finalY = doc.lastAutoTable.finalY + 10;
 
       // Print Transport Type and Transport Charges as text
       doc.setFontSize(10);
       doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
       doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
-      
 
       // Print Terms and Conditions
       doc.setFontSize(12);
@@ -624,24 +630,20 @@ function QuotationForm() {
         doc.text(term, 10, termY);
         termY += 6;
       });
-  
+
       const createdByY = termY + 20;
       doc.setFontSize(10);
       doc.text(`Created by: ${managerName}`, 10, createdByY);
-      
-      
-  
+
       doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
       alert("PDF file generated");
     } else {
       alert("Quotation details are not available.");
     }
   };
-  
+
   const handleViewQuotation = () => {
-    
     setModalShow(true);
-   
   };
   const handleClose = () => setModalShow(false);
   const handlePatchQuotation = async () => {
@@ -939,21 +941,49 @@ function QuotationForm() {
                     <td className="text-center">{subAmount}</td>
                   </tr>
                   <tr>
-                    <th className="text-center">GST</th>
-                    <td className="text-center">
-                      <label>
-                        <input type="checkbox" onChange={handleCgstChange} />
-                        CGST 9 %
-                      </label>
-                      <br />
+                    <th className="text-center">
+                      {enquiry.state === "Maharashtra" ? (
+                        <>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={handleCgstChange}
+                            />
+                            CGST 9 %
+                          </label>
+                          <br />
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={handleSgstChange}
+                            />
+                            SGST 9 %
+                          </label>
+                        </>
+                      ) : (
+                        <label>
+                          <input type="checkbox" onChange={handleIgstChange} />
+                          IGST 18 %
+                        </label>
+                      )}
+                    </th>
+                    <td className="text-center border-hidden">
+                      {cgst || sgst ? (
+                        <>
+                          {cgst}
+                          <br className="gap-[50px]" />
 
-                      <label>
-                        <input type="checkbox" onChange={handleSgstChange} />
-                        SGST 9 %
-                      </label>
+                          {sgst}
+                        </>
+                      ) : (
+                        <>{igst}</>
+                      )}
                     </td>
                   </tr>
-
+                  <tr>
+                    <th className="text-center"> Total GST</th>
+                    <td className="text-center">{cgst + sgst}</td>
+                  </tr>
                   <tr>
                     <th className="text-center">Grand Total</th>
                     <td className="text-center">{grandTotal}</td>
