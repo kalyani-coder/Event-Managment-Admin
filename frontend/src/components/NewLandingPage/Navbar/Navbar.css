@@ -1,0 +1,153 @@
+
+.navbar{
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-menu-logo{
+    display: flex;
+    gap: 15px;
+    height: 10vh;
+    overflow: hidden;
+    
+}
+.navbar .logo{
+    margin-left: 50px;
+}
+.navbar-menu{
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    color: #49557e;
+    font-size: 18px;
+}
+
+.navbar-right{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.navbar-right img{
+    cursor: pointer;
+}
+
+.navbar li{
+    cursor: pointer;
+}
+.navbar a{
+    text-decoration: none;
+    color: #49557e;
+    font-size: 18px;
+}
+
+.navbar button{
+    background: transparent;
+    font-size: 16px;
+    color: #49557e;
+    border: 1px solid #B280A5;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-right: 50px;
+}
+
+.navbar button:hover{
+    background-color:#FFCCF5;
+}
+
+.navbar .active{
+    padding-bottom: 2px;
+    border-bottom: 2px solid #49557e;
+}
+
+.navbar-search-icon{
+    position: relative;
+}
+
+.navbar-search-icon .dot{
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: tomato;
+    border-radius: 5px;
+    top: -8px;
+    right: -8px;
+}
+
+.hamburger-menu{
+    display: none;
+}
+
+
+@media (max-width:1050px) {
+    .navbar .logo{
+        width: 140px;
+    }
+    .navbar-menu, .navbar a{
+        gap: 20px;
+        font-size: 17px;
+    }
+    .navbar-right{
+        gap: 30px;
+    }
+    .navbar-right img{
+        width: 22px;
+    }
+
+    .navbar button{
+        padding: 8px 25px;
+    }
+}
+
+@media (max-width:900px) {
+    .navbar .logo{
+        width: 120px;
+    }
+    .navbar-menu, .navbar a{
+        gap: 15px;
+        font-size: 16px;
+    }
+    .navbar-right{
+        gap: 20px;
+    }
+    .navbar-right img{
+        width: 20px;
+    }
+
+    .navbar button{
+        padding: 5px 16px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width:750px) {
+    .hamburger-menu{
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        margin-left: 35px;
+    }
+
+    .navbar-menu{
+       display: none;
+    }
+   
+
+    .navbar button{
+        padding: 4px 14px;
+        
+    }
+}
+
+@media (max-width:450px) {
+    .search-icon, .navbar-search-icon{
+        display: none;
+    }
+    .navbar-right{
+        align-items: center;
+    }
+}

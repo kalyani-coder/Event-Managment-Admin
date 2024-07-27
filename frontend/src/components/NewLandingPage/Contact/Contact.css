@@ -1,0 +1,78 @@
+.contact-us{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+    
+    }
+    .contact-us-content{
+        display: flex;
+        justify-content: space-around;
+        gap: 50px;
+        margin-top: 30px;
+        animation: swipeBtm 1s;
+    }
+    .contact-us-left {
+        margin-left: 10px;
+    }
+    .contact-us-right {
+        margin-left: 10px;
+    }
+    .contact-us h4{
+        font-size: 48px;
+        font-weight: 700;
+        color: #222222;
+        margin-bottom: 50px;
+    }
+    
+    .contact-us hr{
+        width: 100%;
+        height: 2px;
+        margin: 20px 0;
+        background-color: gray;
+        border: none;
+    }
+    
+    .contact-us h6{
+        font-size: 20px;
+        color: #1c1c1c;
+        font-weight: 600;
+    }
+    .contact-us h5{
+        font-size: 20px;
+        color: #1c1c1c;
+        font-weight: 600;
+        margin-bottom: 9px;
+    }
+    .contact-us p{
+        font-size: 18px;
+        color: #828282;
+    }
+    .contact-us .email{
+        color: #B280A5;
+    }
+    
+    @media (max-width:780px) {
+        .contact-us-content{
+            flex-direction: column;
+        }
+        .contact-us h4{
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+    }
+    
+    @keyframes swipeRight {  
+        from {margin-left: -100px;}
+        to {margin-left: 0px;}
+    }
+    @keyframes swipeLeft {  
+        from {margin-right: -100px;}
+        to {margin-right: 0px;}
+    }
+    
+    .contact-us-left{
+        animation: swipeRight 1s ease;
+    }
+    .contact-us-right{
+        animation: swipeLeft 1s ease;
+    }

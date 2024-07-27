@@ -1,42 +1,50 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { IoArrowBack } from 'react-icons/io5';
 
 const Login = () => {
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setLoginData({
+      ...loginData,
+      [name]: value,
+    });
+  };
+
+  
+
+  const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8888/api/manager/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const response = await axios.post('http://localhost:8888/api/manager/login',loginData);
+      console.log(response)
+      if (response.status === 200) {
         console.log('Login successful');
         alert('Login successful');
 
-        localStorage.setItem('managerId', data._id);
-        localStorage.setItem('managertoken', data.token);
-        localStorage.setItem('managerName', data.managerName);
+        localStorage.setItem('managerId', response.data.managerId);
+        localStorage.setItem('managertoken', response.data.token);
+        localStorage.setItem('managerName', response.data.managerName);
         navigate('/quotation');
-      } else {
-        if (response.status === 404) {
-          setError('Email not found');
-        } else if (response.status === 401) {
-          setError('Incorrect password');
-        } else {
-          setError(data.message);
-        }
+      } 
+      else{
+        console.log(response)
+        setError(response.data.message)
       }
     } catch (error) {
       console.error('Error:', error);
@@ -44,60 +52,84 @@ const Login = () => {
     }
   };
 
-  const navigatePage = () => {
-    window.location.href = "https://ssdpune.org"
-  }
-
+ 
   return (
-    <div className="modal-overlay login-popup">
-      <div className="modal-content-login">
-        <div className="container-login">
-          <div className="screen">
-            <div className="screen__content">
-              <form className="login" onSubmit={handleLogin}>
-                <h3 className="fw-bold">Manager Login</h3>
-                {error && <p className="error-message">{error}</p>}
-                <div className="login__field">
-                  <FaEnvelope className="login__icon" />
-                  <input
-                    type="text"
-                    className="login__input"
-                    placeholder="Enter Email ID"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="login__field">
-                  <FaLock className="login__icon" />
-                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="login__input"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <button type="submit" className="button login__submit">
-                  <span className="button__text-login">Log In Now</span>
-                  <i className="button__icon fas fa-chevron-right"></i>
-                </button>
-              </form>
-              <h1 className="arrow" onClick={navigatePage}>
-                <span className="fs-5 fw-bold">←</span>Back
-              </h1>
-            </div>
-            <div className="screen__background">
-              <span className="screen__background__shape screen__background__shape4"></span>
-              <span className="screen__background__shape screen__background__shape3"></span>
-              <span className="screen__background__shape screen__background__shape2"></span>
-              <span className="screen__background__shape screen__background__shape1"></span>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <div className="flex items-center mb-6">
+          <button
+            type="button"
+            className="text-gray-600"
+            onClick={() => navigate(-1)}
+          >
+            <IoArrowBack className="w-6 h-6" />
+          </button>
+          <h2 className="text-3xl font-bold text-center flex-grow">Manager Login</h2>
+        </div>
+        <form onSubmit={loginHandler}>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ee5fd1]"
+              placeholder="Your email"
+              autoComplete="email"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ee5fd1]"
+                placeholder="Your password"
+                autoComplete="password"
+                onChange={handleInputChange}
+                required
+              />
+              {
+                error ? <p className="text-red-500">{error}</p> :<></>
+              }
+              <button
+                type="button"
+                className="absolute right-3 top-2.5 text-gray-600"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <FaEye className="w-5 h-5" />
+                ) : (
+                  <FaEyeSlash className="w-5 h-5" />
+                )}
+              </button>
             </div>
           </div>
+          <button
+            type="submit"
+            className="w-full bg-[#FFCCF5] hover:bg-[#fdbdf0] font-semibold py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ee5fd1]"
+          >
+            Login
+          </button>
+        </form>
+        <div className="mt-2 ">
+          <Link to="/resetpass" className="text-sm text-[#da3aba] font-bold hover:underline">
+            Forgot password?
+          </Link>
         </div>
       </div>
     </div>

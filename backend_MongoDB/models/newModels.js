@@ -260,6 +260,11 @@ const ManagerDetailsSchema = new Schema({
   IFSC_code: String,
   bank_name: String,
   branch_name: String,
+  otp : {
+    type : Number,
+    default : null,
+
+  }
 });
 
 const ManagerLoginSchema = new Schema({
@@ -614,6 +619,11 @@ const adminLogin = new Schema({
     required: [true, "Address is required"],
     minlength: [10, "Address must be at least 10 characters long"],
     maxlength: [100, "Address must be less than 100 characters long"]
+  },
+  otp : {
+    type : Number,
+    default : null,
+
   }
 });
 

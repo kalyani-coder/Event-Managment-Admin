@@ -26,6 +26,7 @@
     "npm": "^10.5.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
+    "react-custom-scrollbar": "^1.0.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",

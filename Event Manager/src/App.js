@@ -62,6 +62,7 @@ import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
 import ViewExpenseDetails from './components/ExpenseForm/ViewExpenseDetails';
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 import PublicRoute from "./components/ProtectedRoute/PublicRoute"
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
           <Routes>
             {/* <Route path="/" element={<Login/>} /> */}
             <Route path='/' element={<PublicRoute element={<Login />} restrictedPath="/quotation" />}  />
+            <Route path='/resetpass' element={<PublicRoute element={<ForgotPassword />} restrictedPath="/quotation" />}  />
             <Route path="/dashboard" element={<ProtectedRoute  element={<Dashboard/>}/>} />
             <Route path="/addmanager" element={<ProtectedRoute  element={<AddManager/>}/>} />
             <Route path="/addaccountant" element={<ProtectedRoute  element={<AddAccountant/>}/>} />

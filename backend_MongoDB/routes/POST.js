@@ -3,7 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose")
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-JWT_SECRET = "eventmanagement"
+JWT_SECRET = "eventmanagement";
+const nodemailer = require('nodemailer');
+require('dotenv').config()
 
 const { FindTable } = require("../utils/utils");
 const { FilterBodyByTable } = require("../utils/utils");
@@ -54,6 +56,191 @@ router.post("/admin/login", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// Verify the password route 
+
+const transporter = nodemailer.createTransport({
+  host: process.env.HOST,
+  port: 587,
+  auth: {
+    user: process.env.USER,
+    pass: process.env.PASS,
+  }
+});
+
+
+// Generate a 4-digit OTP
+function generateOTP() {
+  return Math.floor(1000 + Math.random() * 9000);
+}
+
+
+router.post("/admin/update-pass", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if email exists
+    const admin = await AdminLogin.findOne({ email });
+    if (!admin) {
+      return res.status(202).json({ message: "Email does not exist" });
+    }
+
+    // Generate OTP
+    const otp = generateOTP();
+
+    // Send OTP via email
+    const mailOptions = {
+      from: '<mailtrap@ssdpune.org>', // Replace with your email
+      to: email,
+      subject: 'Password Recovery OTP',
+      text: `Your OTP for password recovery is: ${otp}`
+    };
+
+    transporter.sendMail(mailOptions, async (error, info) => {
+      if (error) {
+        return res.status(500).json({ message: "Error sending email", error });
+      } else {
+        // Update admin record with OTP
+        admin.otp = otp;
+        await admin.save();
+        return res.status(200).json({ message: "OTP sent to email"}); // Note: Remove OTP from response in production
+      }
+    });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error", error: e.message });
+  }
+});
+
+
+// Route to verify OTP
+router.post("/admin/update-pass/verify", async (req, res) => {
+  const { email, otp, password } = req.body;
+
+  try {
+    // Check if email exists
+    const admin = await AdminLogin.findOne({ email });
+    if (!admin) {
+      return res.status(202).json({ message: "Email does not exist" });
+    }
+
+    // Check if OTP matches
+    if (admin.otp !== parseInt(otp)) {
+      return res.status(202).json({ message: "Incorrect OTP" });
+    }
+
+    // OTP verification successful, update password
+    admin.password = password;
+    admin.otp = null; // Clear the OTP after successful verification and password update
+    await admin.save();
+
+    return res.status(200).json({ message: "OTP verified and password updated successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error", error: e.message });
+  }
+});
+
+
+// manager
+router.post("/manager/update-pass", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if email exists
+    const manager = await ManagerDetails.findOne({ email });
+    if (!manager) {
+      return res.status(202).json({ message: "Email does not exist" });
+    }
+
+    // Generate OTP
+    const otp = generateOTP();
+
+    // Send OTP via email
+    const mailOptions = {
+      from: '<mailtrap@ssdpune.org>', // Replace with your email
+      to: email,
+      subject: 'Password Recovery OTP',
+      text: `Your OTP for password recovery is: ${otp}`
+    };
+
+    transporter.sendMail(mailOptions, async (error, info) => {
+      if (error) {
+        return res.status(500).json({ message: "Error sending email", error });
+      } else {
+        // Update manager record with OTP
+        manager.otp = otp;
+        await manager.save();
+        return res.status(200).json({ message: "OTP sent to email"}); // Note: Remove OTP from response in production
+      }
+    });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error", error: e.message });
+  }
+});
+
+
+// Route to verify OTP
+router.post("/manager/update-pass/verify", async (req, res) => {
+  const { email, otp, password } = req.body;
+
+  try {
+    // Check if email exists
+    const manager = await ManagerDetails.findOne({ email });
+    if (!manager) {
+      return res.status(202).json({ message: "Email does not exist" });
+    }
+
+    // Check if OTP matches
+    if (manager.otp !== parseInt(otp)) {
+      return res.status(202).json({ message: "Incorrect OTP" });
+    }
+
+    // OTP verification successful, update password
+    manager.password = password;
+    manager.otp = null; // Clear the OTP after successful verification and password update
+    await manager.save();
+
+    return res.status(200).json({ message: "OTP verified and password updated successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "Internal server error", error: e.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // NEW CUSTOMER QUATATIOINFO POST ROUTE 
@@ -196,39 +383,13 @@ router.post('/managertask', async (req, res) => {
   }
 });
 
-
-// Login with JWT Token
-// router.post("/manager/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     const manager = await ManagerDetails.findOne({ email });
-//     if (!manager) {
-//       return res.status(404).json({ message: "Email not found" });
-//     }
-
-//     const isPasswordValid = await bcrypt.compare(password, manager.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ message: "Incorrect password" });
-//     }
-
-//     const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
-
-//     res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token, });
-//   } catch (e) {
-//     console.error(e);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
-
-
 router.post("/manager/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const manager = await ManagerDetails.findOne({ email });
     if (!manager) {
-      return res.status(404).json({ message: "Email not found" });
+      return res.status(202).json({ message: "Email not found" });
     }
 
     console.log('Stored password:', manager.password); // Debugging log
@@ -236,62 +397,17 @@ router.post("/manager/login", async (req, res) => {
 
     // Compare the provided password directly (not secure)
     if (password !== manager.password) {
-      return res.status(401).json({ message: "Incorrect password" });
+      return res.status(202).json({ message: "Incorrect password" });
     }
 
     const token = jwt.sign({ email: manager.email, _id: manager._id }, JWT_SECRET);
 
-    res.status(200).json({ message: "Login successful", email: manager.email, _id: manager._id, token , managerName: manager.fname  + " " + manager.lname});
+    res.status(200).json({ message: "Login successful", email: manager.email, managerId: manager._id, token , managerName: manager.fname  + " " + manager.lname});
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
-// router.post('/addmanager', async (req, res) => {
-//   try {
-//     const {
-//       fname,
-//       lname,
-//       email,
-//       password,
-//       contact,
-//       address,
-//       city,
-//       state,
-//       holder_name,
-//       account_number,
-//       IFSC_code,
-//       bank_name,
-//       branch_name,
-
-//     } = req.body;
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const newManager = new ManagerDetails({
-//       fname: fname,
-//       lname: lname,
-//       email: email,
-//       password: hashedPassword,
-//       contact: contact,
-//       address: address,
-//       city: city,
-//       state: state,
-//       holder_name: holder_name,
-//       account_number: account_number,
-//       IFSC_code: IFSC_code,
-//       bank_name: bank_name,
-//       branch_name: branch_name,
-//     });
-
-//     const savedManager = await newManager.save();
-
-//     res.status(201).json({ message: "Manager added successfully" });
-//   } catch (error) {
-//     console.error('Error saving advance payment:', error);
-//     res.status(500).json({ message: 'Failed to add Manager' });
-//   }
-// });
 
 
 router.post('/addmanager', async (req, res) => {
@@ -313,7 +429,13 @@ router.post('/addmanager', async (req, res) => {
     } = req.body;
 
     console.log('Password being stored:', password); // Debugging log
-
+    const isExist = await ManagerDetails.findOne({email})
+    if(isExist){
+      return res.status(202).json({
+        success:false,
+        message: 'Email Address Already Exists.'
+      })
+    }
     const newManager = new ManagerDetails({
       fname: fname,
       lname: lname,
@@ -329,7 +451,6 @@ router.post('/addmanager', async (req, res) => {
       bank_name: bank_name,
       branch_name: branch_name,
     });
-
     const savedManager = await newManager.save();
 
     res.status(201).json({ message: "Manager added successfully" });

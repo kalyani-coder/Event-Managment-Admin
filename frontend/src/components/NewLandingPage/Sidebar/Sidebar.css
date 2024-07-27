@@ -1,0 +1,45 @@
+
+.sidebar {
+    position: absolute;
+    top: 8%;
+    margin-top: 10px;
+    width: 250px;
+    height: 100%;
+    background-color: white;
+    color: #49557e;
+    z-index: 10000;
+    animation: swipe 0.3s ease;
+}
+  
+  
+  .sidebar-content {
+    padding: 20px;
+    padding-left: 10vw;
+  } 
+  .sidebar-content a{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #49557e;
+    padding: 4px 7px;
+    border-radius: 6px;
+  }
+
+  .sidebar-content a:hover{
+    background-color:#fff4f2;
+  }
+
+  @keyframes swipe {  
+  from {left: -100px;}
+  to {left: 0px;}
+  }
+
+
+  
+  @media (min-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+  
+  }
+  
