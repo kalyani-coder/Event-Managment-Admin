@@ -22,13 +22,13 @@ const EnquirySchema = new Schema({
   },
   assign_manager_Id: { type: String, required: false },
   assign_manager_name: { type: String, required: false },
-  state : {
+  state: {
     type: String,
-    
+
   },
 
-  
-  
+
+
 });
 
 const QuotationSchema = new Schema({
@@ -146,8 +146,8 @@ const EventSchema = new Schema({
   budget: Number,
   address: String,
   status: {
-    type : String,
-    default : "pending"
+    type: String,
+    default: "pending"
   },
   managerId: String,
   managerName: String,
@@ -260,9 +260,9 @@ const ManagerDetailsSchema = new Schema({
   IFSC_code: String,
   bank_name: String,
   branch_name: String,
-  otp : {
-    type : Number,
-    default : null,
+  otp: {
+    type: Number,
+    default: null,
 
   }
 });
@@ -335,12 +335,12 @@ const VendorPaymentSchema = new Schema({
   description: String,
   salary: Number,
   advance_payment: Number,
-  total_pay_amount : { type : Number, default : "" },
+  total_pay_amount: { type: Number, default: "" },
   time: String,
   bankAccount_Name: String,
-  status : {
-    type : String,
-    default : ""
+  status: {
+    type: String,
+    default: ""
   }
 
 });
@@ -353,7 +353,7 @@ const VendorPaymentHistorySchema = new Schema({
   event_name: String,
   date: String,
   total_amount: Number,
-  total_pay_amount : Number,
+  total_pay_amount: Number,
 });
 
 const InventoryStockSchema = new Schema({
@@ -382,11 +382,9 @@ const QuatationInfo = new Schema({
   Total_Amount: Number,
   event_name: String,
   event_date: String,
-  state : String,
-  igst : String,
-
-
-
+  state: String,
+  igst: String,
+  quotation_Number: { type: Number, required: true },
 
   requirements: [{
     stockName: String,
@@ -419,10 +417,9 @@ const CustomerQuotation = new Schema({
   Total_Amount: Number,
   event_name: String,
   event_date: String,
-  state : String,
-  igst : String,
-
-
+  state: String,
+  igst: String,
+  quotation_Number: { type: Number, required: true },
 
 
   requirements: [{
@@ -562,13 +559,13 @@ const expenceForm = new Schema({
   },
   status: {
     type: String,
-    default : "pending"
+    default: "pending"
   },
-  venue: { 
+  venue: {
     type: String,
   },
-  decline_message : {
-    type : String
+  decline_message: {
+    type: String
   },
 })
 
@@ -620,9 +617,9 @@ const adminLogin = new Schema({
     minlength: [10, "Address must be at least 10 characters long"],
     maxlength: [100, "Address must be less than 100 characters long"]
   },
-  otp : {
-    type : Number,
-    default : null,
+  otp: {
+    type: Number,
+    default: null,
 
   }
 });
@@ -630,7 +627,7 @@ const adminLogin = new Schema({
 
 module.exports = {
   advancePaymantManager: mongoose.model("AdvancePayManager", advancePaymantManager),
-  AdminLogin : mongoose.model("AdminLogin", adminLogin),
+  AdminLogin: mongoose.model("AdminLogin", adminLogin),
   ExecutiveTask: mongoose.model("ExecutiveTask", ExecutiveTask),
   venue: mongoose.model("allvenue", venueSchema),
   AdvanceExpence: mongoose.model("ExpenceAdvance", advanceExpence),

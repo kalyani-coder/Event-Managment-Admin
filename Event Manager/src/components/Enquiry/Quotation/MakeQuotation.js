@@ -205,6 +205,62 @@ function QuotationForm() {
   };
 
   //Add Stock
+  // const handleAddRequirement = async () => {
+  //   const data = {
+  //     customer_Id: enquiry._id,
+  //     customerName: enquiry.customer_name,
+  //     requirements: [
+  //       {
+  //         stockId: newSelectedStockId,
+  //         stockName: stocksData.find(
+  //           (stock) => stock._id === newSelectedStockId
+  //         )?.Stock_Name,
+  //         vendorName: newSelectedVendor,
+  //         vendorId: newSelectedVendorId,
+  //         purchaseQuantity: qty,
+  //         rate_per_days: price,
+  //         unit,
+  //         days: ratePerDays,
+  //         price: total,
+  //       },
+  //     ],
+  //   };
+
+  //   try {
+  //     if (ids.includes(enquiry._id)) {
+  //       // If enquiry._id exists in ids, send a PATCH request
+  //       await axios.patch(
+  //         `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
+  //         data
+  //       );
+  //       alert("Stock updated successfully");
+  //     } else {
+  //       // If enquiry._id does not exist in ids, send a POST request
+  //       await axios.post(
+  //         "http://localhost:8888/api/customerquotationinfo",
+  //         data
+  //       );
+  //       alert("Stock added successfully");
+  //     }
+
+  //     setNewSelectedStockId("");
+  //     setNewSelectedVendor("");
+  //     setNewSelectedVendorId("");
+  //     setQty(0);
+  //     setUnit("");
+  //     setPrice(0);
+  //     setRatePerDays(0);
+  //     setTotal(0);
+
+  //     // Fetch the updated data after adding/updating the stock
+  //     await fetchQuotationData();
+  //   } catch (error) {
+  //     console.error("Error adding/updating stock", error);
+  //     alert("Error adding/updating stock");
+  //   }
+  // };
+
+
   const handleAddRequirement = async () => {
     const data = {
       customer_Id: enquiry._id,
@@ -212,9 +268,7 @@ function QuotationForm() {
       requirements: [
         {
           stockId: newSelectedStockId,
-          stockName: stocksData.find(
-            (stock) => stock._id === newSelectedStockId
-          )?.Stock_Name,
+          stockName: stocksData.find((stock) => stock._id === newSelectedStockId)?.Stock_Name,
           vendorName: newSelectedVendor,
           vendorId: newSelectedVendorId,
           purchaseQuantity: qty,
@@ -225,24 +279,18 @@ function QuotationForm() {
         },
       ],
     };
-
+  
     try {
       if (ids.includes(enquiry._id)) {
         // If enquiry._id exists in ids, send a PATCH request
-        await axios.patch(
-          `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
-          data
-        );
-        alert("Stock updated successfully");
+        await axios.patch(`http://localhost:8888/api/customerquotationinfo/${enquiry._id}`, data);
       } else {
         // If enquiry._id does not exist in ids, send a POST request
-        await axios.post(
-          "http://localhost:8888/api/customerquotationinfo",
-          data
-        );
+        await axios.post("http://localhost:8888/api/customerquotationinfo", data);
         alert("Stock added successfully");
       }
-
+  
+      // Reset form fields
       setNewSelectedStockId("");
       setNewSelectedVendor("");
       setNewSelectedVendorId("");
@@ -251,7 +299,7 @@ function QuotationForm() {
       setPrice(0);
       setRatePerDays(0);
       setTotal(0);
-
+  
       // Fetch the updated data after adding/updating the stock
       await fetchQuotationData();
     } catch (error) {
@@ -259,6 +307,7 @@ function QuotationForm() {
       alert("Error adding/updating stock");
     }
   };
+
 
   useEffect(() => {
     const newIds = quotationData.requirements.map((item) => item._id);
@@ -642,6 +691,9 @@ function QuotationForm() {
     }
   };
 
+
+
+
   const handleViewQuotation = () => {
     setModalShow(true);
   };
@@ -672,7 +724,7 @@ function QuotationForm() {
         dataToUpdate
       );
       // Log the data to ensure it's fetched correctly
-      alert(" Saved successfully");
+      alert(" Quotation Saved successfully");
       // Handle successful response
     } catch (error) {
       console.error("Error patching data:", error);
@@ -831,7 +883,7 @@ function QuotationForm() {
                 onClick={handleAddRequirement}
                 disabled={!isButtonActive()}
               >
-                Add/Update Stock
+                Add Stock
               </button>
             </div>
           </div>

@@ -206,53 +206,55 @@ router.post("/manager/update-pass/verify", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // NEW CUSTOMER QUATATIOINFO POST ROUTE 
+// router.post('/customerquotationinfo', async (req, res) => {
+//   try {
+//     const { requirements, customer_Id, customerName } = req.body;
+
+//     const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
+
+//     const newQuotationInfo = new CustomerQuatationInfo({
+//       requirements,
+//       customer_Id,
+//       customerName,
+//       eventName: "",
+//       total_days: 0,
+//       transport: "",
+//       transport_amount: 0,
+//       description: "",
+//       sub_total: subTotal, 
+//       cgst: "",
+//       sgst: "",
+//       Total_Amount: "",
+//       grand_total : "",
+//       event_date : "",
+//       event_name : "",
+//     });
+
+//     // Save the new quotation information to the database
+//     const createdQuotationInfo = await newQuotationInfo.save();
+
+//     // Respond with the created quotation information object
+//     res.status(201).json(createdQuotationInfo);
+//   } catch (error) {
+//     console.error("Error creating quotation information:", error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+
 router.post('/customerquotationinfo', async (req, res) => {
   try {
-    // Extract the requirements array from the request body
     const { requirements, customer_Id, customerName } = req.body;
 
-    // Calculate subtotal based on the price of each requirement
     const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
 
-    // Create the initial quotation information object with requirements, customer details, and calculated subtotal
+    // Fetch the latest quotation number from the database
+    const latestQuotation = await CustomerQuatationInfo.findOne().sort({ quotation_Number: -1 });
+
+    // Determine the new quotation number
+    const newQuotationNumber = latestQuotation && latestQuotation.quotation_Number ? latestQuotation.quotation_Number + 1 : 1;
+
     const newQuotationInfo = new CustomerQuatationInfo({
       requirements,
       customer_Id,
@@ -262,13 +264,16 @@ router.post('/customerquotationinfo', async (req, res) => {
       transport: "",
       transport_amount: 0,
       description: "",
-      sub_total: subTotal, 
+      sub_total: subTotal,
       cgst: "",
       sgst: "",
       Total_Amount: "",
-      grand_total : "",
-      event_date : "",
-      event_name : "",
+      grand_total: "",
+      event_date: "",
+      event_name: "",
+      state: "",
+      igst: "",
+      quotation_Number: newQuotationNumber, 
     });
 
     // Save the new quotation information to the database
@@ -281,6 +286,8 @@ router.post('/customerquotationinfo', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+
 
 
 
@@ -536,26 +543,6 @@ router.post("/addvendor", async (req, res) => {
   }
 });
 
-// POST route to add QuatationInfo
-// router.post("/quatationinfo", async (req, res) => {
-//   try {
-
-//     const { quatationInfoData } = req.body;
-
-//     // Validate and save each quatationInfoData
-//     const savedQuatationInfos = await Promise.all(
-//       quatationInfoData.map(async (data) => {
-//         const newQuatationInfo = new QuatationInfo(data);
-//         return await newQuatationInfo.save();
-//       })
-//     );
-
-//     res.status(201).json(savedQuatationInfos);
-//   } catch (err) {
-//     console.error("Error creating quatation info:", err);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
 
 // this is add one stock in api with user id and othe are empty fileds
 router.post('/quotationinfo', async (req, res) => {
@@ -565,6 +552,11 @@ router.post('/quotationinfo', async (req, res) => {
 
     // Calculate subtotal based on the price of each requirement
     const subTotal = requirements.reduce((total, requirement) => total + requirement.price, 0);
+
+    const latestQuotation = await QuatationInfo.findOne().sort({ quotation_Number: -1 });
+
+    // Determine the new quotation number
+    const newQuotationNumber = latestQuotation && latestQuotation.quotation_Number ? latestQuotation.quotation_Number + 1 : 1;
 
     // Create the initial quotation information object with requirements, customer details, and calculated subtotal
     const newQuotationInfo = new QuatationInfo({
@@ -583,6 +575,7 @@ router.post('/quotationinfo', async (req, res) => {
       grand_total : "",
       event_date : "",
       event_name : "",
+      quotation_Number: newQuotationNumber,
     });
 
     // Save the new quotation information to the database

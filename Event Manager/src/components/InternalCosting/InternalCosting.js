@@ -314,7 +314,7 @@ function InternalCosting() {
           `http://localhost:8888/api/quotationinfo/${enquiry._id}`,
           data
         );
-        alert("Stock updated successfully");
+        
       } else {
         // If enquiry._id does not exist in ids, send a POST request
         await axios.post("http://localhost:8888/api/quotationinfo", data);
@@ -925,7 +925,7 @@ function InternalCosting() {
                 onClick={handleAddRequirement}
                 disabled={!isButtonActive()}
               >
-                Add/Update Stock
+                Add Stock
               </button>
             </div>
           </div>

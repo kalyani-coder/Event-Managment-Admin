@@ -73,6 +73,8 @@ router.patch('/customerquotationinfo/:customerId', async (req, res) => {
   }
 });
 
+
+
 // PATCH BY REQUIREENT ID 
 router.patch('/customerquotationinfo/customer/:customerId/requirements/:requirementId', async (req, res) => {
   const { customerId, requirementId } = req.params;
@@ -120,8 +122,6 @@ router.patch('/customersavedquotation/:userId', async (req, res) => {
     existingQuotationInfo.event_name = event_name;
     existingQuotationInfo.event_date = event_date;
     existingQuotationInfo.state = state;
-
-
 
     existingQuotationInfo = await existingQuotationInfo.save();
 
