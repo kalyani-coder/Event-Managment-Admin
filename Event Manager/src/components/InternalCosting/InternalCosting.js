@@ -28,6 +28,7 @@ function InternalCosting() {
   const [ids, setIds] = useState([]);
 
   const [descriptionValue, setDescriptionValue] = useState("");
+  const managerName = localStorage.getItem("managerName") || "Unknown";
   const [storeQuantity, setStoreQuantity] = useState(null);
   const [stocksData, setStocksData] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -83,19 +84,7 @@ function InternalCosting() {
   }, [quotationData]);
 
   const handleViewQuotation = async () => {
-    // try {
-    //   const response = await axios.get(
-    //     `http://localhost:8888/api/quotationinfo/customer/${enquiry._id}`
-    //   );
-    //   setQuotationData(response.data);
-    //   console.log("Fetched Quotation Data:", response.data); // Log the data to ensure it's fetched correctly
-    setModalShow(true);
-    //     if (response.data && response.data.state) {
-    //       setState(response.data.state);
-    //     }
-    //   } catch (error) {
-    //     console.error("Failed to fetch quotation info:", error);
-    //   }
+   
   };
   const handleClose = () => setModalShow(false);
 
@@ -369,7 +358,7 @@ function InternalCosting() {
       let cgst = 0;
       let sgst = 0;
       let igst = 0;
-
+       
       if (cgstChecked) {
         cgst = (total * 9) / 100;
         setCgst(cgst);
@@ -507,11 +496,17 @@ function InternalCosting() {
   const handlePrint = () => {
     const doc = new jsPDF();
 
-    // doc.text(`Quotation Form of ${enquiry.customer_name || ""}`, 10, 10);
+    // Get system date
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString(); // Format date as needed
 
-    // Print Customer Data
-    // const pageWidth = doc.internal.pageSize.width;
-    // const customerTableWidth = pageWidth * 0.2;
+  // Add Date and Serial Number
+  doc.setFontSize(10);
+  doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
+
+// Add Quotation Serial Number
+const quotationNumber = quotationData.quotation_Number || "N/A"; // Ensure this field is present in your data
+doc.text(`Quotation No: ${quotationNumber}`, 10, 37); // Adjust Y position as needed
 
     const customerData = [
       ["Customer Name", enquiry.customer_name || "-"],
@@ -579,33 +574,7 @@ function InternalCosting() {
         grandTotal !== null ? Math.round(grandTotal) : "-";
       const roundedTotalAmount =
         totalAmount !== null ? Math.round(totalAmount) : "-";
-      // Append total rows
-      // tableData.push(
-      //   [
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "SubTotal",
-      //     `${quotationData.sub_total || "-"} Rs`,
-      //   ],
-      //   ["", "", "", "", "", "", "CGST", `${quotationData.cgst || "9%"}`],
-      //   ["", "", "", "", "", "", "SGST", `${quotationData.sgst || "9%"}`],
-      //   ["", "", "", "", "", "", "Grand Total", `${roundedGrandTotal} Rs`],
-      //   ["", "", "", "", "", "", "Total Amount", `${roundedTotalAmount} Rs`],
-      //   [
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "",
-      //     "Amounts In Words",
-      //     `${convertAmountToWords(totalAmount) || "-"}`,
-      //   ]
-      // );
+    
 
       tableData.push([
         "",
@@ -669,9 +638,6 @@ function InternalCosting() {
         theme: "grid",
       });
 
-      //    doc.setFontSize(12);
-      //    doc.text(`Transport Type: ${transport}`, 10, finalY + 10); // Adjust Y position as needed
-      //    doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 20); // Adjust Y position as needed
 
       const finalY = doc.lastAutoTable.finalY + 10;
 
@@ -679,7 +645,7 @@ function InternalCosting() {
       doc.setFontSize(10);
       doc.text(`Transport Type: ${transport}`, 10, finalY + 5); // Adjust Y position as needed
       doc.text(`Transport Charges: ${transportCharges} Rs`, 10, finalY + 10); // Adjust Y position as needed
-      // doc.text(`Description : ${descriptionValue}`, 10, finalY + 15);
+    
 
       // Print Terms and Conditions
       doc.setFontSize(12);
@@ -699,17 +665,24 @@ function InternalCosting() {
         "9. 18% GST is applicable on Total Billing.",
       ];
 
-      let termY = finalY + 40; // Adjust Y position as needed
+      let termY = finalY + 40;
       terms.forEach((term) => {
         doc.text(term, 10, termY);
-        termY += 6; // Increment Y position for the next line
+        termY += 6;
       });
+
+      const createdByY = termY + 20;
+      doc.setFontSize(10);
+      doc.text(`Created by: ${managerName}`, 10, createdByY);
+
+      doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
+      alert("PDF file generated");
     } else {
       alert("Quotation details are not available.");
     }
-    doc.save(`${enquiry.customer_name || "Customer"}-Quotation.pdf`);
-    alert("PDF file generated");
   };
+
+
 
   const [state, setState] = useState("Maharashtra");
 

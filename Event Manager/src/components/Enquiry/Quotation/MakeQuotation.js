@@ -204,62 +204,7 @@ function QuotationForm() {
     );
   };
 
-  //Add Stock
-  // const handleAddRequirement = async () => {
-  //   const data = {
-  //     customer_Id: enquiry._id,
-  //     customerName: enquiry.customer_name,
-  //     requirements: [
-  //       {
-  //         stockId: newSelectedStockId,
-  //         stockName: stocksData.find(
-  //           (stock) => stock._id === newSelectedStockId
-  //         )?.Stock_Name,
-  //         vendorName: newSelectedVendor,
-  //         vendorId: newSelectedVendorId,
-  //         purchaseQuantity: qty,
-  //         rate_per_days: price,
-  //         unit,
-  //         days: ratePerDays,
-  //         price: total,
-  //       },
-  //     ],
-  //   };
-
-  //   try {
-  //     if (ids.includes(enquiry._id)) {
-  //       // If enquiry._id exists in ids, send a PATCH request
-  //       await axios.patch(
-  //         `http://localhost:8888/api/customerquotationinfo/${enquiry._id}`,
-  //         data
-  //       );
-  //       alert("Stock updated successfully");
-  //     } else {
-  //       // If enquiry._id does not exist in ids, send a POST request
-  //       await axios.post(
-  //         "http://localhost:8888/api/customerquotationinfo",
-  //         data
-  //       );
-  //       alert("Stock added successfully");
-  //     }
-
-  //     setNewSelectedStockId("");
-  //     setNewSelectedVendor("");
-  //     setNewSelectedVendorId("");
-  //     setQty(0);
-  //     setUnit("");
-  //     setPrice(0);
-  //     setRatePerDays(0);
-  //     setTotal(0);
-
-  //     // Fetch the updated data after adding/updating the stock
-  //     await fetchQuotationData();
-  //   } catch (error) {
-  //     console.error("Error adding/updating stock", error);
-  //     alert("Error adding/updating stock");
-  //   }
-  // };
-
+ 
 
   const handleAddRequirement = async () => {
     const data = {
@@ -363,6 +308,7 @@ function QuotationForm() {
       let total = subAmount;
       let cgst = 0;
       let sgst = 0;
+      let igst = 0;
 
       if (cgstChecked) {
         cgst = (total * 9) / 100;
@@ -507,18 +453,20 @@ function QuotationForm() {
   //print pdf
   const handlePrint = () => {
     const doc = new jsPDF();
-
+  
     // Get system date
     const today = new Date();
     const formattedDate = today.toLocaleDateString(); // Format date as needed
-
-    // Generate quotation serial number (you can replace this with your own logic)
-    const serialNumber = `QS${new Date().getTime()}`; // Using timestamp as serial number
-
+  
+   
+    
     // Add Date and Serial Number
     doc.setFontSize(10);
     doc.text(`Date: ${formattedDate}`, 10, 32); // Adjust Y position as needed
-    doc.text(`Quotation Sr. No: ${serialNumber}`, 10, 37); // Adjust Y position as needed
+  
+ // Add Quotation Serial Number
+ const quotationNumber = quotationData.quotation_Number || "N/A"; // Ensure this field is present in your data
+ doc.text(`Quotation No: ${quotationNumber}`, 10, 37); // Adjust Y position as needed
 
     const customerData = [
       ["Customer Name", enquiry.customer_name || "-"],
@@ -526,6 +474,7 @@ function QuotationForm() {
       ["Event Date", enquiry.event_date || "-"],
       ["Event Venue", enquiry.event_venue || "-"],
       ["State", enquiry.state || "-"],
+      
     ];
 
     const companyData = [
