@@ -24,6 +24,15 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Scrollbars from "react-custom-scrollbars";
 import { Link, useNavigate } from "react-router-dom";
 
+
+import axios from 'axios';
+import {useState} from 'react'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 import "./Header.css";
 
 const drawerWidth = 240;
@@ -137,7 +146,37 @@ export default function Sidenav() {
     localStorage.clear();
     navigate("/");
   };
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
+  const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDClose = () => {
+    setDialogOpen(false);
+  };
+  const id = localStorage.getItem('managerId')
+  const handleChangePassword = async() => {
+    try {
+      const data ={
+        maangerId:id,
+        oldPassword:currentPassword,
+        newPassword
+      }
+      const res = await axios.patch('http://localhost:8888/api/manager/change-pass',data);
+      if(res.status === 200){
+        alert(res.data.message)
+        setDialogOpen(false);
+      }
+      else{
+        alert(res.data.message);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -152,8 +191,8 @@ export default function Sidenav() {
               edge="start"
               sx={{
                 marginRight: 5,
-                ...(open && { display: "none" }),
-                color: "black",
+                ...(open && { display: 'none' }),
+                color: 'black',
               }}
             >
               <MenuIcon />
@@ -162,15 +201,54 @@ export default function Sidenav() {
               variant="h6"
               noWrap
               component="div"
-              sx={{
-                color: "black",
-              }}
+              sx={{ color: 'black' }}
             >
               {activetab}
             </Typography>
+            <Button
+              color="inherit"
+              sx={{ marginLeft: 'auto', color: 'black' }}
+              onClick={handleClickOpen}
+            >
+              Change Password
+            </Button>
           </Toolbar>
         </div>
       </AppBar>
+
+      <Dialog open={dialogOpen} onClose={handleDClose}>
+        <DialogTitle>Change Password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter your current password and your new password.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="currentPassword"
+            label="Current Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="newPassword"
+            label="New Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDClose}>Cancel</Button>
+          <Button onClick={handleChangePassword}>Change Password</Button>
+        </DialogActions>
+      </Dialog>
 
       <Drawer variant="permanent" open={open}>
         <Scrollbars

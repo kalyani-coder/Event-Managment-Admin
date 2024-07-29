@@ -7,11 +7,60 @@ const { Enquiry } = require("../models/newModels");
 const { FilterBodyByTable } = require("../utils/utils");
 const { AddEventMaster, advancePaymantManager ,CustomerQuatationInfo} = require("../models/newModels")
 const { ManagerDetails, ManagerTask, AdvanceExpence ,Executive} = require("../models/newModels");
-const { QuatationInfo, allBanks, ExpenceForm, VendorPayment, Accountant } = require("../models/newModels")
+const { QuatationInfo, allBanks, ExpenceForm, VendorPayment, Accountant, AdminLogin} = require("../models/newModels")
+
+
+// Admin Password chage route 
+
+router.patch("/admin/change-pass", async (req, res) => {
+  const { adminId, oldPassword, newPassword } = req.body;
+
+  try {
+    // Find the admin by ID
+    const admin = await AdminLogin.findById(adminId);
+
+    if (!admin) {
+      return res.status(202).json({ message: "AdminId  not found" });
+    }
+    if (oldPassword !== admin.password) {
+      return res.status(202).json({ message: "Old password is incorrect" });
+    }
+    admin.password = newPassword;
+    await admin.save();
+
+    res.status(200).json({ message: "Password successfully Changed" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Internal server error",error });
+  }
+});
+
+// Manager Change Pass Route 
+router.patch("/manager/change-pass", async (req, res) => {
+  const { managerId, oldPassword, newPassword } = req.body;
+
+  try {
+    // Find the admin by ID
+    const manager = await ManagerDetails.findById(managerId);
+
+    if (!manager) {
+      return res.status(202).json({ message: "ManagerId  not found" });
+    }
+    if (oldPassword !== manager.password) {
+      return res.status(202).json({ message: "Old password is incorrect" });
+    }
+    manager.password = newPassword;
+    await manager.save();
+
+    res.status(200).json({ message: "Password successfully Changed" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Internal server error",error });
+  }
+});
 
 
 // Accountant Update route 
-
 router.patch("/accountant/:id" , async(req, res) => {
   try{
     const id = req.params.id
