@@ -157,11 +157,17 @@ export default function Sidenav() {
   const handleDClose = () => {
     setDialogOpen(false);
   };
-  const id = localStorage.getItem('managerId')
+
+
+
+  const managerId = localStorage.getItem('managerId')
+  // console.log(managerId)
+
+  
   const handleChangePassword = async() => {
     try {
       const data ={
-        maangerId:id,
+        managerId:managerId,
         oldPassword:currentPassword,
         newPassword
       }
